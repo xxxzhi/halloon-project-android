@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <ImageView
+        android:id="@+id/head"
+        android:layout_width="70.0dip"
+        android:layout_height="70.0dip"
+        android:layout_marginTop="5.0dip"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+    
+    <RelativeLayout
+        android:id="@+id/bottom_gray"
+        android:layout_width="70.0dip"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/head"
+        android:layout_alignBottom="@+id/head"
+        android:background="#30000000" >
+        
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="2.0dip"
+            android:paddingBottom="2.0dip"
+            android:paddingLeft="3.0dip"
+            android:text="0.5km"
+            android:textColor="#FFFFFF"
+            android:textSize="10.0dip" />
+        
+        <ImageView 
+            android:id="@+id/sex"
+            android:layout_width="10.0dip"
+            android:layout_height="10.0dip"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="3.0dip"
+            android:src="@drawable/wb_icon_female" />
+        
+    </RelativeLayout>
+    
+    <ImageView
+        android:layout_width="70.0dip"
+        android:layout_height="70.0dip"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/avatar_mask" />
+    
+    <View 
+        android:layout_width="70.0dip"
+        android:layout_height="5.0dip"
+        android:layout_below="@+id/head"
+        android:layout_alignLeft="@+id/head" />
+
+</RelativeLayout>

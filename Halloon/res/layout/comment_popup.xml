@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#555555" >
+    
+    <TextView
+        android:id="@+id/comment_popup_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15.0dip"
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginRight="10.0dip"
+        android:layout_marginBottom="5.0dip"
+        android:gravity="center"
+        android:text="微博功能"
+        android:textColor="#EEEEEE"
+        android:textSize="20.0dip" />
+    
+    <RelativeLayout
+        android:id="@+id/function_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10.0dip"
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginRight="10.0dip"
+        android:layout_marginBottom="10.0dip"
+        android:background="@drawable/round_corner_white" >
+        
+        <ListView
+            android:id="@+id/functional"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" />
+        
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <com.halloon.android.widget.HalloonPullableView
+        android:id="@+id/pull_and_drop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        
+        <ListView
+            android:id="@+id/private_message_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="#00000000"
+            android:longClickable="true"
+            android:listSelector="@drawable/tweet_content_list_bg_selector"
+            android:background="#FFF5F5F5" />
+        
+    </com.halloon.android.widget.HalloonPullableView>
+
+</RelativeLayout>

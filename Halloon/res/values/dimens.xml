@@ -1,0 +1,14 @@
+<resources>
+
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+    <!-- button dimen -->
+    <dimen name="rect_button_width">50.0dip</dimen>
+    <dimen name="rect_button_height">28.0dip</dimen>
+    <dimen name="bottom_bar_height">40.0dip</dimen>
+    <dimen name="top_bar_height">45.0dip</dimen>
+    <dimen name="button_text_size">14.0dip</dimen>
+    <dimen name="standard_content_size">16.0dip</dimen>
+
+</resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bar_background" >
+    
+    <TextView
+        android:id="@+id/comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:layout_marginTop="6.0dip"
+        android:layout_marginBottom="6.0dip"
+        android:gravity="center"
+        android:text="回复"
+        android:textColor="#EEEEEE"
+        android:textSize="14.0dip" />
+    
+    <TextView
+        android:id="@+id/re"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:layout_marginTop="6.0dip"
+        android:layout_marginBottom="6.0dip"
+        android:gravity="center"
+        android:text="转发"
+        android:textColor="#EEEEEE"
+        android:textSize="14.0dip" />
+    
+    <TextView
+        android:id="@+id/del"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:layout_marginTop="6.0dip"
+        android:layout_marginBottom="6.0dip"
+        android:gravity="center"
+        android:text="删除"
+        android:textColor="#EEEEEE"
+        android:textSize="14.0dip" />
+    
+
+</LinearLayout>

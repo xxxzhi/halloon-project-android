@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+    
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="30.0dip"
+        android:layout_height="30.0dip"
+        android:layout_marginTop="10.0dip"
+        android:layout_marginBottom="10.0dip"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginRight="6.0dip"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_launcher" />
+    
+    <LinearLayout 
+        android:layout_toRightOf="@+id/icon"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_alignTop="@+id/icon"
+            android:text="vvvvv"
+            android:textSize="@dimen/standard_content_size"
+            android:textColor="@color/normal_content_color"
+            android:singleLine="true" />
+    
+        <TextView
+            android:id="@+id/extra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/content"
+            android:layout_marginTop="-4.0dip"
+            android:layout_toRightOf="@+id/icon"
+            android:text="vvvvvv"
+            android:textColor="@color/light_content_color"
+            android:textSize="12.0dip"
+            android:singleLine="true" />
+    
+    </LinearLayout>
+
+</RelativeLayout>

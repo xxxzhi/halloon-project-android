@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.OneActivity" >
+    
+    <ImageView
+        android:id="@+id/tweet_head"
+        android:layout_width="40.0dip"
+        android:layout_height="40.0dip"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginTop="6.0dip"
+        android:src="@drawable/wb_head_default" />
+    
+    <ImageView
+        android:layout_width="40.0dip"
+        android:layout_height="40.0dip"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginTop="6.0dip"
+        android:src="@drawable/avatar_mask_shadow" />
+
+    <TextView
+        android:id="@+id/tweet_title"
+        android:layout_width="wrap_content"
+        android:layout_height="22.0dip"
+        android:layout_toRightOf="@+id/tweet_head"
+        android:layout_marginTop="6.0dip"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginBottom="3.0dip"
+        android:text="阿蔡"
+        android:textColor="#0085DF"
+        android:textSize="16.0dip" />
+    
+    <ImageView 
+        android:id="@+id/is_vip"
+        android:layout_width="14.0dip"
+        android:layout_height="14.0dip"
+        android:layout_toRightOf="@+id/tweet_title"
+        android:layout_alignTop="@+id/tweet_title"
+        android:layout_marginLeft="2.0dip"
+        android:layout_marginTop="3.0dip"
+        android:layout_marginRight="2.0dip"
+        android:background="@drawable/vip" />
+
+    <TextView
+        android:id="@+id/tweet_timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6.0dip"
+        android:layout_marginTop="7.0dip"
+        android:layout_alignRight="@+id/tweet_content"
+        android:gravity="right"
+        android:text="24分钟"
+        android:textColor="#777777"
+        android:textSize="13.0dip" />
+    
+    <TextView 
+        android:id="@+id/tweet_from"
+        android:layout_width="170.0dip"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6.0dip"
+        android:layout_below="@+id/tweet_location_text"
+        android:layout_alignLeft="@+id/tweet_content"
+        android:gravity="left"
+        android:text="来自哈恩客户端啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+        android:singleLine="true"
+        android:textColor="#777777"
+        android:textSize="13.0dip" />
+    
+    <ImageView
+        android:id="@+id/image_icon"
+        android:layout_width="17.0dip"
+        android:layout_height="17.0dip"
+        android:layout_alignTop="@+id/tweet_timestamp"
+        android:layout_toLeftOf="@+id/tweet_timestamp"
+        android:layout_marginTop="0.0dip"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginRight="4.0dip"
+        android:background="@drawable/contain_image_2" />
+
+    <TextView
+        android:id="@+id/tweet_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tweet_title"
+        android:layout_alignLeft="@+id/tweet_title"
+        android:layout_marginTop="0.0dip"
+        android:layout_marginRight="6.0dip"
+        android:text="今天天气好清爽，处处好风光"
+        android:lineSpacingExtra="2.0dip"
+        android:textColor="#777777"
+        android:textColorLink="#777777"
+        android:textSize="16.0dip" />
+    
+    <ImageView
+        android:id="@+id/tweet_image"
+        android:layout_width="80.0dip"
+        android:layout_height="80.0dip"
+        android:layout_below="@+id/tweet_content"
+        android:layout_marginTop="6.0dip"
+        android:layout_marginLeft="6.0dip"
+        android:layout_alignLeft="@+id/tweet_title" />
+        
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tweet_image"
+        android:layout_alignLeft="@+id/tweet_title"
+        android:layout_marginTop="6.0dip"
+        android:layout_marginRight="6.0dip"
+        android:background="@drawable/round_corner"
+        android:visibility="gone" >
+        
+        <TextView
+            android:id="@+id/forward_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="2.0dip"
+            android:textColor="#888888"
+            android:textColorLink="#888888"
+            android:textSize="16.0dip" />
+        
+        <ImageView
+            android:id="@+id/forward_image"
+            android:layout_width="80.0dip"
+            android:layout_height="80.0dip"
+            android:layout_below="@+id/forward_content"
+            android:layout_marginTop="6.0dip"
+            android:layout_marginLeft="6.0dip" />
+        
+        <TextView
+            android:id="@+id/forward_location_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/forward_image"
+            android:text="sdf"
+            android:textSize="13.0dip"
+            android:textColor="#888888"
+            android:background="@drawable/round_corner_light_blue" />
+        
+    </RelativeLayout>
+    
+    <TextView
+        android:id="@+id/tweet_location_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_alignLeft="@+id/tweet_title"
+        android:layout_marginTop="6.0dip"
+        android:layout_marginRight="6.0dip"
+        android:text="我在XXX"
+        android:textColor="#777777"
+        android:textSize="13.0dip"
+        android:background="@drawable/round_corner_light_blue" />
+
+    <TextView
+        android:id="@+id/comment_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tweet_location_text"
+        android:layout_toLeftOf="@+id/comment_count"
+        android:layout_marginTop="6.0dip"
+        android:text="@string/comment"
+        android:textColor="#333333"
+        android:textSize="13.0dip" />
+    
+    <TextView
+        android:id="@+id/comment_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tweet_location_text"
+        android:layout_toLeftOf="@+id/forward_icon"
+        android:layout_marginTop="6.0dip"
+        android:layout_marginLeft="4.0dip"
+        android:text="2"
+        android:textColor="#777777"
+        android:textSize="13.0dip" />
+    
+    <TextView
+        android:id="@+id/forward_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tweet_location_text"
+        android:layout_toLeftOf="@+id/forward_count"
+        android:layout_marginTop="6.0dip"
+        android:layout_marginLeft="4.0dip"
+        android:text="@string/retweet"
+        android:textColor="#333333"
+        android:textSize="13.0dip" />
+    
+    <TextView
+        android:id="@+id/forward_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tweet_location_text"
+        android:layout_alignRight="@+id/tweet_content"
+        android:layout_marginTop="6.0dip"
+        android:layout_marginLeft="4.0dip"
+        android:layout_marginRight="6.0dip"
+        android:text="2"
+        android:textColor="#777777"
+        android:textSize="13.0dip" />
+    
+    <ImageView 
+        android:layout_width="match_parent"
+        android:layout_height="1.0dip"
+        android:layout_marginTop="3.0dip"
+        android:layout_below="@+id/forward_count" />
+   
+</RelativeLayout>

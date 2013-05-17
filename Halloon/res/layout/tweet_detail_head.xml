@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#11000000"
+    tools:context=".ui.fragment.TabProfileFragment" >
+    
+    <ImageView 
+        android:id="@+id/tweet_head"
+        android:layout_width="50.0dip"
+        android:layout_height="50.0dip"
+        android:layout_marginTop="6.0dip"
+        android:layout_marginLeft="15.0dip"
+        android:src="@drawable/wb_head_default" />
+    
+    <TextView
+        android:id="@+id/tweet_nick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8.0dip"
+        android:layout_marginLeft="6.0dip"
+        android:layout_toRightOf="@+id/tweet_head"
+        android:text="Michael"
+        android:textColor="#0085DF"
+        android:textSize="17.0dip" />
+    
+    <ImageView
+        android:id="@+id/is_vip"
+        android:layout_width="13.0dip"
+        android:layout_height="13.0dip"
+        android:layout_alignTop="@+id/tweet_nick"
+        android:layout_toRightOf="@+id/tweet_nick"
+        android:layout_marginLeft="3.0dip"
+        android:layout_marginTop="4.0dip"
+        android:src="@drawable/vip" />
+    
+    <TextView
+        android:id="@+id/tweet_timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginTop="2.0dip"
+        android:layout_below="@+id/tweet_nick"
+        android:layout_toRightOf="@+id/tweet_head"
+        android:text="24min"
+        android:textColor="#999999"
+        android:textSize="14.0dip" />
+    
+    <TextView
+        android:id="@+id/tweet_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginRight="40.0dip"
+        android:layout_marginTop="2.0dip"
+        android:layout_below="@+id/tweet_nick"
+        android:layout_toRightOf="@+id/tweet_timestamp"
+        android:text="from halloondddddddddddddddddddddddddddddddddddd"
+        android:textColor="#999999"
+        android:textSize="14.0dip"
+        android:singleLine="true" />
+    
+    <ImageView 
+        android:id="@+id/detail_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10.0dip"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/bottom_line"
+        android:background="@drawable/h_arrow" />
+    
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip"
+        android:layout_below="@+id/tweet_head"
+        android:layout_marginTop="6.0dip"
+        android:layout_marginBottom="2.0dip"
+        android:background="#D9D9D9" />
+    
+</RelativeLayout>

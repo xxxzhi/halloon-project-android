@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".ui.fragment.TabProfileFragment" >
+    
+    <RelativeLayout 
+        android:id="@+id/relativeLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    
+    <ImageView
+        android:id="@+id/comment_head"
+        android:layout_width="35.0dip"
+        android:layout_height="35.0dip"
+        android:layout_marginTop="10.0dip"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginBottom="3.0dip"
+        android:background="@drawable/wb_head_default" />
+    
+    <ImageView 
+        android:layout_width="35.0dip"
+        android:layout_height="35.0dip"
+        android:layout_marginTop="10.0dip"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginBottom="3.0dip"
+        android:background="@drawable/avatar_mask" />
+    
+    <RelativeLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/comment_head"
+        android:layout_alignTop="@+id/comment_head"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginRight="6.0dip"
+        android:layout_marginTop="-4.0dip"
+        android:background="@drawable/round_corner">
+        
+        <TextView
+            android:id="@+id/comment_nick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/comment_head"
+            android:text="阿蔡"
+            android:textSize="15.0dip"
+            android:textColor="#0085DF" />
+        
+        <TextView
+            android:id="@+id/comment_timestamp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="24分钟前"
+            android:textSize="10.0dip"
+            android:textColor="#666666"
+            android:gravity="right" />
+        
+        <TextView
+            android:id="@+id/comment_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/comment_nick"
+            android:layout_toRightOf="@+id/comnment_head"
+            android:layout_marginTop="1.0dip"
+            android:layout_marginRight="10.0dip"
+            android:lineSpacingExtra="2.0dip"
+            android:text="春风水冷"
+            android:textSize="12.0dip"
+            android:textColorLink="#2078DC"
+            android:textColor="#777777" />
+        
+    </RelativeLayout>
+    
+    </RelativeLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5.0dip"
+        android:layout_below="@+id/relativeLayout1" />
+    
+</RelativeLayout>

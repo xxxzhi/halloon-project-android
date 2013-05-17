@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.TabMyMessageFragment">
+    <RelativeLayout
+        android:id="@+id/title_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="45.0dip"
+        android:background="@color/main_style_color" >
+        
+        <com.halloon.android.util.UnderLinePageIndicator
+            android:id="@+id/page_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8.0dip" />
+        
+        <View 
+            android:layout_width="2.0dip"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15.0dip"
+            android:layout_marginBottom="15.0dip"
+            android:background="#FFFFFFFF"/>
+        
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_layout"
+        android:background="#F5F5F5"
+        android:flipInterval="30"
+        android:gravity="center"
+        android:persistentDrawingCache="animation" />
+
+</RelativeLayout>

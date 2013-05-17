@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#E5E5E5" >
+
+    <ImageView
+        android:id="@+id/img_head_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/update_text"
+        android:layout_marginRight="20.0dip"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_pulltorefresh_arrow" />
+    
+    <ProgressBar
+        android:id="@+id/bar_head"
+        android:layout_width="30.0dip"
+        android:layout_height="30.0dip"
+        android:layout_toLeftOf="@+id/update_text"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20.0dip"
+        android:visibility="gone" />
+    
+    <TextView 
+        android:id="@+id/update_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="下拉刷新"
+        android:textColor="#888888"
+        android:textSize="15.0dip"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center" />
+    
+    <TextView
+        android:id="@+id/last_update_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2013-10-10 12:00"
+        android:textColor="#888888"
+        android:textSize="12.0dip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10.0dip"
+        android:layout_below="@+id/update_text"
+        android:gravity="center" />
+
+</RelativeLayout>

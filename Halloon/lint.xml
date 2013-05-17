@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="NewApi" severity="ignore">
+        <ignore path="src\com\halloon\android\ui\activity\MainPageActivity.java" />
+        <ignore path="src\com\halloon\android\ui\fragment\LBSContactFragment.java" />
+        <ignore path="src\com\halloon\android\ui\fragment\MyTweetFragment.java" />
+        <ignore path="src\com\halloon\android\ui\fragment\TabMainPageFragment.java" />
+        <ignore path="src\com\halloon\android\ui\fragment\TabMainPageFragment.java" />
+        <ignore path="src\com\halloon\android\ui\fragment\TabMyContactsFragment.java" />
+        <ignore path="src\com\halloon\android\ui\fragment\TabProfileFragment.java" />
+        <ignore path="src\com\halloon\android\ui\fragment\TweetDetailFragment.java" />
+        <ignore path="src\com\halloon\android\util\PopupWindowManager.java" />
+        <ignore path="src\com\halloon\android\util\popupWindowManager.java" />
+    </issue>
+</lint>

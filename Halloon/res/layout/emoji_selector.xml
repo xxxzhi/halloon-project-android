@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/emoji_select"
+    android:background="@color/list_background_color" >
+    
+    <android.support.v4.view.ViewPager
+        android:id="@+id/emoji_pager"
+        android:layout_width="wrap_content"
+        android:layout_height="180.0dip"
+        android:flipInterval="30"
+        android:gravity="center"
+        android:persistentDrawingCache="animation" />
+    
+    <View
+        android:id="@+id/insert"
+        android:layout_width="match_parent"
+        android:layout_height="7.5dip"
+        android:layout_below="@+id/emoji_pager"
+        android:background="#FFE5E5E5" />
+    
+    <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="12.5dip"
+        android:layout_below="@+id/insert"
+        android:layout_centerHorizontal="true"
+        android:background="#FFE5E5E5" />
+    
+</RelativeLayout>

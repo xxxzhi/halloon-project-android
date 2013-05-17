@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="create_db">
+        <!--  AUTOINCREMENT is only allowed on an INTEGER PRIMARY KEY -->
+        <item name="create_mainpage">
+            CREATE TABLE IF NOT EXISTS [tweet_list] (
+                [openid]                TEXT PRIMARY KEY,
+                [id]                    TEXT,
+                [head]                  TEXT,
+                [nick]                  TEXT,
+                [name]                  TEXT,
+                [timestamp]             INTEGER,
+                [send_from]             TEXT,
+                [tweet_content]         TEXT,
+                [tweet_image]           TEXT,
+                [tweet_video_image]     TEXT,
+                [tweet_video_player]    TEXT,
+                [tweet_video_url]       TEXT,
+                [comment_count]         TEXT,
+                [r_count]               TEXT,
+                [source_nick]           TEXT,
+                [source_content]        TEXT,
+                [source_image]          TEXT,
+                [source_video_image]    TEXT,
+                [source_video_player]   TEXT,
+                [source_video_url]      TEXT,
+                [source_longitude]      TEXT,
+                [source_latitude]       TEXT,
+                [source_geo]            TEXT,
+                [mentioned_user]        TEXT,
+                [is_vip]                TEXT,
+                [tweet_longitude]       TEXT,
+                [tweet_latitude]        TEXT,
+                [tweet_geo]             TEXT
+            );
+        </item>
+        <item name="create_profile">
+            CREATE TABLE IF NOT EXISTS [my_profile] (
+                [id]                    TEXT PRIMARY KEY,
+                [nick]                  TEXT,
+                [head]                  TEXT,
+                [name]                  TEXT,
+                [sex]                   TEXT,
+                [introduction]          TEXT,
+                [location]              TEXT,
+                [tag]                   TEXT,
+                [tweet_num]             TEXT,
+                [idol_num]              TEXT,
+                [fans_num]              TEXT,
+                [fav_num]               TEXT
+            );
+        </item>
+        <item name="create_contacts">
+            CREATE TABLE IF NOT EXISTS [contacts_me] (
+                [id]                    TEXT PRIMARY KEY,
+                [name]                  TEXT,
+                [nick]                  TEXT,
+                [name_formatted]        TEXT,
+                [head]                  TEXT,
+                [sex]                   TEXT,
+                [tweet]                 TEXT
+            );
+        </item>
+        <item name="create_messagepage">
+            CREATE TABLE IF NOT EXISTS [private_list] (
+                [id]                    TEXT PRIMARY KEY,
+                [head]                  TEXT,
+                [name]                  TEXT,
+                [nick]                  TEXT,
+                [content]               TEXT,
+                [image]                 TEXT,
+                [timestamp]             TEXT
+            );
+        </item>
+        <item name="create_atlistpage">
+            CREATE TABLE IF NOT EXISTS [at_list] (
+                [id]                    TEXT PRIMARY KEY,
+                [head]                  TEXT,
+                [name]                  TEXT,
+                [nick]                  TEXT,
+                [at_from]               TEXT,
+                [at_image]              TEXT,
+                [at_video_image]        TEXT,
+                [at_video_player]       TEXT,
+                [at_video_url]          TEXT,
+                [timestamp]             TEXT,
+                [at_content]            TEXT,
+                [at_source_name]        TEXT,
+                [at_source_nick]        TEXT,
+                [at_source_content]     TEXT,
+                [at_source_image]       TEXT,
+                [at_source_video_image] TEXT,
+                [at_source_video_player]TEXT,
+                [at_source_video_url]   TEXT,
+                [at_r_count]            TEXT,
+                [at_comment_count]      TEXT,
+                [at_muser]              TEXT
+            );
+        </item>
+    </string-array>
+    <string-array name="destroy_db">
+        <item>DROP TABLE IF EXISTS [tweet_list];</item>
+        <item>DROP TABLE IF EXISTS [my_profile];</item>
+        <item>DROP TABLE IF EXISTS [contacts_me];</item>
+        <item>DROP TABLE IF EXISTS [private_list];</item>
+        <item>DROP TABLE IF EXISTS [at_list]</item>
+    </string-array>
+</resources>

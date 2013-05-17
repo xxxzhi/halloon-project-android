@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".ui.fragment.TabProfileFragment" >
+
+    <TextView 
+        android:id="@+id/tweet_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginRight="15.0dip"
+        android:layout_marginTop="10.0dip"
+        android:text="I have to remind myself that some birds are unmeant to be caged,their feather are just too bright,and when they fly away,the part of you know that it was a sin to lock them up does rejoice."
+        android:lineSpacingExtra="2.0dip"
+        android:textColor="#777777"
+        android:textColorLink="#777777"
+        android:textSize="16.0dip" />
+    
+    <ImageView
+        android:id="@+id/tweet_image"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tweet_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginRight="15.0dip"
+        android:layout_marginTop="10.0dip"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:visibility="gone" />
+    
+    <RelativeLayout
+        android:id="@+id/forward_background"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginRight="15.0dip"
+        android:layout_marginTop="10.0dip"
+        android:layout_below="@+id/tweet_image"
+        android:background="@drawable/round_corner"
+        android:visibility="gone" >
+        
+        <TextView
+            android:id="@+id/forward_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="busy living,or busy dying,that's god-damn right."
+            android:lineSpacingExtra="2.0dip"
+            android:textColor="#888888"
+            android:textColorLink="#888888"
+            android:textSize="16.0dip" />
+        
+        <ImageView
+            android:id="@+id/forward_image"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="10.0dip"
+            android:layout_marginLeft="15.0dip"
+            android:layout_marginRight="15.0dip"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerInside"
+            android:layout_below="@+id/forward_content"
+            android:visibility="gone" />
+        
+        <ImageView
+            android:id="@+id/forward_location_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10.0dip"
+            android:layout_marginLeft="15.0dip"
+            android:layout_marginRight="15.0dip"
+            android:layout_below="@+id/forward_image"
+            android:layout_centerHorizontal="true" />
+            
+    </RelativeLayout>
+    
+    <ImageView
+        android:id="@+id/location_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10.0dip"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginRight="15.0dip"
+        android:layout_below="@+id/forward_background"
+        android:layout_centerHorizontal="true" />
+    
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="6.0dip"
+        android:layout_below="@+id/location_image" />
+    
+</RelativeLayout>

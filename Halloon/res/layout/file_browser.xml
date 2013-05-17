@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <RelativeLayout 
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_bar_height"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/tab_bg_unselected">
+        
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="@dimen/rect_button_width"
+            android:layout_height="@dimen/rect_button_height"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="6.0dip"
+            android:background="@drawable/rect_button_selector"
+            android:text="@string/cancel"
+            android:textSize="@dimen/button_text_size"
+            android:textColor="@color/normal_text_color" />
+        
+        <Button
+            android:id="@+id/open"
+            android:layout_width="@dimen/rect_button_width"
+            android:layout_height="@dimen/rect_button_height"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="6.0dip"
+            android:background="@drawable/rect_button_selector"
+            android:text="@string/open"
+            android:textSize="@dimen/button_text_size"
+            android:textColor="@color/normal_text_color" />
+
+    </RelativeLayout>
+    
+    <ListView
+        android:id="@+id/parent_view"
+        android:layout_width="60.0dip"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_bar"
+        android:listSelector="@drawable/tweet_content_list_bg_selector" />
+    
+    <ListView
+        android:id="@+id/file_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_marginLeft="5.0dip"
+        android:layout_marginRight="5.0dip"
+        android:layout_toRightOf="@+id/parent_view"
+        android:listSelector="@drawable/tweet_content_list_bg_selector" />
+        
+
+</RelativeLayout>

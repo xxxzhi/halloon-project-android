@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <com.halloon.android.widget.HalloonTitleBar
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45.0dip" />
+    
+    <RelativeLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_layout"
+        android:background="#dfdfdf" >
+
+    </RelativeLayout>
+    
+    <!-- 
+    <LinearLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45.0dip"
+        android:layout_weight="0"
+        android:background="@drawable/tab_bg_selector" >
+        
+        <ImageView
+            android:id="@+id/main_page"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/homepage_normal" />
+        
+        <ImageView
+            android:id="@+id/message_page"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/message_normal" />
+        
+        <ImageView
+            android:id="@+id/profile_page"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/profile_normal" />
+        
+        <ImageView
+            android:id="@+id/contacts_page"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/contacts_normal" />
+        
+        <ImageView
+            android:id="@+id/settings_page"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/settings_normal" />
+        
+    </LinearLayout> -->
+    
+
+</RelativeLayout>

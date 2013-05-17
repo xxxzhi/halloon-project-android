@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#E5E5E5" >
+    
+    <ImageView
+        android:id="@+id/img_foot_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/update_text"
+        android:layout_marginRight="20.0dip"
+        android:src="@drawable/face_up_arrow" />
+    
+    <TextView
+        android:id="@+id/update_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:text="上拉刷新"
+        android:textColor="#555555"
+        android:textSize="15.0dip"/>
+    
+    <TextView
+        android:id="@+id/last_update_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2013-10-10 12:00"
+        android:textColor="#777777"
+        android:textSize="12.0dip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10.0dip"
+        android:layout_below="@+id/update_text"
+        android:gravity="center" />
+    
+    <com.halloon.android.widget.HalloonLoadingBar
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="4.0dip"
+        android:layout_marginLeft="20.0dip"
+        android:layout_marginRight="20.0dip"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

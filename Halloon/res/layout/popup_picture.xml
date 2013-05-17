@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FF222222">
+    
+    <com.halloon.android.widget.HalloonImageView
+        android:id="@+id/popup_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_bar"
+        android:scaleType="matrix" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical" >
+        
+        <com.halloon.android.widget.HalloonProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6.0dip"
+            android:layout_marginRight="6.0dip" />
+        
+    </LinearLayout>
+    
+    <RelativeLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/tab_bg_unselected" >
+        
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="50.0dip"
+            android:layout_height="32.0dip"
+            android:layout_marginTop="6.0dip"
+            android:layout_marginLeft="6.0dip"
+            android:layout_alignParentLeft="true"
+            android:text="@string/back"
+            android:textColor="#EEEEEE"
+            android:textSize="14.0dip"
+            android:background="@drawable/rect_button_selector" />
+        
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="50.0dip"
+            android:layout_height="32.0dip"
+            android:layout_marginTop="6.0dip"
+            android:layout_marginRight="6.0dip"
+            android:layout_alignParentRight="true"
+            android:text="@string/save"
+            android:textSize="14.0dip"
+            android:textColor="#EEEEEE"
+            android:background="@drawable/rect_button_selector" />
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6.0dip"
+            android:layout_below="@+id/save_button" />
+        
+    </RelativeLayout>
+    
+</RelativeLayout>

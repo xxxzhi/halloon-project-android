@@ -1,0 +1,65 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AppTheme" parent="android:Theme.Light" />
+
+    <style name="Theme.Halloon" parent="@style/Theme.Sherlock.Light">
+        <item name="vpiTabPageIndicatorStyle">@style/HalloonTabPageIndicator</item>
+        <item name="android:actionBarStyle">@style/Theme.Halloon.Styled.ActionBar</item>
+        <item name="actionBarStyle">@style/Theme.Halloon.Styled.ActionBar</item>
+    </style>
+
+    <style name="Theme.Halloon.Styled.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
+        <item name="icon">@drawable/ic_launcher</item>
+        <item name="android:icon">@drawable/ic_launcher</item>
+        <item name="background">#568ee2</item>
+        <item name="android:background">#568ee2</item>
+    </style>
+    <style name="HalloonTabPageIndicator" parent="Widget.TabPageIndicator">
+        <item name="android:background">@drawable/custom_tab_indicator</item>
+        <item name="android:textAppearance">@style/CustomTabPageIndicator.Text</item>
+        <item name="android:textColor">#FF555555</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:divider">@drawable/custom_tab_indicator_divider</item>
+        <item name="android:dividerPadding">5dp</item>
+        <item name="android:showDividers">middle</item>
+    </style>
+    <style name="CustomTabPageIndicator.Text" parent="android:TextAppearance.Medium">
+        <item name="android:typeface">monospace</item>
+    </style>
+ 
+    <style name="PopupWindowYAxisSlide" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_slide_top_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_slide_top_out</item>
+    </style>
+    
+    <style name="PopupWindowFade" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_fade_out</item>
+    </style>
+    
+    <style name="CommentBarZoom" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_zoom_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_zoom_out</item>
+    </style>
+    
+    <style name="PopupWindowSlideFade" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_fade_slide_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_fade_slide_bottom_out</item>
+    </style>
+    
+    <style name="FragmentSlideRight" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/fragment_slide_right_enter</item>
+        <item name="android:windowExitAnimation">@anim/fragment_slide_right_exit</item>
+    </style>
+    
+    <style name="FragmentSlideLeft" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/fragment_slide_left_enter</item>
+        <item name="android:windowExitAnimation">@anim/fragment_slide_left_exit</item>
+    </style>
+    
+    <style name="FragmentFadeZoom" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/fragment_fade_zoom_out</item>
+        <item name="android:windowExitAnimation">@anim/fragment_fade_zoom_in</item>
+    </style>
+
+</resources>

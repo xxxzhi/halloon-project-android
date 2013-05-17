@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" xmlns:HalloonProgressBar="http://schemas.android.com/apk/res/com.halloon.android">
+    
+    <ListView
+        android:id="@+id/discover_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="3"
+        android:cacheColorHint="#00000000"
+        android:listSelector="@drawable/tweet_content_list_bg_selector" />
+</RelativeLayout>

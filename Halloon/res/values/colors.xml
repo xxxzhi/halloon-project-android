@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="tab_page_indicator_text">#fff</color>
+    <color name="tab_page_indicator_underline">#90a4bc</color>
+    <color name="main_style_color">#0085DF</color>
+    <color name="text_hint_color">#AAAAAA</color>
+    <color name="header_bar_color">#007EB6</color>
+    <color name="list_background_color">#FFF5F5F5</color>
+    <color name="normal_text_color">#EEEEEE</color>
+    <color name="normal_content_color">#777777</color>
+    <color name="light_content_color">#888888</color>
+</resources>

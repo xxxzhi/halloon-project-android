@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HalloonProgressBar" >
+        <attr name="maxValue" format="integer" />
+        <attr name="minValue" format="integer" />
+        <attr name="currentValue" format="float" />
+        <attr name="tagHeight" format="dimension" />
+        <attr name="heightToTag" format="dimension" />
+    </declare-styleable>
+</resources>

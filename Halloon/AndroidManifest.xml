@@ -1,0 +1,89 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.halloon.android"
+    android:versionCode="1"
+    android:versionName="1.0_R48" >
+
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="14" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 微博授权使用权限 -->
+    <!-- 访问Internet权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 允许程序访问Wi-Fi网络状态信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 允许程序写入API设置
+    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS" /> -->
+    <!-- 允许程序改变WiFi连接状态 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 允许程序访问网络信息 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 允许程序获取粗略的位置 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- 允许程序获取精确的位置 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_GPS"/>
+    <!-- 摄像头 -->
+    <uses-permossion android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+
+    <application
+        android:name=".HalloonApplication"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:allowBackup="true"
+        android:theme="@style/Theme.Halloon" >
+
+        <!-- 
+        <activity android:name=".ui.activity.OAuthActivity" android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> -->
+        <activity android:name=".ui.activity.OAuthV2Activity" android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.activity.HomeActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+            </intent-filter>
+        </activity>
+        <activity 
+            android:name=".ui.activity.MainPageActivity" 
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:screenOrientation="portrait" />
+        <activity 
+            android:name=".ui.activity.MyMessageActivity" 
+            android:theme="@style/Theme.PageIndicatorDefaults"
+            android:screenOrientation="portrait" />
+        <activity 
+            android:name=".ui.activity.ProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity 
+            android:name=".ui.activity.MyContactsActivity"
+            android:screenOrientation="portrait" />
+        <activity 
+            android:name=".ui.activity.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <!-- OAuth Version 1.0 使用 WebView 辅助授权必须 -->
+        <activity
+            android:name="com.tencent.weibo.webview.OAuthV1AuthorizeWebView"
+            android:label="@string/app_name" />
+        
+        <!-- OAuth Version 2.0 使用 WebView 辅助授权必须 -->
+        <activity
+            android:name="com.tencent.weibo.webview.OAuthV2AuthorizeWebView"
+            android:label="@string/app_name" />
+        
+    </application>
+
+</manifest>
