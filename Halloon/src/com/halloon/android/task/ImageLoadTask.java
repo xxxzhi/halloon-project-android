@@ -36,7 +36,7 @@ import com.halloon.android.util.ImageUtil;
 import com.halloon.android.widget.HalloonProgressBar;
 import com.halloon.android.widget.HalloonImageView;
 
-public class ImageLoadTask extends AsyncTask<String, Float, Bitmap> implements GifAction {
+public class ImageLoadTask extends BaseCompatiableTask<String, Float, Bitmap> implements GifAction {
 	//private ProgressBar progressBar;
 	private HalloonProgressBar progressBar;
 	private HalloonImageView pdView;

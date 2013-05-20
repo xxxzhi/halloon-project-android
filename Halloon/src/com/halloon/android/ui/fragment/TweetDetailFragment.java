@@ -20,15 +20,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.halloon.android.R;
 import com.halloon.android.adapter.TweetDetailAdapter;
 import com.halloon.android.bean.TweetBean;
 import com.halloon.android.data.ContentManager;
-import com.halloon.android.data.SettingsManager;
 import com.halloon.android.listener.OnEmojiSelectedListener;
+import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.task.PostActionTask;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 import com.halloon.android.util.Constants;
@@ -55,8 +54,8 @@ public class TweetDetailFragment extends SherlockFragment implements OnClickList
 	
 	private HalloonEmojiSelector emojiSelector;
 
-	private AsyncTask<Void, Void, ArrayList<TweetBean>> task;
-	private AsyncTask<Void, Void, ArrayList<TweetBean>> mListTask;
+	private BaseCompatiableTask<Void, Void, ArrayList<TweetBean>> task;
+	private BaseCompatiableTask<Void, Void, ArrayList<TweetBean>> mListTask;
 
 	public interface TweetDetailFragmentCallback {
 		public void setupProfileFragment(Bundle bundle);
@@ -124,7 +123,7 @@ public class TweetDetailFragment extends SherlockFragment implements OnClickList
 	}
 
 	private void loadData() {
-		task = new AsyncTask<Void, Void, ArrayList<TweetBean>>() {
+		task = new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
 
 			@Override
 			protected ArrayList<TweetBean> doInBackground(Void... params) {
@@ -152,11 +151,7 @@ public class TweetDetailFragment extends SherlockFragment implements OnClickList
 			
 		};
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			task.execute();
-		}
+		task.taskExecute();
 	}
 
 	@Override
@@ -180,7 +175,7 @@ public class TweetDetailFragment extends SherlockFragment implements OnClickList
 	}
 	
 	private void getMoreData(){
-		task = new AsyncTask<Void, Void, ArrayList<TweetBean>>(){
+		task = new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>(){
 			@Override
 			protected void onPreExecute(){
 				if(footerView != null){
@@ -218,11 +213,7 @@ public class TweetDetailFragment extends SherlockFragment implements OnClickList
 			}
 		};
 		
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		}else{
-			task.execute();
-		}
+		task.taskExecute();
 	}
 	
 	@Override
@@ -276,7 +267,7 @@ public class TweetDetailFragment extends SherlockFragment implements OnClickList
 		
 		
 
-		mListTask = new AsyncTask<Void, Void, ArrayList<TweetBean>>() {
+		mListTask = new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
 			@Override
 			protected void onPreExecute(){
 				tweetCommentBean.clear();
@@ -311,11 +302,7 @@ public class TweetDetailFragment extends SherlockFragment implements OnClickList
 			}
 		};
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			mListTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			mListTask.execute();
-		}
+		mListTask.taskExecute();
 
 	}
 

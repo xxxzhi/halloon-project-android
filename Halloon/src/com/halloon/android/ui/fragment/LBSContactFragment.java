@@ -24,6 +24,7 @@ import com.halloon.android.R;
 import com.halloon.android.adapter.LBSContactAdapter;
 import com.halloon.android.bean.UserBean;
 import com.halloon.android.data.ContentManager;
+import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.task.LocationTask;
 import com.halloon.android.listener.OnLocationSeekListener;
 import com.halloon.android.util.Constants;
@@ -65,11 +66,7 @@ public class LBSContactFragment extends SherlockFragment implements OnClickListe
 		listView.setAdapter(lbsAdapter);
 		locationTask = new LocationTask(context);
 		locationTask.setOnLocationSeekListener(this);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			locationTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			locationTask.execute();
-		}
+		locationTask.taskExecute();
 		
 		return root;
 	}
@@ -88,7 +85,7 @@ public class LBSContactFragment extends SherlockFragment implements OnClickListe
 	}
 
 	private void loadData(final String longitude, final String latitude) {
-		AsyncTask<Void, Void, ArrayList<UserBean>> task = new AsyncTask<Void, Void, ArrayList<UserBean>>() {
+		new BaseCompatiableTask<Void, Void, ArrayList<UserBean>>() {
 			@Override
 			protected void onPreExecute() {
 
@@ -122,12 +119,7 @@ public class LBSContactFragment extends SherlockFragment implements OnClickListe
 				userBeans.addAll(result);
 				lbsAdapter.notifyDataSetChanged();
 			}
-		};
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			task.execute();
-		}
+		}.taskExecute();
 	}
 
 	@Override

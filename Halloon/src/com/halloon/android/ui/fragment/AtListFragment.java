@@ -1,19 +1,16 @@
 package com.halloon.android.ui.fragment;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.halloon.android.R;
@@ -22,6 +19,7 @@ import com.halloon.android.bean.TweetBean;
 import com.halloon.android.data.ContentManager;
 import com.halloon.android.data.DBManager;
 import com.halloon.android.data.SettingsManager;
+import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.view.PullToRefreshListView;
 import com.halloon.android.view.PullToRefreshListView.OnRefreshListener;
 
@@ -56,7 +54,7 @@ public class AtListFragment extends SherlockFragment {
 	}
 
 	private void loadData() {
-		AsyncTask<Void, Void, ArrayList<TweetBean>> task = new AsyncTask<Void, Void, ArrayList<TweetBean>>() {
+		new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
 
 			@Override
 			protected void onPreExecute() {
@@ -93,17 +91,11 @@ public class AtListFragment extends SherlockFragment {
 				list.onRefreshComplete();
 			}
 
-		};
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			task.execute();
-		}
+		}.taskExecute();
 	}
 
 	private void refreshData() {
-		AsyncTask<Void, Void, ArrayList<TweetBean>> task = new AsyncTask<Void, Void, ArrayList<TweetBean>>() {
+		new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
 			@Override
 			protected ArrayList<TweetBean> doInBackground(Void... params) {
 				ArrayList<TweetBean> tmp_list = ContentManager.getInstance(context).getMentionsHomeTimeLine("0", "0", "20", "0", "0", "0");
@@ -130,13 +122,7 @@ public class AtListFragment extends SherlockFragment {
 				list.onRefreshComplete();
 				adapter.notifyDataSetChanged();
 			}
-		};
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			task.execute();
-		}
+		}.taskExecute();
 	}
 
 	@Override

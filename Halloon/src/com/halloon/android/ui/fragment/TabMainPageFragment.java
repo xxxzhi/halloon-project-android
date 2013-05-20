@@ -9,8 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +30,7 @@ import com.halloon.android.bean.TweetBean;
 import com.halloon.android.data.ContentManager;
 import com.halloon.android.data.DBManager;
 import com.halloon.android.data.SettingsManager;
+import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.task.LocationTask;
 import com.halloon.android.listener.OnLocationSeekListener;
 import com.halloon.android.listener.OnTitleBarClickListener;
@@ -281,84 +280,74 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 
 	private void loadData(final int tweetNumber, final boolean refresh) {
 
-		AsyncTask<Void, Void, ArrayList<TweetBean>> task = new AsyncTask<Void, Void, ArrayList<TweetBean>>() {
-			
-			@Override
-			protected ArrayList<TweetBean> doInBackground(Void... arg0) {
-				ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
-				
-				switch (tweetState) {
-				case MAIN_TIMELINE_TWEET:
-					tmpArrayList = DBManager.getInstance(context).getAllTweetList();
-					if (SettingsManager.getInstance(context).getTweetListStatus() == DBManager.TWEET_LIST_STATUS_INIT || refresh || tmpArrayList.size() <= 0) {
-						tmpArrayList = ContentManager.getInstance(context).getHomeTimeLineTweet("", "", tweetNumber, "", "");
-
-						HashMap<String, TweetBean> tweetLists = new HashMap<String, TweetBean>();
-						for (int i = 0; i < tmpArrayList.size(); i++) {
-							tweetLists.put(tmpArrayList.get(i).getTimestamp(), (TweetBean) tmpArrayList.get(i));
-						}
-
-						DBManager.getInstance(context).addTweetListContent(tweetLists, true);
-
-						SettingsManager.getInstance(context).setLastUpdateTime(context.getString(R.string.refresh_at) + TimeUtil.getCurrentTime());
-					}
-					break;
-				case OTHER_TWEET:
-					tmpArrayList = ContentManager.getInstance(context).getOtherTimeLine("", "", tweetNumber, "", otherName, null, "", "");
-					break;
-				}
-
-				return tmpArrayList;
-			}
-
-			@Override
-			protected void onPostExecute(ArrayList<TweetBean> result) {
-				super.onPostExecute(result);
-				if(result != null && result.size() > 0){
-					
-					if(!refresh){
-						Intent intent = new Intent();
-						intent.setAction(Constants.GLOBAL_TAB_VISIBILITY);
-						Bundle bundle = new Bundle();
-						bundle.putBoolean("isTabShow", true);
-						bundle.putBoolean("isCoverShow", false);
-						intent.putExtras(bundle);
-						context.sendBroadcast(intent);
-					}
-					tweetContainer.clear();
-					tweetContainer.addAll(result);
-					tweetContentAdapter.notifyDataSetChanged();
-					
-					Log.d(Constants.LOG_TAG, tweetContainer.size() + ":");
-					
-					oldResponTime = result.get(result.size() - 1).getTimestamp();
-					newResponTime = result.get(0).getTimestamp();
-				} else {
-					Toast.makeText(context, context.getString(R.string.refresh_failure), Toast.LENGTH_LONG).show();
-				}
-				
-				pullAndDrop.onHeaderRefreshComplete();
-			}
-		};
-
 		if (tweetState != AROUND_TWEET) {
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			} else {
-				task.execute();
-			}
+			new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
+				
+				@Override
+				protected ArrayList<TweetBean> doInBackground(Void... arg0) {
+					ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
+					
+					switch (tweetState) {
+					case MAIN_TIMELINE_TWEET:
+						tmpArrayList = DBManager.getInstance(context).getAllTweetList();
+						if (SettingsManager.getInstance(context).getTweetListStatus() == DBManager.TWEET_LIST_STATUS_INIT || refresh || tmpArrayList.size() <= 0) {
+							tmpArrayList = ContentManager.getInstance(context).getHomeTimeLineTweet("", "", tweetNumber, "", "");
+
+							HashMap<String, TweetBean> tweetLists = new HashMap<String, TweetBean>();
+							for (int i = 0; i < tmpArrayList.size(); i++) {
+								tweetLists.put(tmpArrayList.get(i).getTimestamp(), (TweetBean) tmpArrayList.get(i));
+							}
+
+							DBManager.getInstance(context).addTweetListContent(tweetLists, true);
+
+							SettingsManager.getInstance(context).setLastUpdateTime(context.getString(R.string.refresh_at) + TimeUtil.getCurrentTime());
+						}
+						break;
+					case OTHER_TWEET:
+						tmpArrayList = ContentManager.getInstance(context).getOtherTimeLine("", "", tweetNumber, "", otherName, null, "", "");
+						break;
+					}
+
+					return tmpArrayList;
+				}
+
+				@Override
+				protected void onPostExecute(ArrayList<TweetBean> result) {
+					super.onPostExecute(result);
+					if(result != null && result.size() > 0){
+						
+						if(!refresh){
+							Intent intent = new Intent();
+							intent.setAction(Constants.GLOBAL_TAB_VISIBILITY);
+							Bundle bundle = new Bundle();
+							bundle.putBoolean("isTabShow", true);
+							bundle.putBoolean("isCoverShow", false);
+							intent.putExtras(bundle);
+							context.sendBroadcast(intent);
+						}
+						tweetContainer.clear();
+						tweetContainer.addAll(result);
+						tweetContentAdapter.notifyDataSetChanged();
+						
+						Log.d(Constants.LOG_TAG, tweetContainer.size() + ":");
+						
+						oldResponTime = result.get(result.size() - 1).getTimestamp();
+						newResponTime = result.get(0).getTimestamp();
+					} else {
+						Toast.makeText(context, context.getString(R.string.refresh_failure), Toast.LENGTH_LONG).show();
+					}
+					
+					pullAndDrop.onHeaderRefreshComplete();
+				}
+			}.taskExecute();
 		} else if(!refresh){
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				locationTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			} else {
-				locationTask.execute();
-			}
+			locationTask.taskExecute();
 		}
 	}
 	
 	private void getMoreData(){
 		if(tweetState != AROUND_TWEET){
-			AsyncTask<Void, Void, ArrayList<TweetBean>> task =  new AsyncTask<Void, Void, ArrayList<TweetBean>>(){
+			new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>(){
 				@Override
 				protected ArrayList<TweetBean> doInBackground(Void... params){
 					ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
@@ -393,20 +382,14 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 					}
 					
 				}
-			};
-			
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			} else {
-				task.execute();
-			}
+			}.taskExecute();
 		}else{
 			loadAroundTweet(longitude, latitude, ++page);
 		}
 	}
 
 	private void loadAroundTweet(final String longitude, final String latitude, final int page) {
-		AsyncTask<Void, Void, ArrayList<TweetBean>> task = new AsyncTask<Void, Void, ArrayList<TweetBean>>() {
+		new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
 			@Override
 			protected ArrayList<TweetBean> doInBackground(Void... params) {
 				ArrayList<TweetBean> tmp_list = ContentManager.getInstance(context).getAroundTweet(longitude, latitude, String.valueOf(page), "25");
@@ -426,13 +409,7 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 				//pullAndDrop.onHeaderRefreshComplete();
 				pullAndDrop.onFooterRefreshComplete();
 			}
-		};
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			task.execute();
-		}
+		}.taskExecute();
 	}
 	
 	@Override

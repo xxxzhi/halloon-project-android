@@ -5,8 +5,6 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,6 +31,7 @@ import com.halloon.android.data.ContentManager;
 import com.halloon.android.data.DBManager;
 import com.halloon.android.data.SettingsManager;
 import com.halloon.android.listener.OnTitleBarClickListener;
+import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.util.Constants;
 import com.halloon.android.util.PopupWindowManager;
 import com.halloon.android.widget.HalloonTitleBar;
@@ -112,7 +111,7 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 	public void loadData() {
 		Log.d(Constants.LOG_TAG, "loadData");
 
-		AsyncTask<Void, Void, ArrayList<UserBean>> task = new AsyncTask<Void, Void, ArrayList<UserBean>>() {
+		new BaseCompatiableTask<Void, Void, ArrayList<UserBean>>() {
 			@Override
 			protected void onPreExecute() {
 				loadingView.setVisibility(View.VISIBLE);
@@ -165,19 +164,13 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 				searchEditText.setHint("共有" + listItems.size() + "位联系人");
 			}
 
-		};
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			task.execute();
-		}
+		}.taskExecute();
 	}
 
 	public void requestData() {
 		Log.d(Constants.LOG_TAG, "requestData");
 
-		AsyncTask<Void, Void, ArrayList<UserBean> > task = new AsyncTask<Void, Void, ArrayList<UserBean> >() {
+		new BaseCompatiableTask<Void, Void, ArrayList<UserBean> >() {
 			@Override
 			protected void onPreExecute() {
 
@@ -216,13 +209,7 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 
 			}
 
-		};
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			task.execute();
-		}
+		}.taskExecute();
 	}
 
 	private TextWatcher textWatcher = new TextWatcher() {

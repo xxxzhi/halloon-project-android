@@ -26,12 +26,14 @@ public class EditProfileFragment extends BaseTitleBarFragment implements OnClick
 	public static final int EDIT_MODE_SIGNATURE = 4;
 	public static final int EDIT_MODE_INTEREST = 5;
 	
+	/*
 	private String nick;
 	private String sex;
 	private String name;
 	private String address;
 	private String signature;
 	private String interest;
+	*/
 	
 	private int editState = EDIT_MODE_NICK;
 	

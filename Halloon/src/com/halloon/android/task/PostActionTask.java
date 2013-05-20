@@ -16,7 +16,7 @@ import com.halloon.android.data.ContentManager;
 import com.halloon.android.data.SettingsManager;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 
-public class PostActionTask extends AsyncTask<Void, Void, int[]> {
+public class PostActionTask extends BaseCompatiableTask<Void, Void, int[]> {
 	private Context context;
 
 	public static final int COMMENT = 0;

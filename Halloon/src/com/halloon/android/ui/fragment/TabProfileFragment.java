@@ -2,8 +2,6 @@ package com.halloon.android.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +18,7 @@ import com.halloon.android.data.DBManager;
 import com.halloon.android.data.SettingsManager;
 import com.halloon.android.image.ImageLoader;
 import com.halloon.android.listener.OnTitleBarClickListener;
+import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 import com.halloon.android.ui.fragment.TabMainPageFragment.MainPageFragmentCallback;
 import com.halloon.android.util.NumberUtil;
@@ -141,7 +140,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 	}
 
 	public void updateProfile() {
-		AsyncTask<Void, Void, ProfileBean> task = new AsyncTask<Void, Void, ProfileBean>() {
+		new BaseCompatiableTask<Void, Void, ProfileBean>() {
 			
 			@Override
 			protected ProfileBean doInBackground(Void... arg0) {
@@ -199,13 +198,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 				}
 				super.onPostExecute(result);
 			}
-		};
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			task.execute();
-		}
+		}.taskExecute();
 
 	}
 

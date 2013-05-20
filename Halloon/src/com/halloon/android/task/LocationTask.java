@@ -28,7 +28,7 @@ import com.halloon.android.R;
 import com.halloon.android.listener.OnLocationSeekListener;
 import com.halloon.android.util.Constants;
 
-public class LocationTask extends AsyncTask<Void, String, Location> {
+public class LocationTask extends BaseCompatiableTask<Void, String, Location> {
 
 	private static final long MAX_WAIT_TIME = 30 * 1000;
 	private static final long SLEEP_TIME = 5000;

@@ -3,9 +3,9 @@ package com.halloon.android.task;
 import java.lang.ref.WeakReference;
 
 import android.os.AsyncTask;
+import android.os.Build;
 
-public abstract class WeakAsyncTask<Params, Progress, Result, WeakTarget>
-		extends AsyncTask<Params, Progress, Result> {
+public abstract class WeakAsyncTask<Params, Progress, Result, WeakTarget> extends AsyncTask<Params, Progress, Result> {
 
 	protected WeakReference<WeakTarget> mTarget;
 
@@ -43,11 +43,18 @@ public abstract class WeakAsyncTask<Params, Progress, Result, WeakTarget>
 
 	}
 
-	protected abstract Result doInBackground(WeakTarget target,
-			Params... params);
+	protected abstract Result doInBackground(WeakTarget target, Params... params);
 
 	protected void onPostExecute(WeakTarget target, Result result) {
 
+	}
+	
+	public void taskExecute(Params... params){
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+			super.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
+		}else{
+			super.execute(params);
+		}
 	}
 
 }
