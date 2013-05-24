@@ -195,8 +195,7 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 				}
 				
 			});
-			if (tweetBean.getTweetImage() != null
-					&& !tweetBean.getTweetImage().toString().equals("[]")) {
+			if (tweetBean.getTweetImage() != null && !tweetBean.getTweetImage().toString().equals("[]")) {
 				tweetContentHolder.tweetImage.setVisibility(View.VISIBLE);
 				try {
 					ImageLoader.getInstance(context).displayImage(
@@ -216,8 +215,7 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 								}
 							}
 						});
-			} else if (tweetBean.getVideoImage() != null
-					&& !tweetBean.getVideoImage().toString().equals("null")) {
+			} else if (tweetBean.getVideoImage() != null && !tweetBean.getVideoImage().toString().equals("null")) {
 				tweetContentHolder.tweetImage.setVisibility(View.VISIBLE);
 				ImageLoader.getInstance(context).displayImage(
 						tweetBean.getVideoImage(),
@@ -335,9 +333,6 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 				tweetCommentTitleHolder.tweetCommentCount = (TextView) convertView.findViewById(R.id.comment_count);
 				tweetCommentTitleHolder.forwardCountTitle = (TextView) convertView.findViewById(R.id.forward_count_title);
 				tweetCommentTitleHolder.forwardCount = (TextView) convertView.findViewById(R.id.forward_count);
-				tweetCommentTitleHolder.commentArrowLayout = (RelativeLayout) convertView.findViewById(R.id.comment_arrow_layout);
-				tweetCommentTitleHolder.forwardArrowLayout = (RelativeLayout) convertView.findViewById(R.id.forward_arrow_layout);
-
 				convertView.setTag(tweetCommentTitleHolder);
 			} else {
 				tweetCommentTitleHolder = (TweetCommentTitleHolder) convertView
@@ -356,15 +351,11 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 				tweetCommentTitleHolder.tweetCommentCount.setTextColor(0xFFAAAAAA);
 				tweetCommentTitleHolder.forwardCountTitle.setTextColor(0xFF777777);
 				tweetCommentTitleHolder.forwardCount.setTextColor(0xFF777777);
-				tweetCommentTitleHolder.commentArrowLayout.setVisibility(View.GONE);
-				tweetCommentTitleHolder.forwardArrowLayout.setVisibility(View.VISIBLE);
 			} else {
 				tweetCommentTitleHolder.tweetCommentCountTitle.setTextColor(0xFF777777);
 				tweetCommentTitleHolder.tweetCommentCount.setTextColor(0xFF777777);
 				tweetCommentTitleHolder.forwardCountTitle.setTextColor(0xFFAAAAAA);
 				tweetCommentTitleHolder.forwardCount.setTextColor(0xFFAAAAAA);
-				tweetCommentTitleHolder.commentArrowLayout.setVisibility(View.VISIBLE);
-				tweetCommentTitleHolder.forwardArrowLayout.setVisibility(View.GONE);
 			}
 			break;
 		case TWEET_COMMENT:
@@ -436,8 +427,6 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 		public TextView tweetCommentCount;
 		public TextView forwardCountTitle;
 		public TextView forwardCount;
-		public RelativeLayout commentArrowLayout;
-		public RelativeLayout forwardArrowLayout;
 	}
 
 	private static class TweetCommentHolder {

@@ -3,7 +3,6 @@ package com.halloon.android.task;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.ref.WeakReference;
 import java.util.Locale;
 
 import org.apache.http.Header;
@@ -18,21 +17,12 @@ import org.apache.http.params.HttpParams;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ant.liao.GifAction;
 import com.ant.liao.GifDecoder;
 import com.halloon.android.R;
-import com.halloon.android.data.SettingsManager;
-import com.halloon.android.util.ImageUtil;
 import com.halloon.android.widget.HalloonProgressBar;
 import com.halloon.android.widget.HalloonImageView;
 
@@ -42,8 +32,6 @@ public class ImageLoadTask extends BaseCompatiableTask<String, Float, Bitmap> im
 	private HalloonImageView pdView;
 	private Context context;
 	private GifDecoder gifDecoder;
-	private AnimationDrawable animationDrawable;
-	private MyHandler handler;
 	private int i = 0;
 
 	private boolean isGif;
@@ -52,14 +40,11 @@ public class ImageLoadTask extends BaseCompatiableTask<String, Float, Bitmap> im
 	
 	private boolean running = true;
 
-	private int tmp_width = 0;
-	private int tmp_height = 0;
 
 	public ImageLoadTask(Context context, HalloonImageView pdView, HalloonProgressBar progressBar) {
 		this.context = context;
 		this.pdView = pdView;
 		this.progressBar = progressBar;
-		handler = new MyHandler(this);
 	}
 
 	@Override
@@ -198,19 +183,6 @@ public class ImageLoadTask extends BaseCompatiableTask<String, Float, Bitmap> im
 		}
 	}
 
-	private static class MyHandler extends Handler {
-		WeakReference<ImageLoadTask> imageLoadTask;
-
-		public MyHandler(ImageLoadTask imageLoadTask) {
-			this.imageLoadTask = new WeakReference<ImageLoadTask>(imageLoadTask);
-		}
-
-		@Override
-		public void handleMessage(Message msg) {
-			ImageLoadTask mImageLoadTask = imageLoadTask.get();
-			mImageLoadTask.drawImage();
-		}
-	}
 
 	public void drawImage() {
 		pdView.setImageBitmap(gifDecoder.getFrameImage(i));

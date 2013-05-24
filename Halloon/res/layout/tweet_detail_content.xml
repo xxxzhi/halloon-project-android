@@ -22,14 +22,16 @@
     <ImageView
         android:id="@+id/tweet_image"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/tweet_content"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="15.0dip"
         android:layout_marginRight="15.0dip"
         android:layout_marginTop="10.0dip"
+        android:maxHeight="400.0dip"
         android:adjustViewBounds="true"
-        android:scaleType="centerInside"
+        android:scaleType="centerCrop"
+        android:src="@drawable/welcome"
         android:visibility="gone" />
     
     <RelativeLayout

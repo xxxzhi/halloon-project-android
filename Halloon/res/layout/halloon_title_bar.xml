@@ -47,7 +47,7 @@
         android:layout_alignRight="@+id/title_text"
         android:textColor="#EEEEEE"
         android:textSize="13.0dip"
-        android:background="@drawable/location_tag" />
+        android:background="@drawable/location_page_button_selector" />
     
     <Button
         android:id="@+id/right_button"

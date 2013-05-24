@@ -4,7 +4,6 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#F5F5F5"
     tools:context=".ui.fragment.TabProfileFragment" >
     
     <TextView
@@ -63,23 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
             android:layout_marginTop="5.0dip"
-            android:background="#110099cc" />
-        
-    </RelativeLayout>
-    
-    <RelativeLayout
-        android:id="@+id/forward_arrow_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/comment_count_title"
-        android:visibility="gone" >
-        
-        <ImageView
-            android:id="@+id/forward_left_line"
-            android:layout_width="match_parent"
-            android:layout_height="1.0dip"
-            android:layout_marginTop="5.0dip"
-            android:background="#cccccc" />
+            android:background="#FFAAAAAA" />
         
     </RelativeLayout>
     

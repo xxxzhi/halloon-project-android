@@ -3,5 +3,5 @@
 	Copyright (c) Josh Clemm 2010
 	 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
-    <solid android:color="#FFF5F5F5" />
+    <solid android:color="#FFFFFFFF" />
 </shape>

@@ -13,12 +13,13 @@
         android:layout_marginTop="6.0dip"
         android:src="@drawable/wb_head_default" />
     
+    <!-- 
     <ImageView
         android:layout_width="40.0dip"
         android:layout_height="40.0dip"
         android:layout_marginLeft="6.0dip"
         android:layout_marginTop="6.0dip"
-        android:src="@drawable/avatar_mask_shadow" />
+        android:src="@drawable/avatar_mask_shadow" /> -->
 
     <TextView
         android:id="@+id/tweet_title"

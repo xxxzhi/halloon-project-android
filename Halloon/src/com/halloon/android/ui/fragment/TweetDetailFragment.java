@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.halloon.android.R;
@@ -27,18 +28,20 @@ import com.halloon.android.adapter.TweetDetailAdapter;
 import com.halloon.android.bean.TweetBean;
 import com.halloon.android.data.ContentManager;
 import com.halloon.android.listener.OnEmojiSelectedListener;
+import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.task.PostActionTask;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 import com.halloon.android.util.Constants;
 import com.halloon.android.widget.HalloonEmojiSelector;
+import com.halloon.android.widget.HalloonTitleBar;
 
-public class TweetDetailFragment extends SherlockFragment implements OnClickListener,
-                                                                     OnEmojiSelectedListener{
+public class TweetDetailFragment extends BaseTitleBarFragment implements OnClickListener,
+                                                                     OnEmojiSelectedListener,
+                                                                     OnTitleBarClickListener{
 	private TweetDetailFragmentCallback tdCallback;
 	private Context context;
 	private ListView listView;
-	private Button backButton;
 	private Button quickReplyButton;
 	private ImageView emojiButton;
 	private EditText quickContent;
@@ -83,43 +86,44 @@ public class TweetDetailFragment extends SherlockFragment implements OnClickList
 		intent.putExtras(bundle);
 		context.sendBroadcast(intent);
 	}
-
+	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View root = inflater.inflate(R.layout.tweet_detail, null, false);
-
-		listView = (ListView) root.findViewById(R.id.pinned_header);
-
+	protected void init(HalloonTitleBar titleBar, RelativeLayout content) {
+		titleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_BACK_BUTTON_ONLY);
+		titleBar.getTitleTextView().setText(getString(R.string.tweet_detail));
+		titleBar.setOnTitleBarClickListener(this);
+		
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		content.addView(inflater.inflate(R.layout.tweet_detail, null, false));
+		
+		listView = (ListView) content.findViewById(R.id.pinned_header);
+		
 		tweetDetailAdapter = new TweetDetailAdapter(context, tweetDetailBean, tweetCommentBean);
-
+		
 		footerView = ((Activity) context).getLayoutInflater().inflate(R.layout.footer_loading, null);
 		listView.addFooterView(footerView);
 		listView.setAdapter(tweetDetailAdapter);
-		
-		emojiSelector = (HalloonEmojiSelector) root.findViewById(R.id.emoji_selector);
+		emojiSelector = (HalloonEmojiSelector) content.findViewById(R.id.emoji_selector);
 		emojiSelector.setOnEmojiSelectedListener(this);
-
-		backButton = (Button) root.findViewById(R.id.back_button);
-		quickReplyButton = (Button) root.findViewById(R.id.quick_reply_button);
-		emojiButton = (ImageView) root.findViewById(R.id.emoji_button);
+		
+		quickReplyButton = (Button) content.findViewById(R.id.quick_reply_button);
+		emojiButton = (ImageView) content.findViewById(R.id.emoji_button);
 		emojiButton.setClickable(true);
 		
-		backButton.setOnClickListener(this);
 		quickReplyButton.setOnClickListener(this);
 		emojiButton.setOnClickListener(this);
 		
-		quickContent = (EditText) root.findViewById(R.id.reply);
+		quickContent = (EditText) content.findViewById(R.id.reply);
 		quickContent.setOnTouchListener(new OnTouchListener(){
 			@Override
-			public boolean onTouch(View v, MotionEvent event) {
+			public boolean onTouch(View v, MotionEvent event){
 				emojiSelector.setVisibility(View.GONE);
 				return false;
 			}
 		});
-
+		
 		loadData();
-
-		return root;
+		
 	}
 
 	private void loadData() {
@@ -315,5 +319,16 @@ public class TweetDetailFragment extends SherlockFragment implements OnClickList
 	public void onBackSpace() {
 		System.out.println("backspace");
 		if(quickContent.length() > 0) quickContent.setText(String.valueOf(quickContent.getText()).substring(0, quickContent.getText().length() - 1));
+	}
+
+	
+
+	@Override
+	public void onTitleContentClick(int contentEnum) {
+		switch(contentEnum){
+		case OnTitleBarClickListener.LEFT_BUTTON:
+			((BaseMultiFragmentActivity) context).backStackAction();
+			break;
+		}
 	}
 }
