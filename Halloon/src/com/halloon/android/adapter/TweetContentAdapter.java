@@ -1,6 +1,8 @@
 package com.halloon.android.adapter;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONException;
 
@@ -13,24 +15,27 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
 import com.halloon.android.bean.TweetBean;
 import com.halloon.android.image.ImageLoader;
+import com.halloon.android.ui.activity.MyWebView;
 import com.halloon.android.ui.fragment.TabMainPageFragment.MainPageFragmentCallback;
 import com.halloon.android.ui.fragment.TweetDetailFragment.TweetDetailFragmentCallback;
 import com.halloon.android.util.ContentTransUtil;
 import com.halloon.android.util.TimeUtil;
-import com.halloon.android.HalloonApplication;
 
 public class TweetContentAdapter extends BaseAdapter {
 
 	private Context context;
 	private LayoutInflater layoutInflater;
 	private ArrayList<TweetBean> tweetBeans;
+	private String url="";
 	
 	private HalloonApplication application;
 
@@ -94,6 +99,7 @@ public class TweetContentAdapter extends BaseAdapter {
 			holder.forwardImage = (ImageView) convertView.findViewById(R.id.forward_image);
 			holder.hasImage = (ImageView) convertView.findViewById(R.id.image_icon);
 			holder.sourceLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayout1);
+			holder.Click_go=(Button)convertView.findViewById(R.id.click_go);
 			convertView.setTag(holder);
 		} else {
 			holder = (TweetViewHolder) convertView.getTag();
@@ -163,7 +169,32 @@ public class TweetContentAdapter extends BaseAdapter {
 		if (tweetBean.getSource() != null && tweetBean.getText().length() == 0) {
 			holder.tweetContent.setText(context.getString(R.string.re_tweet));
 		} else {
-			ContentTransUtil.getInstance(context).displaySpannableString(tmp_text, holder.tweetContent, tweetBean.getMentionedUser());
+			if(tmp_text.contains("http://url.cn/")){
+				holder.Click_go.setVisibility(View.VISIBLE);
+				ContentTransUtil.getInstance(context).displaySpannableString(tmp_text, holder.tweetContent, tweetBean.getMentionedUser());
+				
+				Matcher m=Pattern.compile("http://url/cn/([a-zA-Z]){6}").matcher(tmp_text);
+				
+				if(m.find())
+					 url=m.group();
+				holder.Click_go.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent intent=new Intent();
+						intent.setClass(context, MyWebView.class);
+						intent.putExtra("url", url);
+						context.startActivity(intent);
+					}
+				});
+				
+			}
+			else
+			{
+				holder.Click_go.setVisibility(View.GONE);
+				ContentTransUtil.getInstance(context).displaySpannableString(tmp_text, holder.tweetContent, tweetBean.getMentionedUser());
+		}
 		}
 		if (tweetBean.getTweetImage() != null && !tweetBean.getTweetImage().toString().equals("[]")) {
 			holder.hasImage.setVisibility(View.VISIBLE);
@@ -237,6 +268,7 @@ public class TweetContentAdapter extends BaseAdapter {
 		ImageView forwardImage;
 		ImageView hasImage;
 		RelativeLayout sourceLayout;
+		Button Click_go;
 	}
 
 }

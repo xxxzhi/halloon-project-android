@@ -125,7 +125,7 @@
         android:background="@drawable/round_corner_margin_blue">
         
         <TextView
-            android:id="@+id/setting"
+            android:id="@+id/systemplugin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10.0dip"
@@ -146,16 +146,16 @@
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
             android:layout_marginTop="6.0dip"
-            android:layout_below="@+id/setting"
+            android:layout_below="@+id/systemplugin"
             android:background="#0085DF" />
         
         <TextView
-            android:id="@+id/account"
+            android:id="@+id/hotsoftware"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15.0dip"
             android:layout_marginLeft="12.0dip"
-            android:layout_below="@+id/setting"
+            android:layout_below="@+id/systemplugin"
             android:text="热门软件"
             android:textSize="15.0dip"
             android:textColor="#777777" />
@@ -164,22 +164,22 @@
             android:layout_width="20.0dip"
             android:layout_height="20.0dip"
             android:layout_marginRight="6.0dip"
-            android:layout_alignTop="@+id/account"
-            android:layout_alignRight="@+id/account"
+            android:layout_alignTop="@+id/hotsoftware"
+            android:layout_alignRight="@+id/hotsoftware"
             android:src="@drawable/h_arrow"/>
         
         <View
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
             android:layout_marginTop="6.0dip"
-            android:layout_below="@+id/account"
+            android:layout_below="@+id/hotsoftware"
             android:background="#0085DF" />
         
         <TextView
-            android:id="@+id/browser"
+            android:id="@+id/privacy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/account"
+            android:layout_below="@+id/hotsoftware"
             android:layout_marginTop="15.0dip"
             android:layout_marginLeft="12.0dip"
             android:text="隐私设置"
@@ -190,22 +190,22 @@
             android:layout_width="20.0dip"
             android:layout_height="20.0dip"
             android:layout_marginRight="6.0dip"
-            android:layout_alignTop="@+id/browser"
-            android:layout_alignRight="@+id/browser"
+            android:layout_alignTop="@+id/privacy"
+            android:layout_alignRight="@+id/privacy"
             android:src="@drawable/h_arrow" />
         
         <View
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
             android:layout_marginTop="6.0dip"
-            android:layout_below="@+id/browser"
+            android:layout_below="@+id/privacy"
             android:background="#0085DF" />
         
         <TextView 
-            android:id="@+id/theme"
+            android:id="@+id/flowanaly"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/browser"
+            android:layout_below="@+id/privacy"
             android:layout_marginTop="14.0dip"
             android:layout_marginLeft="12.0dip"
             android:text="流量统计"
@@ -216,13 +216,13 @@
             android:layout_width="20.0dip"
             android:layout_height="20.0dip"
             android:layout_marginRight="6.0dip"
-            android:layout_alignTop="@+id/theme"
-            android:layout_alignRight="@+id/theme"
+            android:layout_alignTop="@+id/flowanaly"
+            android:layout_alignRight="@+id/flowanaly"
             android:src="@drawable/h_arrow" />
         <View
             android:layout_width="match_parent"
             android:layout_height="8.0dip"
-            android:layout_below="@+id/theme" />
+            android:layout_below="@+id/flowanaly" />
         
     </RelativeLayout>
     
@@ -235,7 +235,7 @@
         android:background="@drawable/round_corner_margin_blue">
         
         <TextView
-            android:id="@+id/setting"
+            android:id="@+id/about"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10.0dip"
@@ -256,16 +256,16 @@
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
             android:layout_marginTop="6.0dip"
-            android:layout_below="@+id/setting"
+            android:layout_below="@+id/about"
             android:background="#0085DF" />
         
         <TextView
-            android:id="@+id/account"
+            android:id="@+id/feedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14.0dip"
             android:layout_marginLeft="12.0dip"
-            android:layout_below="@+id/setting"
+            android:layout_below="@+id/about"
             android:text="意见反馈"
             android:textSize="15.0dip"
             android:textColor="#777777" />
@@ -274,13 +274,13 @@
             android:layout_width="20.0dip"
             android:layout_height="20.0dip"
             android:layout_marginRight="6.0dip"
-            android:layout_alignTop="@+id/account"
-            android:layout_alignRight="@+id/account"
+            android:layout_alignTop="@+id/feedback"
+            android:layout_alignRight="@+id/feedback"
             android:src="@drawable/h_arrow"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="8.0dip"
-            android:layout_below="@+id/account" />
+            android:layout_below="@+id/feedback" />
         
     </RelativeLayout>
     
