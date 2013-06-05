@@ -42,6 +42,7 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
 		mFragmentContainer.add(onCreatePane());
 		
 		try{
+			//setArguments looking for a answer? support-v4
 			getFragmentDec(1).setArguments(intentToFragmentArguments(getIntent()));
 			
 			getSupportFragmentManager().beginTransaction().add(R.id.root_container, getFragmentDec(1)).commit();
@@ -63,6 +64,9 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
 		super.onPostCreate(savedInstanceState);
 	}
 
+	/**
+	 * 退栈，后退
+	 */
 	public void backStackAction() {
 		mFragmentManager.popBackStack();
 		mFragmentContainer.remove(getFragmentDec(1));

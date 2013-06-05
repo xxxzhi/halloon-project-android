@@ -105,4 +105,14 @@
     <string name="comment">评论</string>
     <string name="at_me">\ @我</string>
     <string name="reply_me">评论我的</string>
+    <string name="about">关于我们</string>
+    
+    <!--  about message -->
+    <string name="about_title">名称:恩哈\n版本:1.0.0\n</string>
+    <string name="about_intro">[应用简介]\n\t恩哈客户端是一款基于腾讯微博二次开发的软件。依靠腾讯微博开放平台，全面实现腾讯微博客户端的所有功能，我们的目标是做的是比官方版本更加完美。</string>
+    <string name="about_story">[应用故事]\n\t恩哈的理念是简约却不简单，我们的</string>
+    <string name="about_thanks">[致谢]\n\t恩哈客户端里边的内容资源都是由XXX等编码完成。。。</string>
+    <string name="about_tontact">联系我们：</string>
+    <string name="about_sina"> \@恩哈</string>
+    <string name="about_weixin"> 恩哈</string>
 </resources>
