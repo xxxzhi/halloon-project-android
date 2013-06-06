@@ -32,8 +32,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-import com.viewpagerindicator.PageIndicator;
-import com.viewpagerindicator.R;
+import com.halloon.android.R;
 
 /**
  * Draws a line for each page. The current page line is colored differently than
@@ -87,7 +86,7 @@ public class UnderLinePageIndicator extends View implements PageIndicator {
 	}
 
 	public UnderLinePageIndicator(Context context, AttributeSet attrs) {
-		this(context, attrs, R.attr.vpiUnderlinePageIndicatorStyle);
+		this(context, attrs, 0);
 	}
 
 	public UnderLinePageIndicator(Context context, AttributeSet attrs,
@@ -99,36 +98,15 @@ public class UnderLinePageIndicator extends View implements PageIndicator {
 		final Resources res = getResources();
 
 		// Load defaults from resources
-		final boolean defaultFades = res
-				.getBoolean(R.bool.default_underline_indicator_fades);
-		final int defaultFadeDelay = res
-				.getInteger(R.integer.default_underline_indicator_fade_delay);
-		final int defaultFadeLength = res
-				.getInteger(R.integer.default_underline_indicator_fade_length);
-		final int defaultSelectedColor = res
-				.getColor(R.color.default_underline_indicator_selected_color);
+		final boolean defaultFades = res.getBoolean(R.bool.default_underline_indicator_fades);
+		final int defaultFadeDelay = res.getInteger(R.integer.default_underline_indicator_fade_delay);
+		final int defaultFadeLength = res.getInteger(R.integer.default_underline_indicator_fade_length);
+		final int defaultSelectedColor = res.getColor(R.color.default_underline_indicator_selected_color);
 
-		// Retrieve styles attributes
-		TypedArray a = context.obtainStyledAttributes(attrs,
-				R.styleable.UnderlinePageIndicator, defStyle, 0);
-
-		setFades(a.getBoolean(R.styleable.UnderlinePageIndicator_fades,
-				defaultFades));
-		setSelectedColor(a.getColor(
-				R.styleable.UnderlinePageIndicator_selectedColor,
-				defaultSelectedColor));
-		setFadeDelay(a.getInteger(R.styleable.UnderlinePageIndicator_fadeDelay,
-				defaultFadeDelay));
-		setFadeLength(a.getInteger(
-				R.styleable.UnderlinePageIndicator_fadeLength,
-				defaultFadeLength));
-
-		Drawable background = a.getDrawable(R.styleable.UnderlinePageIndicator_android_background);
-		if (background != null) {
-			setBackgroundDrawable(background);
-		}
-
-		a.recycle();
+		setFades(defaultFades);
+		setSelectedColor(defaultSelectedColor);
+		setFadeDelay(defaultFadeDelay);
+		setFadeLength(defaultFadeLength);
 
 		final ViewConfiguration configuration = ViewConfiguration.get(context);
 		mTouchSlop = ViewConfigurationCompat

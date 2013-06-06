@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 
 import com.halloon.android.R;
 import com.halloon.android.ui.BaseActivity;
+import com.halloon.android.ui.fragment.BaseTitleBarFragment;
 import com.halloon.android.ui.fragment.CommentFragment;
 import com.halloon.android.ui.fragment.EditProfileFragment;
 import com.halloon.android.ui.fragment.TabMainPageFragment;

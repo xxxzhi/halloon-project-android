@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.halloon.android.R;
 import com.halloon.android.listener.OnEmojiSelectedListener;
 import com.halloon.android.task.PostActionTask;
@@ -27,7 +27,7 @@ import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 import com.halloon.android.util.Constants;
 import com.halloon.android.widget.HalloonEmojiSelector;
 
-public class CommentFragment extends SherlockFragment implements OnClickListener,
+public class CommentFragment extends Fragment implements OnClickListener,
                                                                  OnEmojiSelectedListener{
 
 	private Context context;

@@ -1,21 +1,20 @@
 package com.halloon.android.ui.activity;
 
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 
 import com.halloon.android.R;
+import com.halloon.android.ui.BaseActivity;
 
-public class MyWebView extends Activity {
+public class MyWebView extends BaseActivity {
 
 	private WebView mWebView;
 	private String url;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		

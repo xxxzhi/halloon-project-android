@@ -7,6 +7,7 @@ import java.util.HashMap;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.halloon.android.R;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 import com.halloon.android.util.NumberUtil;
 
-public class FileBrowserFragment extends SherlockFragment {
+public class FileBrowserFragment extends Fragment {
 	private static final String ROOT_PATH = "/";
 
 	private Context context;
@@ -42,7 +42,7 @@ public class FileBrowserFragment extends SherlockFragment {
 			ViewGroup container, Bundle savedInstanceState) {
 		View root = layoutInflater.inflate(R.layout.file_browser, null, false);
 
-		context = getSherlockActivity();
+		context = getActivity();
 
 		parentView = (ListView) root.findViewById(R.id.parent_view);
 		fileView = (ListView) root.findViewById(R.id.file_view);
@@ -136,7 +136,7 @@ public class FileBrowserFragment extends SherlockFragment {
 			}
 			item.put("name", currentFile.getName());
 			item.put("path", currentFile.getPath());
-			item.put("size", (currentFile.length() < 1) ? "" : NumberUtil.formatBytesSize(currentFile.length()));
+			item.put("size", (currentFile.length() < 1) ? "" : NumberUtil.formatBytesSize(context, currentFile.length()));
 
 			items.add(item);
 		}

@@ -8,11 +8,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.halloon.android.R;
 import com.halloon.android.adapter.TweetContentAdapter;
 import com.halloon.android.bean.TweetBean;
@@ -23,7 +23,7 @@ import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.view.PullToRefreshListView;
 import com.halloon.android.view.PullToRefreshListView.OnRefreshListener;
 
-public class AtListFragment extends SherlockFragment {
+public class AtListFragment extends Fragment {
 
 	private PullToRefreshListView list;
 	private TweetContentAdapter adapter;

@@ -33,8 +33,7 @@
         android:name=".HalloonApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:allowBackup="true"
-        android:theme="@style/Theme.Halloon" >
+        android:allowBackup="true" >
 
         <!-- 
         <activity android:name=".ui.activity.OAuthActivity" android:screenOrientation="portrait" >
@@ -63,7 +62,6 @@
             android:screenOrientation="portrait" />
         <activity 
             android:name=".ui.activity.MyMessageActivity" 
-            android:theme="@style/Theme.PageIndicatorDefaults"
             android:screenOrientation="portrait" />
         <activity 
             android:name=".ui.activity.ProfileActivity"
@@ -83,6 +81,11 @@
         <activity
             android:name="com.tencent.weibo.webview.OAuthV2AuthorizeWebView"
             android:label="@string/app_name" />
+        
+         <activity
+            android:name=".ui.activity.MyWebView"
+            android:label="@string/app_name" />
+        
         
     </application>
 

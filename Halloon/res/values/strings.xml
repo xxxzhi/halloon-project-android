@@ -107,6 +107,18 @@
     <string name="reply_me">评论我的</string>
     <string name="about">关于我们</string>
     
+    <!-- setttings tags -->
+    <string name="arguments_settings">参数设置</string>
+    <string name="accounts_management">帐号管理</string>
+    <string name="browse_mode">浏览模式</string>
+    <string name="themes_management">主题管理</string>
+    <string name="system_plugins">系统插件</string>
+    <string name="popular_softwares">流行软件</string>
+    <string name="privacy_settings">隐私设置</string>
+    <string name="flow_count">流量统计</string>
+    <string name="about_halloon">关于哈恩</string>
+    <string name="feedback">意见反馈</string>
+    
     <!--  about message -->
     <string name="about_title">名称:恩哈\n版本:1.0.0\n</string>
     <string name="about_intro">[应用简介]\n\t恩哈客户端是一款基于腾讯微博二次开发的软件。依靠腾讯微博开放平台，全面实现腾讯微博客户端的所有功能，我们的目标是做的是比官方版本更加完美。</string>

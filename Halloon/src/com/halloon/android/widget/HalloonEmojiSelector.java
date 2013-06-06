@@ -32,7 +32,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import com.halloon.android.R;
 import com.halloon.android.listener.OnEmojiSelectedListener;
 import com.halloon.android.util.EmojiContainer;
-import com.viewpagerindicator.CirclePageIndicator;
+import com.halloon.android.util.CirclePageIndicator;
 
 public class HalloonEmojiSelector extends LinearLayout{
 	

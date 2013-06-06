@@ -7,4 +7,5 @@
         <attr name="tagHeight" format="dimension" />
         <attr name="heightToTag" format="dimension" />
     </declare-styleable>
+    
 </resources>

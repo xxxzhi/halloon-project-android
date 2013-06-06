@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.halloon.android.R;
 import com.halloon.android.adapter.TweetDetailAdapter;
 import com.halloon.android.bean.TweetBean;

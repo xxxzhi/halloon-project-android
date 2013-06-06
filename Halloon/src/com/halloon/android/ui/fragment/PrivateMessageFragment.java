@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.halloon.android.R;
 import com.halloon.android.adapter.PrivateMessageListAdapter;
 import com.halloon.android.bean.PrivateDataBean;
@@ -28,7 +28,7 @@ import com.halloon.android.widget.HalloonPullableView;
 import com.halloon.android.widget.HalloonPullableView.OnFooterRefreshListener;
 import com.halloon.android.widget.HalloonPullableView.OnHeaderRefreshListener;
 
-public class PrivateMessageFragment extends SherlockFragment implements OnHeaderRefreshListener,
+public class PrivateMessageFragment extends Fragment implements OnHeaderRefreshListener,
                                                                         OnFooterRefreshListener{
 
 	private HalloonPullableView pullAndDrop;

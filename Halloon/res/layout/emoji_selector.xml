@@ -20,7 +20,7 @@
         android:layout_below="@+id/emoji_pager"
         android:background="#FFE5E5E5" />
     
-    <com.viewpagerindicator.CirclePageIndicator
+    <com.halloon.android.util.CirclePageIndicator
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="12.5dip"

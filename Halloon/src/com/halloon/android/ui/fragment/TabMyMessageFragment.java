@@ -11,14 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 import com.halloon.android.R;
 import com.halloon.android.adapter.TabMessageFragmentPagerAdapter;
 import com.halloon.android.util.DensityUtil;
 import com.halloon.android.util.UnderLinePageIndicator;
 
-public class TabMyMessageFragment extends SherlockFragment {
+public class TabMyMessageFragment extends Fragment {
 
 	private Context context;
 	private ArrayList<Fragment> primaryFragmentContainer = new ArrayList<Fragment>();
@@ -33,7 +31,7 @@ public class TabMyMessageFragment extends SherlockFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View root = inflater.inflate(R.layout.tab_my_message, null, false);
 
-		context = getSherlockActivity();
+		context = getActivity();
 
 		PrivateMessageFragment privateMessageFragment = new PrivateMessageFragment();
 		AtListFragment atListFragment = new AtListFragment();

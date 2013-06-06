@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -23,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.halloon.android.R;
 import com.halloon.android.listener.OnEmojiSelectedListener;
 import com.halloon.android.listener.OnLocationSeekListener;
@@ -34,7 +34,7 @@ import com.halloon.android.util.Constants;
 import com.halloon.android.util.PopupWindowManager;
 import com.halloon.android.widget.HalloonEmojiSelector;
 
-public class PublishFragment extends SherlockFragment implements OnClickListener,
+public class PublishFragment extends Fragment implements OnClickListener,
                                                                  OnEmojiSelectedListener,
                                                                  OnLocationSeekListener{
 

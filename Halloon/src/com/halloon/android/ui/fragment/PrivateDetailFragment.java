@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,15 +16,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 import com.halloon.android.R;
 import com.halloon.android.adapter.PrivateDetailAdapter;
 import com.halloon.android.bean.PrivateDataBean;
 import com.halloon.android.data.ContentManager;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 
-public class PrivateDetailFragment extends SherlockFragment implements OnClickListener {
+public class PrivateDetailFragment extends Fragment implements OnClickListener {
 	
 	private Context context;
 	private ListView list;

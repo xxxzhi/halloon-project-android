@@ -12,7 +12,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 
 import com.halloon.android.R;
-import com.halloon.android.ui.fragment.TabMyContactsFragment.ContactsFragmentCallback;
 import com.halloon.android.widget.HalloonTitleBar;
 
 public class TabSettingsFragment extends BaseTitleBarFragment implements OnClickListener{
@@ -30,16 +29,16 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 		isMainPageImageMode = (CheckBox) content.findViewById(R.id.browser_mode_switcher);
 		isMainPageImageMode.setChecked(mApplication.getIsMainPageImageMode());
 		
-		 content.findViewById(R.id.setting).setOnClickListener(this);
-		 content.findViewById(R.id.account).setOnClickListener(this);
-		 content.findViewById(R.id.browser).setOnClickListener(this);
-		 content.findViewById(R.id.theme).setOnClickListener(this);
-		 content.findViewById(R.id.systemplugin).setOnClickListener(this);
-		 content.findViewById(R.id.hotsoftware).setOnClickListener(this);
-		 content.findViewById(R.id.privacy).setOnClickListener(this);
-		 content.findViewById(R.id.flowanaly).setOnClickListener(this);
-		 content.findViewById(R.id.about).setOnClickListener(this);
-		 content.findViewById(R.id.feedback).setOnClickListener(this);
+		content.findViewById(R.id.setting).setOnClickListener(this);
+		content.findViewById(R.id.account).setOnClickListener(this);
+		content.findViewById(R.id.browser).setOnClickListener(this);
+		content.findViewById(R.id.theme).setOnClickListener(this);
+		content.findViewById(R.id.systemplugin).setOnClickListener(this);
+		content.findViewById(R.id.hotsoftware).setOnClickListener(this);
+		content.findViewById(R.id.privacy).setOnClickListener(this);
+		content.findViewById(R.id.flowanaly).setOnClickListener(this);
+		content.findViewById(R.id.about).setOnClickListener(this);
+		content.findViewById(R.id.feedback).setOnClickListener(this); 
 		 
 	}
 	

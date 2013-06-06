@@ -5,13 +5,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Window;
+import android.support.v4.app.FragmentActivity;
+import android.view.Window;
 
 import com.halloon.android.HalloonApplication;
 
-public class BaseActivity extends SherlockFragmentActivity {
+public class BaseActivity extends FragmentActivity {
 	
 	protected HalloonApplication mApplication;
 
@@ -25,8 +24,6 @@ public class BaseActivity extends SherlockFragmentActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setTitle("");
-		if (getSupportActionBar() != null)
-			getSupportActionBar().setHomeButtonEnabled(true);
 
 	}
 

@@ -65,6 +65,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+		context = activity;
 		this.pCallback = (ProfileFragmentCallback) activity;
 		
 		if (getArguments().getString("name") != null) this.name = getArguments().getString("name");
@@ -102,7 +103,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		context = getSherlockActivity();
+		context = getActivity();
 
 		myNick.setClickable(true);
 		mySex.setClickable(true);
@@ -189,10 +190,10 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 					mySign.setText(profileBean.getIntroduction());
 					myInter.setText(profileBean.getTag());
 
-					tweetNum.setText(NumberUtil.shortenNumericString(profileBean.getTweetNum()));
-					fansNum.setText(NumberUtil.shortenNumericString(profileBean.getFansNum()));
-					idolNum.setText(NumberUtil.shortenNumericString(profileBean.getIdolNum()));
-					favNum.setText(NumberUtil.shortenNumericString(profileBean.getFavNum()));
+					tweetNum.setText(NumberUtil.shortenNumericString(context, profileBean.getTweetNum()));
+					fansNum.setText(NumberUtil.shortenNumericString(context, profileBean.getFansNum()));
+					idolNum.setText(NumberUtil.shortenNumericString(context, profileBean.getIdolNum()));
+					favNum.setText(NumberUtil.shortenNumericString(context, profileBean.getFavNum()));
 					// last_tweet.append(profileBean.getTweetBean().getText());
 
 				}

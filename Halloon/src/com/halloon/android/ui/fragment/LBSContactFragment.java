@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,7 +20,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.halloon.android.R;
 import com.halloon.android.adapter.LBSContactAdapter;
 import com.halloon.android.bean.UserBean;
@@ -30,7 +30,7 @@ import com.halloon.android.listener.OnLocationSeekListener;
 import com.halloon.android.util.Constants;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 
-public class LBSContactFragment extends SherlockFragment implements OnClickListener,
+public class LBSContactFragment extends Fragment implements OnClickListener,
                                                                     OnLocationSeekListener{
 
 	private LBSContactFragmentCallback lcCallback;

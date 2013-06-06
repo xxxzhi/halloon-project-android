@@ -1,6 +1,3 @@
-# cache for current jar dependecy. DO NOT EDIT.
+# cache for current jar dependency. DO NOT EDIT.
 # format is <lastModified> <length> <SHA-1> <path>
 # Encoding is UTF-8
-1369977779000 271754 53307dc2bd2b69fd5533458ee11885f55807de4b /home/jackrex/workspace/androidfork/Hallon/halloon-project-android/Halloon/libs/android-support-v4.jar
-1365581886000 271754 53307dc2bd2b69fd5533458ee11885f55807de4b /home/jackrex/workspace/androidfork/Android-ViewPagerIndicator/library/libs/android-support-v4.jar
-1365584365000 271754 53307dc2bd2b69fd5533458ee11885f55807de4b /home/jackrex/workspace/androidfork/ActionBarSherlock/library/libs/android-support-v4.jar

@@ -11,4 +11,7 @@
     <dimen name="button_text_size">14.0dip</dimen>
     <dimen name="standard_content_size">16.0dip</dimen>
 
+    <dimen name="default_circle_indicator_stroke_width">1dp</dimen>
+    <dimen name="default_circle_indicator_radius">3dp</dimen>
+    
 </resources>

@@ -85,7 +85,7 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 		super.onActivityCreated(savedInstanceState);
 		
 		titleText.setText(R.string.tab_contacts);
-		context = getSherlockActivity();
+		context = getActivity();
 
 		listItems = new ArrayList<UserBean>();
 		adapter = new ContactAdapter(context, R.layout.list_item_contact, listItems);

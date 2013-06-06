@@ -10,4 +10,9 @@
     <color name="normal_text_color">#EEEEEE</color>
     <color name="normal_content_color">#777777</color>
     <color name="light_content_color">#888888</color>
+    
+    <color name="default_underline_indicator_selected_color">#FF33B5E5</color>
+    <color name="default_circle_indicator_fill_color">#FFFFFFFF</color>
+    <color name="default_circle_indicator_page_color">#00000000</color>
+    <color name="default_circle_indicator_stroke_color">#FFDDDDDD</color>
 </resources>

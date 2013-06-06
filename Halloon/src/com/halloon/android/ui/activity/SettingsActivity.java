@@ -3,8 +3,8 @@ package com.halloon.android.ui.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Window;
 
-import com.actionbarsherlock.view.Window;
 import com.halloon.android.R;
 import com.halloon.android.ui.fragment.SettingsAboutFragment;
 import com.halloon.android.ui.fragment.TabSettingsFragment;
@@ -32,7 +32,7 @@ public class SettingsActivity extends BaseMultiFragmentActivity implements Setti
 	@Override
 	public void setSettingAboutFragment() {
 		// TODO Auto-generated method stub
-		mFragmentContainer.add(new SettingsAboutFragment());
+		mFragmentContainer.add((Fragment) new SettingsAboutFragment());
 		
 		Fragment mFragment1;
 		Fragment mFragment2;

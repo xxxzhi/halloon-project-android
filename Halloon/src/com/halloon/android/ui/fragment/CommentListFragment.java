@@ -2,14 +2,14 @@ package com.halloon.android.ui.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.halloon.android.R;
 
-public class CommentListFragment extends SherlockFragment {
+public class CommentListFragment extends Fragment {
 
 	@Override
 	public void onAttach(Activity activity) {
