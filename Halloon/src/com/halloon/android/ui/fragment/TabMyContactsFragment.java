@@ -37,10 +37,7 @@ import com.halloon.android.util.PopupWindowManager;
 import com.halloon.android.widget.HalloonTitleBar;
 import com.lhws.components.widget.indexer.IndexableListView;
 
-public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTouchListener,
-                                                                           OnItemClickListener,
-                                                                           OnTitleBarClickListener,
-                                                                           OnClickListener {
+public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTouchListener, OnItemClickListener, OnTitleBarClickListener, OnClickListener {
 	private Context context;
 	private IndexableListView listView;
 	private View loadingView;
@@ -63,15 +60,15 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 		super.onAttach(activity);
 		this.cfCallback = (ContactsFragmentCallback) activity;
 	}
-	
+
 	@Override
-	protected void init(HalloonTitleBar titleBar, RelativeLayout content){
+	protected void init(HalloonTitleBar titleBar, RelativeLayout content) {
 		titleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_RIGHT_BUTTON_ONLY);
 		titleBar.setOnTitleBarClickListener(this);
-		
+
 		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		content.addView(inflater.inflate(R.layout.tab_my_contacts, null, false));
-		
+
 		listView = (IndexableListView) content.findViewById(R.id.listview);
 		loadingView = content.findViewById(R.id.loading);
 		searchEditText = (EditText) content.findViewById(R.id.search_editText);
@@ -83,7 +80,7 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
+
 		titleText.setText(R.string.tab_contacts);
 		context = getActivity();
 
@@ -96,15 +93,8 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 		listView.setAreHeadersSticky(false);
 		searchEditText.addTextChangedListener(textWatcher);
 		deleteButton.setOnClickListener(this);
-		if(SettingsManager.getInstance(context).getContactStatus() == DBManager.CONTACT_STATUS_READY && DBManager.getInstance(context).getAllContacts().size() > 0){
-			loadingView.setVisibility(View.GONE);
-			listView.setVisibility(View.VISIBLE);
-			listItems.clear();
-			listItems.addAll(DBManager.getInstance(context).getAllContacts());
-			adapter.notifyDataSetChanged();
-		}else{
-			loadData();
-		}
+
+		loadData();
 
 	}
 
@@ -134,13 +124,9 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 					}
 
 					DBManager.getInstance(context).addContacts(unduplicatedContacts, false);
-					
-
-				} else {
-
-					tmpArrayList =  DBManager.getInstance(context).getAllContacts();
-
+					SettingsManager.getInstance(context).setContactStatus(DBManager.CONTACT_STATUS_READY);
 				}
+				tmpArrayList = DBManager.getInstance(context).getAllContacts();
 				long b = System.currentTimeMillis();
 
 				Log.d(Constants.LOG_TAG, ">>>>>>>>>>>>>>>request time in : " + (b - a) + " ms");
@@ -156,8 +142,10 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 				}
 				adapter.notifyDataSetChanged();
 
-				if (SettingsManager.getInstance(context).getContactStatus() == DBManager.CONTACT_STATUS_READY) {
-					requestData();
+				if (SettingsManager.getInstance(context).getContactStatus() == DBManager.CONTACT_STATUS_TO_UPDATE) {
+					updateContacts();
+				} else if (SettingsManager.getInstance(context).getContactStatus() == DBManager.CONTACT_STATUS_READY) {
+					SettingsManager.getInstance(context).setContactStatus(DBManager.CONTACT_STATUS_TO_UPDATE);
 				}
 				loadingView.setVisibility(View.GONE);
 				listView.setVisibility(View.VISIBLE);
@@ -167,17 +155,13 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 		}.taskExecute();
 	}
 
-	public void requestData() {
-		Log.d(Constants.LOG_TAG, "requestData");
+	public void updateContacts() {
+		Log.d(Constants.LOG_TAG, "updateContacts");
 
-		new BaseCompatiableTask<Void, Void, ArrayList<UserBean> >() {
-			@Override
-			protected void onPreExecute() {
-
-			}
+		new BaseCompatiableTask<Void, Void, ArrayList<UserBean>>() {
 
 			@Override
-			protected ArrayList<UserBean>  doInBackground(Void... arg0) {
+			protected ArrayList<UserBean> doInBackground(Void... arg0) {
 				ArrayList<UserBean> tmpArrayList = ContentManager.getInstance(context).getContacts();
 				if (tmpArrayList.size() != 0) {
 					HashMap<String, UserBean> unduplicatedContacts = new HashMap<String, UserBean>();
@@ -195,7 +179,7 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 
 			@Override
 			protected void onPostExecute(ArrayList<UserBean> result) {
-				
+
 				if (result != null) {
 					listItems.clear();
 					listItems.addAll(result);
@@ -263,12 +247,13 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 			break;
 		}
 	}
-	
+
 	@Override
-	public void onTitleContentClick(int contentEnum){
-		switch(contentEnum){
+	public void onTitleContentClick(int contentEnum) {
+		switch (contentEnum) {
 		case OnTitleBarClickListener.RIGHT_BUTTON:
-			((InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+			((InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(),
+					InputMethodManager.HIDE_NOT_ALWAYS);
 			cfCallback.setupLBSContactFragment();
 			break;
 		case OnTitleBarClickListener.TITLE_TEXT_VIEW:

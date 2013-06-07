@@ -34,7 +34,8 @@ public class DBManager {
 	private static final int DATABASE_VERSION = 16;
 
 	public final static int CONTACT_STATUS_INIT = 0;
-	public final static int CONTACT_STATUS_READY = 1;
+	public final static int CONTACT_STATUS_TO_UPDATE = 1;
+	public final static int CONTACT_STATUS_READY = 2;
 
 	public final static int PROFILE_STATUS_INIT = 0;
 	public final static int PROFILE_STATUS_READY = 1;
