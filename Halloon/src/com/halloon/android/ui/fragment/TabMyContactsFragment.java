@@ -91,6 +91,11 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 		listView.setOnTouchListener(this);
 		listView.setOnItemClickListener(this);
 		listView.setAreHeadersSticky(false);
+		
+		listView.setIndexPaintBackgroundColor(R.color.indexer_bar_bkg);
+		listView.setPreviewPaintBackgroundColor(R.color.indexer_preview_text_bkg);
+		listView.setPreviewPaintTextColor(R.color.indexer_preview_text_color);
+		
 		searchEditText.addTextChangedListener(textWatcher);
 		deleteButton.setOnClickListener(this);
 
