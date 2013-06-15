@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
 import android.widget.TextView;
 
+@SuppressLint("ServiceCast")
 public class ContentTransUtil {
 	private Context context;
 	private static ContentTransUtil instance;

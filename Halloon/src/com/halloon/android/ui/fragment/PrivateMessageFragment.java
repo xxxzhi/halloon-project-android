@@ -85,7 +85,7 @@ public class PrivateMessageFragment extends Fragment implements OnHeaderRefreshL
 							privateLists.put(tmp_list.get(i).getPubTime(), tmp_list.get(i));
 						}
 
-						DBManager.getInstance(context).addPrivateMessage(privateLists, true);
+						DBManager.getInstance(context).addPrivateMessage(tmp_list, true);
 					}
 				} else {
 					tmp_list = DBManager.getInstance(context).getPrivateMessage();
@@ -124,7 +124,7 @@ public class PrivateMessageFragment extends Fragment implements OnHeaderRefreshL
 						privateBeans.put(tmp_list.get(i).getPubTime(), tmp_list.get(i));
 					}
 
-					DBManager.getInstance(context).addPrivateMessage(privateBeans, true);
+					DBManager.getInstance(context).addPrivateMessage(tmp_list, true);
 					return tmp_list;
 
 				}

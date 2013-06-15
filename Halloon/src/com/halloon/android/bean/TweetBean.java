@@ -15,7 +15,7 @@ public class TweetBean implements Parcelable{
 	private String from;
 	private String timestamp;
 	private String text;
-	private JSONArray tweetImage;
+	private String tweetImage;
 	private String videoImage;
 	private String videoPlayer;
 	private String videoUrl;
@@ -26,7 +26,7 @@ public class TweetBean implements Parcelable{
 	private String count;
 	private String mCount;
 	private int isVip;
-	private JSONObject mentionedUser;
+	private String mentionedUser;
 	private String longitude;
 	private String latitude;
 	private String geo;
@@ -90,11 +90,7 @@ public class TweetBean implements Parcelable{
 		from = parcel.readString();
 		timestamp = parcel.readString();
 		text = parcel.readString();
-		try {
-			tweetImage = new JSONArray(parcel.readString());
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		tweetImage = parcel.readString();
 		videoImage = parcel.readString();
 		videoPlayer = parcel.readString();
 		videoUrl = parcel.readString();
@@ -105,11 +101,7 @@ public class TweetBean implements Parcelable{
 		count = parcel.readString();
 		mCount = parcel.readString();
 		isVip = parcel.readInt();
-		try{
-			mentionedUser = new JSONObject(parcel.readString());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+		mentionedUser = parcel.readString();
 		longitude = parcel.readString();
 		latitude = parcel.readString();
 		geo = parcel.readString();
@@ -155,12 +147,25 @@ public class TweetBean implements Parcelable{
 		return text;
 	}
 
-	public void setTweetImage(JSONArray tweetImage) {
+	public void setTweetImage(String tweetImage) {
 		this.tweetImage = tweetImage;
 	}
 
 	public JSONArray getTweetImage() {
-		return tweetImage;
+		
+		if(null != tweetImage){
+			JSONArray jsonArray = null;
+			try{
+				jsonArray = new JSONArray(tweetImage);
+			}catch(JSONException e){
+				e.printStackTrace();
+			}
+			
+			return jsonArray;
+		}else{
+			return null;
+		}
+		
 	}
 
 	public void setVideoImage(String videoImage) {
@@ -243,12 +248,24 @@ public class TweetBean implements Parcelable{
 		return isVip;
 	}
 
-	public void setMentionedUser(JSONObject mentionedUser) {
+	public void setMentionedUser(String mentionedUser) {
 		this.mentionedUser = mentionedUser;
 	}
 
 	public JSONObject getMentionedUser() {
-		return mentionedUser;
+		
+		if(null != mentionedUser){
+			JSONObject jsonObject = null;
+			try{
+				jsonObject = new JSONObject(mentionedUser);
+			}catch(JSONException e){
+				e.printStackTrace();
+			}
+			return jsonObject;
+		}else{
+			return null;
+		}
+		
 	}
 
 	public void setLongitude(String longitude) {
@@ -284,44 +301,11 @@ public class TweetBean implements Parcelable{
 
 		@Override
 		public TweetBean createFromParcel(Parcel source) {
-			/*
-			 TweetBean tweetBean = new TweetBean();
-			
-			tweetBean.id = source.readString();
-			tweetBean.from = source.readString();
-			tweetBean.timestamp = source.readString();
-			tweetBean.text = source.readString();
-			try{
-				tweetBean.tweetImage = new JSONArray(source.readString());
-			}catch(JSONException e){
-				e.printStackTrace();
-			}
-			tweetBean.videoImage = source.readString();
-			tweetBean.videoPlayer = source.readString();
-			tweetBean.videoUrl = source.readString();
-			tweetBean.source = source.readParcelable(null);
-			tweetBean.head = source.readString();
-			tweetBean.nick = source.readString();
-			tweetBean.name = source.readString();
-			tweetBean.count = source.readString();
-			tweetBean.mCount = source.readString();
-			tweetBean.isVip = source.readInt();
-			try{
-				tweetBean.mentionedUser = new JSONObject(source.readString());
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			tweetBean.longitude = source.readString();
-			tweetBean.latitude = source.readString();
-			tweetBean.geo = source.readString();
-			 */
-			
 			return new TweetBean(source);
 		}
 
 		@Override
 		public TweetBean[] newArray(int size) {
-			// TODO Auto-generated method stub
 			return new TweetBean[size];
 		}
 		

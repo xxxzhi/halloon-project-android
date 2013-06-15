@@ -7,6 +7,7 @@ import com.halloon.android.R;
 public class NumberUtil {
 
 	public static String shortenNumericString(Context context, String number) {
+		if(number == null) return "";
 		if (number.length() >= 5 && number.length() < 9) {
 			return number.substring(0, number.length() - 4) + context.getString(R.string.ten_thousands);
 		} else if (number.length() >= 9) {

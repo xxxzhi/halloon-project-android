@@ -42,7 +42,6 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 	private TextView favNum;
 	private Button sendButton;
 	private Button editButton;
-	private Button backButton;
 	// private TextView last_tweet;
 	private Context context;
 
@@ -95,7 +94,6 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 		favNum = (TextView) content.findViewById(R.id.fav_num);
 		sendButton = (Button) content.findViewById(R.id.send_message_button);
 		editButton = titleBar.getRightButton(R.string.edit);
-		backButton = titleBar.getLeftButton();
 		
 		updateProfile();
 	}
@@ -124,7 +122,6 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 		sendButton.setOnClickListener(this);
 		if (type == OTHER) {
 			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_NORMAL);
-			backButton.setOnClickListener(this);
 			myHeadicon.setOnClickListener(this);
 			if(!name.equals(DBManager.getInstance(context).getProfile().getName())){
 				sendButton.setText("发消息");
