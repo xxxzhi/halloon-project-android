@@ -153,7 +153,7 @@ public class TweetBean implements Parcelable{
 
 	public JSONArray getTweetImage() {
 		
-		if(null != tweetImage){
+		if(null != tweetImage && !tweetImage.equals("null")){
 			JSONArray jsonArray = null;
 			try{
 				jsonArray = new JSONArray(tweetImage);
