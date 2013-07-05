@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="62dp"
     android:background="#E5E5E5" >
 
     <ImageView
@@ -30,20 +30,21 @@
         android:text="下拉刷新"
         android:textColor="#888888"
         android:textSize="15.0dip"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:gravity="center" />
-    
+
     <TextView
         android:id="@+id/last_update_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/update_text"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:text="2013-10-10 12:00"
         android:textColor="#888888"
-        android:textSize="12.0dip"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10.0dip"
-        android:layout_below="@+id/update_text"
-        android:gravity="center" />
+        android:textSize="11sp" />
 
 </RelativeLayout>

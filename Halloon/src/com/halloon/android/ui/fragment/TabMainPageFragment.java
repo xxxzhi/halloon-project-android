@@ -336,8 +336,7 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 					} else {
 						Toast.makeText(context, context.getString(R.string.refresh_failure), Toast.LENGTH_LONG).show();
 					}
-					
-					pullAndDrop.onHeaderRefreshComplete();
+					pullAndDrop.onHeaderRefreshComplete(SettingsManager.getInstance(context).getLastUpdateTime());
 				}
 			}.taskExecute();
 		} else if(!refresh){

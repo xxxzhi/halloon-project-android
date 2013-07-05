@@ -130,8 +130,10 @@ public class HalloonPullableView extends LinearLayout {
 	/**
 	 * last update time
 	 */
-//	private String mLastUpdateTime;
+	private String mLastUpdateTime;
 
+	private boolean isPullUpEnable;
+	
 	public HalloonPullableView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
@@ -310,7 +312,7 @@ public class HalloonPullableView extends LinearLayout {
 				Log.i(TAG, " pull down!parent view move!");
 				headerPrepareToRefresh(deltaY);
 				// setHeaderPadding(-mHeaderViewHeight);
-			} else if (mPullState == PULL_STATE_UP) {
+			} else if (mPullState == PULL_STATE_UP && isPullUpEnable) {
 				// PullToRefreshView执行上拉
 				Log.i(TAG, "pull up!parent view move!");
 				footerPrepareToRefresh(deltaY);
@@ -328,7 +330,7 @@ public class HalloonPullableView extends LinearLayout {
 					// 还没有执行刷新，重新隐藏
 					setHeaderTopMargin(-mHeaderViewHeight);
 				}
-			} else if (mPullState == PULL_STATE_UP) {
+			} else if (mPullState == PULL_STATE_UP && isPullUpEnable) {
 				if (Math.abs(topMargin) >= mHeaderViewHeight + mFooterViewHeight) {
 					// 开始执行footer 刷新
 					footerRefreshing();
@@ -464,7 +466,7 @@ public class HalloonPullableView extends LinearLayout {
 		float newTopMargin = params.topMargin + deltaY * 0.3f;
 		//这里对上拉做一下限制,因为当前上拉后然后不释放手指直接下拉,会把下拉刷新给触发了,感谢网友yufengzungzhe的指出
 		//表示如果是在上拉后一段距离,然后直接下拉
-		if(deltaY>0&&mPullState == PULL_STATE_UP&&Math.abs(params.topMargin) <= mHeaderViewHeight){
+		if(deltaY>0&&(mPullState == PULL_STATE_UP && isPullUpEnable)&&Math.abs(params.topMargin) <= mHeaderViewHeight){
 			return params.topMargin;
 		}
 		//同样地,对下拉做一下限制,避免出现跟上拉操作时一样的bug
@@ -583,7 +585,7 @@ public class HalloonPullableView extends LinearLayout {
 			mHeaderUpdateTextView.setVisibility(View.VISIBLE);
 			mHeaderUpdateTextView.setText(lastUpdated);
 		} else {
-			mHeaderUpdateTextView.setVisibility(View.GONE);
+			//mHeaderUpdateTextView.setVisibility(View.GONE);
 		}
 	}
 
