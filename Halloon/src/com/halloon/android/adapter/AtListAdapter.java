@@ -51,31 +51,22 @@ public class AtListAdapter extends BaseAdapter {
 		TweetBean tweetBean = getItem(position);
 
 		if (convertView == null) {
-			convertView = layoutInflater
-					.inflate(R.layout.private_content, null);
+			convertView = layoutInflater.inflate(R.layout.private_content, null);
 			atListHolder = new AtListHolder();
-			atListHolder.headImage = (ImageView) convertView
-					.findViewById(R.id.head);
-			atListHolder.nickName = (TextView) convertView
-					.findViewById(R.id.nick);
-			atListHolder.content = (TextView) convertView
-					.findViewById(R.id.content);
-			atListHolder.timeStamp = (TextView) convertView
-					.findViewById(R.id.time_stamp);
+			atListHolder.headImage = (ImageView) convertView.findViewById(R.id.head);
+			atListHolder.nickName = (TextView) convertView.findViewById(R.id.nick);
+			atListHolder.content = (TextView) convertView.findViewById(R.id.content);
+			atListHolder.timeStamp = (TextView) convertView.findViewById(R.id.time_stamp);
 
 			convertView.setTag(atListHolder);
 		} else {
 			atListHolder = (AtListHolder) convertView.getTag();
 		}
 
-		ImageLoader.getInstance(context).displayImage(
-				tweetBean.getHead() + "/40", atListHolder.headImage, 1);
+		ImageLoader.getInstance(context).displayImage(tweetBean.getHead() + "/40", atListHolder.headImage, 1);
 		atListHolder.nickName.setText(tweetBean.getNick());
-		ContentTransUtil.getInstance(context).displaySpannableString(
-				tweetBean.getText(), atListHolder.content,
-				tweetBean.getMentionedUser());
-		atListHolder.timeStamp.setText(TimeUtil.converTime(
-				tweetBean.getTimestamp(), 2));
+		ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getText(), atListHolder.content, tweetBean.getMentionedUser());
+		atListHolder.timeStamp.setText(TimeUtil.converTime(tweetBean.getTimestamp(), 2));
 
 		return convertView;
 	}

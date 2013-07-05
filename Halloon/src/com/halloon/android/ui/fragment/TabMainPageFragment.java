@@ -298,7 +298,7 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 								tweetLists.put(tmpArrayList.get(i).getTimestamp(), (TweetBean) tmpArrayList.get(i));
 							}
 
-							DBManager.getInstance(context).addTweetListContent(tweetLists, true);
+							DBManager.getInstance(context).addTweetListContent(tmpArrayList, true);
 
 							SettingsManager.getInstance(context).setLastUpdateTime(context.getString(R.string.refresh_at) + TimeUtil.getCurrentTime());
 						}

@@ -1,20 +1,23 @@
 package com.halloon.android.util;
 
+import android.content.Context;
+import android.content.Intent;
 import android.text.style.ClickableSpan;
 import android.view.View;
-import android.view.View.OnClickListener;
 
-public class ClickIntentSpan extends ClickableSpan implements OnClickListener {
+public class ClickIntentSpan extends ClickableSpan{
 
-	private final OnClickListener listener;
+	private Intent intent;
+	private Context context;
 
-	public ClickIntentSpan(OnClickListener listener) {
-		this.listener = listener;
+	public ClickIntentSpan(Context context, Intent intent) {
+		this.intent = intent;
+		this.context = context;
 	}
 
 	@Override
 	public void onClick(View widget) {
-		listener.onClick(widget);
+		context.startActivity(intent);
 	}
 
 }

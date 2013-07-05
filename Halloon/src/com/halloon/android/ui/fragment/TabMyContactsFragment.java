@@ -3,6 +3,7 @@ package com.halloon.android.ui.fragment;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import com.halloon.android.util.PopupWindowManager;
 import com.halloon.android.widget.HalloonTitleBar;
 import com.lhws.components.widget.indexer.IndexableListView;
 
+@SuppressLint("ResourceAsColor")
 public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTouchListener, OnItemClickListener, OnTitleBarClickListener, OnClickListener {
 	private Context context;
 	private IndexableListView listView;
@@ -77,6 +79,7 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 		titleText = titleBar.getTitleTextView();
 	}
 
+	@SuppressLint("ResourceAsColor")
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -128,7 +131,7 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 
 					}
 
-					DBManager.getInstance(context).addContacts(unduplicatedContacts, false);
+					DBManager.getInstance(context).addContacts(tmpArrayList, false);
 					SettingsManager.getInstance(context).setContactStatus(DBManager.CONTACT_STATUS_READY);
 				}
 				tmpArrayList = DBManager.getInstance(context).getAllContacts();
@@ -174,7 +177,7 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 						unduplicatedContacts.put(tmpArrayList.get(i).getOpenId(), (UserBean) tmpArrayList.get(i));
 
 					}
-					DBManager.getInstance(context).addContacts(unduplicatedContacts, true);
+					DBManager.getInstance(context).addContacts(tmpArrayList, true);
 
 				} else {
 					return null;

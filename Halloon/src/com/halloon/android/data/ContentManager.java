@@ -283,7 +283,7 @@ public class ContentManager {
 			JSONObject jsonObject = new JSONObject(tweetInfo);
 			JSONObject dataJsonObject = jsonObject.getJSONObject("data");
 			JSONArray tweetInfoArray = dataJsonObject.getJSONArray("info");
-			JSONObject userInfoObject = dataJsonObject.optJSONObject("user");
+			String userInfoObject = dataJsonObject.optString("user");
 			for (int i = 0; i < tweetInfoArray.length(); i++) {
 				JSONObject tweetInfoObject = tweetInfoArray.getJSONObject(i);
 				TweetBean tb = getTweetFromJSON(tweetInfoObject);
@@ -334,7 +334,7 @@ public class ContentManager {
 			JSONObject jsonObject = new JSONObject(tweetInfo);
 			JSONObject dataJsonObject = jsonObject.getJSONObject("data");
 			JSONArray tweetInfoArray = dataJsonObject.getJSONArray("info");
-			JSONObject userInfoObject = dataJsonObject.optJSONObject("user");
+			String userInfoObject = dataJsonObject.optString("user");
 			for (int i = 0; i < tweetInfoArray.length(); i++) {
 				JSONObject tweetInfoObject = tweetInfoArray.getJSONObject(i);
 				TweetBean tb = getTweetFromJSON(tweetInfoObject);
@@ -388,7 +388,7 @@ public class ContentManager {
 			JSONObject jsonObject = new JSONObject(tweetInfo);
 			JSONObject dataJsonObject = jsonObject.getJSONObject("data");
 			JSONArray tweetInfoArray = dataJsonObject.getJSONArray("info");
-			JSONObject userInfoObject = dataJsonObject.optJSONObject("user");
+			String userInfoObject = dataJsonObject.optString("user");
 			for (int i = 0; i < tweetInfoArray.length(); i++) {
 				JSONObject tweetInfoObject = tweetInfoArray.getJSONObject(i);
 				TweetBean tb = getTweetFromJSON(tweetInfoObject);
@@ -420,7 +420,7 @@ public class ContentManager {
 
 			JSONObject jsonObject = new JSONObject(tweetInfo);
 			JSONObject dataJsonObject = jsonObject.getJSONObject("data");
-			JSONObject userInfoObject = dataJsonObject.optJSONObject("user");
+			String userInfoObject = dataJsonObject.optString("user");
 			temp_tweet = getTweetFromJSON(dataJsonObject);
 			temp_tweet.setMentionedUser(userInfoObject);
 		} catch (Exception e) {
@@ -448,7 +448,7 @@ public class ContentManager {
 			} else {
 				JSONObject dataJsonObject = jsonObject.getJSONObject("data");
 				JSONArray commentInfoArray = dataJsonObject.getJSONArray("info");
-				JSONObject userInfoObject = dataJsonObject.optJSONObject("user");
+				String userInfoObject = dataJsonObject.optString("user");
 				for (int i = 0; i < commentInfoArray.length(); i++) {
 					TweetBean temp_comment = new TweetBean();
 					JSONObject commentInfoObject = commentInfoArray.getJSONObject(i);
@@ -457,7 +457,7 @@ public class ContentManager {
 					temp_comment.setHead(commentInfoObject.getString("head"));
 					temp_comment.setText(commentInfoObject.getString("text"));
 					temp_comment.setTimestamp(commentInfoObject.getString("timestamp"));
-					temp_comment.setTweetImage(commentInfoObject.optJSONArray("image"));
+					temp_comment.setTweetImage(commentInfoObject.optString("image"));
 					temp_comment.setFrom(commentInfoObject.getString("from"));
 					temp_comment.setId(commentInfoObject.getString("id"));
 					temp_comment.setOpenId(commentInfoObject.getString("openid"));
@@ -473,7 +473,7 @@ public class ContentManager {
 						temp_source.setNick(temp_source_object.getString("nick"));
 						temp_source.setName(temp_source_object.getString("name"));
 						temp_source.setTimestamp(temp_source_object.getString("timestamp"));
-						temp_source.setTweetImage(temp_source_object.optJSONArray("image"));
+						temp_source.setTweetImage(temp_source_object.optString("image"));
 						temp_source.setFrom(temp_source_object.getString("from"));
 						temp_source.setMentionedUser(userInfoObject);
 						temp_comment.setSource(temp_source);
@@ -500,7 +500,7 @@ public class ContentManager {
 			temp_tweet.setNick(tweetInfoObject.getString("nick"));
 			temp_tweet.setName(tweetInfoObject.getString("name"));
 			temp_tweet.setText(tweetInfoObject.getString("text"));
-			temp_tweet.setTweetImage(tweetInfoObject.optJSONArray("image"));
+			temp_tweet.setTweetImage(tweetInfoObject.optString("image"));
 			temp_tweet.setLongitude(tweetInfoObject.optString("longitude"));
 			temp_tweet.setLatitude(tweetInfoObject.optString("latitude"));
 			System.out.println(temp_tweet.getLongitude() + ","
@@ -524,7 +524,7 @@ public class ContentManager {
 				sourceTweetBean.setName(sourceTweetObject.getString("name"));
 				sourceTweetBean.setText(sourceTweetObject.getString("text"));
 				sourceTweetBean.setTweetImage(sourceTweetObject
-						.optJSONArray("image"));
+						.optString("image"));
 				sourceTweetBean.setLongitude(sourceTweetObject
 						.optString("longitude"));
 				sourceTweetBean.setLatitude(sourceTweetObject
@@ -896,7 +896,7 @@ public class ContentManager {
 				privateDataBean.setHead(privateDataObject.getString("tohead"));
 				privateDataBean.setName(privateDataObject.getString("toname"));
 				privateDataBean.setNick(privateDataObject.getString("tonick"));
-				privateDataBean.setImage(privateDataObject.optJSONArray("image"));
+				privateDataBean.setImage(privateDataObject.optString("image"));
 				privateDataBean.setIsVip(privateDataObject.getInt("toisvip"));
 				privateDataBean.setTotalCount(privateDataObject.getString("totalcnt"));
 				privateDataBean.setUnReadCount(privateDataObject.getString("unreadcnt"));
@@ -990,7 +990,7 @@ public class ContentManager {
 			JSONObject dataJsonObject = mentionsJsonObject
 					.getJSONObject("data");
 			JSONArray mentionsJsonArray = dataJsonObject.getJSONArray("info");
-			JSONObject userJsonObject = dataJsonObject.optJSONObject("user");
+			String userJsonObject = dataJsonObject.optString("user");
 			for (int i = 0; i < mentionsJsonArray.length(); i++) {
 				TweetBean tweetBean = new TweetBean();
 				JSONObject mentionsObject = mentionsJsonArray.getJSONObject(i);
@@ -1029,7 +1029,7 @@ public class ContentManager {
 			JSONObject dataJsonObject = aroundTweetJsonObject
 					.getJSONObject("data");
 			JSONArray aroundJsonArray = dataJsonObject.getJSONArray("info");
-			JSONObject userJsonObject = dataJsonObject.optJSONObject("user");
+			String userJsonObject = dataJsonObject.optString("user");
 			for (int i = 0; i < aroundJsonArray.length(); i++) {
 				TweetBean tweetBean = new TweetBean();
 				JSONObject aroundObject = aroundJsonArray.getJSONObject(i);

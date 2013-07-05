@@ -99,7 +99,6 @@ public class TweetContentAdapter extends BaseAdapter {
 			holder.forwardImage = (ImageView) convertView.findViewById(R.id.forward_image);
 			holder.hasImage = (ImageView) convertView.findViewById(R.id.image_icon);
 			holder.sourceLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayout1);
-			holder.Click_go=(Button)convertView.findViewById(R.id.click_go);
 			convertView.setTag(holder);
 		} else {
 			holder = (TweetViewHolder) convertView.getTag();
@@ -159,7 +158,7 @@ public class TweetContentAdapter extends BaseAdapter {
 		holder.from.setText(context.getString(R.string.from) + tweetBean.getFrom());
 		holder.commentCount.setText(tweetBean.getMCount());
 		holder.forwardCount.setText(tweetBean.getCount());
-		String tmp_text = tweetBean.getText();
+		//String tmp_text = tweetBean.getText();
 		if (tweetBean.getGeo() != null && tweetBean.getGeo().length() > 0) {
 			holder.tweetLocationText.setVisibility(View.VISIBLE);
 			holder.tweetLocationText.setText(context.getString(R.string.i_am) + tweetBean.getGeo());
@@ -168,10 +167,14 @@ public class TweetContentAdapter extends BaseAdapter {
 		}
 		if (tweetBean.getSource() != null && tweetBean.getText().length() == 0) {
 			holder.tweetContent.setText(context.getString(R.string.re_tweet));
-		} else {
+		}else{
+			ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getText(), holder.tweetContent, tweetBean.getMentionedUser());
+		}
+		/*
+		 else {
 			if(tmp_text.contains("http://url.cn/")){
 				holder.Click_go.setVisibility(View.VISIBLE);
-				ContentTransUtil.getInstance(context).displaySpannableString(tmp_text, holder.tweetContent, tweetBean.getMentionedUser());
+				
 				
 				Matcher m=Pattern.compile("http://url/cn/([a-zA-Z]){6}").matcher(tmp_text);
 				
@@ -196,7 +199,8 @@ public class TweetContentAdapter extends BaseAdapter {
 				ContentTransUtil.getInstance(context).displaySpannableString(tmp_text, holder.tweetContent, tweetBean.getMentionedUser());
 		}
 		}
-		if (tweetBean.getTweetImage() != null && !tweetBean.getTweetImage().toString().equals("[]")) {
+		 */
+		if (tweetBean.getTweetImage() != null ) {
 			holder.hasImage.setVisibility(View.VISIBLE);
 			if(application.getIsMainPageImageMode()){
 				holder.tweetImage.setVisibility(View.VISIBLE);
@@ -208,7 +212,7 @@ public class TweetContentAdapter extends BaseAdapter {
 			}else{
 				holder.tweetImage.setVisibility(View.GONE);
 			}
-		} else if (tweetBean.getVideoImage() != null && !tweetBean.getVideoImage().toString().equals("null")) {
+		} else if (tweetBean.getVideoImage() != null) {
 			holder.hasImage.setVisibility(View.GONE);
 			if(application.getIsMainPageImageMode()){
 				holder.tweetImage.setVisibility(View.VISIBLE);
@@ -222,7 +226,7 @@ public class TweetContentAdapter extends BaseAdapter {
 		}
 
 		// 是否转发
-		if (tweetBean.getSource() != null && !tweetBean.getSource().getNick().equals("null")) {
+		if (tweetBean.getSource() != null) {
 			holder.sourceLayout.setVisibility(View.VISIBLE);
 			String tmp_source_text = tweetBean.getSource().getText();
 			if (tweetBean.getSource().getGeo() != null && tweetBean.getSource().getGeo().length() > 0) {
@@ -232,14 +236,14 @@ public class TweetContentAdapter extends BaseAdapter {
 				holder.forwardLocationText.setVisibility(View.GONE);
 			}
 			ContentTransUtil.getInstance(context).displaySpannableString("<font color='0x0085DF'>" + tweetBean.getSource().getNick() + ":</font>" + tmp_source_text, holder.forwardContent, tweetBean.getMentionedUser());
-			if (tweetBean.getSource().getTweetImage() != null && !tweetBean.getSource().getTweetImage().toString().equals("[]") && application.getIsMainPageImageMode()) {
+			if (tweetBean.getSource().getTweetImage() != null && application.getIsMainPageImageMode()) {
 				holder.forwardImage.setVisibility(View.VISIBLE);
 				try {
 					ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getTweetImage().getString(0) + "/120", holder.forwardImage, 1);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-			} else if (tweetBean.getSource().getVideoImage() != null && !tweetBean.getSource().getVideoImage().toString().equals("null") && application.getIsMainPageImageMode()) {
+			} else if (tweetBean.getSource().getVideoImage() != null && application.getIsMainPageImageMode()) {
 				holder.forwardImage.setVisibility(View.VISIBLE);
 				ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getVideoImage(), holder.forwardImage, 1);
 			} else {
@@ -268,7 +272,6 @@ public class TweetContentAdapter extends BaseAdapter {
 		ImageView forwardImage;
 		ImageView hasImage;
 		RelativeLayout sourceLayout;
-		Button Click_go;
 	}
 
 }

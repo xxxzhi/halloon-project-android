@@ -5,8 +5,6 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -73,7 +71,7 @@ public class AtListFragment extends Fragment {
 							atLists.put(tmp_list.get(i).getTimestamp(), tmp_list.get(i));
 						}
 
-						DBManager.getInstance(context).addAtList(atLists, true);
+						DBManager.getInstance(context).addAtList(tmp_list, true);
 					}
 				} else {
 					tmp_list = DBManager.getInstance(context).getAtList();
@@ -105,7 +103,7 @@ public class AtListFragment extends Fragment {
 						atLists.put(tmp_list.get(i).getTimestamp(), tmp_list.get(i));
 					}
 
-					DBManager.getInstance(context).addAtList(atLists, true);
+					DBManager.getInstance(context).addAtList(tmp_list, true);
 					return tmp_list;
 				}
 

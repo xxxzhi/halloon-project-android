@@ -31,18 +31,19 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 	private ProfileFragmentCallback pCallback;
 	private ImageView myHeadicon;
 	private TextView myNick;
-	private TextView myName;
+	//private TextView myName;
 	private ImageView mySex;
-	private TextView myAddress;
+	//private TextView myAddress;
 	private TextView mySign;
+	/*
 	private TextView myInter;
 	private TextView tweetNum;
 	private TextView fansNum;
 	private TextView idolNum;
 	private TextView favNum;
 	private Button sendButton;
+	 */
 	private Button editButton;
-	private Button backButton;
 	// private TextView last_tweet;
 	private Context context;
 
@@ -75,7 +76,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 	@Override
 	public void init(HalloonTitleBar titleBar, RelativeLayout content){
 		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		content.addView(inflater.inflate(R.layout.tab_profile, null, false));
+		content.addView(inflater.inflate(R.layout.tab_profile_v2, null, false));
 		
 		titleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_NORMAL);
 		titleBar.setOnTitleBarClickListener(this);
@@ -85,17 +86,19 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 		myHeadicon = (ImageView) content.findViewById(R.id.my_headicon);
 		myNick = (TextView) content.findViewById(R.id.my_nick);
 		mySex = (ImageView) content.findViewById(R.id.my_sex);
-		myName = (TextView) content.findViewById(R.id.my_name);
-		myAddress = (TextView) content.findViewById(R.id.my_address);
+		
+		//myName = (TextView) content.findViewById(R.id.my_name);
+		//myAddress = (TextView) content.findViewById(R.id.my_address);
 		mySign = (ScrollTextView) content.findViewById(R.id.my_sign);
+		/*
 		myInter = (TextView) content.findViewById(R.id.my_inter);
 		tweetNum = (TextView) content.findViewById(R.id.tweet_num);
 		fansNum = (TextView) content.findViewById(R.id.fans_num);
 		idolNum = (TextView) content.findViewById(R.id.idol_num);
 		favNum = (TextView) content.findViewById(R.id.fav_num);
 		sendButton = (Button) content.findViewById(R.id.send_message_button);
+		 */
 		editButton = titleBar.getRightButton(R.string.edit);
-		backButton = titleBar.getLeftButton();
 		
 		updateProfile();
 	}
@@ -107,35 +110,34 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 
 		myNick.setClickable(true);
 		mySex.setClickable(true);
-		myName.setClickable(true);
-		myAddress.setClickable(true);
+		//myName.setClickable(true);
+		//myAddress.setClickable(true);
 		mySign.setClickable(true);
-		myInter.setClickable(true);
-		tweetNum.setClickable(true);
+		//myInter.setClickable(true);
+		//tweetNum.setClickable(true);
 		
 		myNick.setOnClickListener(this);
 		mySex.setOnClickListener(this);
-		myName.setOnClickListener(this);
-		myAddress.setOnClickListener(this);
+		//myName.setOnClickListener(this);
+		//myAddress.setOnClickListener(this);
 		mySign.setOnClickListener(this);
-		myInter.setOnClickListener(this);
-		tweetNum.setOnClickListener(this);
+		//myInter.setOnClickListener(this);
+		//tweetNum.setOnClickListener(this);
 		editButton.setOnClickListener(this);
-		sendButton.setOnClickListener(this);
+		//sendButton.setOnClickListener(this);
 		if (type == OTHER) {
 			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_NORMAL);
-			backButton.setOnClickListener(this);
 			myHeadicon.setOnClickListener(this);
 			if(!name.equals(DBManager.getInstance(context).getProfile().getName())){
-				sendButton.setText("发消息");
+				//sendButton.setText("发消息");
 				editButton.setText(context.getString(R.string.idol));
 			}else{
-				sendButton.setText("发现");
+				//sendButton.setText("发现");
 				editButton.setText(context.getString(R.string.edit));
 			}
 		} else {
 			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_RIGHT_BUTTON_ONLY);
-			sendButton.setText("发现");
+			//sendButton.setText("发现");
 			editButton.setText(context.getString(R.string.edit));
 		}
 	}
@@ -172,7 +174,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 				if(result != null){
 					profileBean = result;
 					if(type == ME) DBManager.getInstance(context).upgradeProfile(profileBean);
-					ImageLoader.getInstance(context).displayImage(profileBean.getHead() + "/100", myHeadicon, 12);
+					ImageLoader.getInstance(context).displayImage(profileBean.getHead() + "/100", myHeadicon, 1);
 					myNick.setText(profileBean.getNick());
 					if(profileBean.getSex() != null){
 						if (profileBean.getSex().equals("男")) {
@@ -185,15 +187,15 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 							mySex.setVisibility(View.GONE);
 						}
 					}
-					myName.setText(context.getString(R.string.account) + ":" + profileBean.getName());
-					myAddress.setText(profileBean.getLocation());
+					//myName.setText(context.getString(R.string.account) + ":" + profileBean.getName());
+					//myAddress.setText(profileBean.getLocation());
 					mySign.setText(profileBean.getIntroduction());
-					myInter.setText(profileBean.getTag());
+					//myInter.setText(profileBean.getTag());
 
-					tweetNum.setText(NumberUtil.shortenNumericString(context, profileBean.getTweetNum()));
-					fansNum.setText(NumberUtil.shortenNumericString(context, profileBean.getFansNum()));
-					idolNum.setText(NumberUtil.shortenNumericString(context, profileBean.getIdolNum()));
-					favNum.setText(NumberUtil.shortenNumericString(context, profileBean.getFavNum()));
+					//tweetNum.setText(NumberUtil.shortenNumericString(context, profileBean.getTweetNum()));
+					//fansNum.setText(NumberUtil.shortenNumericString(context, profileBean.getFansNum()));
+					//idolNum.setText(NumberUtil.shortenNumericString(context, profileBean.getIdolNum()));
+					//favNum.setText(NumberUtil.shortenNumericString(context, profileBean.getFavNum()));
 					// last_tweet.append(profileBean.getTweetBean().getText());
 
 				}

@@ -1,6 +1,7 @@
 package com.halloon.android.bean;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 public class PrivateDataBean {
 	private String totalCount;
@@ -17,7 +18,7 @@ public class PrivateDataBean {
 	private String tweeted;
 	private int readFlag;
 	private int msgBox;
-	private JSONArray image;
+	private String image;
 
 	public void setTotalCount(String totalCount) {
 		this.totalCount = totalCount;
@@ -131,11 +132,21 @@ public class PrivateDataBean {
 		return msgBox;
 	}
 
-	public void setImage(JSONArray image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 
 	public JSONArray getImage() {
-		return image;
+		JSONArray images = null;
+		if(null != image){
+			try {
+				images = new JSONArray(image);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return images;
 	}
 }

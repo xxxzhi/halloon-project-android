@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF5F5F5" >
+    
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="220.0dip"
+        android:src="@drawable/hot_balloon"
+        android:scaleType="centerCrop" />
+    
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="35.0dip"
+        android:layout_alignBottom="@+id/background"
+        android:background="#66000000" />
+    
+    <com.halloon.android.view.ScrollTextView
+        android:id="@+id/my_sign"
+        android:layout_width="match_parent"
+        android:layout_height="25.0dip"
+        android:layout_alignBottom="@+id/background"
+        android:layout_toRightOf="@+id/my_headicon"
+        android:layout_marginLeft="12.0dip"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:textColor="#FFFFFFFF"
+        android:textSize="14.0dip"
+        android:text="今天天气好风光" />
+    
+    <View
+        android:layout_width="70.0dip"
+        android:layout_height="70.0dip"
+        android:layout_marginLeft="22.0dip"
+        android:layout_alignBottom="@+id/background"
+        android:layout_marginBottom="3.0dip"
+        android:background="#55000000" />
+    
+    <ImageView
+        android:id="@+id/my_headicon"
+        android:layout_width="70.0dip"
+        android:layout_height="70.0dip"
+        android:layout_marginLeft="20.0dip"
+        android:layout_alignBottom="@+id/background"
+        android:layout_marginBottom="5.0dip"
+        android:src="@drawable/head"
+        android:scaleType="centerCrop" />
+    
+    
+    
+    <TextView
+        android:id="@+id/my_nick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/my_headicon"
+        android:layout_toRightOf="@+id/my_headicon"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginTop="10.0dip"
+        android:textColor="#FFFFFFFF"
+        android:textSize="20.0dip"
+        android:text="哈恩" />
+    
+    <ImageView
+        android:id="@+id/my_sex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/my_nick"
+        android:layout_toRightOf="@+id/my_nick"
+        android:layout_marginTop="3.0dip"
+        android:layout_marginLeft="5.0dip"
+        android:src="@drawable/wb_icon_male"
+        android:scaleType="centerInside" />
+
+</RelativeLayout>

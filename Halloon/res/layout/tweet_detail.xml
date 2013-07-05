@@ -10,8 +10,9 @@
         android:id="@+id/pinned_header"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/title_layout"
         android:layout_above="@+id/quick_reply"
+        android:cacheColorHint="#FFF5F5F5"
+        android:fadingEdge="none"
         android:scrollbars="none"
         android:divider="#FFFFFFFF"
         android:listSelector="@drawable/tweet_content_list_bg_selector" />
