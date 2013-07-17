@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
     <declare-styleable name="HalloonProgressBar" >
         <attr name="maxValue" format="integer" />
         <attr name="minValue" format="integer" />
@@ -7,5 +8,10 @@
         <attr name="tagHeight" format="dimension" />
         <attr name="heightToTag" format="dimension" />
     </declare-styleable>
+    
+    <declare_styleable name="SplitLine">
+        <attr name="color" format="color/reference" />
+        <attr name="margin" format="dimension" />
+    </declare_styleable>
     
 </resources>

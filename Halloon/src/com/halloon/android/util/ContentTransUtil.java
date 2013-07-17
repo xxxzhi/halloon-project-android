@@ -97,6 +97,7 @@ public class ContentTransUtil {
 		return new String(c);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void copyToClipBoard(String content){
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			android.content.ClipboardManager cbManagerForApi11 = (android.content.ClipboardManager) context.getSystemService(Activity.CLIPBOARD_SERVICE);

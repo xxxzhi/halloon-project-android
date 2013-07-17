@@ -21,7 +21,6 @@ import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 import com.halloon.android.ui.fragment.TabMainPageFragment.MainPageFragmentCallback;
-import com.halloon.android.util.NumberUtil;
 import com.halloon.android.view.ScrollTextView;
 import com.halloon.android.widget.HalloonTitleBar;
 
