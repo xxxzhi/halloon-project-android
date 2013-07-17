@@ -75,6 +75,7 @@
         android:scaleType="centerInside" />
     
     <LinearLayout
+        android:id="@+id/count_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/background"
@@ -107,5 +108,12 @@
             android:background="@drawable/selector_profilecount_right" />
         
     </LinearLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/count_layout"
+        android:layout_marginTop="10.0dip"
+        android:background="#FFBBBBBB" />
 
 </RelativeLayout>

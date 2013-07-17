@@ -9,9 +9,9 @@
         <attr name="heightToTag" format="dimension" />
     </declare-styleable>
     
-    <declare_styleable name="SplitLine">
-        <attr name="color" format="color/reference" />
+    <declare-styleable name="SplitLine">
+        <attr name="color" format="color|reference" />
         <attr name="margin" format="dimension" />
-    </declare_styleable>
+    </declare-styleable>
     
 </resources>
