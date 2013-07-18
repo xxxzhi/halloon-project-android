@@ -9,7 +9,7 @@ public class ProfileBean {
 	private TweetBean tweetBean;
 	private String introduction;
 	private String location;
-	private String tag;
+	private String[] tag;
 	private String tweetNum;
 	private String fansNum;
 	private String idolNum;
@@ -78,12 +78,30 @@ public class ProfileBean {
 	public void setLocation(String location) {
 		this.location = location;
 	}
+	
+	public void obtainTag(String tags){
+		tag = tags.split(",");
+	}
+	
+	public String composeTag(){
+		if(null != tag && tag.length > 0){
+			int i = 1;
+			String tempTag = tag[0];
+			do{
+				tempTag += "," + tag[i];
+			}while(++i < tag.length);
+			
+			return tempTag;
+		}else{
+			return null;
+		}
+	}
 
-	public String getTag() {
+	public String[] getTag() {
 		return tag;
 	}
 
-	public void setTag(String tag) {
+	public void setTag(String[] tag) {
 		this.tag = tag;
 	}
 

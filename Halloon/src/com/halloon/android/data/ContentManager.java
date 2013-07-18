@@ -132,10 +132,10 @@ public class ContentManager {
 			profileBean.setIdolNum(dataJsonObject.getString("idolnum"));
 
 			JSONArray tagArray = dataJsonObject.optJSONArray("tag");
-			String temp_tag = "";
+			String[] temp_tag = new String[tagArray.length()];
 			for (int i = 0; i < tagArray.length(); i++) {
 				JSONObject tagObject = tagArray.getJSONObject(i);
-				temp_tag += tagObject.getString("name") + " ";
+				temp_tag[i] = tagObject.getString("name");
 			}
 			profileBean.setTag(temp_tag);
 
@@ -182,10 +182,10 @@ public class ContentManager {
 			profileBean.setIdolNum(dataJsonObject.getString("idolnum"));
 
 			JSONArray tagArray = dataJsonObject.optJSONArray("tag");
-			String temp_tag = "";
+			String[] temp_tag = new String[tagArray.length()];
 			for (int i = 0; i < tagArray.length(); i++) {
 				JSONObject tagObject = tagArray.getJSONObject(i);
-				temp_tag += tagObject.getString("name") + " ";
+				temp_tag[i] = tagObject.getString("name");
 			}
 			profileBean.setTag(temp_tag);
 

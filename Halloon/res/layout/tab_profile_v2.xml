@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:halloon="http://schemas.android.com/apk/res/com.halloon.android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF5F5F5" >
@@ -87,33 +88,68 @@
             android:id="@+id/tweet"
             android:layout_width="75.0dip"
             android:layout_height="60.0dip"
+            android:text="@string/wblog"
+            android:textColor="#FF666666"
+            android:textSize="14sp"
             android:background="@drawable/selector_profilecount_left" />
         
         <Button
             android:id="@+id/idol"
             android:layout_width="75.0dip"
             android:layout_height="60.0dip"
+            android:text="@string/idol"
+            android:textColor="#FF666666"
+            android:textSize="14sp"
             android:background="@drawable/selector_profilecount_middle" />
         
         <Button
             android:id="@+id/fans"
             android:layout_width="75.0dip"
             android:layout_height="60.0dip"
+            android:text="@string/fan"
+            android:textColor="#FF666666"
+            android:textSize="14sp"
             android:background="@drawable/selector_profilecount_middle" />
         
         <Button
             android:id="@+id/fav"
             android:layout_width="75.0dip"
             android:layout_height="60.0dip"
+            android:text="@string/fav"
+            android:textColor="#FF666666"
+            android:textSize="14sp"
             android:background="@drawable/selector_profilecount_right" />
         
     </LinearLayout>
     
-    <View
+    <com.halloon.android.widget.SplitLine
+        android:id="@+id/splitline"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@+id/count_layout"
         android:layout_marginTop="10.0dip"
-        android:background="#FFBBBBBB" />
+        halloon:color="#FFAAAAAA"
+        halloon:margin="3.0dip" />
+    
+    <TextView
+        android:id="@+id/tag_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/splitline"
+        android:layout_marginTop="10.0dip"
+        android:layout_marginLeft="15.0dip"
+        android:text="@string/tag"
+        android:textSize="14sp"
+        android:textColor="#FF666666" />
+    
+    <com.halloon.android.widget.TagView
+        android:id="@+id/tag"
+        android:layout_width="300.0dip"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tag_title"
+        android:layout_marginTop="10.0dip"
+        halloon:margin="2.0dip"
+        halloon:singleHeight = "20.0dip" />
 
 </RelativeLayout>

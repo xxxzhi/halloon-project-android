@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:halloon="http://schemas.android.com/apk/res/com.halloon.android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.OneActivity" >
@@ -204,10 +205,12 @@
         android:textColor="#777777"
         android:textSize="13.0dip" />
     
-    <ImageView 
+    <com.halloon.android.widget.SplitLine
         android:layout_width="match_parent"
-        android:layout_height="1.0dip"
+        android:layout_height="1.0px"
         android:layout_marginTop="3.0dip"
+        halloon:color="#FFAAAAAA"
+        halloon:margin="3.0dip"
         android:layout_below="@+id/forward_count" />
    
 </RelativeLayout>

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
+    <attr name="color" format="color|reference" />
+    <attr name="margin" format="dimension" />
+    
     <declare-styleable name="HalloonProgressBar" >
         <attr name="maxValue" format="integer" />
         <attr name="minValue" format="integer" />
@@ -10,8 +13,13 @@
     </declare-styleable>
     
     <declare-styleable name="SplitLine">
-        <attr name="color" format="color|reference" />
-        <attr name="margin" format="dimension" />
+        <attr name="color" />
+        <attr name="margin" />
+    </declare-styleable>
+    
+    <declare-styleable name="TagView">
+        <attr name="margin" />
+        <attr name="singleHeight" format="dimension" />
     </declare-styleable>
     
 </resources>

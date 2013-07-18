@@ -179,7 +179,7 @@ public class DBManager extends SQLiteOpenHelper {
 			profileBean.setSex(cursor.getString(cursor.getColumnIndex(ProfileColumns.PROFILE_SEX)));
 			profileBean.setIntroduction(cursor.getString(cursor.getColumnIndex(ProfileColumns.PROFILE_INTRO)));
 			profileBean.setLocation(cursor.getString(cursor.getColumnIndex(ProfileColumns.PROFILE_LOCATION)));
-			profileBean.setTag(cursor.getString(cursor.getColumnIndex(ProfileColumns.PROFILE_TAG)));
+			profileBean.obtainTag(cursor.getString(cursor.getColumnIndex(ProfileColumns.PROFILE_TAG)));
 			profileBean.setTweetNum(cursor.getString(cursor.getColumnIndex(ProfileColumns.PROFILE_TWEETNUM)));
 			profileBean.setIdolNum(cursor.getString(cursor.getColumnIndex(ProfileColumns.PROFILE_IDOLNUM)));
 			profileBean.setFansNum(cursor.getString(cursor.getColumnIndex(ProfileColumns.PROFILE_FANSNUM)));
@@ -1384,7 +1384,7 @@ public class DBManager extends SQLiteOpenHelper {
 		cv.put(ProfileColumns.PROFILE_FAVNUM, profileBean.getFavNum());
 		cv.put(ProfileColumns.PROFILE_INTRO, profileBean.getIntroduction());
 		cv.put(ProfileColumns.PROFILE_LOCATION, profileBean.getLocation());
-		cv.put(ProfileColumns.PROFILE_TAG, profileBean.getTag());
+		cv.put(ProfileColumns.PROFILE_TAG, profileBean.composeTag());
 		
 		return cv;
 	}
