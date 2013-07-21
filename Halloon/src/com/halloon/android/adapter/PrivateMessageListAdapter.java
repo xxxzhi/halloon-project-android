@@ -65,7 +65,7 @@ public class PrivateMessageListAdapter extends BaseAdapter {
 		} else {
 			privateContentHolder = (PrivateContentHolder) convertView.getTag();
 		}
-		ImageLoader.getInstance(context).displayImage(privateDataBean.getHead() + "/40", privateContentHolder.headImage, 4);
+		ImageLoader.getInstance(context).displayImage(privateDataBean.getHead() + "/100", privateContentHolder.headImage, 4);
 		privateContentHolder.nickName.setText(privateDataBean.getNick());
 		privateContentHolder.content.setText(privateDataBean.getText());
 		ContentTransUtil.getInstance(context).displaySpannableString(privateDataBean.getText(), privateContentHolder.content, null);

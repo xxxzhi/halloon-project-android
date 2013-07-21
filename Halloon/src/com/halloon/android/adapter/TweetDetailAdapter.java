@@ -384,7 +384,7 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 						cList.getMentionedUser());
 			}
 			ImageLoader.getInstance(context).displayImage(
-					cList.getHead() + "/30", tweetCommentHolder.commentHead, 0);
+					cList.getHead() + "/50", tweetCommentHolder.commentHead, 0);
 			tweetCommentHolder.commentHead
 					.setOnClickListener(new OnClickListener() {
 						@Override

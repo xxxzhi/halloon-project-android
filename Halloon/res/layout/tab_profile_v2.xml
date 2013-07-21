@@ -61,7 +61,7 @@
         android:layout_marginLeft="15.0dip"
         android:layout_marginTop="10.0dip"
         android:textColor="#FFFFFFFF"
-        android:textSize="20.0dip"
+        android:textSize="17.0dip"
         android:text="哈恩" />
     
     <ImageView
@@ -150,6 +150,6 @@
         android:layout_below="@+id/tag_title"
         android:layout_marginTop="10.0dip"
         halloon:margin="2.0dip"
-        halloon:singleHeight = "20.0dip" />
+        halloon:singleHeight = "23.0dip" />
 
 </RelativeLayout>
