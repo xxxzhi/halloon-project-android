@@ -68,7 +68,7 @@ public class PrivateMessageListAdapter extends BaseAdapter {
 		ImageLoader.getInstance(context).displayImage(privateDataBean.getHead() + "/100", privateContentHolder.headImage, 4);
 		privateContentHolder.nickName.setText(privateDataBean.getNick());
 		privateContentHolder.content.setText(privateDataBean.getText());
-		ContentTransUtil.getInstance(context).displaySpannableString(privateDataBean.getText(), privateContentHolder.content, null);
+		ContentTransUtil.getInstance(context).displaySpannableString(privateDataBean.getText(), privateContentHolder.content, null, false, false);
 		privateContentHolder.timeStamp.setText(TimeUtil.converTime(privateDataBean.getPubTime(), 2));
 
 		return convertView;

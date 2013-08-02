@@ -499,7 +499,7 @@ public class ContentManager {
 			temp_tweet.setHead(tweetInfoObject.getString("head"));
 			temp_tweet.setNick(tweetInfoObject.getString("nick"));
 			temp_tweet.setName(tweetInfoObject.getString("name"));
-			temp_tweet.setText(tweetInfoObject.getString("text"));
+			temp_tweet.setText(tweetInfoObject.getString("origtext"));
 			temp_tweet.setTweetImage(tweetInfoObject.optString("image"));
 			temp_tweet.setLongitude(tweetInfoObject.optString("longitude"));
 			temp_tweet.setLatitude(tweetInfoObject.optString("latitude"));
@@ -522,7 +522,7 @@ public class ContentManager {
 				sourceTweetBean.setHead(sourceTweetObject.getString("head"));
 				sourceTweetBean.setNick(sourceTweetObject.getString("nick"));
 				sourceTweetBean.setName(sourceTweetObject.getString("name"));
-				sourceTweetBean.setText(sourceTweetObject.getString("text"));
+				sourceTweetBean.setText(sourceTweetObject.getString("origtext"));
 				sourceTweetBean.setTweetImage(sourceTweetObject
 						.optString("image"));
 				sourceTweetBean.setLongitude(sourceTweetObject
@@ -906,7 +906,7 @@ public class ContentManager {
 				privateDataBean.setMsgBox(privateDataObject.getInt("msgbox"));
 				privateDataBean.setReadFlag(privateDataObject.getInt("readflag"));
 				privateDataBean.setRoomId(privateDataObject.optString("roomid"));
-				privateDataBean.setText(privateDataObject.getString("text"));
+				privateDataBean.setText(privateDataObject.getString("origtext"));
 
 				privateDataBeans.add(privateDataBean);
 			}
@@ -943,7 +943,7 @@ public class ContentManager {
 				
 				privateDataBean.setPubTime(privateDataObject.getString("pubtime"));
 				privateDataBean.setMsgBox(privateDataObject.getInt("msgbox"));
-				privateDataBean.setText(privateDataObject.getString("text"));
+				privateDataBean.setText(privateDataObject.getString("origtext"));
 				privateDataBean.setTweeted(privateDataObject.getString("tweetid"));
 				privateDataBean.setReadFlag(privateDataObject.getInt("readflag"));
 				

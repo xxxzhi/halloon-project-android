@@ -158,7 +158,6 @@ public class TweetContentAdapter extends BaseAdapter {
 		holder.from.setText(context.getString(R.string.from) + tweetBean.getFrom());
 		holder.commentCount.setText(tweetBean.getMCount());
 		holder.forwardCount.setText(tweetBean.getCount());
-		//String tmp_text = tweetBean.getText();
 		if (tweetBean.getGeo() != null && tweetBean.getGeo().length() > 0) {
 			holder.tweetLocationText.setVisibility(View.VISIBLE);
 			holder.tweetLocationText.setText(context.getString(R.string.i_am) + tweetBean.getGeo());
@@ -168,38 +167,9 @@ public class TweetContentAdapter extends BaseAdapter {
 		if (tweetBean.getSource() != null && tweetBean.getText().length() == 0) {
 			holder.tweetContent.setText(context.getString(R.string.re_tweet));
 		}else{
-			ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getText(), holder.tweetContent, tweetBean.getMentionedUser());
+			ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getText(), holder.tweetContent, tweetBean, false, false);
 		}
-		/*
-		 else {
-			if(tmp_text.contains("http://url.cn/")){
-				holder.Click_go.setVisibility(View.VISIBLE);
-				
-				
-				Matcher m=Pattern.compile("http://url/cn/([a-zA-Z]){6}").matcher(tmp_text);
-				
-				if(m.find())
-					 url=m.group();
-				holder.Click_go.setOnClickListener(new View.OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						Intent intent=new Intent();
-						intent.setClass(context, MyWebView.class);
-						intent.putExtra("url", url);
-						context.startActivity(intent);
-					}
-				});
-				
-			}
-			else
-			{
-				holder.Click_go.setVisibility(View.GONE);
-				ContentTransUtil.getInstance(context).displaySpannableString(tmp_text, holder.tweetContent, tweetBean.getMentionedUser());
-		}
-		}
-		 */
+		
 		if (tweetBean.getTweetImage() != null ) {
 			holder.hasImage.setVisibility(View.VISIBLE);
 			if(application.getIsMainPageImageMode()){
@@ -235,7 +205,7 @@ public class TweetContentAdapter extends BaseAdapter {
 			} else {
 				holder.forwardLocationText.setVisibility(View.GONE);
 			}
-			ContentTransUtil.getInstance(context).displaySpannableString("<font color='0x0085DF'>" + tweetBean.getSource().getNick() + ":</font>" + tmp_source_text, holder.forwardContent, tweetBean.getMentionedUser());
+			ContentTransUtil.getInstance(context).displaySpannableString(tmp_source_text, holder.forwardContent, tweetBean, true, false);
 			if (tweetBean.getSource().getTweetImage() != null && application.getIsMainPageImageMode()) {
 				holder.forwardImage.setVisibility(View.VISIBLE);
 				try {

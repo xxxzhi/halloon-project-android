@@ -65,7 +65,7 @@ public class AtListAdapter extends BaseAdapter {
 
 		ImageLoader.getInstance(context).displayImage(tweetBean.getHead() + "/40", atListHolder.headImage, 1);
 		atListHolder.nickName.setText(tweetBean.getNick());
-		ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getText(), atListHolder.content, tweetBean.getMentionedUser());
+		ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getText(), atListHolder.content, tweetBean, false, false);
 		atListHolder.timeStamp.setText(TimeUtil.converTime(tweetBean.getTimestamp(), 2));
 
 		return convertView;

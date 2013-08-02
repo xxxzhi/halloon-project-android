@@ -14,8 +14,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -33,8 +31,6 @@ import com.halloon.android.util.ContentTransUtil;
 import com.halloon.android.util.DensityUtil;
 import com.halloon.android.util.PopupWindowManager;
 import com.halloon.android.util.TimeUtil;
-import com.halloon.android.view.PinnedHeaderListView;
-import com.halloon.android.view.PinnedHeaderListView.PinnedHeaderAdapter;
 
 public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 
@@ -169,18 +165,15 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 				tweetContentHolder = (TweetContentHolder) convertView.getTag();
 			}
 
-			tweetContentHolder.tweetContent
-					.setMovementMethod(LinkMovementMethod.getInstance());
 			if (tweetBean.getSource() != null
 					&& tweetBean.getText().length() == 0) {
 				tweetContentHolder.tweetContent.setText(context
 						.getString(R.string.re_tweet));
 			} else {
-				ContentTransUtil.getInstance(context).displaySpannableString(
-						tweetBean.getText(), tweetContentHolder.tweetContent,
-						tweetBean.getMentionedUser());
+				ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getText(), tweetContentHolder.tweetContent, tweetBean, false, true);
 			}
 			
+			tweetContentHolder.tweetContent.setMovementMethod(LinkMovementMethod.getInstance());
 			tweetContentHolder.tweetContent.setLongClickable(true);
 			tweetContentHolder.tweetContent.setOnLongClickListener(new OnLongClickListener(){
 
@@ -236,14 +229,9 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 			}
 			if (tweetBean.getSource() != null) {
 				tweetContentHolder.forwardContainer.setVisibility(View.VISIBLE);
-				tweetContentHolder.forwardContent
-						.setMovementMethod(LinkMovementMethod.getInstance());
-				ContentTransUtil.getInstance(context).displaySpannableString(
-						"<font color='0x0085DF'>"
-								+ tweetBean.getSource().getNick() + ":</font>"
-								+ tweetBean.getSource().getText(),
-						tweetContentHolder.forwardContent,
-						tweetBean.getMentionedUser());
+				tweetContentHolder.forwardContent.setMovementMethod(LinkMovementMethod.getInstance());
+				
+				ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getSource().getText(), tweetContentHolder.forwardContent, tweetBean, true, true);
 				tweetContentHolder.forwardContent.setLongClickable(true);
 				tweetContentHolder.forwardContent.setOnLongClickListener(new OnLongClickListener(){
 					@Override
@@ -378,10 +366,7 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 				tweetCommentHolder.tweetCommentContent.setText(context
 						.getString(R.string.re_tweet));
 			} else {
-				ContentTransUtil.getInstance(context).displaySpannableString(
-						cList.getText(),
-						tweetCommentHolder.tweetCommentContent,
-						cList.getMentionedUser());
+				ContentTransUtil.getInstance(context).displaySpannableString(cList.getText(), tweetCommentHolder.tweetCommentContent, cList, false, true);
 			}
 			ImageLoader.getInstance(context).displayImage(
 					cList.getHead() + "/50", tweetCommentHolder.commentHead, 0);

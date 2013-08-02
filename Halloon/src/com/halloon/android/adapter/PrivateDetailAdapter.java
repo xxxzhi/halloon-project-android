@@ -8,6 +8,7 @@ import com.halloon.android.image.ImageLoader;
 import com.halloon.android.util.ContentTransUtil;
 
 import android.content.Context;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,8 @@ public class PrivateDetailAdapter extends BaseAdapter {
 				privateOtherHolder = (PrivateOtherHolder) convertView.getTag();
 			}
 			ImageLoader.getInstance(context).displayImage(privateDataBean.getHead() + "/50", privateOtherHolder.headImage, 1);
-			ContentTransUtil.getInstance(context).displaySpannableString(privateDataBean.getText(), privateOtherHolder.content, null);
+			privateOtherHolder.content.setMovementMethod(LinkMovementMethod.getInstance());
+			ContentTransUtil.getInstance(context).displaySpannableString(privateDataBean.getText(), privateOtherHolder.content, null, false, true);
 		}else{
 			if(convertView == null || !convertView.getTag().equals(privateMeHolder)){
 				convertView = layoutInflater.inflate(R.layout.private_message_me_content, null);
@@ -73,7 +75,8 @@ public class PrivateDetailAdapter extends BaseAdapter {
 				privateMeHolder = (PrivateMeHolder) convertView.getTag();
 			}
 			ImageLoader.getInstance(context).displayImage(privateDataBean.getMyHead() + "/50", privateMeHolder.headImage, 1);
-			ContentTransUtil.getInstance(context).displaySpannableString(privateDataBean.getText(), privateMeHolder.content, null);
+			privateMeHolder.content.setMovementMethod(LinkMovementMethod.getInstance());
+			ContentTransUtil.getInstance(context).displaySpannableString(privateDataBean.getText(), privateMeHolder.content, null, false, true);
 		}
 	    
 	    return convertView;

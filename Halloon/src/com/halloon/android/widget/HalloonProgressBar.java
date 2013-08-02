@@ -206,7 +206,7 @@ public class HalloonProgressBar extends View {
 		
 	}
 	
-	public synchronized void setProgress(float per){
+	public void setProgress(float per){
 		if(minValue > per){
 			per = minValue;
 		}else if(per > maxValue){
