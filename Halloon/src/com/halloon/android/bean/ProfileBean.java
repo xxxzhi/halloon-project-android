@@ -80,7 +80,7 @@ public class ProfileBean {
 	}
 	
 	public void obtainTag(String tags){
-		tag = tags.split(",");
+		if(tags != null) tag = tags.split(",");
 	}
 	
 	public String composeTag(){

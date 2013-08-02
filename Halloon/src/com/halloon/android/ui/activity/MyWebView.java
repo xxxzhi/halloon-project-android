@@ -1,6 +1,5 @@
 package com.halloon.android.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
@@ -11,7 +10,6 @@ import com.halloon.android.ui.BaseActivity;
 public class MyWebView extends BaseActivity {
 
 	private WebView mWebView;
-	private String url;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -19,8 +17,6 @@ public class MyWebView extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.mywebview);
-		Intent intent=getIntent();
-		url=intent.getStringExtra("url");
 		findViewById(R.id.back_button).setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -33,7 +29,7 @@ public class MyWebView extends BaseActivity {
 		mWebView.setVerticalScrollBarEnabled(false);
 		mWebView.setHorizontalScrollBarEnabled(false);
 		mWebView.getSettings().setJavaScriptEnabled(true);
-		mWebView.loadUrl(url);
+		mWebView.loadUrl(getIntent().getStringExtra("url"));
 	}
 	
 	

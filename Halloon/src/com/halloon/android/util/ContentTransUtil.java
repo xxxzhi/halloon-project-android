@@ -130,58 +130,6 @@ public class ContentTransUtil {
 		tv.setText(ss);
 	}
 
-	/*
-	public void displaySpannableString(String content, TextView tv, JSONObject user) {
-		
-		tv.setText("");
-		
-		if (content.contains("/") || content.contains("@") || content.contains("<a href")) {
-			SpannableString sString;
-			String replacedContent = content;
-			if (user != null && user.optString("null") != "null") {
-				JSONArray userContainer = user.names();
-				for (int i = 0; i < user.length(); i++) {
-					try {
-						replacedContent = replacedContent.replaceAll("@" + userContainer.getString(i), "<font color='0x0085DF'>@" + user.getString(userContainer.getString(i)) + "</font>");
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-
-			sString = new SpannableString(Html.fromHtml(replacedContent));
-
-			String regex = "\\/";
-			Pattern pattern = Pattern.compile(regex);
-			Matcher matcher = pattern.matcher(sString);
-			int textWidth = ((int) tv.getTextSize()) + 4;
-			while (matcher.find()) {
-				int length = EmojiContainer.emoNameContainer.length;
-				for (int i = 0; i < length; i++) {
-					String temp_string;
-					if (matcher.start() + EmojiContainer.emoNameContainer[i].length() <= sString.length() - 1) {
-						temp_string = sString.toString().substring(matcher.start(), matcher.start() + EmojiContainer.emoNameContainer[i].length() + 1);
-					} else {
-						temp_string = sString.toString().substring(matcher.start(), sString.length() - 1);
-					}
-					if (temp_string.contains(EmojiContainer.emoNameContainer[i])) {
-
-						int id = EmojiContainer.getEmojiId(context, i);
-
-						Drawable drawable = context.getResources().getDrawable(id);
-						drawable.setBounds(0, 0, textWidth, textWidth);
-						sString.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE), matcher.start(), matcher.start() + EmojiContainer.emoNameContainer[i].length() + 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-						break;
-					}
-				}
-			}
-			tv.setText(sString);
-		} else {
-			tv.setText(content);
-		}
-	}
-	 */
-
 	public static String ToDBC(String input) {
 		char[] c = input.toCharArray();
 		for (int i = 0; i < c.length; i++) {
