@@ -37,7 +37,6 @@ public class TweetBean implements Parcelable{
 	private String longitude;
 	private String latitude;
 	private String geo;
-	private HashMap<String, String> shortList;
 	
 	public TweetBean(){}
 	
@@ -98,9 +97,6 @@ public class TweetBean implements Parcelable{
 		parcel.writeString(longitude);
 		parcel.writeString(latitude);
 		parcel.writeString(geo);
-		Bundle bundle = new Bundle();
-		bundle.putSerializable("shortList", shortList);
-		parcel.writeBundle(bundle);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -129,7 +125,6 @@ public class TweetBean implements Parcelable{
 		longitude = parcel.readString();
 		latitude = parcel.readString();
 		geo = parcel.readString();
-		shortList = (HashMap<String, String>) parcel.readBundle().getSerializable("shortList");
 	}
 	
 	public void setOpenId(String openId){
@@ -349,14 +344,6 @@ public class TweetBean implements Parcelable{
 		return geo;
 	}
 	
-	public void setShortList(HashMap<String, String> list){
-		this.shortList = list;
-	}
-	
-	public HashMap<String, String> getShortList(){
-		return shortList;
-	}
-
 	@Override
 	public int describeContents() {
 		return 0;

@@ -1,5 +1,6 @@
 package com.halloon.android.util;
 
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,17 +21,14 @@ import android.text.style.ImageSpan;
 import android.view.View;
 import android.widget.TextView;
 
+import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
 import com.halloon.android.bean.TweetBean;
-import com.halloon.android.data.ContentManager;
-import com.halloon.android.task.BaseCompatiableTask;
 
 @SuppressLint("ServiceCast")
 public class ContentTransUtil {
 	private Context context;
 	private static ContentTransUtil instance;
-	
-	private String longUrl = "";
 
 	public ContentTransUtil(Context context) {
 		this.context = context;
@@ -44,6 +42,7 @@ public class ContentTransUtil {
 	}
 	
 	public void displaySpannableString(String content, TextView tv, TweetBean tweetBean, boolean isSource, boolean isLink){
+		content = convert(content);
 		if(isSource) content = tweetBean.getSource().getNick() + ":" + content;
 		
 		SpannableString ss = new SpannableString(content);
@@ -55,15 +54,15 @@ public class ContentTransUtil {
 		String MENTION_PATTERN = "@[\\w\\p{InCJKUnifiedIdeographs}-]{1,20}";
 		String TOPIC_PATTERN = "#([^\\#|.]+)#";
 		String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
-		String EMOJI_PATTERN = "\\/[\\p{Alnum}\\p{InCJKUnifiedIdeographs}]{0,3}";
+		String EMOJI_PATTERN = "\\/[\\p{InCJKUnifiedIdeographs}]{0,3}";//or\\/[\u4e00-\u9fa5]{0,3}
 		
 		tv.setText("");
 		final int textWidth = (int) tv.getTextSize() + 4;
 		
 		Pattern pattern = Pattern.compile(MENTION_PATTERN + "|" + 
 		                                  TOPIC_PATTERN + "|" + 
-				                          ADDR_PATTERN + "|" + 
-		                                  EMOJI_PATTERN);
+				                          EMOJI_PATTERN + "|" + 
+		                                  ADDR_PATTERN);
 		Matcher matcher = pattern.matcher(content);
 		while(matcher.find()){
 			String group = matcher.group();
@@ -122,15 +121,17 @@ public class ContentTransUtil {
 				
 				Drawable drawable = null;
 				int id = R.drawable.button_link;
-				if(tweetBean.getShortList() != null){
-					String shortMatch = tweetBean.getShortList().get(shortUrl);
+				HashMap<String, String> shortList = ((HalloonApplication) ((Activity) context).getApplication()).getShortList();
+				if(shortList != null){
+					String shortMatch = shortList.get(shortUrl);
 					if(shortMatch != null){
 						if(shortMatch.startsWith("http://music.qq.com/qqmusic.html?id")){
 							id = R.drawable.button_music_link;
 						}else if(shortMatch.startsWith("http://v.youku.com/") ||
 								 shortMatch.startsWith("http://www.tudou.com/") || 
 								 shortMatch.startsWith("http://v.qq.com") || 
-								 shortMatch.startsWith("http://v.ku6.com")){
+								 shortMatch.startsWith("http://v.ku6.com") || 
+								 shortMatch.startsWith("http://view.inews.qq.com")){
 							id = R.drawable.button_video_link;
 						}
 					}
@@ -156,6 +157,11 @@ public class ContentTransUtil {
 				c[i] = (char) (c[i] - 65248);
 		}
 		return new String(c);
+	}
+	
+	private static String convert(String target){
+		return target.replaceAll("\\&gt\\;", "＞")
+				     .replaceAll("\\&lt\\;", "＜");
 	}
 	
 	@Deprecated

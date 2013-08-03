@@ -1,5 +1,7 @@
 package com.halloon.android;
 
+import java.util.HashMap;
+
 import com.halloon.android.data.SettingsManager;
 
 import android.app.Application;
@@ -10,6 +12,15 @@ public class HalloonApplication extends Application {
 	private boolean messagePageStateChanged = false;
 	private boolean profilePageStateChanged = false;
 	private boolean contactPageStateChanged = false;
+	
+	private HashMap<String, String> shortList;
+	
+	@Override
+	public void onCreate(){
+		super.onCreate();
+		
+		shortList = new HashMap<String, String>();
+	}
 	
 	public void setIsMainPageImageMode(boolean isMainPageImageMode){
 		SettingsManager.getInstance(this).setIsMainPageImageMode(isMainPageImageMode);
@@ -49,5 +60,9 @@ public class HalloonApplication extends Application {
 	
 	public void setContactPageState(boolean contactPageStateChanged){
 		this.contactPageStateChanged = contactPageStateChanged;
+	}
+	
+	public HashMap<String, String> getShortList(){
+		return shortList;
 	}
 }

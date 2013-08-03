@@ -313,29 +313,33 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 					if(tmpArrayList != null){
 						int i = 0;
 						do{
-							String text = tmpArrayList.get(i).getText();
-							String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
-							Pattern pattern = Pattern.compile(ADDR_PATTERN);
-							Matcher matcher = pattern.matcher(text);
-							HashMap<String, String> tmpHashMap = new HashMap<String, String>();
-							while(matcher.find()){
-								String group = matcher.group();
-								group = group.substring(group.lastIndexOf("/") + 1);
-								String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
-								tmpHashMap.put(group, longUrl);
-							}
-							tmpArrayList.get(i).setShortList(tmpHashMap);
-							if(tmpArrayList.get(i).getSource() != null){
-								matcher = pattern.matcher(tmpArrayList.get(i).getSource().getText());
-								HashMap<String, String> tmpSourceHashMap = new HashMap<String, String>();
+							if(tmpArrayList.get(i).getMusicUrl() != null || tmpArrayList.get(i).getVideoImage() != null){
+								Log.d("TAG", tmpArrayList.get(i).getText());
+								String text = tmpArrayList.get(i).getText();
+								String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
+								Pattern pattern = Pattern.compile(ADDR_PATTERN);
+								Matcher matcher = pattern.matcher(text);
 								while(matcher.find()){
-									
 									String group = matcher.group();
 									group = group.substring(group.lastIndexOf("/") + 1);
-									String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
-									tmpSourceHashMap.put(group, longUrl);
+									if(application.getShortList().get(group) == null){
+										String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
+										application.getShortList().put(group, longUrl);
+									}
 								}
-								tmpArrayList.get(i).getSource().setShortList(tmpSourceHashMap);
+								if(tmpArrayList.get(i).getSource() != null && (tmpArrayList.get(i).getSource().getMusicUrl() != null || tmpArrayList.get(i).getSource().getVideoImage() != null)){
+									matcher = pattern.matcher(tmpArrayList.get(i).getSource().getText());
+									while(matcher.find()){
+										
+										String group = matcher.group();
+										group = group.substring(group.lastIndexOf("/") + 1);
+										if(application.getShortList().get(group) == null){
+											String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
+											application.getShortList().put(group, longUrl);
+										}
+										
+									}
+								}
 							}
 						}while(++i < tmpArrayList.size());
 					}
@@ -390,6 +394,40 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 						tmpArrayList = ContentManager.getInstance(context).getOtherTimeLine("1", oldResponTime, 25, "", otherName, null, "", "");
 						break;
 					}
+					
+					if(tmpArrayList != null){
+						int i = 0;
+						do{
+							if(tmpArrayList.get(i).getMusicUrl() != null || tmpArrayList.get(i).getVideoImage() != null){
+								String text = tmpArrayList.get(i).getText();
+								String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
+								Pattern pattern = Pattern.compile(ADDR_PATTERN);
+								Matcher matcher = pattern.matcher(text);
+								while(matcher.find()){
+									String group = matcher.group();
+									group = group.substring(group.lastIndexOf("/") + 1);
+									if(application.getShortList().get(group) == null){
+										String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
+										application.getShortList().put(group, longUrl);
+									}
+								}
+								if(tmpArrayList.get(i).getSource() != null && (tmpArrayList.get(i).getSource().getMusicUrl() != null || tmpArrayList.get(i).getSource().getVideoImage() != null)){
+									Log.d("TAG", tmpArrayList.get(i).getSource().getVideoImage());
+									matcher = pattern.matcher(tmpArrayList.get(i).getSource().getText());
+									while(matcher.find()){
+										
+										String group = matcher.group();
+										group = group.substring(group.lastIndexOf("/") + 1);
+										if(application.getShortList().get(group) == null){
+											String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
+											application.getShortList().put(group, longUrl);
+										}
+									}
+								}
+							}
+						}while(++i < tmpArrayList.size());
+					}
+					
 					return tmpArrayList;
 				}
 				
