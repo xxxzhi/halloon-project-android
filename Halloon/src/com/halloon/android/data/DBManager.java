@@ -22,7 +22,7 @@ public class DBManager extends SQLiteOpenHelper {
 
 	//private DatabaseHelper dbHelper;
 
-	private static final int DATABASE_VERSION = 17;
+	private static final int DATABASE_VERSION = 18;
 
 	public final static int CONTACT_STATUS_INIT = 0;
 	public final static int CONTACT_STATUS_TO_UPDATE = 1;
@@ -89,6 +89,10 @@ public class DBManager extends SQLiteOpenHelper {
 		private static final String TWEET_VIDEO_IMAGE = "tweet_video_image";
 		private static final String TWEET_VIDEO_PLAYER = "tweet_video_player";
 		private static final String TWEET_VIDEO_URL = "tweet_video_url";
+		private static final String TWEET_MUSIC_AUTHOR = "tweet_music_author";
+		private static final String TWEET_MUSIC_ID = "tweet_music_id";
+		private static final String TWEET_MUSIC_TITLE = "tweet_music_title";
+		private static final String TWEET_MUSIC_URL = "tweet_music_url";
 		private static final String COMMENT_COUNT = "comment_count";
 		private static final String R_COUNT = "r_count";
 		private static final String SOURCE_NICK = "source_nick";
@@ -97,6 +101,10 @@ public class DBManager extends SQLiteOpenHelper {
 		private static final String SOURCE_VIDEO_IMAGE = "source_video_image";
 		private static final String SOURCE_VIDEO_PLAYER = "source_video_player";
 		private static final String SOURCE_VIDEO_URL = "source_video_url";
+		private static final String SOURCE_MUSIC_AUTHOR = "source_music_author";
+		private static final String SOURCE_MUSIC_ID = "source_music_id";
+		private static final String SOURCE_MUSIC_TITLE = "source_music_title";
+		private static final String SOURCE_MUSIC_URL = "source_music_url";
 		private static final String SOURCE_LONGITUDE = "source_longitude";
 		private static final String SOURCE_LATITUDE = "source_latitude";
 		private static final String SOURCE_GEO = "source_geo";
@@ -460,6 +468,10 @@ public class DBManager extends SQLiteOpenHelper {
 				tweetList.setVideoImage(cursor.getString(cursor.getColumnIndex(TweetsColumns.TWEET_VIDEO_IMAGE)));
 				tweetList.setVideoPlayer(cursor.getString(cursor.getColumnIndex(TweetsColumns.TWEET_VIDEO_PLAYER)));
 				tweetList.setVideoUrl(cursor.getString(cursor.getColumnIndex(TweetsColumns.TWEET_VIDEO_URL)));
+				tweetList.setMusicAuthor(cursor.getString(cursor.getColumnIndex(TweetsColumns.TWEET_MUSIC_AUTHOR)));
+				tweetList.setMusicId(cursor.getString(cursor.getColumnIndex(TweetsColumns.TWEET_MUSIC_ID)));
+				tweetList.setMusicTitle(cursor.getString(cursor.getColumnIndex(TweetsColumns.TWEET_MUSIC_TITLE)));
+				tweetList.setMusicUrl(cursor.getString(cursor.getColumnIndex(TweetsColumns.TWEET_MUSIC_URL)));
 				tweetList.setMCount(cursor.getString(cursor.getColumnIndex(TweetsColumns.COMMENT_COUNT)));
 				tweetList.setCount(cursor.getString(cursor.getColumnIndex(TweetsColumns.R_COUNT)));
 				if(null != cursor.getString(cursor.getColumnIndex(TweetsColumns.SOURCE_NICK))){
@@ -470,6 +482,10 @@ public class DBManager extends SQLiteOpenHelper {
 					source.setVideoImage(cursor.getString(cursor.getColumnIndex(TweetsColumns.SOURCE_VIDEO_IMAGE)));
 					source.setVideoPlayer(cursor.getString(cursor.getColumnIndex(TweetsColumns.SOURCE_VIDEO_PLAYER)));
 					source.setVideoUrl(cursor.getString(cursor.getColumnIndex(TweetsColumns.SOURCE_VIDEO_URL)));
+					source.setMusicAuthor(cursor.getString(cursor.getColumnIndex(TweetsColumns.SOURCE_MUSIC_AUTHOR)));
+					source.setMusicId(cursor.getString(cursor.getColumnIndex(TweetsColumns.SOURCE_MUSIC_ID)));
+					source.setMusicTitle(cursor.getString(cursor.getColumnIndex(TweetsColumns.SOURCE_MUSIC_TITLE)));
+					source.setMusicUrl(cursor.getString(cursor.getColumnIndex(TweetsColumns.SOURCE_MUSIC_URL)));
 					source.setLongitude(cursor.getString(cursor.getColumnIndex(TweetsColumns.SOURCE_LONGITUDE)));
 					source.setLatitude(cursor.getString(cursor.getColumnIndex(TweetsColumns.SOURCE_LATITUDE)));
 					source.setGeo(cursor.getString(cursor.getColumnIndex(TweetsColumns.SOURCE_GEO)));
@@ -1343,6 +1359,12 @@ public class DBManager extends SQLiteOpenHelper {
 			cv.put(TweetsColumns.TWEET_VIDEO_PLAYER, tweetBean.getVideoPlayer());
 			cv.put(TweetsColumns.TWEET_VIDEO_URL, tweetBean.getVideoUrl());
 		}
+		if(null != tweetBean.getMusicUrl()){
+			cv.put(TweetsColumns.TWEET_MUSIC_AUTHOR, tweetBean.getMusicAuthor());
+			cv.put(TweetsColumns.TWEET_MUSIC_ID, tweetBean.getMusicId());
+			cv.put(TweetsColumns.TWEET_MUSIC_TITLE, tweetBean.getMusicTitle());
+			cv.put(TweetsColumns.TWEET_MUSIC_URL, tweetBean.getMusicUrl());
+		}
 		cv.put(TweetsColumns.COMMENT_COUNT, tweetBean.getMCount());
 		cv.put(TweetsColumns.R_COUNT, tweetBean.getCount());
 		if(null != tweetBean.getSource()){
@@ -1353,6 +1375,12 @@ public class DBManager extends SQLiteOpenHelper {
 				cv.put(TweetsColumns.SOURCE_VIDEO_IMAGE, tweetBean.getSource().getVideoImage());
 				cv.put(TweetsColumns.SOURCE_VIDEO_PLAYER, tweetBean.getSource().getVideoPlayer());
 				cv.put(TweetsColumns.SOURCE_VIDEO_URL, tweetBean.getSource().getVideoUrl());
+			}
+			if(null != tweetBean.getSource().getMusicUrl()){
+				cv.put(TweetsColumns.SOURCE_MUSIC_AUTHOR, tweetBean.getSource().getMusicAuthor());
+				cv.put(TweetsColumns.SOURCE_MUSIC_ID, tweetBean.getSource().getMusicId());
+				cv.put(TweetsColumns.SOURCE_MUSIC_TITLE, tweetBean.getSource().getMusicTitle());
+				cv.put(TweetsColumns.SOURCE_MUSIC_URL, tweetBean.getSource().getMusicUrl());
 			}
 			if(null != tweetBean.getSource().getLongitude()){
 				cv.put(TweetsColumns.SOURCE_LONGITUDE, tweetBean.getSource().getLongitude());
@@ -1459,6 +1487,10 @@ public class DBManager extends SQLiteOpenHelper {
 				                                                       + TweetsColumns.TWEET_VIDEO_IMAGE + " TEXT,"
 				                                                       + TweetsColumns.TWEET_VIDEO_PLAYER + " TEXT,"
 				                                                       + TweetsColumns.TWEET_VIDEO_URL + " TEXT,"
+				                                                       + TweetsColumns.TWEET_MUSIC_AUTHOR + " TEXT,"
+				                                                       + TweetsColumns.TWEET_MUSIC_ID + " TEXT,"
+				                                                       + TweetsColumns.TWEET_MUSIC_TITLE + " TEXT,"
+				                                                       + TweetsColumns.TWEET_MUSIC_URL + " TEXT,"
 				                                                       + TweetsColumns.COMMENT_COUNT + " TEXT,"
 				                                                       + TweetsColumns.R_COUNT + " TEXT,"
 				                                                       + TweetsColumns.SOURCE_NICK + " TEXT,"
@@ -1467,6 +1499,10 @@ public class DBManager extends SQLiteOpenHelper {
 				                                                       + TweetsColumns.SOURCE_VIDEO_IMAGE + " TEXT,"
 				                                                       + TweetsColumns.SOURCE_VIDEO_PLAYER + " TEXT,"
 				                                                       + TweetsColumns.SOURCE_VIDEO_URL + " TEXT,"
+				                                                       + TweetsColumns.SOURCE_MUSIC_AUTHOR + " TEXT,"
+				                                                       + TweetsColumns.SOURCE_MUSIC_ID + " TEXT,"
+				                                                       + TweetsColumns.SOURCE_MUSIC_TITLE + " TEXT,"
+				                                                       + TweetsColumns.SOURCE_MUSIC_URL + " TEXT,"
 				                                                       + TweetsColumns.SOURCE_LONGITUDE + " TEXT,"
 				                                                       + TweetsColumns.SOURCE_LATITUDE + " TEXT,"
 				                                                       + TweetsColumns.SOURCE_GEO + " TEXT,"
@@ -1498,6 +1534,10 @@ public class DBManager extends SQLiteOpenHelper {
                                                                     + TweetsColumns.TWEET_VIDEO_IMAGE + " TEXT,"
                                                                     + TweetsColumns.TWEET_VIDEO_PLAYER + " TEXT,"
                                                                     + TweetsColumns.TWEET_VIDEO_URL + " TEXT,"
+                                                                    + TweetsColumns.TWEET_MUSIC_AUTHOR + " TEXT,"
+				                                                    + TweetsColumns.TWEET_MUSIC_ID + " TEXT,"
+				                                                    + TweetsColumns.TWEET_MUSIC_TITLE + " TEXT,"
+				                                                    + TweetsColumns.TWEET_MUSIC_URL + " TEXT,"
                                                                     + TweetsColumns.COMMENT_COUNT + " TEXT,"
                                                                     + TweetsColumns.R_COUNT + " TEXT,"
                                                                     + TweetsColumns.SOURCE_NICK + " TEXT,"
@@ -1506,6 +1546,10 @@ public class DBManager extends SQLiteOpenHelper {
                                                                     + TweetsColumns.SOURCE_VIDEO_IMAGE + " TEXT,"
                                                                     + TweetsColumns.SOURCE_VIDEO_PLAYER + " TEXT,"
                                                                     + TweetsColumns.SOURCE_VIDEO_URL + " TEXT,"
+                                                                    + TweetsColumns.SOURCE_MUSIC_AUTHOR + " TEXT,"
+				                                                    + TweetsColumns.SOURCE_MUSIC_ID + " TEXT,"
+				                                                    + TweetsColumns.SOURCE_MUSIC_TITLE + " TEXT,"
+				                                                    + TweetsColumns.SOURCE_MUSIC_URL + " TEXT,"
                                                                     + TweetsColumns.SOURCE_LONGITUDE + " TEXT,"
                                                                     + TweetsColumns.SOURCE_LATITUDE + " TEXT,"
                                                                     + TweetsColumns.SOURCE_GEO + " TEXT,"

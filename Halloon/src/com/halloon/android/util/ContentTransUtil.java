@@ -3,10 +3,6 @@ package com.halloon.android.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
@@ -15,11 +11,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -29,12 +22,15 @@ import android.widget.TextView;
 
 import com.halloon.android.R;
 import com.halloon.android.bean.TweetBean;
-import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
+import com.halloon.android.data.ContentManager;
+import com.halloon.android.task.BaseCompatiableTask;
 
 @SuppressLint("ServiceCast")
 public class ContentTransUtil {
 	private Context context;
 	private static ContentTransUtil instance;
+	
+	private String longUrl = "";
 
 	public ContentTransUtil(Context context) {
 		this.context = context;
@@ -79,8 +75,8 @@ public class ContentTransUtil {
 					if(group.contains(emojiName)){
 						Drawable drawable = context.getResources().getDrawable(EmojiContainer.getEmojiId(context, i));
 						drawable.setBounds(0, 0, textWidth, textWidth);
-						if(group.length() == emojiName.length()){
-							ss.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE), matcher.start(), matcher.end() + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+						if(group.length() == emojiName.length() + 1){
+							ss.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 						}else{
 							ss.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE), matcher.start(), matcher.start() + emojiName.length() + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 						}
@@ -108,8 +104,10 @@ public class ContentTransUtil {
 			}else if(group.startsWith("#")){
 				ss.setSpan(new ForegroundColorSpan(0xFF0085DF), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}else if(group.startsWith("http")){
+				final String link = group;
+				final String shortUrl = group.substring(group.lastIndexOf("/") + 1);
 				if(isLink){
-					final String link = group;
+					
 					ss.setSpan(new ClickableSpan(){
 						@Override
 						public void onClick(View widget){
@@ -121,7 +119,24 @@ public class ContentTransUtil {
 						}
 					}, matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				}
-				Drawable drawable = context.getResources().getDrawable(R.drawable.button_link);
+				
+				Drawable drawable = null;
+				int id = R.drawable.button_link;
+				if(tweetBean.getShortList() != null){
+					String shortMatch = tweetBean.getShortList().get(shortUrl);
+					if(shortMatch != null){
+						if(shortMatch.startsWith("http://music.qq.com/qqmusic.html?id")){
+							id = R.drawable.button_music_link;
+						}else if(shortMatch.startsWith("http://v.youku.com/") ||
+								 shortMatch.startsWith("http://www.tudou.com/") || 
+								 shortMatch.startsWith("http://v.qq.com") || 
+								 shortMatch.startsWith("http://v.ku6.com")){
+							id = R.drawable.button_video_link;
+						}
+					}
+				}
+				
+				drawable = context.getResources().getDrawable(id);
 				drawable.setBounds(0, 0, (int) (textWidth * 3.5), textWidth);
 				ss.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}

@@ -15,6 +15,7 @@ import com.halloon.android.api.FavAPI;
 import com.halloon.android.api.LBSAPI;
 import com.halloon.android.api.OtherAPI;
 import com.halloon.android.api.PrivateMessageAPI;
+import com.halloon.android.api.ShortUrlAPI;
 import com.halloon.android.api.UserUpdateAPI;
 import com.halloon.android.bean.PrivateDataBean;
 import com.halloon.android.bean.ProfileBean;
@@ -513,6 +514,13 @@ public class ContentManager {
 				temp_tweet.setVideoPlayer(videoObject.getString("player"));
 				temp_tweet.setVideoUrl(videoObject.getString("shorturl"));
 			}
+			JSONObject musicObject = tweetInfoObject.optJSONObject("music");
+			if(musicObject != null){
+				temp_tweet.setMusicAuthor(musicObject.getString("author"));
+				temp_tweet.setMusicId(musicObject.getString("id"));
+				temp_tweet.setMusicTitle(musicObject.getString("title"));
+				temp_tweet.setMusicUrl(musicObject.getString("url"));
+			}
 
 			JSONObject sourceTweetObject = tweetInfoObject
 					.optJSONObject("source");
@@ -523,25 +531,25 @@ public class ContentManager {
 				sourceTweetBean.setNick(sourceTweetObject.getString("nick"));
 				sourceTweetBean.setName(sourceTweetObject.getString("name"));
 				sourceTweetBean.setText(sourceTweetObject.getString("origtext"));
-				sourceTweetBean.setTweetImage(sourceTweetObject
-						.optString("image"));
-				sourceTweetBean.setLongitude(sourceTweetObject
-						.optString("longitude"));
-				sourceTweetBean.setLatitude(sourceTweetObject
-						.optString("latitude"));
-				System.out.println(sourceTweetBean.getLongitude() + ","
-						+ sourceTweetBean.getLatitude());
+				sourceTweetBean.setTweetImage(sourceTweetObject.optString("image"));
+				sourceTweetBean.setLongitude(sourceTweetObject.optString("longitude"));
+				sourceTweetBean.setLatitude(sourceTweetObject.optString("latitude"));
+				System.out.println(sourceTweetBean.getLongitude() + "," + sourceTweetBean.getLatitude());
 				sourceTweetBean.setGeo(sourceTweetObject.getString("geo"));
 
-				JSONObject sourceVideoObject = sourceTweetObject
-						.optJSONObject("video");
+				JSONObject sourceVideoObject = sourceTweetObject.optJSONObject("video");
 				if (sourceVideoObject != null) {
-					sourceTweetBean.setVideoImage(sourceVideoObject
-							.getString("picurl"));
-					sourceTweetBean.setVideoPlayer(sourceVideoObject
-							.getString("player"));
-					sourceTweetBean.setVideoUrl(sourceVideoObject
-							.getString("shorturl"));
+					sourceTweetBean.setVideoImage(sourceVideoObject.getString("picurl"));
+					sourceTweetBean.setVideoPlayer(sourceVideoObject.getString("player"));
+					sourceTweetBean.setVideoUrl(sourceVideoObject.getString("shorturl"));
+				}
+				
+				JSONObject sourceMusicObject = sourceTweetObject.optJSONObject("music");
+				if(sourceMusicObject != null){
+					sourceTweetBean.setMusicAuthor(sourceMusicObject.getString("author"));
+					sourceTweetBean.setMusicId(sourceMusicObject.getString("id"));
+					sourceTweetBean.setMusicTitle(sourceMusicObject.getString("title"));
+					sourceTweetBean.setMusicUrl(sourceMusicObject.getString("url"));
 				}
 
 				temp_tweet.setSource(sourceTweetBean);
@@ -1043,5 +1051,19 @@ public class ContentManager {
 		}
 
 		return tweetBeans;
+	}
+	
+	public String getExpandedUrl(String url){
+		ShortUrlAPI shortUrlApi = new ShortUrlAPI(OAuthConstants.OAUTH_VERSION_2_A);
+		String longUrl = null;
+		try{
+			longUrl = shortUrlApi.getExpandedUrl(preoauth, "json", url);
+			JSONObject longUrlObject = new JSONObject(longUrl);
+			longUrl = longUrlObject.getJSONObject("data").getString("long_url");
+		}catch(Exception e){
+			Log.d(Constants.LOG_TAG, "GET_SHORT_URL_ERROR: " + e);
+		}
+		
+		return longUrl;
 	}
 }

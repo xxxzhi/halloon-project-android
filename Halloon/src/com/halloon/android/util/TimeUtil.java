@@ -1,6 +1,7 @@
 package com.halloon.android.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -30,55 +31,51 @@ public class TimeUtil {
 			Log.d(Constants.LOG_TAG, "parseLong:" + timestampN + " error:" + e);
 		}
 		long timeGap = currentSeconds - timestampN;// 与现在时间相差秒数
+		
+		Calendar currentCalendar = Calendar.getInstance();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(timestampN * 1000);
+		
 		String timeStr = null;
-		switch (type) {
-		case 0:
-			if (timeGap > 24 * 60 * 60) {// 1天以上
-				timeStr = timeGap / (24 * 60 * 60) + "天前";
-			} else if (timeGap > 60 * 60) {// 1小时-24小时
-				timeStr = timeGap / (60 * 60) + "小时前";
-			} else if (timeGap > 60) {// 1分钟-59分钟
-				timeStr = timeGap / 60 + "分钟前";
-			} else {// 1秒钟-59秒钟
-				timeStr = "刚刚";
-			}
-			break;
-		case 1:
-			if (timeGap > 24 * 60 * 60) {// 1天以上
-				timeStr = getStandardTime(timestamp);
-			} else if (timeGap > 60 * 60) {// 1小时-24小时
-				timeStr = timeGap / (60 * 60) + "小时前";
-			} else if (timeGap > 60) {// 1分钟-59分钟
-				timeStr = timeGap / 60 + "分钟前";
-			} else {// 1秒钟-59秒钟
-				timeStr = "刚刚";
-			}
-			break;
-		case 2:
-			if (timeGap > 60 * 60) {// 1小时以上
-				timeStr = getStandardTime(timestamp);
-			} else if (timeGap > 60) {// 1分钟-59分钟
-				timeStr = timeGap / 60 + "分钟前";
-			} else {// 1秒钟-59秒钟
-				timeStr = "刚刚";
-			}
-			break;
-		case 3:
-			if (timeGap > 60) {// 1分钟以上
-				timeStr = getStandardTime(timestamp);
-			} else {// 1秒钟-59秒钟
-				timeStr = "刚刚";
-			}
-			break;
-		case 4:
-			timeStr = getStandardTime(timestamp);
-			break;
+		
+		int dayGap = currentCalendar.get(Calendar.DAY_OF_YEAR) - calendar.get(Calendar.DAY_OF_YEAR);
+		int yearGap = currentCalendar.get(Calendar.YEAR)- calendar.get(Calendar.YEAR); 
+		if(dayGap == 1){
+			timeStr = "昨天 " + getStandardTime(timestamp, "HH:mm");
+			return timeStr;
 		}
+		
+        if(dayGap == 2){
+			timeStr = "前天 " + getStandardTime(timestamp, "HH:mm");
+			return timeStr;
+		}
+        
+        if(dayGap >= 3 && yearGap == 0){
+        	timeStr = getStandardTime(timestamp, "MM-dd HH:mm");
+        	return timeStr;
+        }
+        
+        if(yearGap > 0){
+        	timeStr = getStandardTime(timestamp, "yyyy-MM-dd HH:mm");
+        	return timeStr;
+        }
+        
+        if(timeGap > 6 * 60 * 60){
+        	timeStr = getStandardTime(timestamp, "HH:mm");
+        }else if(timeGap > 60 * 60){
+			timeStr = timeGap / (60 * 60) + "小时前";
+		}else if(timeGap > 60){
+			timeStr = timeGap / 60 + "分钟前";
+		}else{
+			timeStr = "刚刚";
+		}
+        
+        
 		return timeStr;
 	}
 
-	public static String getStandardTime(String timestamp) {
-		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA);
+	public static String getStandardTime(String timestamp, String format) {
+		SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.CHINA);
 		long timestampN = 0;
 		try {
 			timestampN = Long.parseLong(timestamp);

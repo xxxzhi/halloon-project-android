@@ -2,6 +2,8 @@ package com.halloon.android.ui.fragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -306,6 +308,36 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 					case OTHER_TWEET:
 						tmpArrayList = ContentManager.getInstance(context).getOtherTimeLine("", "", tweetNumber, "", otherName, null, "", "");
 						break;
+					}
+					
+					if(tmpArrayList != null){
+						int i = 0;
+						do{
+							String text = tmpArrayList.get(i).getText();
+							String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
+							Pattern pattern = Pattern.compile(ADDR_PATTERN);
+							Matcher matcher = pattern.matcher(text);
+							HashMap<String, String> tmpHashMap = new HashMap<String, String>();
+							while(matcher.find()){
+								String group = matcher.group();
+								group = group.substring(group.lastIndexOf("/") + 1);
+								String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
+								tmpHashMap.put(group, longUrl);
+							}
+							tmpArrayList.get(i).setShortList(tmpHashMap);
+							if(tmpArrayList.get(i).getSource() != null){
+								matcher = pattern.matcher(tmpArrayList.get(i).getSource().getText());
+								HashMap<String, String> tmpSourceHashMap = new HashMap<String, String>();
+								while(matcher.find()){
+									
+									String group = matcher.group();
+									group = group.substring(group.lastIndexOf("/") + 1);
+									String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
+									tmpSourceHashMap.put(group, longUrl);
+								}
+								tmpArrayList.get(i).getSource().setShortList(tmpSourceHashMap);
+							}
+						}while(++i < tmpArrayList.size());
 					}
 
 					return tmpArrayList;

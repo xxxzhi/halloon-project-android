@@ -1,9 +1,12 @@
 package com.halloon.android.bean;
 
+import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -19,6 +22,10 @@ public class TweetBean implements Parcelable{
 	private String videoImage;
 	private String videoPlayer;
 	private String videoUrl;
+	private String musicAuthor;
+	private String musicId;
+	private String musicTitle;
+	private String musicUrl;
 	private TweetBean source;
 	private String head;
 	private String nick;
@@ -30,6 +37,7 @@ public class TweetBean implements Parcelable{
 	private String longitude;
 	private String latitude;
 	private String geo;
+	private HashMap<String, String> shortList;
 	
 	public TweetBean(){}
 	
@@ -47,6 +55,10 @@ public class TweetBean implements Parcelable{
 		this.videoImage = tweetBean.videoImage;
 		this.videoPlayer = tweetBean.videoPlayer;
 		this.videoUrl = tweetBean.videoUrl;
+		this.musicAuthor = tweetBean.musicAuthor;
+		this.musicId = tweetBean.musicId;
+		this.musicTitle = tweetBean.musicTitle;
+		this.musicUrl = tweetBean.musicUrl;
 		this.source.add(tweetBean.source);
 		this.head = tweetBean.head;
 		this.nick = tweetBean.nick;
@@ -71,6 +83,10 @@ public class TweetBean implements Parcelable{
 		parcel.writeString(videoImage);
 		parcel.writeString(videoPlayer);
 		parcel.writeString(videoUrl);
+		parcel.writeString(musicAuthor);
+		parcel.writeString(musicId);
+		parcel.writeString(musicTitle);
+		parcel.writeString(musicUrl);
 		parcel.writeParcelable(source, flag);
 		parcel.writeString(head);
 		parcel.writeString(nick);
@@ -82,8 +98,12 @@ public class TweetBean implements Parcelable{
 		parcel.writeString(longitude);
 		parcel.writeString(latitude);
 		parcel.writeString(geo);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("shortList", shortList);
+		parcel.writeBundle(bundle);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void readFromParcel(Parcel parcel){
 		openId = parcel.readString();
 		id = parcel.readString();
@@ -94,6 +114,10 @@ public class TweetBean implements Parcelable{
 		videoImage = parcel.readString();
 		videoPlayer = parcel.readString();
 		videoUrl = parcel.readString();
+		musicAuthor = parcel.readString();
+		musicId = parcel.readString();
+		musicTitle = parcel.readString();
+		musicUrl = parcel.readString();
 		source = parcel.readParcelable(null);
 		head = parcel.readString();
 		nick = parcel.readString();
@@ -105,6 +129,7 @@ public class TweetBean implements Parcelable{
 		longitude = parcel.readString();
 		latitude = parcel.readString();
 		geo = parcel.readString();
+		shortList = (HashMap<String, String>) parcel.readBundle().getSerializable("shortList");
 	}
 	
 	public void setOpenId(String openId){
@@ -190,6 +215,38 @@ public class TweetBean implements Parcelable{
 
 	public String getVideoUrl() {
 		return videoUrl;
+	}
+	
+	public void setMusicAuthor(String author){
+		musicAuthor = author;
+	}
+	
+	public String getMusicAuthor(){
+		return musicAuthor;
+	}
+	
+	public void setMusicId(String id){
+		musicId = id;
+	}
+	
+	public String getMusicId(){
+		return musicId;
+	}
+	
+	public void setMusicTitle(String title){
+		musicTitle = title;
+	}
+	
+	public String getMusicTitle(){
+		return musicTitle;
+	}
+	
+	public void setMusicUrl(String url){
+		musicUrl = url;
+	}
+	
+	public String getMusicUrl(){
+		return musicUrl;
 	}
 
 	public void setSource(TweetBean source) {
@@ -291,6 +348,14 @@ public class TweetBean implements Parcelable{
 	public String getGeo() {
 		return geo;
 	}
+	
+	public void setShortList(HashMap<String, String> list){
+		this.shortList = list;
+	}
+	
+	public HashMap<String, String> getShortList(){
+		return shortList;
+	}
 
 	@Override
 	public int describeContents() {
@@ -310,4 +375,5 @@ public class TweetBean implements Parcelable{
 		}
 		
 	};
+	
 }
