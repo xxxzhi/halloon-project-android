@@ -174,13 +174,7 @@ public class CommentFragment extends Fragment implements OnClickListener,
 	}
 
 	@Override
-	public void onSelected(String emojiName){
-		content.append(emojiName);
-	}
-	
-	@Override
-	public void onBackSpace(){
-		System.out.println("backspace");
-		if(content.length() > 0) content.setText(String.valueOf(content.getText()).substring(0, content.getText().length() - 1));
+	public EditText getEditText(){
+		return content;
 	}
 }

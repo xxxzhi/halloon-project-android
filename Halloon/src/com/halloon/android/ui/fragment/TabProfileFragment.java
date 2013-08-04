@@ -21,6 +21,7 @@ import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 import com.halloon.android.ui.fragment.TabMainPageFragment.MainPageFragmentCallback;
+import com.halloon.android.util.NumberUtil;
 import com.halloon.android.view.ScrollTextView;
 import com.halloon.android.widget.HalloonTitleBar;
 import com.halloon.android.widget.TagView;
@@ -159,7 +160,11 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 
 				if(result != null){
 					profileBean = result;
-					if(type == ME) DBManager.getInstance(context).upgradeProfile(profileBean);
+					if(type == ME){
+						DBManager.getInstance(context).upgradeProfile(profileBean);
+					}else{
+						mTitleBar.getTitleTextView().setText(profileBean.getNick());
+					}
 					ImageLoader.getInstance(context).displayImage(profileBean.getHead() + "/100", myHeadicon, 1);
 					myNick.setText(profileBean.getNick());
 					if(profileBean.getSex() != null){
@@ -174,6 +179,10 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 						}
 					}
 					mySign.setText(profileBean.getIntroduction());
+					tweetButton.setText(context.getString(R.string.wblog)+ "\n" + NumberUtil.shortenNumericString(context, profileBean.getTweetNum()));
+					idolButton.setText(context.getString(R.string.idol)+ "\n" + NumberUtil.shortenNumericString(context, profileBean.getIdolNum()));
+					fanButton.setText(context.getString(R.string.fan)+ "\n" + NumberUtil.shortenNumericString(context, profileBean.getFansNum()));
+					favButton.setText(context.getString(R.string.fav)+ "\n" + NumberUtil.shortenNumericString(context, profileBean.getFavNum()));
 					
 					tagView.setContents(profileBean.getTag());
 

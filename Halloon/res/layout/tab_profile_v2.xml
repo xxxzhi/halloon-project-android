@@ -87,7 +87,7 @@
         <Button
             android:id="@+id/tweet"
             android:layout_width="75.0dip"
-            android:layout_height="60.0dip"
+            android:layout_height="45.0dip"
             android:text="@string/wblog"
             android:textColor="#FF666666"
             android:textSize="14sp"
@@ -96,7 +96,7 @@
         <Button
             android:id="@+id/idol"
             android:layout_width="75.0dip"
-            android:layout_height="60.0dip"
+            android:layout_height="45.0dip"
             android:text="@string/idol"
             android:textColor="#FF666666"
             android:textSize="14sp"
@@ -105,7 +105,7 @@
         <Button
             android:id="@+id/fans"
             android:layout_width="75.0dip"
-            android:layout_height="60.0dip"
+            android:layout_height="45.0dip"
             android:text="@string/fan"
             android:textColor="#FF666666"
             android:textSize="14sp"
@@ -114,7 +114,7 @@
         <Button
             android:id="@+id/fav"
             android:layout_width="75.0dip"
-            android:layout_height="60.0dip"
+            android:layout_height="45.0dip"
             android:text="@string/fav"
             android:textColor="#FF666666"
             android:textSize="14sp"
@@ -122,14 +122,13 @@
         
     </LinearLayout>
     
-    <com.halloon.android.widget.SplitLine
+    <View
         android:id="@+id/splitline"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@+id/count_layout"
         android:layout_marginTop="10.0dip"
-        halloon:color="#FFAAAAAA"
-        halloon:margin="3.0dip" />
+        android:background="#FFCCCCCC" />
     
     <TextView
         android:id="@+id/tag_title"

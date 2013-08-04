@@ -310,17 +310,9 @@ public class TweetDetailFragment extends BaseTitleBarFragment implements OnClick
 	}
 
 	@Override
-	public void onSelected(String emojiName) {
-		quickContent.append(emojiName);
+	public EditText getEditText(){
+		return quickContent;
 	}
-
-	@Override
-	public void onBackSpace() {
-		System.out.println("backspace");
-		if(quickContent.length() > 0) quickContent.setText(String.valueOf(quickContent.getText()).substring(0, quickContent.getText().length() - 1));
-	}
-
-	
 
 	@Override
 	public void onTitleContentClick(int contentEnum) {

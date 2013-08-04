@@ -160,8 +160,41 @@ public class ContentTransUtil {
 	}
 	
 	private static String convert(String target){
+		/*
 		return target.replaceAll("\\&gt\\;", "＞")
-				     .replaceAll("\\&lt\\;", "＜");
+				     .replaceAll("\\&lt\\;", "＜")
+				     .replaceAll("\\&amp\\;", "＆")
+				     .replaceAll("\\&apos\\;|\\&\\#39\\;", "＇")
+				     .replaceAll("\\&quot\\;", "＂")
+				     .replaceAll("\\&nbsp\\;", "　")
+				     .replaceAll("\\&cent\\;", "¢")
+				     .replaceAll("\\&pound\\;", "£")
+				     .replaceAll("\\&yen\\;", "¥")
+				     .replaceAll("\\&euro\\;", "€")
+				     .replaceAll("\\&sect\\;", "§")
+				     .replaceAll("\\&copy\\;", "©")
+				     .replaceAll("\\&reg\\;", "®")
+				     .replaceAll("\\&times\\;", "×")
+				     .replaceAll("\\&divide\\;", "÷")
+				     .replaceAll("\\&trade\\;", "™");
+		 */
+		
+		return target.replaceAll("\\&gt\\;", ">")
+			     .replaceAll("\\&lt\\;", "<")
+			     .replaceAll("\\&amp\\;", "&")
+			     .replaceAll("\\&apos\\;|\\&\\#39\\;", "'")
+			     .replaceAll("\\&quot\\;", "＂")
+			     .replaceAll("\\&nbsp\\;", " ")
+			     .replaceAll("\\&cent\\;", "¢")
+			     .replaceAll("\\&pound\\;", "£")
+			     .replaceAll("\\&yen\\;", "¥")
+			     .replaceAll("\\&euro\\;", "€")
+			     .replaceAll("\\&sect\\;", "§")
+			     .replaceAll("\\&copy\\;", "©")
+			     .replaceAll("\\&reg\\;", "®")
+			     .replaceAll("\\&times\\;", "×")
+			     .replaceAll("\\&divide\\;", "÷")
+			     .replaceAll("\\&trade\\;", "™");
 	}
 	
 	@Deprecated

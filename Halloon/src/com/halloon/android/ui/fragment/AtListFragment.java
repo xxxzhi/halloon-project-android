@@ -2,6 +2,8 @@ package com.halloon.android.ui.fragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
 import com.halloon.android.adapter.TweetContentAdapter;
 import com.halloon.android.bean.TweetBean;
@@ -29,6 +32,8 @@ public class AtListFragment extends Fragment {
 	private ArrayList<TweetBean> arrayList = new ArrayList<TweetBean>();
 
 	private Context context;
+	
+	private HalloonApplication application;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -43,6 +48,8 @@ public class AtListFragment extends Fragment {
 		list = (PullToRefreshListView) root.findViewById(R.id.list);
 		adapter = new TweetContentAdapter(context, arrayList);
 		list.setAdapter(adapter);
+		
+		application = (HalloonApplication) ((Activity) context).getApplication();
 
 		loadData();
 
@@ -77,6 +84,40 @@ public class AtListFragment extends Fragment {
 					tmp_list = DBManager.getInstance(context).getAtList();
 				}
 				
+				if(tmp_list != null){
+					int i = 0;
+					do{
+						String text = tmp_list.get(i).getText();
+						String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
+						Pattern pattern = Pattern.compile(ADDR_PATTERN);
+						Matcher matcher = pattern.matcher(text);
+						if(tmp_list.get(i).getMusicUrl() != null || tmp_list.get(i).getVideoImage() != null){
+							while(matcher.find()){
+								String group = matcher.group();
+								group = group.substring(group.lastIndexOf("/") + 1);
+								if(application.getShortList().get(group) == null){
+									String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
+									application.getShortList().put(group, longUrl);
+								}
+							}
+							
+						}
+						
+						if(tmp_list.get(i).getSource() != null && (tmp_list.get(i).getSource().getMusicUrl() != null || tmp_list.get(i).getSource().getVideoImage() != null)){
+							matcher = pattern.matcher(tmp_list.get(i).getSource().getText());
+							while(matcher.find()){
+								
+								String group = matcher.group();
+								group = group.substring(group.lastIndexOf("/") + 1);
+								if(application.getShortList().get(group) == null){
+									String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
+									application.getShortList().put(group, longUrl);
+								}
+							}
+						}
+					}while(++i < tmp_list.size());
+				}
+				
 				return tmp_list;
 			}
 
@@ -104,6 +145,41 @@ public class AtListFragment extends Fragment {
 					}
 
 					DBManager.getInstance(context).addAtList(tmp_list, true);
+					
+					if(tmp_list != null){
+						int i = 0;
+						do{
+							String text = tmp_list.get(i).getText();
+							String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
+							Pattern pattern = Pattern.compile(ADDR_PATTERN);
+							Matcher matcher = pattern.matcher(text);
+							if(tmp_list.get(i).getMusicUrl() != null || tmp_list.get(i).getVideoImage() != null){
+								while(matcher.find()){
+									String group = matcher.group();
+									group = group.substring(group.lastIndexOf("/") + 1);
+									if(application.getShortList().get(group) == null){
+										String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
+										application.getShortList().put(group, longUrl);
+									}
+								}
+								
+							}
+							
+							if(tmp_list.get(i).getSource() != null && (tmp_list.get(i).getSource().getMusicUrl() != null || tmp_list.get(i).getSource().getVideoImage() != null)){
+								matcher = pattern.matcher(tmp_list.get(i).getSource().getText());
+								while(matcher.find()){
+									
+									String group = matcher.group();
+									group = group.substring(group.lastIndexOf("/") + 1);
+									if(application.getShortList().get(group) == null){
+										String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
+										application.getShortList().put(group, longUrl);
+									}
+								}
+							}
+						}while(++i < tmp_list.size());
+					}
+					
 					return tmp_list;
 				}
 

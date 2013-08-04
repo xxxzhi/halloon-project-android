@@ -8,7 +8,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.Spannable;
 import android.text.TextWatcher;
+import android.text.style.BackgroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -135,6 +137,9 @@ public class PublishFragment extends Fragment implements OnClickListener,
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				counter.setText(start + count + "/140");
+				if(publishText.getText().length() > 140){
+					publishText.getText().setSpan(new BackgroundColorSpan(0xFF990000), 140, publishText.getText().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				}
 			}
 			
 		});
@@ -172,7 +177,7 @@ public class PublishFragment extends Fragment implements OnClickListener,
 		switch (v.getId()) {
 		case R.id.publish_button:
 			PostActionTask publishTask;
-			if (publishText.getText().length() >= 1) {
+			if (publishText.getText().length() >= 1 && publishText.getText().length() <= 140) {
 				if (isImageAdd && !isLocationAdd) {
 					publishTask = new PostActionTask(context, PostActionTask.PUBLISH_IMAGE_TWEET, publishText.getText().toString(), "1", ((PublishFragmentCallback) context).getCapturedImagePath());
 				} else if (isLocationAdd && !isImageAdd) {
@@ -233,30 +238,22 @@ public class PublishFragment extends Fragment implements OnClickListener,
 			}
 			break;
 		case R.id.p_at:
-			publishText.append("@");
+			publishText.getText().replace(publishText.getSelectionStart(), publishText.getSelectionEnd(), "@");
 			break;
 		case R.id.p_sharp:
-			publishText.append("##");
-			publishText.setSelection(publishText.length() - 1, publishText.length() - 1);
+			publishText.getText().replace(publishText.getSelectionStart(), publishText.getSelectionEnd(), "##");
+			publishText.setSelection(publishText.getSelectionEnd() - 1);
 			break;
 		}
 	}
 	
 	@Override
-	public void onSelected(String emojiName){
-		publishText.append(emojiName);
-	}
-	
-	@Override
-	public void onBackSpace(){
-		System.out.println("backspace");
-		if(publishText.length() > 0) publishText.setText(String.valueOf(publishText.getText()).substring(0, publishText.getText().length() - 1));
+	public EditText getEditText(){
+		return publishText;
 	}
 
 	@Override
-	public void onLocationSeeking() {
-		
-	}
+	public void onLocationSeeking() {}
 
 	@Override
 	public void onLocationGot(double longitude, double latitude) {

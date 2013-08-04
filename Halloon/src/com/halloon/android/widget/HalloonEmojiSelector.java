@@ -10,6 +10,11 @@ package com.halloon.android.widget;
 import java.lang.ref.WeakReference;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.DynamicDrawableSpan;
+import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -36,7 +42,7 @@ import com.halloon.android.util.CirclePageIndicator;
 
 public class HalloonEmojiSelector extends LinearLayout{
 	
-	private static final String TAG = HalloonEmojiSelector.class.getSimpleName();
+	private static final String TAG = "HalloonEmojiSelector";
 	
 	private CirclePageIndicator circlePageIndicator;
 	private ViewPager pageContainer;
@@ -116,7 +122,19 @@ public class HalloonEmojiSelector extends LinearLayout{
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 						if(position < 23 && position + (p * 23) < EmojiContainer.emoNameContainer.length){
-							onEmojiSelectedListener.onSelected("/" + EmojiContainer.emoNameContainer[position + (p * 23)]);
+							if(onEmojiSelectedListener != null){
+								String emojiName = "/" + EmojiContainer.emoNameContainer[position + (p * 23)];
+								EditText publishText = onEmojiSelectedListener.getEditText();
+								
+								int drawableId = EmojiContainer.getEmojiId(context, position + (p * 23));
+								int size = (int) publishText.getPaint().getTextSize();
+								
+								Drawable drawable = context.getResources().getDrawable(drawableId);
+								drawable.setBounds(0, 0, size, size);
+								SpannableString ss = new SpannableString(emojiName);
+								ss.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE), 0, emojiName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+								publishText.getText().replace(publishText.getSelectionStart(), publishText.getSelectionEnd(), ss);
+							}
 						}
 					}
 					
@@ -285,7 +303,21 @@ public class HalloonEmojiSelector extends LinearLayout{
 			OnEmojiSelectedListener mOnEmojiSelectedListener = onEmojiSelectedListener.get();
 			switch(msg.what){
 			case 0:
-				mOnEmojiSelectedListener.onBackSpace();
+				if(mOnEmojiSelectedListener != null){
+					EditText publishText = mOnEmojiSelectedListener.getEditText();
+					System.out.println("backspace");
+					if(publishText.length() > 0){
+						int start = publishText.getSelectionStart();
+						int end = publishText.getSelectionEnd();
+						if(start != end){
+							publishText.getText().delete(start, end);
+						}else{
+							if(start != 0){
+								publishText.getText().delete(start - 1, end);
+							}
+						}
+					}
+				}
 				break;
 			}
 		}

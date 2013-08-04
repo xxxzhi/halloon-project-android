@@ -456,7 +456,7 @@ public class ContentManager {
 					temp_comment.setNick(commentInfoObject.getString("nick"));
 					temp_comment.setName(commentInfoObject.getString("name"));
 					temp_comment.setHead(commentInfoObject.getString("head"));
-					temp_comment.setText(commentInfoObject.getString("text"));
+					temp_comment.setText(commentInfoObject.getString("origtext"));
 					temp_comment.setTimestamp(commentInfoObject.getString("timestamp"));
 					temp_comment.setTweetImage(commentInfoObject.optString("image"));
 					temp_comment.setFrom(commentInfoObject.getString("from"));
@@ -469,7 +469,7 @@ public class ContentManager {
 						JSONObject temp_source_object = commentInfoObject.getJSONObject("source");
 						temp_source.setId(temp_source_object.getString("id"));
 						temp_source.setOpenId(temp_source_object.getString("openid"));
-						temp_source.setText(temp_source_object.getString("text"));
+						temp_source.setText(temp_source_object.getString("origtext"));
 						temp_source.setHead(temp_source_object.getString("head"));
 						temp_source.setNick(temp_source_object.getString("nick"));
 						temp_source.setName(temp_source_object.getString("name"));
@@ -522,8 +522,7 @@ public class ContentManager {
 				temp_tweet.setMusicUrl(musicObject.getString("url"));
 			}
 
-			JSONObject sourceTweetObject = tweetInfoObject
-					.optJSONObject("source");
+			JSONObject sourceTweetObject = tweetInfoObject.optJSONObject("source");
 			if (sourceTweetObject != null && sourceTweetObject.length() > 0) {
 				TweetBean sourceTweetBean = new TweetBean();
 
@@ -553,8 +552,6 @@ public class ContentManager {
 				}
 
 				temp_tweet.setSource(sourceTweetBean);
-			} else {
-				temp_tweet.setSource(null);
 			}
 
 			temp_tweet.setId(tweetInfoObject.getString("id"));

@@ -31,8 +31,7 @@
         android:maxHeight="400.0dip"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/welcome"
-        android:visibility="gone" />
+        android:src="@drawable/welcome" />
     
     <RelativeLayout
         android:id="@+id/forward_background"
