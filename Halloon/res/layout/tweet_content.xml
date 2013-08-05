@@ -81,7 +81,7 @@
         android:layout_marginRight="4.0dip"
         android:background="@drawable/contain_image_2" />
 
-    <TextView
+    <com.halloon.android.widget.ButtonStyleTextView
         android:id="@+id/tweet_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
         android:background="@drawable/round_corner"
         android:visibility="gone" >
         
-        <TextView
+        <com.halloon.android.widget.ButtonStyleTextView
             android:id="@+id/forward_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -14,12 +14,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
@@ -45,7 +49,7 @@ public class ContentTransUtil {
 		content = convert(content);
 		if(isSource) content = tweetBean.getSource().getNick() + ":" + content;
 		
-		SpannableString ss = new SpannableString(content);
+		final SpannableString ss = new SpannableString(content);
 		
 		if(isSource){
 			ss.setSpan(new ForegroundColorSpan(0xFF0085DF), 0, tweetBean.getSource().getNick().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -53,6 +57,7 @@ public class ContentTransUtil {
 		
 		String MENTION_PATTERN = "@[\\w\\p{InCJKUnifiedIdeographs}-]{1,20}";
 		String TOPIC_PATTERN = "#([^\\#|.]+)#";
+		String SEARCH_PATTERN = "\\{([^\\#\\{\\}|.]+)\\}";
 		String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
 		String EMOJI_PATTERN = "\\/[\\p{InCJKUnifiedIdeographs}]{0,3}";//or\\/[\u4e00-\u9fa5]{0,3}
 		
@@ -61,11 +66,15 @@ public class ContentTransUtil {
 		
 		Pattern pattern = Pattern.compile(MENTION_PATTERN + "|" + 
 		                                  TOPIC_PATTERN + "|" + 
+				                          SEARCH_PATTERN + "|" +
 				                          EMOJI_PATTERN + "|" + 
 		                                  ADDR_PATTERN);
-		Matcher matcher = pattern.matcher(content);
+		final Matcher matcher = pattern.matcher(content);
 		while(matcher.find()){
-			String group = matcher.group();
+			final String group = matcher.group();
+			final int start = matcher.start();
+			final int end = matcher.end();
+			
 			if(group.startsWith("/")){
 				final int length = EmojiContainer.emoNameContainer.length;
 				int i = 0;
@@ -75,15 +84,14 @@ public class ContentTransUtil {
 						Drawable drawable = context.getResources().getDrawable(EmojiContainer.getEmojiId(context, i));
 						drawable.setBounds(0, 0, textWidth, textWidth);
 						if(group.length() == emojiName.length() + 1){
-							ss.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+							ss.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 						}else{
-							ss.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE), matcher.start(), matcher.start() + emojiName.length() + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+							ss.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE), start, start + emojiName.length() + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 						}
 						break;
 					}
 				}while(++i < length);
 			}else if(group.startsWith("@")){
-				final String nick = group;
 				/*
 				if(context instanceof BaseMultiFragmentActivity){
 					ss.setSpan(new ClickableSpan(){
@@ -95,17 +103,31 @@ public class ContentTransUtil {
 						    ((BaseMultiFragmentActivity) context).setupProfileFragment(bundle);
 						}
 						
-					}, matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				}
 				 */
-				ss.setSpan(new ForegroundColorSpan(0xFF0085DF), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				ss.setSpan(new ForegroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				
 			}else if(group.startsWith("#")){
-				ss.setSpan(new ForegroundColorSpan(0xFF0085DF), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				ss.setSpan(new ForegroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}else if(group.startsWith("{")){
+				ss.setSpan(new ForegroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				ss.setSpan(new ClickableSpan(){
+					@Override
+					public void onClick(View widget) {
+						Toast.makeText(context, "clickSpan", Toast.LENGTH_LONG).show();
+						ss.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					}
+					
+					@Override
+					public void updateDrawState(TextPaint tp){}
+					
+				}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}else if(group.startsWith("http")){
 				final String link = group;
 				final String shortUrl = group.substring(group.lastIndexOf("/") + 1);
 				if(isLink){
+					tv.setMovementMethod(LinkMovementMethod.getInstance());
 					
 					ss.setSpan(new ClickableSpan(){
 						@Override
@@ -116,7 +138,7 @@ public class ContentTransUtil {
 							intent.setData(uri);
 							context.startActivity(intent);
 						}
-					}, matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				}
 				
 				Drawable drawable = null;
@@ -139,7 +161,7 @@ public class ContentTransUtil {
 				
 				drawable = context.getResources().getDrawable(id);
 				drawable.setBounds(0, 0, (int) (textWidth * 3.5), textWidth);
-				ss.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				ss.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 		}
 		

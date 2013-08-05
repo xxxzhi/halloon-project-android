@@ -70,7 +70,7 @@ public class TweetDetailFragment extends BaseTitleBarFragment implements OnClick
 		super.onAttach(activity);
 		this.tdCallback = (TweetDetailFragmentCallback) activity;
 		if (getArguments().getString("id") != null) this.id = getArguments().getString("id");
-		if(getArguments().getParcelable("tweetBean") != null) this.tweetDetailBean = (TweetBean) getArguments().getParcelable("tweetBean");
+		if(getArguments().getBundle("tweetBean") != null) this.tweetDetailBean.decodeFromBundle(getArguments().getBundle("tweetBean"));
 		context = activity;
 	}
 

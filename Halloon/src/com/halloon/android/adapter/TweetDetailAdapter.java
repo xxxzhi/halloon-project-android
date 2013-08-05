@@ -173,7 +173,6 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 				ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getText(), tweetContentHolder.tweetContent, tweetBean, false, true);
 			}
 			
-			tweetContentHolder.tweetContent.setMovementMethod(LinkMovementMethod.getInstance());
 			tweetContentHolder.tweetContent.setLongClickable(true);
 			tweetContentHolder.tweetContent.setOnLongClickListener(new OnLongClickListener(){
 
@@ -229,7 +228,6 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 			}
 			if (tweetBean.getSource() != null) {
 				tweetContentHolder.forwardContainer.setVisibility(View.VISIBLE);
-				tweetContentHolder.forwardContent.setMovementMethod(LinkMovementMethod.getInstance());
 				
 				ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getSource().getText(), tweetContentHolder.forwardContent, tweetBean, true, true);
 				tweetContentHolder.forwardContent.setLongClickable(true);

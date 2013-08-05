@@ -9,8 +9,9 @@ import org.json.JSONObject;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
-public class TweetBean implements Parcelable{
+public class TweetBean{
 
 	
 	private String openId;
@@ -39,10 +40,6 @@ public class TweetBean implements Parcelable{
 	private String geo;
 	
 	public TweetBean(){}
-	
-	public TweetBean(Parcel parcel){
-		readFromParcel(parcel);
-	}
 
 	public void add(TweetBean tweetBean) {
 		this.openId = tweetBean.openId;
@@ -71,60 +68,65 @@ public class TweetBean implements Parcelable{
 		this.geo = tweetBean.geo;
 	}
 	
-	@Override
-	public void writeToParcel(Parcel parcel, int flag){
-		parcel.writeString(openId);
-		parcel.writeString(id);
-		parcel.writeString(from);
-		parcel.writeString(timestamp);
-		parcel.writeString(text);
-		parcel.writeString(tweetImage.toString());
-		parcel.writeString(videoImage);
-		parcel.writeString(videoPlayer);
-		parcel.writeString(videoUrl);
-		parcel.writeString(musicAuthor);
-		parcel.writeString(musicId);
-		parcel.writeString(musicTitle);
-		parcel.writeString(musicUrl);
-		parcel.writeParcelable(source, flag);
-		parcel.writeString(head);
-		parcel.writeString(nick);
-		parcel.writeString(name);
-		parcel.writeString(count);
-		parcel.writeString(mCount);
-		parcel.writeInt(isVip);
-		parcel.writeString(mentionedUser.toString());
-		parcel.writeString(longitude);
-		parcel.writeString(latitude);
-		parcel.writeString(geo);
+	public Bundle toBundle(){
+		Bundle bundle = new Bundle();
+		bundle.putString("openId", openId);
+		bundle.putString("id", id);
+		bundle.putString("from", from);
+		bundle.putString("timestamp", timestamp);
+		bundle.putString("text", text);
+		bundle.putString("tweetImage", tweetImage);
+		bundle.putString("videoImage", videoImage);
+		bundle.putString("videoPlayer", videoPlayer);
+		bundle.putString("videoUrl", videoUrl);
+		bundle.putString("musicAuthor", musicAuthor);
+		bundle.putString("musicId", musicId);
+		bundle.putString("musicTitle", musicTitle);
+		bundle.putString("musicUrl", musicUrl);
+		if(source != null && source.getNick() != null) bundle.putBundle("source", source.toBundle());
+		bundle.putString("head", head);
+		bundle.putString("nick", nick);
+		bundle.putString("name", name);
+		bundle.putString("count", count);
+		bundle.putString("mCount", mCount);
+		bundle.putInt("isVip", isVip);
+		bundle.putString("mentionedUser", mentionedUser);
+		bundle.putString("longitude", longitude);
+		bundle.putString("latitude", latitude);
+		bundle.putString("geo", geo);
+		
+		return bundle;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void readFromParcel(Parcel parcel){
-		openId = parcel.readString();
-		id = parcel.readString();
-		from = parcel.readString();
-		timestamp = parcel.readString();
-		text = parcel.readString();
-		tweetImage = parcel.readString();
-		videoImage = parcel.readString();
-		videoPlayer = parcel.readString();
-		videoUrl = parcel.readString();
-		musicAuthor = parcel.readString();
-		musicId = parcel.readString();
-		musicTitle = parcel.readString();
-		musicUrl = parcel.readString();
-		source = parcel.readParcelable(null);
-		head = parcel.readString();
-		nick = parcel.readString();
-		name = parcel.readString();
-		count = parcel.readString();
-		mCount = parcel.readString();
-		isVip = parcel.readInt();
-		mentionedUser = parcel.readString();
-		longitude = parcel.readString();
-		latitude = parcel.readString();
-		geo = parcel.readString();
+	public void decodeFromBundle(Bundle bundle){
+		Log.d("TAG", "" + ((Boolean) (bundle == null)).toString());
+		openId = bundle.getString("openId");
+		id = bundle.getString("id");
+		from = bundle.getString("from");
+		timestamp = bundle.getString("timestamp");
+		text = bundle.getString("text");
+		tweetImage = bundle.getString("tweetImage");
+		videoImage = bundle.getString("videoImage");
+		videoPlayer = bundle.getString("videoPlayer");
+		videoUrl = bundle.getString("videoUrl");
+		musicAuthor = bundle.getString("musicAuthor");
+		musicId = bundle.getString("musicId");
+		musicTitle = bundle.getString("musicTitle");
+		musicUrl = bundle.getString("musicUrl");
+		if(bundle.containsKey("source")){
+			source = new TweetBean();
+			source.decodeFromBundle(bundle.getBundle("source"));
+		}
+		head = bundle.getString("head");
+		nick = bundle.getString("nick");
+		name = bundle.getString("name");
+		count = bundle.getString("count");
+		mCount = bundle.getString("mCount");
+		isVip = bundle.getInt("isVip");
+		mentionedUser = bundle.getString("mentionedUser");
+		longitude = bundle.getString("longitude");
+		latitude = bundle.getString("latitude");
+		geo = bundle.getString("geo");
 	}
 	
 	public void setOpenId(String openId){
@@ -343,24 +345,5 @@ public class TweetBean implements Parcelable{
 	public String getGeo() {
 		return geo;
 	}
-	
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-	
-	public static final Parcelable.Creator<TweetBean> CREATOR = new Parcelable.Creator<TweetBean>(){
-
-		@Override
-		public TweetBean createFromParcel(Parcel source) {
-			return new TweetBean(source);
-		}
-
-		@Override
-		public TweetBean[] newArray(int size) {
-			return new TweetBean[size];
-		}
-		
-	};
 	
 }

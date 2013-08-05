@@ -29,6 +29,7 @@ import com.halloon.android.ui.fragment.TabMainPageFragment.MainPageFragmentCallb
 import com.halloon.android.ui.fragment.TweetDetailFragment.TweetDetailFragmentCallback;
 import com.halloon.android.util.ContentTransUtil;
 import com.halloon.android.util.TimeUtil;
+import com.halloon.android.widget.ButtonStyleTextView;
 
 public class TweetContentAdapter extends BaseAdapter {
 
@@ -91,10 +92,10 @@ public class TweetContentAdapter extends BaseAdapter {
 			holder.from = (TextView) convertView.findViewById(R.id.tweet_from);
 			holder.commentCount = (TextView) convertView.findViewById(R.id.comment_count);
 			holder.forwardCount = (TextView) convertView.findViewById(R.id.forward_count);
-			holder.tweetContent = (TextView) convertView.findViewById(R.id.tweet_content);
+			holder.tweetContent = (ButtonStyleTextView) convertView.findViewById(R.id.tweet_content);
 			holder.tweetLocationText = (TextView) convertView.findViewById(R.id.tweet_location_text);
 			holder.tweetImage = (ImageView) convertView.findViewById(R.id.tweet_image);
-			holder.forwardContent = (TextView) convertView.findViewById(R.id.forward_content);
+			holder.forwardContent = (ButtonStyleTextView) convertView.findViewById(R.id.forward_content);
 			holder.forwardLocationText = (TextView) convertView.findViewById(R.id.forward_location_text);
 			holder.forwardImage = (ImageView) convertView.findViewById(R.id.forward_image);
 			holder.hasImage = (ImageView) convertView.findViewById(R.id.image_icon);
@@ -167,7 +168,7 @@ public class TweetContentAdapter extends BaseAdapter {
 		if (tweetBean.getSource() != null && tweetBean.getText().length() == 0) {
 			holder.tweetContent.setText(context.getString(R.string.re_tweet));
 		}else{
-			ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getText(), holder.tweetContent, tweetBean, false, false);
+			ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getText(), holder.tweetContent, tweetBean, false, true);
 		}
 		
 		if (tweetBean.getTweetImage() != null ) {
@@ -205,7 +206,7 @@ public class TweetContentAdapter extends BaseAdapter {
 			} else {
 				holder.forwardLocationText.setVisibility(View.GONE);
 			}
-			ContentTransUtil.getInstance(context).displaySpannableString(tmp_source_text, holder.forwardContent, tweetBean, true, false);
+			ContentTransUtil.getInstance(context).displaySpannableString(tmp_source_text, holder.forwardContent, tweetBean, true, true);
 			if (tweetBean.getSource().getTweetImage() != null && application.getIsMainPageImageMode()) {
 				holder.forwardImage.setVisibility(View.VISIBLE);
 				try {
@@ -234,10 +235,10 @@ public class TweetContentAdapter extends BaseAdapter {
 		TextView from;
 		TextView commentCount;
 		TextView forwardCount;
-		TextView tweetContent;
+		ButtonStyleTextView tweetContent;
 		TextView tweetLocationText;
 		ImageView tweetImage;
-		TextView forwardContent;
+		ButtonStyleTextView forwardContent;
 		TextView forwardLocationText;
 		ImageView forwardImage;
 		ImageView hasImage;

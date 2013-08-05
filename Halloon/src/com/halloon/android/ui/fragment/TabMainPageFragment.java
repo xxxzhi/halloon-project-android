@@ -234,7 +234,7 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 				if(position < list.getCount() - 1){
 					Bundle bundle = new Bundle();
 					bundle.putString("id", String.valueOf(id));
-					bundle.putParcelable("tweetBean", tweetContentAdapter.getItem(position));
+					bundle.putBundle("tweetBean", tweetContentAdapter.getItem(position).toBundle());
 					mpCallback.setupDetailFragment(bundle);
 				}else{
 					if(footer != null){
