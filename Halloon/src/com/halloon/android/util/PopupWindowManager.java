@@ -1,6 +1,7 @@
 package com.halloon.android.util;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -26,9 +28,11 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.halloon.android.R;
+import com.halloon.android.bean.UserBean;
 import com.halloon.android.data.ContentManager;
 import com.halloon.android.data.DBManager;
 import com.halloon.android.data.SettingsManager;
@@ -340,6 +344,77 @@ public class PopupWindowManager {
 		popupWindow.setBackgroundDrawable(new ColorDrawable(-00000));
 		popupWindow.setAnimationStyle(R.style.PopupWindowSlideFade);
 		popupWindow.showAtLocation(((Activity) context).findViewById(parentViewRes), Gravity.CENTER | Gravity.TOP, 0, ((Activity) context).findViewById(parentViewRes).getBottom() + SettingsManager.getInstance(context).getSystemBarHeight());
+	}
+	
+	public void setupAtListPopup(int parentViewRes, int x, int y, String searchString){
+		container = (ViewGroup) ((Activity) context).getLayoutInflater().inflate(R.layout.title_list, null);
+		ListView list = (ListView) container.findViewById(R.id.list);
+		ArrayList<UserBean> arrayList = new ArrayList<UserBean>();
+		if(SettingsManager.getInstance(context).getProfileStatus() == DBManager.PROFILE_STATUS_READY){
+			if(searchString != null){
+				arrayList = DBManager.getInstance(context).getContactsSearch(searchString);
+			}else{
+				arrayList = DBManager.getInstance(context).getContactsSearch(searchString);
+			}
+		}else{
+			
+		}
+		
+		class AtListAdapter extends BaseAdapter{
+			
+			private ArrayList<UserBean> arrayList;
+			
+			public AtListAdapter(ArrayList<UserBean> arrayList){
+				this.arrayList = arrayList;
+			}
+
+			@Override
+			public int getCount() {
+				return arrayList.size();
+			}
+
+			@Override
+			public UserBean getItem(int position) {
+				// TODO Auto-generated method stub
+				return arrayList.get(position);
+			}
+
+			@Override
+			public long getItemId(int position) {
+				// TODO Auto-generated method stub
+				return position;
+			}
+
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				ViewHolder viewHolder;
+				if(convertView == null){
+					viewHolder = new ViewHolder();
+					LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+					convertView = inflater.inflate(android.R.layout.simple_list_item_1, null);
+					viewHolder.textView = (TextView) convertView.findViewById(R.id.text1);
+					convertView.setTag(viewHolder);
+				}else{
+					viewHolder = (ViewHolder) convertView.getTag();
+				}
+				
+				viewHolder.textView.setText(getItem(position).getNick());
+				
+				return convertView;
+			}
+			
+			class ViewHolder{
+				TextView textView;
+			}
+			
+		}
+		AtListAdapter atListAdapter = new AtListAdapter(arrayList);
+		list.setAdapter(atListAdapter);
+
+		popupWindow = new PopupWindow(container, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+		popupWindow.setBackgroundDrawable(new ColorDrawable(-00000));
+		popupWindow.setAnimationStyle(R.style.PopupWindowSlideFade);
+		popupWindow.showAtLocation(((Activity) context).findViewById(parentViewRes), Gravity.CENTER | Gravity.TOP, x, y);
 	}
 	
 	public void popupWindowDismiss() {

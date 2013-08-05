@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
@@ -12,11 +16,11 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -28,6 +32,7 @@ import android.widget.Toast;
 import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
 import com.halloon.android.bean.TweetBean;
+import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 
 @SuppressLint("ServiceCast")
 public class ContentTransUtil {
@@ -45,8 +50,21 @@ public class ContentTransUtil {
 		return instance;
 	}
 	
-	public void displaySpannableString(String content, TextView tv, TweetBean tweetBean, boolean isSource, boolean isLink){
+	public void displaySpannableString(String content, TextView tv, final TweetBean tweetBean, boolean isSource, boolean isLink){
+		final JSONObject nameList = new JSONObject();
+		JSONArray mentionedUser = tweetBean.getMentionedUser().names();
+		int count = mentionedUser.length();
+		int j = 0;
+		do{
+			try {
+				content = content.replaceAll(mentionedUser.getString(j), tweetBean.getMentionedUser().getString(mentionedUser.getString(j)));
+				nameList.put(tweetBean.getMentionedUser().getString(mentionedUser.getString(j)), mentionedUser.getString(j));
+			} catch (JSONException e) {
+			}
+		}while(++j < count);
+		
 		content = convert(content);
+		
 		if(isSource) content = tweetBean.getSource().getNick() + ":" + content;
 		
 		final SpannableString ss = new SpannableString(content);
@@ -62,7 +80,7 @@ public class ContentTransUtil {
 		String EMOJI_PATTERN = "\\/[\\p{InCJKUnifiedIdeographs}]{0,3}";//or\\/[\u4e00-\u9fa5]{0,3}
 		
 		tv.setText("");
-		final int textWidth = (int) tv.getTextSize() + 4;
+		final int textWidth = (int) (tv.getTextSize() * 1.2F);
 		
 		Pattern pattern = Pattern.compile(MENTION_PATTERN + "|" + 
 		                                  TOPIC_PATTERN + "|" + 
@@ -92,21 +110,41 @@ public class ContentTransUtil {
 					}
 				}while(++i < length);
 			}else if(group.startsWith("@")){
-				/*
-				if(context instanceof BaseMultiFragmentActivity){
-					ss.setSpan(new ClickableSpan(){
-
-						@Override
-						public void onClick(View widget) {
-							Bundle bundle = new Bundle();
-							bundle.putString("name", nick);
-						    ((BaseMultiFragmentActivity) context).setupProfileFragment(bundle);
-						}
-						
-					}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				String name = null;
+				try {
+					name = nameList.getString(group.substring(1));
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-				 */
-				ss.setSpan(new ForegroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				if(name != null){
+					if(isLink){
+						tv.setMovementMethod(LinkMovementMethod.getInstance());
+						tv.setFocusable(false);
+						
+						if(context instanceof BaseMultiFragmentActivity){
+							ss.setSpan(new ClickableSpan(){
+
+								@Override
+								public void onClick(View widget) {
+									Bundle bundle = new Bundle();
+									try {
+										bundle.putString("name", nameList.getString(group.substring(1)));
+									} catch (JSONException e) {
+										bundle.putString("name", "");
+									}
+								    ((BaseMultiFragmentActivity) context).setupProfileFragment(bundle);
+								}
+								
+								@Override
+								public void updateDrawState(TextPaint tp){}
+								
+							}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+						}
+					}
+					
+					ss.setSpan(new ForegroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				}
 				
 			}else if(group.startsWith("#")){
 				ss.setSpan(new ForegroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -128,6 +166,7 @@ public class ContentTransUtil {
 				final String shortUrl = group.substring(group.lastIndexOf("/") + 1);
 				if(isLink){
 					tv.setMovementMethod(LinkMovementMethod.getInstance());
+					tv.setFocusable(false);
 					
 					ss.setSpan(new ClickableSpan(){
 						@Override

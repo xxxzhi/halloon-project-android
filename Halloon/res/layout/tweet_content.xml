@@ -32,7 +32,7 @@
         android:layout_marginBottom="3.0dip"
         android:text="阿蔡"
         android:textColor="#0085DF"
-        android:textSize="16.0dip" />
+        android:textSize="16.0sp" />
     
     <ImageView 
         android:id="@+id/is_vip"
@@ -55,7 +55,7 @@
         android:gravity="right"
         android:text="24分钟"
         android:textColor="#777777"
-        android:textSize="13.0dip" />
+        android:textSize="13.0sp" />
     
     <TextView 
         android:id="@+id/tweet_from"
@@ -68,7 +68,7 @@
         android:text="来自哈恩客户端啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
         android:singleLine="true"
         android:textColor="#777777"
-        android:textSize="13.0dip" />
+        android:textSize="13.0sp" />
     
     <ImageView
         android:id="@+id/image_icon"
@@ -93,7 +93,7 @@
         android:lineSpacingExtra="2.0dip"
         android:textColor="#777777"
         android:textColorLink="#777777"
-        android:textSize="16.0dip" />
+        android:textSize="15.0sp" />
     
     <ImageView
         android:id="@+id/tweet_image"
@@ -122,7 +122,7 @@
             android:lineSpacingExtra="2.0dip"
             android:textColor="#888888"
             android:textColorLink="#888888"
-            android:textSize="16.0dip" />
+            android:textSize="15.0sp" />
         
         <ImageView
             android:id="@+id/forward_image"
@@ -138,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/forward_image"
             android:text="sdf"
-            android:textSize="13.0dip"
+            android:textSize="13.0sp"
             android:textColor="#888888"
             android:background="@drawable/round_corner_light_blue" />
         
@@ -154,7 +154,7 @@
         android:layout_marginRight="6.0dip"
         android:text="我在XXX"
         android:textColor="#777777"
-        android:textSize="13.0dip"
+        android:textSize="13.0sp"
         android:background="@drawable/round_corner_light_blue" />
 
     <TextView
@@ -166,7 +166,7 @@
         android:layout_marginTop="6.0dip"
         android:text="@string/comment"
         android:textColor="#333333"
-        android:textSize="13.0dip" />
+        android:textSize="13.0sp" />
     
     <TextView
         android:id="@+id/comment_count"
@@ -178,7 +178,7 @@
         android:layout_marginLeft="4.0dip"
         android:text="2"
         android:textColor="#777777"
-        android:textSize="13.0dip" />
+        android:textSize="13.0sp" />
     
     <TextView
         android:id="@+id/forward_icon"
@@ -190,7 +190,7 @@
         android:layout_marginLeft="4.0dip"
         android:text="@string/retweet"
         android:textColor="#333333"
-        android:textSize="13.0dip" />
+        android:textSize="13.0sp" />
     
     <TextView
         android:id="@+id/forward_count"
@@ -203,7 +203,7 @@
         android:layout_marginRight="6.0dip"
         android:text="2"
         android:textColor="#777777"
-        android:textSize="13.0dip" />
+        android:textSize="13.0sp" />
     
     <View
         android:layout_width="match_parent"

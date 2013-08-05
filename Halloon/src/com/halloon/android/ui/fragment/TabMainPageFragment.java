@@ -226,6 +226,7 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 			e.printStackTrace();
 		}
 		*/ 
+		list.setFocusable(true);
 
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

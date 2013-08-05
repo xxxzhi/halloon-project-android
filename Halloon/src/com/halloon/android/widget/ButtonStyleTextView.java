@@ -1,14 +1,17 @@
 package com.halloon.android.widget;
 
+import java.lang.reflect.Field;
+
 import android.content.Context;
+import android.content.SharedPreferences.Editor;
 import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.method.MovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.TextView;
 
 public class ButtonStyleTextView extends TextView {
@@ -20,11 +23,11 @@ public class ButtonStyleTextView extends TextView {
 	}
 
 	public ButtonStyleTextView(Context context){
-		super(context);
+		this(context, null);
 	}
 	
 	public ButtonStyleTextView(Context context, AttributeSet attrs){
-		super(context, attrs);
+		this(context, attrs, 0);
 	}
 	
 	public ButtonStyleTextView(Context context, AttributeSet attrs, int defStyle){
@@ -36,7 +39,6 @@ public class ButtonStyleTextView extends TextView {
         if(getText() instanceof SpannableString && handleMotionEvent(event) && getMovementMethod() != null){
         	return super.onTouchEvent(event);
         }else{
-        	setFocusable(false);
         	return false;
         }
 	}

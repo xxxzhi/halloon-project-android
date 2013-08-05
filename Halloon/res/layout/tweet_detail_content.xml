@@ -30,7 +30,7 @@
         android:layout_marginTop="10.0dip"
         android:maxHeight="400.0dip"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:scaleType="centerInside"
         android:src="@drawable/welcome" />
     
     <RelativeLayout

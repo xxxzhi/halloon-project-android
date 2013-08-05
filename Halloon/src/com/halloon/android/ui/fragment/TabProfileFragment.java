@@ -148,7 +148,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 					}
 					
 				} else {
-					tmp_profileBean = ContentManager.getInstance(context).getOtherProfile(null, id);
+					tmp_profileBean = ContentManager.getInstance(context).getOtherProfile(name, id);
 					System.out.println(name + ":" + id);
 				}
 
