@@ -10,6 +10,9 @@
         <attr name="currentValue" format="float" />
         <attr name="tagHeight" format="dimension" />
         <attr name="heightToTag" format="dimension" />
+        <attr name="showTag" format="boolean" />
+        <attr name="brightColor" format="color|reference" />
+        <attr name="darkColor" format="color|reference" />
     </declare-styleable>
     
     <declare-styleable name="SplitLine">

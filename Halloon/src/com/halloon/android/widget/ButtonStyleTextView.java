@@ -8,13 +8,16 @@ import android.text.SpannableString;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
 public class ButtonStyleTextView extends TextView {
 	
 	private OnTouchDownListener mOnTouchDownListener;
+	
+	private ClickableSpan linkSpan;
+	
+	private int style = 0;
 	
 	public static final int      SPAN_STYLE_TOPIC_MENTION = 0x00000001;
 	public static final int             SPAN_STYLE_SEARCH = 0x00000002;
@@ -60,8 +63,17 @@ public class ButtonStyleTextView extends TextView {
 		
 		int action = event.getAction();
 		SpannableString buffer = (SpannableString) getText();
+		
+		if(action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL){
+			if(style != 0){
+				mOnTouchDownListener.onUp(this, buffer, buffer.getSpanStart(linkSpan), buffer.getSpanEnd(linkSpan), style);
+				style = 0;
+				return true;
+				
+			}
+		}
 
-        if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_CANCEL) {
+        if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN) {
             int x = (int) event.getX();
             int y = (int) event.getY();
 
@@ -80,8 +92,8 @@ public class ButtonStyleTextView extends TextView {
             ImageIdSpan[] image = buffer.getSpans(off, off, ImageIdSpan.class);
 
             if (link.length != 0) {
+            	linkSpan = link[0];
             	if(mOnTouchDownListener != null){
-            		int style = 0;
             		if(foregroundColor.length != 0){
             			if(foregroundColor[0].getForegroundColor() == 0xFF0085DF){
             				style = SPAN_STYLE_TOPIC_MENTION;
@@ -105,14 +117,19 @@ public class ButtonStyleTextView extends TextView {
             		}
             		
             		if(style != 0){
-            			if(action == MotionEvent.ACTION_DOWN){
+            			switch(action){
+            			case MotionEvent.ACTION_DOWN:
             				mOnTouchDownListener.onDown(this, buffer, buffer.getSpanStart(link[0]), buffer.getSpanEnd(link[0]), style);
-            			}else if(action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL){
+            				break;
+            			case MotionEvent.ACTION_CANCEL:
+            			case MotionEvent.ACTION_UP:
             				mOnTouchDownListener.onUp(this, buffer, buffer.getSpanStart(link[0]), buffer.getSpanEnd(link[0]), style);
+            				break;
             			}
+            			
             		}
+            		
             	}
-                Log.d("TOUCH DOWN", "true");
                 return true;
             }
         }

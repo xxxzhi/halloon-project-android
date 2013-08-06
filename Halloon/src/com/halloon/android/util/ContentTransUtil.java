@@ -14,7 +14,6 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -34,6 +33,7 @@ import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
 import com.halloon.android.bean.TweetBean;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
+import com.halloon.android.ui.activity.MyWebView;
 import com.halloon.android.widget.ButtonStyleTextView;
 import com.halloon.android.widget.ButtonStyleTextView.OnTouchDownListener;
 import com.halloon.android.widget.ImageIdSpan;
@@ -55,6 +55,8 @@ public class ContentTransUtil implements OnTouchDownListener {
 	}
 	
 	public void displaySpannableString(String content, TextView tv, final TweetBean tweetBean, boolean isSource, boolean isLink){
+		tv.setHighlightColor(0x0);
+		
 		final JSONObject nameList = new JSONObject();
 		if(tweetBean != null){
 			JSONObject jsonObject = tweetBean.getMentionedUser();
@@ -124,7 +126,6 @@ public class ContentTransUtil implements OnTouchDownListener {
 				try {
 					name = nameList.getString(group.substring(1));
 				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				if(name != null){
@@ -174,10 +175,8 @@ public class ContentTransUtil implements OnTouchDownListener {
 				ss.setSpan(new ClickableSpan(){
 					@Override
 					public void onClick(View widget){
-						Intent intent = new Intent();
-						intent.setAction("android.intent.action.VIEW");
-						Uri uri = Uri.parse(link);
-						intent.setData(uri);
+						Intent intent = new Intent(context, MyWebView.class);
+						intent.putExtra("url", link);
 						context.startActivity(intent);
 					}
 				}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -298,7 +297,7 @@ public class ContentTransUtil implements OnTouchDownListener {
 			break;
 		case ButtonStyleTextView.SPAN_STYLE_NORMALADDR:
 			id = R.drawable.button_link_pressed;
-			drawable = context.getResources().getDrawable(R.drawable.button_link_pressed);
+			drawable = context.getResources().getDrawable(id);
 			height = (int) (tv.getTextSize() * 1.2F);
 			drawable.setBounds(0, 0, (int) (height* 3.5), height);
 			imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);
@@ -308,7 +307,7 @@ public class ContentTransUtil implements OnTouchDownListener {
 			break;
 		case ButtonStyleTextView.SPAN_STYLE_VIDEOADDR:
 			id = R.drawable.button_video_link_pressed;
-			drawable = context.getResources().getDrawable(R.drawable.button_link_pressed);
+			drawable = context.getResources().getDrawable(id);
 			height = (int) (tv.getTextSize() * 1.2F);
 			drawable.setBounds(0, 0, (int) (height* 3.5), height);
 			imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);
@@ -318,7 +317,7 @@ public class ContentTransUtil implements OnTouchDownListener {
 			break;
 		case ButtonStyleTextView.SPAN_STYLE_MUSICADDR:
 			id = R.drawable.button_music_link_pressed;
-			drawable = context.getResources().getDrawable(R.drawable.button_link_pressed);
+			drawable = context.getResources().getDrawable(id);
 			height = (int) (tv.getTextSize() * 1.2F);
 			drawable.setBounds(0, 0, (int) (height* 3.5), height);
 			imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);
@@ -343,7 +342,7 @@ public class ContentTransUtil implements OnTouchDownListener {
 			break;
 		case ButtonStyleTextView.SPAN_STYLE_NORMALADDR:
 			id = R.drawable.button_link;
-			drawable = context.getResources().getDrawable(R.drawable.button_link_pressed);
+			drawable = context.getResources().getDrawable(id);
 			height = (int) (tv.getTextSize() * 1.2F);
 			drawable.setBounds(0, 0, (int) (height* 3.5), height);
 			imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);
@@ -353,7 +352,7 @@ public class ContentTransUtil implements OnTouchDownListener {
 			break;
 		case ButtonStyleTextView.SPAN_STYLE_VIDEOADDR:
 			id = R.drawable.button_video_link;
-			drawable = context.getResources().getDrawable(R.drawable.button_link_pressed);
+			drawable = context.getResources().getDrawable(id);
 			height = (int) (tv.getTextSize() * 1.2F);
 			drawable.setBounds(0, 0, (int) (height* 3.5), height);
 			imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);
@@ -363,7 +362,7 @@ public class ContentTransUtil implements OnTouchDownListener {
 			break;
 		case ButtonStyleTextView.SPAN_STYLE_MUSICADDR:
 			id = R.drawable.button_music_link;
-			drawable = context.getResources().getDrawable(R.drawable.button_link_pressed);
+			drawable = context.getResources().getDrawable(id);
 			height = (int) (tv.getTextSize() * 1.2F);
 			drawable.setBounds(0, 0, (int) (height* 3.5), height);
 			imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);

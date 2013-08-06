@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:halloon="http://schemas.android.com/apk/res/com.halloon.android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-<RelativeLayout
+    <RelativeLayout
         android:id="@+id/title_layout"
         android:layout_width="fill_parent"
         android:layout_height="45.0dip"
         android:background="@drawable/title_background" >
 
-        <TextView
+        <com.halloon.android.view.ScrollTextView
             android:id="@+id/title_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
             android:gravity="center"
             android:text="@string/about"
             android:textColor="#EEEEEE"
@@ -33,10 +37,18 @@
             android:textColor="#EEEEEE"
             android:textSize="13.0dip" />
     </RelativeLayout>
+    
+    <com.halloon.android.widget.HalloonProgressBar
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        halloon:brightColor="#FF0085DF"
+        halloon:darkColor="#FF22ADAA"
+        halloon:showTag="false" />
 
-<WebView
-    android:id="@+id/webview"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

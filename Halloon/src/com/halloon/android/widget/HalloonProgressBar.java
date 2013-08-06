@@ -24,7 +24,10 @@ import com.halloon.android.util.DensityUtil;
 
 public class HalloonProgressBar extends View {
 	
-	private static final String TAG = HalloonProgressBar.class.getSimpleName();
+	private static final String TAG = "HalloonProgressBar";
+	
+	private int brightColor;
+	private int darkColor;
 	
 	private int maxValue;
 	private int minValue;
@@ -55,6 +58,8 @@ public class HalloonProgressBar extends View {
 	private float growOffset;
 	private String progressPercent;
 	
+	private boolean showProgressTag = true;
+	
 	public HalloonProgressBar(Context context){
 		this(context, null);
 	}
@@ -68,9 +73,13 @@ public class HalloonProgressBar extends View {
 		
 		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.HalloonProgressBar);
 		
+		brightColor = typedArray.getColor(R.styleable.HalloonProgressBar_brightColor, 0xFF0085DC);
+		darkColor = typedArray.getColor(R.styleable.HalloonProgressBar_darkColor, 0xFF025388);
 		maxValue = typedArray.getInt(R.styleable.HalloonProgressBar_maxValue, 100);
 		minValue = typedArray.getInt(R.styleable.HalloonProgressBar_minValue, 0);
 		currentValue = typedArray.getFloat(R.styleable.HalloonProgressBar_currentValue, 0);
+		
+		showProgressTag = typedArray.getBoolean(R.styleable.HalloonProgressBar_showTag, true);
 		
 		if(!isInEditMode()){
 			progressBarHeight = DensityUtil.dip2px(context, 4F);
@@ -96,6 +105,9 @@ public class HalloonProgressBar extends View {
 		}
 		
 		int tmp_tagHeight = (int) typedArray.getDimension(R.styleable.HalloonProgressBar_tagHeight, -1);
+		
+		typedArray.recycle();
+		
 		if(tmp_tagHeight != -1){
 			tagHeight = tmp_tagHeight;
 		}else{
@@ -111,15 +123,23 @@ public class HalloonProgressBar extends View {
 		
 	}
 	
+	public void showProgressTag(boolean show){
+		showProgressTag = show;
+		invalidate();
+	}
+	
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		
-		if(heightMeasureSpec <= tagHeight + tagSpace + progressBarHeight){
+		if(heightMeasureSpec <= tagHeight + tagSpace + progressBarHeight && showProgressTag){
 			heightMeasureSpec = tagHeight + tagSpace + progressBarHeight;
-			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-			setMeasuredDimension(getMeasuredWidth(), heightMeasureSpec);
-		}else{
-			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+			setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
+		}
+		
+		if(heightMeasureSpec <= progressBarHeight && !showProgressTag){
+			heightMeasureSpec = progressBarHeight;
+			setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
 		}
 		
 		viewWidth = getMeasuredWidth();
@@ -176,32 +196,34 @@ public class HalloonProgressBar extends View {
 		}
 		
 		
-		if(currentValue < maxValue){
-			rect.top = 0;
-			if(progress < (tagWidth / 2) + tagMargin){
-				rect.left = tagMargin;
-			}else if(progress > viewWidth - ((tagWidth / 2) + tagMargin)){
-				rect.left = viewWidth - tagMargin - tagWidth;
-			}else{
-				rect.left = progress - (tagWidth / 2);
+		if(showProgressTag){
+			if(currentValue < maxValue){
+				rect.top = 0;
+				if(progress < (tagWidth / 2) + tagMargin){
+					rect.left = tagMargin;
+				}else if(progress > viewWidth - ((tagWidth / 2) + tagMargin)){
+					rect.left = viewWidth - tagMargin - tagWidth;
+				}else{
+					rect.left = progress - (tagWidth / 2);
+				}
+				rect.right = rect.left + tagWidth;
+				rect.bottom = tagHeight;
+				paint.setColor(0xFFCCCCCC);
+				paint.setShadowLayer(4F, 0F, 5F, 0x99000000);
+				canvas.drawRoundRect(rect, progressBarHeight / 2,  progressBarHeight / 2, paint);
+				
+				paint.setShadowLayer(0, 0, 0, 0);
+				
+				if(progress < (tagWidth / 2) + tagMargin){
+					rect.left = tagMargin + (tagWidth - fontRect.width()) / 2;
+				}else if(progress > viewWidth - ((tagWidth / 2) + tagMargin)){
+					rect.left = viewWidth - tagMargin - tagWidth + (tagWidth - fontRect.width()) / 2;
+				}else{
+					rect.left = progress - fontRect.width() / 2;
+				}
+				
+				canvas.drawText(progressPercent, rect.left, tagHeight - (tagHeight - fontRect.height()) / 2, textPaint);
 			}
-			rect.right = rect.left + tagWidth;
-			rect.bottom = tagHeight;
-			paint.setColor(0xFFCCCCCC);
-			paint.setShadowLayer(4F, 0F, 5F, 0x99000000);
-			canvas.drawRoundRect(rect, progressBarHeight / 2,  progressBarHeight / 2, paint);
-			
-			paint.setShadowLayer(0, 0, 0, 0);
-			
-			if(progress < (tagWidth / 2) + tagMargin){
-				rect.left = tagMargin + (tagWidth - fontRect.width()) / 2;
-			}else if(progress > viewWidth - ((tagWidth / 2) + tagMargin)){
-				rect.left = viewWidth - tagMargin - tagWidth + (tagWidth - fontRect.width()) / 2;
-			}else{
-				rect.left = progress - fontRect.width() / 2;
-			}
-			
-			canvas.drawText(progressPercent, rect.left, tagHeight - (tagHeight - fontRect.height()) / 2, textPaint);
 		}
 		
 	}
