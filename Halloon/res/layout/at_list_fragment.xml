@@ -3,14 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
-    <com.halloon.android.view.PullToRefreshListView 
-        android:id="@+id/list"
+    <com.halloon.android.widget.HalloonPullableView
+        android:id="@+id/pull_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fastScrollEnabled="true"
-        android:longClickable="true"
-        android:background="#FFF5F5F5"
-        android:cacheColorHint="#00000000"
-        android:listSelector="@drawable/tweet_content_list_bg_selector" />
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fastScrollEnabled="true"
+            android:background="#FFF5F5F5"
+            android:cacheColorHint="#00000000"
+            android:listSelector="@drawable/tweet_content_list_bg_selector" />
+        
+    </com.halloon.android.widget.HalloonPullableView>
+    
 </RelativeLayout>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragment.TabMainPageFragment"
-    android:background="#F5F5F5" >
+    android:background="#E5E5E5" >
     
     <com.halloon.android.widget.HalloonPullableView
         android:id="@+id/pull_layout"
@@ -24,7 +24,7 @@
             android:divider="#00000000"
             android:fastScrollEnabled="true"
             android:listSelector="@drawable/tweet_content_list_bg_selector"
-            android:background="#F5F5F5"
+            android:background="#FFF5F5F5"
             android:longClickable="true" />
         
     </com.halloon.android.widget.HalloonPullableView>

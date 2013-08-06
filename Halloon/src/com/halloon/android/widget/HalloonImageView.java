@@ -24,7 +24,7 @@ import android.widget.ImageView;
 
 public class HalloonImageView extends ImageView {
 	
-	private static final String TAG = HalloonImageView.class.getSimpleName();
+	private static final String TAG = "HalloonImageView";
 	
 	private Matrix matrix;
 	private Matrix savedMatrix;
@@ -124,60 +124,64 @@ public class HalloonImageView extends ImageView {
 	}
 	
 	private class MyRunnable implements Runnable{
-		private float scale;
-		private final float scaled;
+		
+		//here's a little trick to scale the image on the right coordinate by produce 2 fake touch point;
+		private float fakeY1;
+		private float fakeY2;
 		
 		private final float x;
 		private final float y;
 		
+		private final float originalDistance;
+		private final float destDistance;
+		private float newDistance;
+		
+		private float scale;
+		
+		private PointF scalePoint;
+		private PointF newPoint;
+		
 		public MyRunnable(float x, float y){
+			savedMatrix.set(matrix);
+			
+			originalDistance = 20;
+			newDistance = originalDistance;
+			
+			if(isScaled){
+				destDistance = 10;
+				isScaled = false;
+			}else{
+				destDistance = 40;
+				isScaled = true;
+			}
+			
 			this.x = x;
 			this.y = y;
 			
-			scale = getScaleOfOriginalMatrix();
-			if(!isScaled){
-				scaled = scale * 2;
-				isScaled = true;
-			}else{
-				scaled = scale / 2;
-				isScaled = false;
-			}
-		}
-
-		@Override
-		public void run() {
-			scale += (scaled - scale) * 0.9F;
-			matrix.setScale(scale, scale, x, y);
-			setImageMatrix(matrix);
+			fakeY1 = y - originalDistance / 2;
+			fakeY2 = y + originalDistance / 2;
 			
-			if(scale != scaled){
-				handler.postDelayed(runnable, 1);
-			}else{
-				
-			}
-			if(!isScaled){
-				if(getScaleOfOriginalMatrix() < scale * 2){
-					matrix.postScale(1.1F, 1.1F, x, y);
-					setImageMatrix(matrix);
-					
-					handler.postDelayed(runnable, 1);
-				}else{
-					isScaled = true;
-					return;
-				}
-			}else{
-				if(getScaleOfOriginalMatrix() >= scale / 1.9){
-					matrix.postScale(0.90F, 0.90F, x, y);
-					setImageMatrix(matrix);
-					
-					handler.postDelayed(runnable, 1);
-				}else{
-					isScaled = false;
-					return;
-				}
-			}
+			scalePoint = new PointF();
+			newPoint = new PointF();
 		}
 		
+		@Override
+		public void run(){
+			matrix.set(savedMatrix);
+			newDistance += (destDistance - newDistance) * 0.5F;
+			scale = newDistance / originalDistance;
+			matrix.postScale(scale, scale, 0, 0);
+			scalePoint.x = x * scale;
+			scalePoint.y = y * scale;
+			newPoint = midPoint(new PointF(x, fakeY1), new PointF(x, fakeY2));
+			matrix.postTranslate(newPoint.x - scalePoint.x, newPoint.y - scalePoint.y);
+			
+			setImageMatrix(matrix);
+			
+			if(newDistance != destDistance){
+				handler.postDelayed(runnable, 1);
+			}
+		}
 	}
 	
 	public void setGifDecoder(GifDecoder gifDecoder){
@@ -195,50 +199,44 @@ public class HalloonImageView extends ImageView {
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event){
-		if(mode == GESTURE_ENABLE || mode == (PLAY_GIF|GESTURE_ENABLE)){
+		if((mode & GESTURE_ENABLE) == GESTURE_ENABLE){
 			switch (event.getAction() & MotionEvent.ACTION_MASK) {
 			case MotionEvent.ACTION_DOWN:
 				oldPosX = event.getX();
 				oldPosY = event.getY();
 				if(firstClick == 0L){
 					firstClick = System.currentTimeMillis();
-				}else if(System.currentTimeMillis() - firstClick < DOUBLE_CLICK_PERSISTENCE_TIME){
-					performDoubleClickEffect(event.getX(), event.getY());
+				}else{
+					if(System.currentTimeMillis() - firstClick < DOUBLE_CLICK_PERSISTENCE_TIME){
+						performDoubleClickEffect(oldPosX, oldPosY);
+					}
 					firstClick = 0L;
 				}
 				savedMatrix.set(matrix);
 				start.set(event.getX(), event.getY());
 				touch_mode = DRAG;
 				break;
-			case MotionEvent.ACTION_UP:
-				touch_mode = NONE;
-				if(vx != 0 || vy != 0) invalidate();
-				break;
-			case MotionEvent.ACTION_CANCEL:
-				touch_mode = NONE;
-				if(vx != 0 || vy != 0) invalidate();
-				break;
-			case MotionEvent.ACTION_POINTER_UP:
-				touch_mode = NONE;
-				if(vx != 0 || vy != 0) invalidate();
-				break;
 			case MotionEvent.ACTION_POINTER_DOWN:
 				oldPosX = event.getX();
 				oldPosY = event.getY();
+				/*
+				
 				if(firstClick == 0L){
 					firstClick = System.currentTimeMillis();
 				}else if(System.currentTimeMillis() - firstClick < DOUBLE_CLICK_PERSISTENCE_TIME){
 					performDoubleClickEffect(event.getX(), event.getY());
 					firstClick = 0L;
 				}
+				 */
 				oldDistance = spacing(event);
 				if (oldDistance > 10f) {
 					savedMatrix.set(matrix);
-					midPoint(middle, event);
+					middle = midPoint(event);
 					touch_mode = ZOOM;
 				}
 				break;
 			case MotionEvent.ACTION_MOVE:
+				stopDoubleClickEffectPerformance();
 				
 				if (touch_mode == DRAG) {
 					matrix.set(savedMatrix);
@@ -256,12 +254,18 @@ public class HalloonImageView extends ImageView {
 						matrix.postScale(scale, scale, 0, 0);
 						scaleMid.x = middle.x * scale;
 						scaleMid.y = middle.y * scale;
-						midPoint(newMid, event);
+						newMid = midPoint(event);
 						matrix.postTranslate(newMid.x - scaleMid.x, newMid.y - scaleMid.y);
 					}
 					
 				}
 				
+				break;
+			case MotionEvent.ACTION_UP:
+			case MotionEvent.ACTION_CANCEL:
+			case MotionEvent.ACTION_POINTER_UP:
+				touch_mode = NONE;
+				if(vx != 0 || vy != 0) invalidate();
 				break;
 			}
 			setImageMatrix(matrix);
@@ -276,6 +280,10 @@ public class HalloonImageView extends ImageView {
 		handler.post(runnable);
 	}
 	
+	public void stopDoubleClickEffectPerformance(){
+		handler.removeCallbacks(runnable);
+	}
+	
 	//初始化缩放
 	public void setOriginLayout(int width, int height){
 		this.originWidth = width;
@@ -285,7 +293,7 @@ public class HalloonImageView extends ImageView {
 	}
 	
 	private void initImage(){
-		if((mode == PLAY_GIF || mode == (PLAY_GIF|GESTURE_ENABLE)) && gifDecoder != null && gifDecoder.parseOk()){
+		if(((mode & PLAY_GIF) == PLAY_GIF) && gifDecoder != null && gifDecoder.parseOk()){
 			for(int i = 0; i < gifDecoder.getFrameCount(); i++){
 				animationDrawable.addFrame(new BitmapDrawable(getResources(), gifDecoder.getFrameImage(i)), gifDecoder.getDelay(i));
 			}
@@ -361,24 +369,32 @@ public class HalloonImageView extends ImageView {
 	
 	//得到两个触摸点的距离
 	private float spacing(MotionEvent event){
-		float x = event.getX(0) - event.getX(1);
-		float y = event.getY(0) - event.getY(1);
+		PointF point1 = new PointF(event.getX(0), event.getY(0));
+		PointF point2 = new PointF(event.getX(1), event.getY(1));
 		
-		return FloatMath.sqrt(x * x + y * y);
+		return spacing(point1, point2);
+	}
+	
+	private float spacing(PointF point1, PointF point2){
+	    float x = point1.x - point2.x;
+	    float y = point1.y - point2.y;
+	    
+	    return FloatMath.sqrt(x * x + y * y);
 	}
 	
 	//得到两个触摸点的中点
-	private void midPoint(PointF point, MotionEvent event){
+	private PointF midPoint( MotionEvent event){
 		float x = event.getX(0) + event.getX(1);
 		float y = event.getY(0) + event.getY(1);
-		point.set(x / 2, y / 2);
+		
+		return new PointF(x / 2, y / 2);
 	}
 	
-	private float getScaleOfOriginalMatrix(){
-		float[] matrixArray = new float[9];
-		getImageMatrix().getValues(matrixArray);
+	private PointF midPoint(PointF point1, PointF point2){
+		float x = point1.x + point2.x;
+		float y = point1.y + point2.y;
 		
-		return matrixArray[0];
+		return new PointF(x / 2, y / 2);
 	}
 	
 }

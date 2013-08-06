@@ -12,6 +12,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
@@ -21,12 +24,15 @@ import com.halloon.android.data.ContentManager;
 import com.halloon.android.data.DBManager;
 import com.halloon.android.data.SettingsManager;
 import com.halloon.android.task.BaseCompatiableTask;
-import com.halloon.android.view.PullToRefreshListView;
-import com.halloon.android.view.PullToRefreshListView.OnRefreshListener;
+import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
+import com.halloon.android.util.PopupWindowManager;
+import com.halloon.android.widget.HalloonPullableView;
+import com.halloon.android.widget.HalloonPullableView.OnHeaderRefreshListener;
 
-public class AtListFragment extends Fragment {
+public class AtListFragment extends Fragment implements OnHeaderRefreshListener{
 
-	private PullToRefreshListView list;
+	private HalloonPullableView pullAndDrop;
+	private ListView list;
 	private TweetContentAdapter adapter;
 
 	private ArrayList<TweetBean> arrayList = new ArrayList<TweetBean>();
@@ -43,9 +49,12 @@ public class AtListFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View root = inflater.inflate(R.layout.at_list_fragment, null, false);
+		View root = inflater.inflate(R.layout.tab_mainpage, null, false);
 
-		list = (PullToRefreshListView) root.findViewById(R.id.list);
+		pullAndDrop = (HalloonPullableView) root.findViewById(R.id.pull_layout);
+		pullAndDrop.setOnHeaderRefreshListener(this);
+		
+		list = (ListView) root.findViewById(R.id.list);
 		adapter = new TweetContentAdapter(context, arrayList);
 		list.setAdapter(adapter);
 		
@@ -60,12 +69,6 @@ public class AtListFragment extends Fragment {
 
 	private void loadData() {
 		new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
-
-			@Override
-			protected void onPreExecute() {
-				list.prepareForRefresh();
-				list.onRefresh();
-			}
 
 			@Override
 			protected ArrayList<TweetBean> doInBackground(Void... arg0) {
@@ -127,7 +130,7 @@ public class AtListFragment extends Fragment {
 				arrayList.clear();
 				arrayList.addAll(result);
 				adapter.notifyDataSetChanged();
-				list.onRefreshComplete();
+				pullAndDrop.onHeaderRefreshComplete(SettingsManager.getInstance(context).getLastUpdateTime());
 			}
 
 		}.taskExecute();
@@ -193,8 +196,8 @@ public class AtListFragment extends Fragment {
 					arrayList.addAll(result);
 				}
 
-				list.onRefreshComplete();
 				adapter.notifyDataSetChanged();
+				pullAndDrop.onHeaderRefreshComplete(SettingsManager.getInstance(context).getLastUpdateTime());
 			}
 		}.taskExecute();
 	}
@@ -207,13 +210,44 @@ public class AtListFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		
+		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-		list.setOnRefreshListener(new OnRefreshListener() {
 			@Override
-			public void onRefresh() {
-				refreshData();
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Bundle bundle = new Bundle();
+				bundle.putString("id", String.valueOf(id));
+				bundle.putBundle("tweetBean", adapter.getItem(position).toBundle());
+				((BaseMultiFragmentActivity) context).setupDetailFragment(bundle);
 			}
-		});
 
+		});
+		
+		/*
+		list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				PopupWindowManager popupWindowManager = new PopupWindowManager(context);
+				if(position < list.getCount() - 1){
+					if (otherName != null && otherName.equals(myName)) {
+						popupWindowManager.setupCommentFunctionPopup(tweetContentAdapter.getItem(position).getId(), tweetContentAdapter.getItem(position).getName().equals(myName), tweetContentAdapter.getItem(position).getText(), PopupWindowManager.TWEET_LIST, position);
+					} else if (otherName == null && tweetState == OTHER_TWEET) {
+						popupWindowManager.setupCommentFunctionPopup(tweetContentAdapter.getItem(position).getId(), tweetContentAdapter.getItem(position).getName().equals(myName), tweetContentAdapter.getItem(position).getText(), PopupWindowManager.TWEET_LIST, position);
+					} else {
+						popupWindowManager.setupCommentFunctionPopup(tweetContentAdapter.getItem(position).getId(), tweetContentAdapter.getItem(position).getName().equals(myName), tweetContentAdapter.getItem(position).getText(), PopupWindowManager.TWEET_LIST, position);
+					}
+				}
+				return true;
+			}
+
+		});
+		 */
+
+	}
+
+	@Override
+	public void onHeaderRefresh(HalloonPullableView view) {
+		refreshData();
 	}
 }

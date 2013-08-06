@@ -1,15 +1,10 @@
 package com.halloon.android.bean;
 
-import java.util.HashMap;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.Log;
 
 public class TweetBean{
 
@@ -99,7 +94,6 @@ public class TweetBean{
 	}
 	
 	public void decodeFromBundle(Bundle bundle){
-		Log.d("TAG", "" + ((Boolean) (bundle == null)).toString());
 		openId = bundle.getString("openId");
 		id = bundle.getString("id");
 		from = bundle.getString("from");
@@ -303,6 +297,27 @@ public class TweetBean{
 	}
 
 	public void setMentionedUser(String mentionedUser) {
+		/*
+		try {
+			JSONObject mentionedJson = new JSONObject(mentionedUser);
+			JSONArray mentionedArray = mentionedJson.names();
+			JSONObject realNameJson = new JSONObject();
+			JSONArray jsonArray = new JSONArray();
+			
+			String name;
+			for(int i = 0; i < mentionedArray.length(); i++){
+				name = mentionedArray.getString(i);
+				realNameJson.put(mentionedJson.getString(name), name);
+			}
+			jsonArray.put(mentionedJson);
+			jsonArray.put(realNameJson);
+			
+			this.mentionedUser = realNameJson.toString();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		 */
+		
 		this.mentionedUser = mentionedUser;
 	}
 

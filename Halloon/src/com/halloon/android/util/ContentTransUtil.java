@@ -21,6 +21,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -33,9 +34,12 @@ import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
 import com.halloon.android.bean.TweetBean;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
+import com.halloon.android.widget.ButtonStyleTextView;
+import com.halloon.android.widget.ButtonStyleTextView.OnTouchDownListener;
+import com.halloon.android.widget.ImageIdSpan;
 
 @SuppressLint("ServiceCast")
-public class ContentTransUtil {
+public class ContentTransUtil implements OnTouchDownListener {
 	private Context context;
 	private static ContentTransUtil instance;
 
@@ -52,16 +56,22 @@ public class ContentTransUtil {
 	
 	public void displaySpannableString(String content, TextView tv, final TweetBean tweetBean, boolean isSource, boolean isLink){
 		final JSONObject nameList = new JSONObject();
-		JSONArray mentionedUser = tweetBean.getMentionedUser().names();
-		int count = mentionedUser.length();
-		int j = 0;
-		do{
-			try {
-				content = content.replaceAll(mentionedUser.getString(j), tweetBean.getMentionedUser().getString(mentionedUser.getString(j)));
-				nameList.put(tweetBean.getMentionedUser().getString(mentionedUser.getString(j)), mentionedUser.getString(j));
-			} catch (JSONException e) {
-			}
-		}while(++j < count);
+		if(tweetBean != null){
+			JSONObject jsonObject = tweetBean.getMentionedUser();
+			JSONArray mentionedUser = jsonObject.names();
+			int count = mentionedUser.length();
+			int j = 0;
+			do{
+				
+				try {
+					String s = mentionedUser.getString(j);
+					String ss = jsonObject.getString(s);
+					content = content.replaceAll(s, ss);
+					nameList.put(ss, s);
+				} catch (JSONException e) {
+				}
+			}while(++j < count);
+		}
 		
 		content = convert(content);
 		
@@ -118,29 +128,25 @@ public class ContentTransUtil {
 					e1.printStackTrace();
 				}
 				if(name != null){
-					if(isLink){
-						tv.setMovementMethod(LinkMovementMethod.getInstance());
-						tv.setFocusable(false);
-						
-						if(context instanceof BaseMultiFragmentActivity){
-							ss.setSpan(new ClickableSpan(){
+					
+					if(context instanceof BaseMultiFragmentActivity){
+						ss.setSpan(new ClickableSpan(){
 
-								@Override
-								public void onClick(View widget) {
-									Bundle bundle = new Bundle();
-									try {
-										bundle.putString("name", nameList.getString(group.substring(1)));
-									} catch (JSONException e) {
-										bundle.putString("name", "");
-									}
-								    ((BaseMultiFragmentActivity) context).setupProfileFragment(bundle);
+							@Override
+							public void onClick(View widget) {
+								Bundle bundle = new Bundle();
+								try {
+									bundle.putString("name", nameList.getString(group.substring(1)));
+								} catch (JSONException e) {
+									bundle.putString("name", "");
 								}
-								
-								@Override
-								public void updateDrawState(TextPaint tp){}
-								
-							}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-						}
+							    ((BaseMultiFragmentActivity) context).setupProfileFragment(bundle);
+							}
+							
+							@Override
+							public void updateDrawState(TextPaint tp){}
+							
+						}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 					}
 					
 					ss.setSpan(new ForegroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -164,21 +170,17 @@ public class ContentTransUtil {
 			}else if(group.startsWith("http")){
 				final String link = group;
 				final String shortUrl = group.substring(group.lastIndexOf("/") + 1);
-				if(isLink){
-					tv.setMovementMethod(LinkMovementMethod.getInstance());
-					tv.setFocusable(false);
-					
-					ss.setSpan(new ClickableSpan(){
-						@Override
-						public void onClick(View widget){
-							Intent intent = new Intent();
-							intent.setAction("android.intent.action.VIEW");
-							Uri uri = Uri.parse(link);
-							intent.setData(uri);
-							context.startActivity(intent);
-						}
-					}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-				}
+				
+				ss.setSpan(new ClickableSpan(){
+					@Override
+					public void onClick(View widget){
+						Intent intent = new Intent();
+						intent.setAction("android.intent.action.VIEW");
+						Uri uri = Uri.parse(link);
+						intent.setData(uri);
+						context.startActivity(intent);
+					}
+				}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				
 				Drawable drawable = null;
 				int id = R.drawable.button_link;
@@ -200,8 +202,20 @@ public class ContentTransUtil {
 				
 				drawable = context.getResources().getDrawable(id);
 				drawable.setBounds(0, 0, (int) (textWidth * 3.5), textWidth);
-				ss.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				
+				ImageIdSpan imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);
+				imageIdSpan.setDrawableId(id);
+				
+				ss.setSpan(imageIdSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
+		}
+		
+		if(isLink){
+			tv.setMovementMethod(LinkMovementMethod.getInstance());
+			tv.setFocusable(false);
+		}
+		if(tv instanceof ButtonStyleTextView){
+			((ButtonStyleTextView) tv).setOnTouchDownListener(this);
 		}
 		
 		tv.setText(ss);
@@ -267,6 +281,96 @@ public class ContentTransUtil {
 		} else {
 			android.text.ClipboardManager cbManager = (android.text.ClipboardManager) context.getSystemService(Activity.CLIPBOARD_SERVICE);
 			cbManager.setText(content);
+		}
+	}
+
+	@Override
+	public void onDown(ButtonStyleTextView tv, SpannableString spannable, int start, int end, int style) {
+		int id;
+		Drawable drawable;
+		int height;
+		ImageIdSpan imageIdSpan;
+		
+		switch(style){
+		case ButtonStyleTextView.SPAN_STYLE_TOPIC_MENTION:
+			spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			spannable.setSpan(new BackgroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			break;
+		case ButtonStyleTextView.SPAN_STYLE_NORMALADDR:
+			id = R.drawable.button_link_pressed;
+			drawable = context.getResources().getDrawable(R.drawable.button_link_pressed);
+			height = (int) (tv.getTextSize() * 1.2F);
+			drawable.setBounds(0, 0, (int) (height* 3.5), height);
+			imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);
+			imageIdSpan.setDrawableId(id);
+			
+			spannable.setSpan(imageIdSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			break;
+		case ButtonStyleTextView.SPAN_STYLE_VIDEOADDR:
+			id = R.drawable.button_video_link_pressed;
+			drawable = context.getResources().getDrawable(R.drawable.button_link_pressed);
+			height = (int) (tv.getTextSize() * 1.2F);
+			drawable.setBounds(0, 0, (int) (height* 3.5), height);
+			imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);
+			imageIdSpan.setDrawableId(id);
+			
+			spannable.setSpan(imageIdSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			break;
+		case ButtonStyleTextView.SPAN_STYLE_MUSICADDR:
+			id = R.drawable.button_music_link_pressed;
+			drawable = context.getResources().getDrawable(R.drawable.button_link_pressed);
+			height = (int) (tv.getTextSize() * 1.2F);
+			drawable.setBounds(0, 0, (int) (height* 3.5), height);
+			imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);
+			imageIdSpan.setDrawableId(id);
+			
+			spannable.setSpan(imageIdSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			break;
+		}
+	}
+	
+	@Override
+	public void onUp(ButtonStyleTextView tv, SpannableString spannable, int start, int end, int style) {
+		int id;
+		Drawable drawable;
+		int height;
+		ImageIdSpan imageIdSpan;
+		
+		switch(style){
+		case ButtonStyleTextView.SPAN_STYLE_TOPIC_MENTION:
+			spannable.setSpan(new ForegroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			spannable.setSpan(new BackgroundColorSpan(0x0), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			break;
+		case ButtonStyleTextView.SPAN_STYLE_NORMALADDR:
+			id = R.drawable.button_link;
+			drawable = context.getResources().getDrawable(R.drawable.button_link_pressed);
+			height = (int) (tv.getTextSize() * 1.2F);
+			drawable.setBounds(0, 0, (int) (height* 3.5), height);
+			imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);
+			imageIdSpan.setDrawableId(id);
+			
+			spannable.setSpan(imageIdSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			break;
+		case ButtonStyleTextView.SPAN_STYLE_VIDEOADDR:
+			id = R.drawable.button_video_link;
+			drawable = context.getResources().getDrawable(R.drawable.button_link_pressed);
+			height = (int) (tv.getTextSize() * 1.2F);
+			drawable.setBounds(0, 0, (int) (height* 3.5), height);
+			imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);
+			imageIdSpan.setDrawableId(id);
+			
+			spannable.setSpan(imageIdSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			break;
+		case ButtonStyleTextView.SPAN_STYLE_MUSICADDR:
+			id = R.drawable.button_music_link;
+			drawable = context.getResources().getDrawable(R.drawable.button_link_pressed);
+			height = (int) (tv.getTextSize() * 1.2F);
+			drawable.setBounds(0, 0, (int) (height* 3.5), height);
+			imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);
+			imageIdSpan.setDrawableId(id);
+			
+			spannable.setSpan(imageIdSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			break;
 		}
 	}
 

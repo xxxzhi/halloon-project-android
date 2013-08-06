@@ -60,11 +60,6 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
 	
 	protected abstract void init();
 
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-	}
-
 	/**
 	 * 退栈，后退
 	 */
