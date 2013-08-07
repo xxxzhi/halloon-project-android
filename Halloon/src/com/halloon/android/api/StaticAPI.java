@@ -21,8 +21,7 @@ public class StaticAPI {
 	 *            地图类型（roadmap 标准路线图,satellite卫星地图,hybrid 综合地图,terrain 地形图)
 	 * @return
 	 */
-	public static String getGoogleStaticMap(String latitude, String longitude,
-			int zoom, int width, int height, int markerColor, String mapType) {
+	public static String getGoogleStaticMap(String latitude, String longitude, int zoom, int width, int height, int markerColor, String mapType) {
 		return "http://maps.googleapis.com/maps/api/staticmap?center="
 				+ latitude + "," + longitude + "&zoom=" + String.valueOf(zoom)
 				+ "&size=" + String.valueOf(width) + "x"
@@ -48,8 +47,7 @@ public class StaticAPI {
 	 *            高度（像素）
 	 * @return
 	 */
-	public static String getSOSOStaticMap(String latitude, String longitude,
-			int zoom, int width, int height) {
+	public static String getSOSOStaticMap(String latitude, String longitude, int zoom, int width, int height) {
 		return "http://st.map.soso.com/api?size=" + String.valueOf(width) + "*"
 				+ String.valueOf(height) + "&center=" + longitude + ","
 				+ latitude + "&zoom=" + String.valueOf(zoom) + "&markers="
@@ -71,8 +69,7 @@ public class StaticAPI {
 	 *            高度（像素）
 	 * @return
 	 */
-	public static String getBaiduStaticMap(String latitude, String longitude,
-			int zoom, int width, int height) {
+	public static String getBaiduStaticMap(String latitude, String longitude, int zoom, int width, int height) {
 		return "http://api.map.baidu.com/staticimage?center=" + longitude + ","
 				+ latitude + "&width=" + String.valueOf(width) + "&height="
 				+ String.valueOf(height) + "&zoom=" + String.valueOf(zoom)
@@ -95,8 +92,7 @@ public class StaticAPI {
 	 *            容错 分为L(7%)M(15%)Q(25%)H(30%)
 	 * @return
 	 */
-	public static String generateQRCodeFromGoogle(int width, int height,
-			String content, String encodeType, String chld) {
+	public static String generateQRCodeFromGoogle(int width, int height, String content, String encodeType, String chld) {
 		if (content == null)
 			content = "UTF-8";
 

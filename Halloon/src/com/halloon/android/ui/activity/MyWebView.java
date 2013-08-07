@@ -69,6 +69,7 @@ public class MyWebView extends BaseActivity {
 		});
 		
 		mWebView.setVerticalScrollBarEnabled(false);
+		mWebView.getSettings().setSupportZoom(true);
 		mWebView.setHorizontalScrollBarEnabled(false);
 		mWebView.getSettings().setJavaScriptEnabled(true);
 		mWebView.loadUrl(getIntent().getStringExtra("url"));

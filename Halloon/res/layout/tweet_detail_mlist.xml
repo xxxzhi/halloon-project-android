@@ -38,7 +38,6 @@
             android:id="@+id/comment_nick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/comment_head"
             android:layout_marginTop="3.0dip"
             android:text="阿蔡"
             android:textSize="15.0dip"
@@ -54,12 +53,11 @@
             android:textColor="#666666"
             android:gravity="right" />
         
-        <TextView
+        <com.halloon.android.widget.ButtonStyleTextView
             android:id="@+id/comment_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/comment_nick"
-            android:layout_toRightOf="@+id/comnment_head"
             android:layout_marginTop="1.0dip"
             android:layout_marginRight="10.0dip"
             android:lineSpacingExtra="2.0dip"

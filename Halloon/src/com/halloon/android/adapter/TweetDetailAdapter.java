@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +30,7 @@ import com.halloon.android.util.ContentTransUtil;
 import com.halloon.android.util.DensityUtil;
 import com.halloon.android.util.PopupWindowManager;
 import com.halloon.android.util.TimeUtil;
+import com.halloon.android.widget.ButtonStyleTextView;
 
 public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 
@@ -100,37 +100,27 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 
 		switch (type) {
 		case TWEET_HEAD:
-			if (convertView == null
-					|| convertView.getTag().equals(tweetHeadHolder) == false) {
-				convertView = layoutInflater.inflate(
-						R.layout.tweet_detail_head, null);
+			if (convertView == null || convertView.getTag().equals(tweetHeadHolder) == false) {
+				convertView = layoutInflater.inflate(R.layout.tweet_detail_head, null);
 
 				tweetHeadHolder = new TweetHeadHolder();
 
-				tweetHeadHolder.tweetHead = (ImageView) convertView
-						.findViewById(R.id.tweet_head);
-				tweetHeadHolder.tweetNick = (TextView) convertView
-						.findViewById(R.id.tweet_nick);
-				tweetHeadHolder.isVip = (ImageView) convertView
-						.findViewById(R.id.is_vip);
-				tweetHeadHolder.tweetFrom = (TextView) convertView
-						.findViewById(R.id.tweet_from);
-				tweetHeadHolder.tweetTimestamp = (TextView) convertView
-						.findViewById(R.id.tweet_timestamp);
+				tweetHeadHolder.tweetHead = (ImageView) convertView.findViewById(R.id.tweet_head);
+				tweetHeadHolder.tweetNick = (TextView) convertView.findViewById(R.id.tweet_nick);
+				tweetHeadHolder.isVip = (ImageView) convertView.findViewById(R.id.is_vip);
+				tweetHeadHolder.tweetFrom = (TextView) convertView.findViewById(R.id.tweet_from);
+				tweetHeadHolder.tweetTimestamp = (TextView) convertView.findViewById(R.id.tweet_timestamp);
 
 				convertView.setTag(tweetHeadHolder);
 			} else {
 				tweetHeadHolder = (TweetHeadHolder) convertView.getTag();
 			}
 
-			ImageLoader.getInstance(context).displayImage(
-					tweetBean.getHead() + "/50", tweetHeadHolder.tweetHead, 6);
+			ImageLoader.getInstance(context).displayImage(tweetBean.getHead() + "/50", tweetHeadHolder.tweetHead, 6);
 
 			tweetHeadHolder.tweetNick.setText(tweetBean.getNick());
-			tweetHeadHolder.tweetFrom.setText(context.getString(R.string.from)
-					+ tweetBean.getFrom());
-			tweetHeadHolder.tweetTimestamp.setText(TimeUtil.converTime(
-					tweetBean.getTimestamp(), 2));
+			tweetHeadHolder.tweetFrom.setText(context.getString(R.string.from) + tweetBean.getFrom());
+			tweetHeadHolder.tweetTimestamp.setText(TimeUtil.converTime(tweetBean.getTimestamp(), 2));
 			if (tweetBean.getIsVip() == 1) {
 				tweetHeadHolder.isVip.setVisibility(View.VISIBLE);
 			} else {
@@ -138,43 +128,32 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 			}
 			break;
 		case TWEET_CONTENT:
-			if (convertView == null
-					|| convertView.getTag().equals(tweetContentHolder) == false) {
-				convertView = layoutInflater.inflate(
-						R.layout.tweet_detail_content, null);
+			if (convertView == null || convertView.getTag().equals(tweetContentHolder) == false) {
+				convertView = layoutInflater.inflate(R.layout.tweet_detail_content, null);
 
 				tweetContentHolder = new TweetContentHolder();
 
-				tweetContentHolder.tweetContent = (TextView) convertView
-						.findViewById(R.id.tweet_content);
-				tweetContentHolder.tweetImage = (ImageView) convertView
-						.findViewById(R.id.tweet_image);
-				tweetContentHolder.forwardContainer = (RelativeLayout) convertView
-						.findViewById(R.id.forward_background);
-				tweetContentHolder.forwardContent = (TextView) convertView
-						.findViewById(R.id.forward_content);
-				tweetContentHolder.forwardImage = (ImageView) convertView
-						.findViewById(R.id.forward_image);
-				tweetContentHolder.forwardLocationImage = (ImageView) convertView
-						.findViewById(R.id.forward_location_image);
-				tweetContentHolder.locationImage = (ImageView) convertView
-						.findViewById(R.id.location_image);
+				tweetContentHolder.tweetContent = (ButtonStyleTextView) convertView.findViewById(R.id.tweet_content);
+				tweetContentHolder.tweetImage = (ImageView) convertView.findViewById(R.id.tweet_image);
+				tweetContentHolder.forwardContainer = (RelativeLayout) convertView.findViewById(R.id.forward_background);
+				tweetContentHolder.forwardContent = (ButtonStyleTextView) convertView.findViewById(R.id.forward_content);
+				tweetContentHolder.forwardImage = (ImageView) convertView.findViewById(R.id.forward_image);
+				tweetContentHolder.forwardLocationImage = (ImageView) convertView.findViewById(R.id.forward_location_image);
+				tweetContentHolder.locationImage = (ImageView) convertView.findViewById(R.id.location_image);
 
 				convertView.setTag(tweetContentHolder);
 			} else {
 				tweetContentHolder = (TweetContentHolder) convertView.getTag();
 			}
 
-			if (tweetBean.getSource() != null
-					&& tweetBean.getText().length() == 0) {
-				tweetContentHolder.tweetContent.setText(context
-						.getString(R.string.re_tweet));
+			if (tweetBean.getSource() != null && tweetBean.getText().length() == 0) {
+				tweetContentHolder.tweetContent.setText(context.getString(R.string.re_tweet));
 			} else {
 				ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getText(), tweetContentHolder.tweetContent, tweetBean, false, true);
 			}
-			
+
 			tweetContentHolder.tweetContent.setLongClickable(true);
-			tweetContentHolder.tweetContent.setOnLongClickListener(new OnLongClickListener(){
+			tweetContentHolder.tweetContent.setOnLongClickListener(new OnLongClickListener() {
 
 				@Override
 				public boolean onLongClick(View v) {
@@ -185,128 +164,100 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 					System.out.println(tempBean.getText());
 					return true;
 				}
-				
+
 			});
 			if (tweetBean.getTweetImage() != null && !tweetBean.getTweetImage().toString().equals("[]")) {
 				tweetContentHolder.tweetImage.setVisibility(View.VISIBLE);
 				try {
-					ImageLoader.getInstance(context).displayImage(
-							tweetBean.getTweetImage().getString(0) + "/460",
-							tweetContentHolder.tweetImage, 0);
+					ImageLoader.getInstance(context).displayImage(tweetBean.getTweetImage().getString(0) + "/460", tweetContentHolder.tweetImage, 0);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				tweetContentHolder.tweetImage
-						.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								try {
-									((MainPageFragmentCallback) context).setupPictureDialog(tweetBean.getTweetImage().getString(0), "/2000", v.getDrawingCache());
-								} catch (JSONException e) {
-									e.printStackTrace();
-								}
-							}
-						});
+				tweetContentHolder.tweetImage.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						try {
+							((MainPageFragmentCallback) context).setupPictureDialog(tweetBean.getTweetImage().getString(0), "/2000", v.getDrawingCache());
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
 			} else if (tweetBean.getVideoImage() != null && !tweetBean.getVideoImage().toString().equals("null")) {
 				tweetContentHolder.tweetImage.setVisibility(View.VISIBLE);
-				ImageLoader.getInstance(context).displayImage(
-						tweetBean.getVideoImage(),
-						tweetContentHolder.tweetImage, 0);
-				tweetContentHolder.tweetImage
-						.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								Intent intent = new Intent();
-								intent.setAction("android.intent.action.VIEW");
-								Uri uri = Uri.parse(tweetBean.getVideoUrl());
-								intent.setData(uri);
-								context.startActivity(intent);
-							}
-						});
+				ImageLoader.getInstance(context).displayImage(tweetBean.getVideoImage(), tweetContentHolder.tweetImage, 0);
+				tweetContentHolder.tweetImage.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent();
+						intent.setAction("android.intent.action.VIEW");
+						Uri uri = Uri.parse(tweetBean.getVideoUrl());
+						intent.setData(uri);
+						context.startActivity(intent);
+					}
+				});
 			} else {
 				tweetContentHolder.tweetImage.setVisibility(View.GONE);
 			}
 			if (tweetBean.getSource() != null) {
 				tweetContentHolder.forwardContainer.setVisibility(View.VISIBLE);
-				
+
 				ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getSource().getText(), tweetContentHolder.forwardContent, tweetBean, true, true);
 				tweetContentHolder.forwardContent.setLongClickable(true);
-				tweetContentHolder.forwardContent.setOnLongClickListener(new OnLongClickListener(){
+				tweetContentHolder.forwardContent.setOnLongClickListener(new OnLongClickListener() {
 					@Override
-					public boolean onLongClick(View v){
+					public boolean onLongClick(View v) {
 						TweetBean tempBean = TweetDetailAdapter.this.getItem(position);
 						boolean me = tempBean.getSource().getName() == DBManager.getInstance(context).getProfile().getName();
 						PopupWindowManager popupWindowManager = new PopupWindowManager(context);
 						popupWindowManager.setupCommentFunctionPopup(tempBean.getSource().getId(), me, tempBean.getSource().getText(), PopupWindowManager.TWEET_CONTENT, 0);
-						
+
 						return true;
 					}
 				});
-				if (tweetBean.getSource().getTweetImage() != null
-						&& !tweetBean.getSource().getTweetImage().toString()
-								.equals("[]")) {
+				if (tweetBean.getSource().getTweetImage() != null && !tweetBean.getSource().getTweetImage().toString().equals("[]")) {
 					tweetContentHolder.forwardImage.setVisibility(View.VISIBLE);
 					try {
-						ImageLoader.getInstance(context).displayImage(
-								tweetBean.getSource().getTweetImage()
-										.getString(0)
-										+ "/460",
-								tweetContentHolder.forwardImage, 0);
+						ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getTweetImage().getString(0) + "/460", tweetContentHolder.forwardImage, 0);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					tweetContentHolder.forwardImage
-							.setOnClickListener(new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									try {
-										((MainPageFragmentCallback) context).setupPictureDialog(tweetBean.getSource().getTweetImage().getString(0), "/2000", v.getDrawingCache());
-									} catch (JSONException e) {
-										e.printStackTrace();
-									}
-								}
-							});
-				} else if (tweetBean.getSource().getVideoImage() != null
-						&& !tweetBean.getSource().getVideoImage().toString()
-								.equals("null")) {
+					tweetContentHolder.forwardImage.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							try {
+								((MainPageFragmentCallback) context).setupPictureDialog(tweetBean.getSource().getTweetImage().getString(0), "/2000", v.getDrawingCache());
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				} else if (tweetBean.getSource().getVideoImage() != null && !tweetBean.getSource().getVideoImage().toString().equals("null")) {
 					tweetContentHolder.forwardImage.setVisibility(View.VISIBLE);
-					ImageLoader.getInstance(context).displayImage(
-							tweetBean.getSource().getVideoImage(),
-							tweetContentHolder.forwardImage, 0);
-					tweetContentHolder.forwardImage
-							.setOnClickListener(new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									Intent intent = new Intent();
-									intent.setAction("android.intent.action.VIEW");
-									Uri uri = Uri.parse(tweetBean.getSource()
-											.getVideoUrl());
-									intent.setData(uri);
-									context.startActivity(intent);
-								}
-							});
+					ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getVideoImage(), tweetContentHolder.forwardImage, 0);
+					tweetContentHolder.forwardImage.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent intent = new Intent();
+							intent.setAction("android.intent.action.VIEW");
+							Uri uri = Uri.parse(tweetBean.getSource().getVideoUrl());
+							intent.setData(uri);
+							context.startActivity(intent);
+						}
+					});
 				} else {
 					tweetContentHolder.forwardImage.setVisibility(View.GONE);
 				}
-				if (!tweetBean.getSource().getLongitude().equals("0")
-						&& !tweetBean.getSource().getLatitude().equals("0")) {
-					System.out.println(tweetBean.getSource().getLongitude()
-							+ "," + tweetBean.getSource().getLatitude());
+				if (!tweetBean.getSource().getLongitude().equals("0") && !tweetBean.getSource().getLatitude().equals("0")) {
+					System.out.println(tweetBean.getSource().getLongitude() + "," + tweetBean.getSource().getLatitude());
 					ImageLoader.getInstance(context).displayImage(StaticAPI.getSOSOStaticMap(tweetBean.getSource().getLatitude().toString(), tweetBean.getSource().getLongitude().toString(), 15, DensityUtil.dip2px(context, 300), DensityUtil.dip2px(context, 80)), tweetContentHolder.forwardLocationImage, 1);
 				}
 			} else {
 				tweetContentHolder.forwardContainer.setVisibility(View.GONE);
 			}
-			if ((!tweetBean.getLongitude().equals("0") && !tweetBean
-					.getLatitude().equals("0"))) {
-				System.out.println(tweetBean.getLongitude() + ","
-						+ tweetBean.getLatitude());
-				ImageLoader.getInstance(context).displayImage(
-						StaticAPI.getSOSOStaticMap(tweetBean.getLatitude()
-								.toString(), tweetBean.getLongitude()
-								.toString(), 15, DensityUtil.dip2px(context,
-								300), DensityUtil.dip2px(context, 80)),
-						tweetContentHolder.locationImage, 1);
+			if ((!tweetBean.getLongitude().equals("0") && !tweetBean.getLatitude().equals("0"))) {
+				System.out.println(tweetBean.getLongitude() + "," + tweetBean.getLatitude());
+				ImageLoader.getInstance(context).displayImage(StaticAPI.getSOSOStaticMap(tweetBean.getLatitude().toString(), tweetBean.getLongitude().toString(), 15, DensityUtil.dip2px(context, 300), DensityUtil.dip2px(context, 80)), tweetContentHolder.locationImage, 1);
 			}
 			break;
 		case TWEET_COMMENT_TITLE:
@@ -321,16 +272,13 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 				tweetCommentTitleHolder.forwardCount = (TextView) convertView.findViewById(R.id.forward_count);
 				convertView.setTag(tweetCommentTitleHolder);
 			} else {
-				tweetCommentTitleHolder = (TweetCommentTitleHolder) convertView
-						.getTag();
+				tweetCommentTitleHolder = (TweetCommentTitleHolder) convertView.getTag();
 			}
-			tweetCommentTitleHolder.tweetCommentCount.setText(tweetBean
-					.getMCount());
+			tweetCommentTitleHolder.tweetCommentCount.setText(tweetBean.getMCount());
 			tweetCommentTitleHolder.forwardCount.setText(tweetBean.getCount());
 			tweetCommentTitleHolder.tweetCommentCountTitle.setClickable(true);
 			tweetCommentTitleHolder.forwardCountTitle.setClickable(true);
-			tweetCommentTitleHolder.tweetCommentCountTitle
-					.setOnClickListener(this);
+			tweetCommentTitleHolder.tweetCommentCountTitle.setOnClickListener(this);
 			tweetCommentTitleHolder.forwardCountTitle.setOnClickListener(this);
 			if (commentState == COMMENT_STATUS_FORWARD) {
 				tweetCommentTitleHolder.tweetCommentCountTitle.setTextColor(0xFFAAAAAA);
@@ -352,7 +300,7 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 
 				tweetCommentHolder.commentHead = (ImageView) convertView.findViewById(R.id.comment_head);
 				tweetCommentHolder.tweetNick = (TextView) convertView.findViewById(R.id.comment_nick);
-				tweetCommentHolder.tweetCommentContent = (TextView) convertView.findViewById(R.id.comment_content);
+				tweetCommentHolder.tweetCommentContent = (ButtonStyleTextView) convertView.findViewById(R.id.comment_content);
 				tweetCommentHolder.tweetTimestamp = (TextView) convertView.findViewById(R.id.comment_timestamp);
 
 				convertView.setTag(tweetCommentHolder);
@@ -361,24 +309,21 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 			}
 			TweetBean cList = getItem(position);
 			if (cList.getText().length() <= 0) {
-				tweetCommentHolder.tweetCommentContent.setText(context
-						.getString(R.string.re_tweet));
+				tweetCommentHolder.tweetCommentContent.setText(context.getString(R.string.re_tweet));
 			} else {
 				ContentTransUtil.getInstance(context).displaySpannableString(cList.getText(), tweetCommentHolder.tweetCommentContent, cList, false, true);
 			}
-			ImageLoader.getInstance(context).displayImage(
-					cList.getHead() + "/50", tweetCommentHolder.commentHead, 0);
-			tweetCommentHolder.commentHead
-					.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							Bundle bundle = new Bundle();
-							bundle.putInt("type", TabProfileFragment.OTHER);
-							bundle.putString("name", getItem(position).getName());
-							bundle.putString("id", getItem(position).getOpenId());
-							((TweetDetailFragmentCallback) context).setupProfileFragment(bundle);
-						}
-					});
+			ImageLoader.getInstance(context).displayImage(cList.getHead() + "/50", tweetCommentHolder.commentHead, 0);
+			tweetCommentHolder.commentHead.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Bundle bundle = new Bundle();
+					bundle.putInt("type", TabProfileFragment.OTHER);
+					bundle.putString("name", getItem(position).getName());
+					bundle.putString("id", getItem(position).getOpenId());
+					((TweetDetailFragmentCallback) context).setupProfileFragment(bundle);
+				}
+			});
 			tweetCommentHolder.tweetNick.setText(cList.getNick());
 			tweetCommentHolder.tweetTimestamp.setText(TimeUtil.converTime(cList.getTimestamp(), 2));
 			break;
@@ -396,10 +341,10 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 	}
 
 	private static class TweetContentHolder {
-		public TextView tweetContent;
+		public ButtonStyleTextView tweetContent;
 		public ImageView tweetImage;
 		public RelativeLayout forwardContainer;
-		public TextView forwardContent;
+		public ButtonStyleTextView forwardContent;
 		public ImageView forwardImage;
 		public ImageView forwardLocationImage;
 		public ImageView locationImage;
@@ -416,7 +361,7 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 		public ImageView commentHead;
 		public TextView tweetNick;
 		public TextView tweetTimestamp;
-		public TextView tweetCommentContent;
+		public ButtonStyleTextView tweetCommentContent;
 	}
 
 	@Override
@@ -424,13 +369,11 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.comment_count_title:
 			commentState = COMMENT_STATUS_COMMENT;
-			((TweetDetailFragmentCallback) context)
-					.mListChange(COMMENT_STATUS_COMMENT);
+			((TweetDetailFragmentCallback) context).mListChange(COMMENT_STATUS_COMMENT);
 			break;
 		case R.id.forward_count_title:
 			commentState = COMMENT_STATUS_FORWARD;
-			((TweetDetailFragmentCallback) context)
-					.mListChange(COMMENT_STATUS_FORWARD);
+			((TweetDetailFragmentCallback) context).mListChange(COMMENT_STATUS_FORWARD);
 			break;
 		}
 	}

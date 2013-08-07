@@ -32,11 +32,12 @@ import android.widget.Toast;
 import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
 import com.halloon.android.bean.TweetBean;
+import com.halloon.android.style.ImageIdSpan;
+import com.halloon.android.style.RoundBackgroundSpan;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 import com.halloon.android.ui.activity.MyWebView;
 import com.halloon.android.widget.ButtonStyleTextView;
 import com.halloon.android.widget.ButtonStyleTextView.OnTouchDownListener;
-import com.halloon.android.widget.ImageIdSpan;
 
 @SuppressLint("ServiceCast")
 public class ContentTransUtil implements OnTouchDownListener {
@@ -293,7 +294,7 @@ public class ContentTransUtil implements OnTouchDownListener {
 		switch(style){
 		case ButtonStyleTextView.SPAN_STYLE_TOPIC_MENTION:
 			spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			spannable.setSpan(new BackgroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			spannable.setSpan(new RoundBackgroundSpan(tv.getLayout(), 0x660085DF, tv.getTextSize() * 0.3F, start, end), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			break;
 		case ButtonStyleTextView.SPAN_STYLE_NORMALADDR:
 			id = R.drawable.button_link_pressed;
@@ -338,7 +339,7 @@ public class ContentTransUtil implements OnTouchDownListener {
 		switch(style){
 		case ButtonStyleTextView.SPAN_STYLE_TOPIC_MENTION:
 			spannable.setSpan(new ForegroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			spannable.setSpan(new BackgroundColorSpan(0x0), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			spannable.setSpan(new RoundBackgroundSpan(tv.getLayout(), 0xFFF5F5F5, 1, start, end), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			break;
 		case ButtonStyleTextView.SPAN_STYLE_NORMALADDR:
 			id = R.drawable.button_link;

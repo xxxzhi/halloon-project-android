@@ -1,6 +1,7 @@
 package com.halloon.android.widget;
 
 import com.halloon.android.R;
+import com.halloon.android.style.ImageIdSpan;
 
 import android.content.Context;
 import android.text.Layout;

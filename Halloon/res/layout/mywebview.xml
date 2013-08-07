@@ -13,9 +13,10 @@
 
         <com.halloon.android.view.ScrollTextView
             android:id="@+id/title_text"
-            android:layout_width="fill_parent"
+            android:layout_width="250.0dip"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/back_button"
+            android:layout_marginLeft="6.0dip"
             android:layout_centerVertical="true"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
@@ -29,7 +30,6 @@
             android:id="@+id/back_button"
             android:layout_width="50.0dip"
             android:layout_height="32.0dip"
-            android:layout_alignLeft="@+id/title_text"
             android:layout_centerVertical="true"
             android:layout_marginLeft="6.0dip"
             android:background="@drawable/arrow_left_button_selector"
