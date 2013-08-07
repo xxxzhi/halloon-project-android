@@ -2,8 +2,10 @@ package com.halloon.android.widget;
 
 import com.halloon.android.R;
 import com.halloon.android.style.ImageIdSpan;
+import com.halloon.android.style.RoundBackgroundSpan;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.text.Layout;
 import android.text.SpannableString;
 import android.text.style.ClickableSpan;
@@ -17,6 +19,9 @@ public class ButtonStyleTextView extends TextView {
 	private OnTouchDownListener mOnTouchDownListener;
 	
 	private ClickableSpan linkSpan;
+	private RoundBackgroundSpan backgroundSpan;
+	
+	private boolean isRoundBackgroundSpanDraw = false;
 	
 	private int style = 0;
 	
@@ -66,6 +71,7 @@ public class ButtonStyleTextView extends TextView {
 		SpannableString buffer = (SpannableString) getText();
 		
 		if(action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL){
+			isRoundBackgroundSpanDraw = false;
 			if(style != 0){
 				mOnTouchDownListener.onUp(this, buffer, buffer.getSpanStart(linkSpan), buffer.getSpanEnd(linkSpan), style);
 				style = 0;
@@ -90,8 +96,14 @@ public class ButtonStyleTextView extends TextView {
 
             ClickableSpan[] link = buffer.getSpans(off, off, ClickableSpan.class);
             ForegroundColorSpan[] foregroundColor = buffer.getSpans(off, off, ForegroundColorSpan.class);
+            RoundBackgroundSpan[] backgroundSpans = buffer.getSpans(off, off, RoundBackgroundSpan.class);
             ImageIdSpan[] image = buffer.getSpans(off, off, ImageIdSpan.class);
-
+            
+            if(backgroundSpans.length != 0){
+            	isRoundBackgroundSpanDraw = true;
+            	backgroundSpan = backgroundSpans[0];
+            }
+            
             if (link.length != 0) {
             	linkSpan = link[0];
             	if(mOnTouchDownListener != null){
@@ -137,4 +149,15 @@ public class ButtonStyleTextView extends TextView {
         
         return false;
 	}
+	
+	@Override
+	public void onDraw(Canvas canvas){
+		
+		if(isRoundBackgroundSpanDraw && backgroundSpan != null){
+			backgroundSpan.updateDrawState(canvas);
+		}
+		
+		super.onDraw(canvas);
+	}
+	
 }

@@ -152,6 +152,9 @@ public class ContentTransUtil implements OnTouchDownListener {
 					}
 					
 					ss.setSpan(new ForegroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					if(tv instanceof ButtonStyleTextView){
+						ss.setSpan(new RoundBackgroundSpan((ButtonStyleTextView) tv, 0x660085DF, tv.getTextSize() * 0.3F, start, end), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					}
 				}
 				
 			}else if(group.startsWith("#")){
@@ -294,7 +297,6 @@ public class ContentTransUtil implements OnTouchDownListener {
 		switch(style){
 		case ButtonStyleTextView.SPAN_STYLE_TOPIC_MENTION:
 			spannable.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			spannable.setSpan(new RoundBackgroundSpan(tv.getLayout(), 0x660085DF, tv.getTextSize() * 0.3F, start, end), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			break;
 		case ButtonStyleTextView.SPAN_STYLE_NORMALADDR:
 			id = R.drawable.button_link_pressed;
@@ -339,7 +341,6 @@ public class ContentTransUtil implements OnTouchDownListener {
 		switch(style){
 		case ButtonStyleTextView.SPAN_STYLE_TOPIC_MENTION:
 			spannable.setSpan(new ForegroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			spannable.setSpan(new RoundBackgroundSpan(tv.getLayout(), 0xFFF5F5F5, 1, start, end), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			break;
 		case ButtonStyleTextView.SPAN_STYLE_NORMALADDR:
 			id = R.drawable.button_link;

@@ -1,15 +1,15 @@
 package com.halloon.android.style;
 
+import com.halloon.android.widget.ButtonStyleTextView;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.text.Layout;
-import android.text.style.LineBackgroundSpan;
-import android.text.style.ParagraphStyle;
 import android.util.Log;
 
-public class RoundBackgroundSpan implements LineBackgroundSpan, ParagraphStyle {
+public class RoundBackgroundSpan {
 	
 	private RoundRectShape mShape;
 	
@@ -18,74 +18,101 @@ public class RoundBackgroundSpan implements LineBackgroundSpan, ParagraphStyle {
 	
 	private Rect[] lines;
 	
+	private Paint paint;
+	
 	private int color;
+	
+	private ButtonStyleTextView tv;
+	
+	private int start;
+	private int end;
 
-	public RoundBackgroundSpan(Layout layout, int color, float round, int start, int end) {
+	public RoundBackgroundSpan(ButtonStyleTextView tv, int color, float round, int start, int end) {
+		
+		this.tv = tv;
+		
+		this.start = start;
+		this.end = end;
+		
+		paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		paint.setColor(color);
 		
 		this.color = color;
 		
 		mShape = new RoundRectShape(new float[]{round, round, round, round,
 				                                round, round, round, round}, null, null);
 		
-		lineStart = layout.getLineForOffset(start);
-		lineEnd = layout.getLineForOffset(end);
+	}
+	
+	public int getColor(){
+		return paint.getColor();
+	}
+	
+	public void setColor(int color){
+		paint.setColor(color);
+	}
+	
+	public void setOriginalColor(){
+		paint.setColor(color);
+	}
+	
+	public void updateDrawState(Canvas canvas){
+		Layout layout = tv.getLayout();
 		
-		if(lineStart != lineEnd){
-			lines = new Rect[(lineEnd + 1) - lineStart];
+		if(layout != null){
+			lineStart = layout.getLineForOffset(start);
+			lineEnd = layout.getLineForOffset(end);
 			
-			Log.d("ROUND BACKGROUND", "lineStart:" + lineStart + " lineEnd:" + lineEnd);
-			
-			for(int i = lineStart; i <= lineEnd; i++){
+			if(lineStart != lineEnd){
+				lines = new Rect[(lineEnd + 1) - lineStart];
+				
+				Log.d("ROUND BACKGROUND", "lineStart:" + lineStart + " lineEnd:" + lineEnd);
+				
+				for(int i = lineStart; i <= lineEnd; i++){
+					Rect rect = new Rect();
+					layout.getLineBounds(i, rect);
+					if(i == lineStart){
+						rect.left = (int) layout.getPrimaryHorizontal(start);
+					}
+					if(i == lineEnd){
+						rect.right = (int) layout.getSecondaryHorizontal(end);
+					}
+					
+					Log.d("RECT" + i, rect.toString());
+					
+					lines[i - lineStart] = rect;
+				}
+			}else{
+				Log.d("ROUND BACKGROUND", "lineStart:" + lineStart + " lineEnd:" + lineEnd);
 				Rect rect = new Rect();
-				layout.getLineBounds(i, rect);
-				if(i == lineStart){
-					rect.left = (int) layout.getPrimaryHorizontal(start);
-				}
-				if(i == lineEnd){
-					rect.right = (int) layout.getSecondaryHorizontal(end);
-				}
+				lines = new Rect[1];
+				layout.getLineBounds(lineStart, rect);
+				rect.left = (int) layout.getPrimaryHorizontal(start);
+				rect.right = (int) layout.getSecondaryHorizontal(end);
 				
-				Log.d("RECT" + i, rect.toString());
+				Log.d("RECT0", rect.toString());
 				
-				lines[i - lineStart] = rect;
+				lines[0] = rect;
 			}
-		}else{
-			Log.d("ROUND BACKGROUND", "lineStart:" + lineStart + " lineEnd:" + lineEnd);
-			lines = new Rect[1];
-			Rect rect = new Rect();
-			layout.getLineBounds(lineStart, rect);
-			rect.left = (int) layout.getPrimaryHorizontal(start);
-			rect.right = (int) layout.getSecondaryHorizontal(end);
 			
-			Log.d("RECT0", rect.toString());
+			canvas.save();
 			
-			lines[0] = rect;
+			for(int i = 0; i <= lineEnd - lineStart; i++){
+				Rect rect = lines[i];
+				mShape.resize(rect.width(), rect.height());
+				
+				if(i == 0){
+					canvas.translate(rect.left, rect.top);
+				}else{
+					canvas.translate(-lines[0].left, rect.height());
+				}
+				
+				mShape.draw(canvas, paint);
+				
+			}
+			canvas.restore();
 		}
 	}
 
-	@Override
-	public void drawBackground(Canvas c, Paint p, int left, int right, int top, int baseline, int bottom, CharSequence text, int start, int end, int lnum) {
-		
-		int origColor = p.getColor();
-		p.setColor(color);
-		
-		c.save();
-		for(int i = 0; i <= lineEnd - lineStart; i++){
-			Rect rect = lines[i];
-			mShape.resize(rect.width(), rect.height());
-			
-			if(i == 0){
-				c.translate(rect.left, rect.top);
-			}else{
-				c.translate(-lines[0].left, rect.height());
-			}
-			
-			mShape.draw(c, p);
-			
-		}
-		c.restore();
-		
-		p.setColor(origColor);
-	}
 
 }

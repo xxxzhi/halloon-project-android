@@ -32,7 +32,9 @@ public class MyWebView extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				if(mWebView != null){
+					mWebView.destroy();
+				}
 				finish();
 			}
 		});
@@ -68,8 +70,10 @@ public class MyWebView extends BaseActivity {
 			}
 		});
 		
+		mWebView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
 		mWebView.setVerticalScrollBarEnabled(false);
 		mWebView.getSettings().setSupportZoom(true);
+		mWebView.getSettings().setBuiltInZoomControls(true);
 		mWebView.setHorizontalScrollBarEnabled(false);
 		mWebView.getSettings().setJavaScriptEnabled(true);
 		mWebView.loadUrl(getIntent().getStringExtra("url"));
