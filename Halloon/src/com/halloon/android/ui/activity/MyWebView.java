@@ -33,7 +33,7 @@ public class MyWebView extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				if(mWebView != null){
-					mWebView.destroy();
+					mWebView.removeAllViews();
 				}
 				finish();
 			}

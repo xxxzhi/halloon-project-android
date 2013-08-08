@@ -1,5 +1,7 @@
 package com.halloon.android.style;
 
+import java.lang.reflect.Method;
+
 import com.halloon.android.widget.ButtonStyleTextView;
 
 import android.graphics.Canvas;
@@ -7,7 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.text.Layout;
-import android.util.Log;
+import android.widget.TextView;
 
 public class RoundBackgroundSpan {
 	
@@ -66,8 +68,6 @@ public class RoundBackgroundSpan {
 			if(lineStart != lineEnd){
 				lines = new Rect[(lineEnd + 1) - lineStart];
 				
-				Log.d("ROUND BACKGROUND", "lineStart:" + lineStart + " lineEnd:" + lineEnd);
-				
 				for(int i = lineStart; i <= lineEnd; i++){
 					Rect rect = new Rect();
 					layout.getLineBounds(i, rect);
@@ -78,24 +78,31 @@ public class RoundBackgroundSpan {
 						rect.right = (int) layout.getSecondaryHorizontal(end);
 					}
 					
-					Log.d("RECT" + i, rect.toString());
-					
 					lines[i - lineStart] = rect;
 				}
 			}else{
-				Log.d("ROUND BACKGROUND", "lineStart:" + lineStart + " lineEnd:" + lineEnd);
 				Rect rect = new Rect();
 				lines = new Rect[1];
 				layout.getLineBounds(lineStart, rect);
 				rect.left = (int) layout.getPrimaryHorizontal(start);
 				rect.right = (int) layout.getSecondaryHorizontal(end);
 				
-				Log.d("RECT0", rect.toString());
-				
 				lines[0] = rect;
 			}
 			
 			canvas.save();
+			
+			int x = tv.getCompoundPaddingLeft();
+			int y = tv.getExtendedPaddingTop();
+			
+			try{
+				Method method = TextView.class.getDeclaredMethod("getVerticalOffset", Boolean.class);
+				method.setAccessible(true);
+				Integer returnParam = (Integer) method.invoke(tv, false);
+				y += returnParam;
+			}catch(Exception e){}
+			
+			canvas.translate(x, y);
 			
 			for(int i = 0; i <= lineEnd - lineStart; i++){
 				Rect rect = lines[i];

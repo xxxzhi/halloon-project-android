@@ -21,7 +21,7 @@ import android.view.View;
 
 public class HalloonLoadingBar extends View {
 	
-	private static final String TAG = HalloonLoadingBar.class.getSimpleName();
+	private static final String TAG = "HalloonLoadingBar";
 	
 	private int viewWidth;
 	private int viewHeight;

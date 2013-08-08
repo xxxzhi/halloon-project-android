@@ -7,13 +7,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.halloon.android.bean.PrivateDataBean;
 import com.halloon.android.bean.ProfileBean;
 import com.halloon.android.bean.TweetBean;
 import com.halloon.android.bean.UserBean;
-import com.halloon.android.util.Constants;
 import com.lhws.android.uitl.StringMatcher;
 
 public class DBManager extends SQLiteOpenHelper {
@@ -136,8 +134,6 @@ public class DBManager extends SQLiteOpenHelper {
 
 	private DBManager(Context context) {
 		super(context, HALLOON_DATABASE, null, DATABASE_VERSION);
-		
-		Log.d(Constants.LOG_TAG, "DBManager construstor");
 
 	}
 	
@@ -1445,11 +1441,11 @@ public class DBManager extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		Log.w(Constants.LOG_TAG, "CREATE DB--" + TABLE_CONTACTS_ME + "|"
+		/*Log.w(Constants.LOG_TAG, "CREATE DB--" + TABLE_CONTACTS_ME + "|"
 				                               + TABLE_MY_PROFILE + "|" 
 				                               + TABLE_TWEET_LIST + "|"
 				                               + TABLE_PRIVATE_LIST + "|" 
-				                               + TABLE_AT_LIST);
+				                               + TABLE_AT_LIST);*/
 
 		String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_CONTACTS_ME + "(" 
 		                                                             + ContactsColumns.KEY_OPEN_ID + " TEXT PRIMARY KEY," 
@@ -1580,7 +1576,7 @@ public class DBManager extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// Drop older table if existed
-		Log.w(Constants.LOG_TAG, "Upgrade DB Version " + DATABASE_VERSION);
+		//Log.w(Constants.LOG_TAG, "Upgrade DB Version " + DATABASE_VERSION);
 
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACTS_ME);
 		SettingsManager.getInstance(context).setContactStatus(CONTACT_STATUS_INIT);

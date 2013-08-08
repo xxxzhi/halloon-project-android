@@ -18,15 +18,12 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.halloon.android.R;
 import com.halloon.android.listener.OnLocationSeekListener;
-import com.halloon.android.util.Constants;
 
 public class LocationTask extends BaseCompatiableTask<Void, String, Location> {
 
@@ -71,7 +68,6 @@ public class LocationTask extends BaseCompatiableTask<Void, String, Location> {
 		};
 
 		if (isGpsEnabled()) {
-			Log.d(Constants.LOG_TAG, "GPS enabled");
 			mGpsLocationListener = new MyLocationListener(
 					LocationManager.GPS_PROVIDER);
 			mLocationManager.requestLocationUpdates(
@@ -79,7 +75,6 @@ public class LocationTask extends BaseCompatiableTask<Void, String, Location> {
 		}
 
 		if (isNetworkEnabled()) {
-			Log.d(Constants.LOG_TAG, "network location enabled");
 			mNetworkLocationListener = new MyLocationListener(
 					LocationManager.NETWORK_PROVIDER);
 			mLocationManager.requestLocationUpdates(
@@ -111,7 +106,6 @@ public class LocationTask extends BaseCompatiableTask<Void, String, Location> {
 					mLocationManager.removeUpdates(mGpsLocationListener);
 				if (mNetworkLocationListener != null)
 					mLocationManager.removeUpdates(mNetworkLocationListener);
-				Log.d(Constants.LOG_TAG, "[LocationTask] stopped all location updates");
 
 				// mGpsLocationListener = null;
 				// mNetworkLocationListener = null;
@@ -143,18 +137,15 @@ public class LocationTask extends BaseCompatiableTask<Void, String, Location> {
 
 		if (mGpsLocation != null) {
 			publishProgress(mContext.getString(R.string.location_accurate));
-		    Log.d(Constants.LOG_TAG, "get a GPS location");
 			return mGpsLocation;
 		}
 
 		if (mNetworkLocation != null) {
 			publishProgress(mContext.getString(R.string.location_no_accurate));
-			Log.d(Constants.LOG_TAG, "got a network location");
 			return mNetworkLocation;
 		}
 
 		publishProgress(mContext.getString(R.string.location_no_up_to_date));
-		Log.d(Constants.LOG_TAG, "no up-to-date location");
 
 		mGpsLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		mNetworkLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -184,8 +175,6 @@ public class LocationTask extends BaseCompatiableTask<Void, String, Location> {
 			Toast.makeText(mContext, mContext.getString(R.string.no_location), Toast.LENGTH_LONG).show();
 			return;
 		}
-
-		Log.d(Constants.LOG_TAG, "longitude:" + l.getLongitude() + ", latitude:" + l.getLatitude());
 		
 		mLocationSeekListener.onLocationGot(l.getLongitude(), l.getLatitude());
 

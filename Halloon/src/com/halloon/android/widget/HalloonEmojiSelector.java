@@ -11,11 +11,13 @@ import java.lang.ref.WeakReference;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -132,7 +134,7 @@ public class HalloonEmojiSelector extends LinearLayout{
 								Drawable drawable = context.getResources().getDrawable(drawableId);
 								drawable.setBounds(0, 0, size, size);
 								SpannableString ss = new SpannableString(emojiName);
-								ss.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE), 0, emojiName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+								ss.setSpan(new ImageSpan(drawable, DynamicDrawableSpan.ALIGN_BOTTOM), 0, emojiName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 								publishText.getText().replace(publishText.getSelectionStart(), publishText.getSelectionEnd(), ss);
 							}
 						}
@@ -305,16 +307,28 @@ public class HalloonEmojiSelector extends LinearLayout{
 			case 0:
 				if(mOnEmojiSelectedListener != null){
 					EditText publishText = mOnEmojiSelectedListener.getEditText();
-					System.out.println("backspace");
 					if(publishText.length() > 0){
 						int start = publishText.getSelectionStart();
 						int end = publishText.getSelectionEnd();
 						if(start != end){
 							publishText.getText().delete(start, end);
 						}else{
+							
 							if(start != 0){
-								publishText.getText().delete(start - 1, end);
+								Editable text = publishText.getText();
+								ImageSpan[] imageSpans = text.getSpans(start - 1, end, ImageSpan.class);
+								if(imageSpans.length != 0){
+									ImageSpan imageSpan = imageSpans[0];
+									int spanStart = text.getSpanStart(imageSpan);
+									int spanEnd = text.getSpanEnd(imageSpan);
+									text.removeSpan(imageSpans[0]);
+									text.delete(spanStart, spanEnd);
+									break;
+								}
+								
+								publishText.getText().delete(start - 1, start);
 							}
+							
 						}
 					}
 				}

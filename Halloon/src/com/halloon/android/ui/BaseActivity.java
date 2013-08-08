@@ -83,10 +83,6 @@ public class BaseActivity extends FragmentActivity {
 
 	}
 
-	private void flushAccount() {
-
-	}
-
 	public boolean checkConnection() {
 		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();

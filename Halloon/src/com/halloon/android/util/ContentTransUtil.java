@@ -20,11 +20,11 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,9 +59,10 @@ public class ContentTransUtil implements OnTouchDownListener {
 		tv.setHighlightColor(0x0);
 		
 		final JSONObject nameList = new JSONObject();
+		JSONArray mentionedUser = new JSONArray();
 		if(tweetBean != null){
 			JSONObject jsonObject = tweetBean.getMentionedUser();
-			JSONArray mentionedUser = jsonObject.names();
+			mentionedUser = jsonObject.names();
 			int count = mentionedUser.length();
 			int j = 0;
 			do{
@@ -90,7 +91,7 @@ public class ContentTransUtil implements OnTouchDownListener {
 		String TOPIC_PATTERN = "#([^\\#|.]+)#";
 		String SEARCH_PATTERN = "\\{([^\\#\\{\\}|.]+)\\}";
 		String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
-		String EMOJI_PATTERN = "\\/[\\p{InCJKUnifiedIdeographs}]{0,3}";//or\\/[\u4e00-\u9fa5]{0,3}
+		String EMOJI_PATTERN = "\\/[\\p{InCJKUnifiedIdeographs}|ok|OK|no|NO]{0,3}";//or\\/[\u4e00-\u9fa5]{0,3}
 		
 		tv.setText("");
 		final int textWidth = (int) (tv.getTextSize() * 1.2F);
@@ -98,9 +99,10 @@ public class ContentTransUtil implements OnTouchDownListener {
 		Pattern pattern = Pattern.compile(MENTION_PATTERN + "|" + 
 		                                  TOPIC_PATTERN + "|" + 
 				                          SEARCH_PATTERN + "|" +
-				                          EMOJI_PATTERN + "|" + 
-		                                  ADDR_PATTERN);
-		final Matcher matcher = pattern.matcher(content);
+				                          EMOJI_PATTERN + "|" +
+				                          ADDR_PATTERN);
+		
+		Matcher matcher = pattern.matcher(content);
 		while(matcher.find()){
 			final String group = matcher.group();
 			final int start = matcher.start();
@@ -122,41 +124,6 @@ public class ContentTransUtil implements OnTouchDownListener {
 						break;
 					}
 				}while(++i < length);
-			}else if(group.startsWith("@")){
-				String name = null;
-				try {
-					name = nameList.getString(group.substring(1));
-				} catch (JSONException e1) {
-					e1.printStackTrace();
-				}
-				if(name != null){
-					
-					if(context instanceof BaseMultiFragmentActivity){
-						ss.setSpan(new ClickableSpan(){
-
-							@Override
-							public void onClick(View widget) {
-								Bundle bundle = new Bundle();
-								try {
-									bundle.putString("name", nameList.getString(group.substring(1)));
-								} catch (JSONException e) {
-									bundle.putString("name", "");
-								}
-							    ((BaseMultiFragmentActivity) context).setupProfileFragment(bundle);
-							}
-							
-							@Override
-							public void updateDrawState(TextPaint tp){}
-							
-						}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-					}
-					
-					ss.setSpan(new ForegroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-					if(tv instanceof ButtonStyleTextView){
-						ss.setSpan(new RoundBackgroundSpan((ButtonStyleTextView) tv, 0x660085DF, tv.getTextSize() * 0.3F, start, end), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-					}
-				}
-				
 			}else if(group.startsWith("#")){
 				ss.setSpan(new ForegroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}else if(group.startsWith("{")){
@@ -172,45 +139,116 @@ public class ContentTransUtil implements OnTouchDownListener {
 					public void updateDrawState(TextPaint tp){}
 					
 				}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			}else if(group.startsWith("http")){
-				final String link = group;
-				final String shortUrl = group.substring(group.lastIndexOf("/") + 1);
-				
-				ss.setSpan(new ClickableSpan(){
-					@Override
-					public void onClick(View widget){
-						Intent intent = new Intent(context, MyWebView.class);
-						intent.putExtra("url", link);
-						context.startActivity(intent);
-					}
-				}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-				
-				Drawable drawable = null;
-				int id = R.drawable.button_link;
-				HashMap<String, String> shortList = ((HalloonApplication) ((Activity) context).getApplication()).getShortList();
-				if(shortList != null){
-					String shortMatch = shortList.get(shortUrl);
-					if(shortMatch != null){
-						if(shortMatch.startsWith("http://music.qq.com/qqmusic.html?id")){
-							id = R.drawable.button_music_link;
-						}else if(shortMatch.startsWith("http://v.youku.com/") ||
-								 shortMatch.startsWith("http://www.tudou.com/") || 
-								 shortMatch.startsWith("http://v.qq.com") || 
-								 shortMatch.startsWith("http://v.ku6.com") || 
-								 shortMatch.startsWith("http://view.inews.qq.com")){
-							id = R.drawable.button_video_link;
+			}else if(group.startsWith("@")){
+				String name = null;
+				String temp = null;
+				try {
+					for(int i = 0; i < nameList.length(); i++){
+						temp = nameList.names().getString(i);
+						if(group.contains(temp) && temp.length() > 0){
+							name = nameList.getString(temp);
+							break;
 						}
+					}
+					
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+				}
+				if(name != null){
+					
+					final String n = name;
+					
+					int length = temp.length() + 1;
+					
+					if(context instanceof BaseMultiFragmentActivity){
+						ss.setSpan(new ClickableSpan(){
+
+							@Override
+							public void onClick(View widget) {
+								Bundle bundle = new Bundle();
+								bundle.putString("name", n);
+							    ((BaseMultiFragmentActivity) context).setupProfileFragment(bundle);
+							}
+							
+							@Override
+							public void updateDrawState(TextPaint tp){}
+							
+						}, start, start + length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					}
+					
+					ss.setSpan(new ForegroundColorSpan(0xFF0085DF), start, start + length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					if(tv instanceof ButtonStyleTextView){
+						ss.setSpan(new RoundBackgroundSpan((ButtonStyleTextView) tv, 0x660085DF, tv.getTextSize() * 0.3F, start, start + length), start, start + length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					}
+				}else if(nameList.length() == 0){
+					if(context instanceof BaseMultiFragmentActivity){
+						ss.setSpan(new ClickableSpan(){
+							@Override
+							public void onClick(View widget){
+								Bundle bundle = new Bundle();
+								bundle.putString("name", group.substring(1));
+								((BaseMultiFragmentActivity) context).setupProfileFragment(bundle);
+							}
+							
+							@Override
+							public void updateDrawState(TextPaint tp){}
+						}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					}
+					
+					ss.setSpan(new ForegroundColorSpan(0xFF0085DF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					if(tv instanceof ButtonStyleTextView){
+						ss.setSpan(new RoundBackgroundSpan((ButtonStyleTextView) tv, 0x660085DF, tv.getTextSize() * 0.3F, start, end), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 					}
 				}
 				
-				drawable = context.getResources().getDrawable(id);
-				drawable.setBounds(0, 0, (int) (textWidth * 3.5), textWidth);
-				
-				ImageIdSpan imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);
-				imageIdSpan.setDrawableId(id);
-				
-				ss.setSpan(imageIdSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
+		}
+		
+		pattern = Pattern.compile(ADDR_PATTERN);
+		matcher = pattern.matcher(content);
+		while(matcher.find()){
+			final String group = matcher.group();
+			final int start = matcher.start();
+			final int end = matcher.end();
+			
+			final String link = group;
+			final String shortUrl = group.substring(group.lastIndexOf("/") + 1);
+			
+			ss.setSpan(new ClickableSpan(){
+				@Override
+				public void onClick(View widget){
+					Intent intent = new Intent(context, MyWebView.class);
+					intent.putExtra("url", link);
+					context.startActivity(intent);
+				}
+			}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			
+			Drawable drawable = null;
+			int id = R.drawable.button_link;
+			HashMap<String, String> shortList = ((HalloonApplication) ((Activity) context).getApplication()).getShortList();
+			if(shortList != null){
+				String shortMatch = shortList.get(shortUrl);
+				if(shortMatch != null){
+					if(shortMatch.startsWith("http://music.qq.com/qqmusic.html?id")){
+						id = R.drawable.button_music_link;
+					}else if(shortMatch.startsWith("http://v.youku.com/") ||
+							 shortMatch.startsWith("http://www.tudou.com/") || 
+							 shortMatch.startsWith("http://v.qq.com") || 
+							 shortMatch.startsWith("http://v.ku6.com") || 
+							 shortMatch.startsWith("http://view.inews.qq.com")){
+						id = R.drawable.button_video_link;
+					}
+				}
+			}
+			
+			drawable = context.getResources().getDrawable(id);
+			drawable.setBounds(0, 0, (int) (textWidth * 3.5), textWidth);
+			
+			ImageIdSpan imageIdSpan = new ImageIdSpan(drawable, DynamicDrawableSpan.ALIGN_BASELINE);
+			imageIdSpan.setDrawableId(id);
+			
+			ss.setSpan(imageIdSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);	
+			
 		}
 		
 		if(isLink){

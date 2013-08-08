@@ -2,7 +2,6 @@ package com.halloon.android.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.halloon.android.R;
-import com.halloon.android.util.DensityUtil;
 
 
 public class HalloonPullableView extends LinearLayout {
@@ -309,12 +307,10 @@ public class HalloonPullableView extends LinearLayout {
 			
 			if (mPullState == PULL_STATE_DOWN) {
 				// PullToRefreshView执行下拉
-				Log.i(TAG, " pull down!parent view move!");
 				headerPrepareToRefresh(deltaY);
 				// setHeaderPadding(-mHeaderViewHeight);
 			} else if (mPullState == PULL_STATE_UP && isPullUpEnable) {
 				// PullToRefreshView执行上拉
-				Log.i(TAG, "pull up!parent view move!");
 				footerPrepareToRefresh(deltaY);
 			}
 			mLastMotionY = y;

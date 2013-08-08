@@ -14,7 +14,7 @@ import com.halloon.android.listener.OnTitleBarClickListener;
 
 public class HalloonTitleBar extends RelativeLayout implements OnClickListener{
 	
-	private static final String TAG = HalloonTitleBar.class.getSimpleName();
+	private static final String TAG = "HalloonTitleBar";
 	
 	private Button leftImageButton;
 	private Button leftButton;

@@ -1,8 +1,6 @@
 package com.halloon.android.adapter;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.json.JSONException;
 
@@ -15,7 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,7 +21,6 @@ import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
 import com.halloon.android.bean.TweetBean;
 import com.halloon.android.image.ImageLoader;
-import com.halloon.android.ui.activity.MyWebView;
 import com.halloon.android.ui.fragment.TabMainPageFragment.MainPageFragmentCallback;
 import com.halloon.android.ui.fragment.TweetDetailFragment.TweetDetailFragmentCallback;
 import com.halloon.android.util.ContentTransUtil;
@@ -36,7 +32,6 @@ public class TweetContentAdapter extends BaseAdapter {
 	private Context context;
 	private LayoutInflater layoutInflater;
 	private ArrayList<TweetBean> tweetBeans;
-	private String url="";
 	
 	private HalloonApplication application;
 

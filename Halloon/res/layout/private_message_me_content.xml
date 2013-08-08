@@ -21,7 +21,7 @@
         android:layout_marginTop="8.0dip"
         android:src="@drawable/avatar_mask" />
     
-    <TextView 
+    <com.halloon.android.widget.ButtonStyleTextView 
         android:id="@+id/private_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

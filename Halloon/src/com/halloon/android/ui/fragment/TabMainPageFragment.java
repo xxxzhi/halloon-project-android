@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -368,8 +367,6 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 						tweetContainer.clear();
 						tweetContainer.addAll(result);
 						tweetContentAdapter.notifyDataSetChanged();
-						
-						Log.d(Constants.LOG_TAG, tweetContainer.size() + ":");
 						
 						oldResponTime = result.get(result.size() - 1).getTimestamp();
 						newResponTime = result.get(0).getTimestamp();
