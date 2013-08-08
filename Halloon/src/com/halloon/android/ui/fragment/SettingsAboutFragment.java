@@ -2,6 +2,7 @@ package com.halloon.android.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
@@ -27,6 +28,9 @@ public class SettingsAboutFragment extends BaseTitleBarFragment implements OnTit
 		titleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_BACK_BUTTON_ONLY);
 		titleBar.setOnTitleBarClickListener(this);
 		titleBar.getTitleTextView().setText(R.string.about_halloon);
+		
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		content.addView(inflater.inflate(R.layout.about_fragment, null, false));
 	}
 
 	@Override
