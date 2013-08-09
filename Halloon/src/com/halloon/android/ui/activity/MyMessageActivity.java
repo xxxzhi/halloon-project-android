@@ -13,6 +13,8 @@ public class MyMessageActivity extends BaseMultiFragmentActivity implements Priv
 	protected Fragment onCreatePane() {
 		TabMyMessageFragment mFragment = new TabMyMessageFragment();
 		
+		setIsFlipBackEnabled(false);
+		
 		return mFragment;
 	}
 

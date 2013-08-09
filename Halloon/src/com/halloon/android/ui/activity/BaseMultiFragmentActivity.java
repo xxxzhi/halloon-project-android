@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 
 import com.halloon.android.R;
 import com.halloon.android.ui.BaseActivity;
@@ -27,12 +28,19 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
 	
 	protected PopupWindowManager mPopupWindowManager;
 
-	protected static FragmentManager mFragmentManager;
+	protected FragmentManager mFragmentManager;
 	
 	protected Fragment currentFragment;
 	
 	private int fragmentCount = 0;
 	private String fragmentTag = "Halloon_Fragment";
+	
+	private float mx;
+	private float my;
+	
+	private int isPerformBackStackAction = 0;
+	
+	private boolean isEnableFlipBack = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +68,41 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
 	protected abstract Fragment onCreatePane();
 	
 	protected abstract void init();
+	
+	public void setIsFlipBackEnabled(boolean enable){
+		isEnableFlipBack = enable;
+	}
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent event){
+		if(isEnableFlipBack){
+			switch(event.getAction() & MotionEvent.ACTION_MASK){
+			case MotionEvent.ACTION_DOWN:
+				mx = event.getX();
+				my = event.getY();
+				break;
+			case MotionEvent.ACTION_MOVE:
+				int dx = (int) (event.getX() - mx);
+				int dy = (int) (event.getY() - my);
+				if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > this.getWindow().getDecorView().getMeasuredWidth() * 0.2F){
+					Log.d("BASE", "backStackAction perform touch");
+					isPerformBackStackAction++;
+					if(isPerformBackStackAction == 1){
+						backStackAction();
+					}
+					return false;
+				}
+				break;
+			case MotionEvent.ACTION_CANCEL:
+			case MotionEvent.ACTION_UP:
+				isPerformBackStackAction = 0;
+				break;
+			}
+		}
+		
+		return super.dispatchTouchEvent(event);
+	}
+	
 
 	/**
 	 * 退栈，后退
