@@ -1,5 +1,6 @@
 package com.halloon.android.style;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.halloon.android.widget.ButtonStyleTextView;
@@ -11,6 +12,19 @@ import android.graphics.drawable.shapes.RoundRectShape;
 import android.text.Layout;
 import android.widget.TextView;
 
+/**
+ * 
+ * <B>RoundBackgroundSpan</B> provide a roundRect background for Text to present a click effect just like official tecent microblog client;</br></br>
+ * 
+ * to achieve this effect, it recalculate layout params for each lines in the TextView that being clicked.</br>
+ * 
+ * for me it's just a temporally solution, still finding a better way.</br></br>
+ * 
+ * also, I hope someone in our <B>Halloon</B> group can figure out a better way to do that.</br>
+ * 
+ * @author airbus</br></br>
+ */
+
 public class RoundBackgroundSpan {
 	
 	private RoundRectShape mShape;
@@ -21,8 +35,6 @@ public class RoundBackgroundSpan {
 	private Rect[] lines;
 	
 	private Paint paint;
-	
-	private int color;
 	
 	private ButtonStyleTextView tv;
 	
@@ -39,23 +51,9 @@ public class RoundBackgroundSpan {
 		paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		paint.setColor(color);
 		
-		this.color = color;
-		
 		mShape = new RoundRectShape(new float[]{round, round, round, round,
 				                                round, round, round, round}, null, null);
 		
-	}
-	
-	public int getColor(){
-		return paint.getColor();
-	}
-	
-	public void setColor(int color){
-		paint.setColor(color);
-	}
-	
-	public void setOriginalColor(){
-		paint.setColor(color);
 	}
 	
 	public void updateDrawState(Canvas canvas){
@@ -90,17 +88,28 @@ public class RoundBackgroundSpan {
 				lines[0] = rect;
 			}
 			
-			canvas.save();
-			
+			//calculate x & y for padding
 			int x = tv.getCompoundPaddingLeft();
 			int y = tv.getExtendedPaddingTop();
 			
+			//paddingTop = compoundPaddingTop + verticaloffset
+			//there's no public function to get verticaloffset, so, reflection is the only way to do it now.
 			try{
 				Method method = TextView.class.getDeclaredMethod("getVerticalOffset", Boolean.class);
 				method.setAccessible(true);
 				Integer returnParam = (Integer) method.invoke(tv, false);
 				y += returnParam;
-			}catch(Exception e){}
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+			
+			canvas.save();
 			
 			canvas.translate(x, y);
 			
@@ -117,6 +126,7 @@ public class RoundBackgroundSpan {
 				mShape.draw(canvas, paint);
 				
 			}
+			
 			canvas.restore();
 		}
 	}

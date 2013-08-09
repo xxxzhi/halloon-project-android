@@ -1,6 +1,9 @@
 package com.halloon.android.ui.activity;
 
+import java.lang.reflect.InvocationTargetException;
+
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -21,7 +24,6 @@ public class MyWebView extends BaseActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.mywebview);
@@ -34,6 +36,19 @@ public class MyWebView extends BaseActivity {
 			public void onClick(View v) {
 				if(mWebView != null){
 					mWebView.removeAllViews();
+					try {
+						Class.forName("android.webkit.WebView").getMethod("onPause", (Class[]) null).invoke(mWebView, (Object[]) null);
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
 				}
 				finish();
 			}
@@ -70,7 +85,7 @@ public class MyWebView extends BaseActivity {
 			}
 		});
 		
-		mWebView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) mWebView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
 		mWebView.setVerticalScrollBarEnabled(false);
 		mWebView.getSettings().setSupportZoom(true);
 		mWebView.getSettings().setBuiltInZoomControls(true);

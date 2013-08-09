@@ -105,8 +105,10 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 		context = activity;
 		application = (HalloonApplication) activity.getApplication();
 
-		if (getArguments().getString("name") != null) otherName = getArguments().getString("name");
-		if (getArguments().getString("nick") != null) nick = getArguments().getString("nick");
+		if(getArguments() != null){
+			if (getArguments().getString("name") != null) otherName = getArguments().getString("name");
+			if (getArguments().getString("nick") != null) nick = getArguments().getString("nick");
+		}
 	}
 	
 	@Override

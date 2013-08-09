@@ -24,7 +24,6 @@ import android.text.style.ClickableSpan;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -312,6 +311,24 @@ public class ContentTransUtil implements OnTouchDownListener {
 			     .replaceAll("\\&divide\\;", "÷")
 			     .replaceAll("\\&trade\\;", "™");
 	}
+	
+	private static String convertAgain(String target){
+		return target.replaceAll(CHAR_SPACE, "　")
+				     .replaceAll(CHAR_DOT, "．")
+				     .replaceAll(CHAR_COMMA, "，")
+				     .replaceAll(CHAR_COLON, "：")
+				     .replaceAll(CHAR_SEMICOLON, "；")
+				     .replaceAll(CHAR_SLASH, "／")
+				     .replaceAll(CHAR_HYPHEN, "－");
+	}
+	
+    private static final String CHAR_SPACE = " ";
+    private static final String CHAR_DOT = ".";
+    private static final String CHAR_COMMA = ",";
+    private static final String CHAR_COLON = ":";
+    private static final String CHAR_SEMICOLON = ";";
+    private static final String CHAR_SLASH = "/";
+    private static final String CHAR_HYPHEN = "-";
 	
 	@Deprecated
 	public void copyToClipBoard(String content){

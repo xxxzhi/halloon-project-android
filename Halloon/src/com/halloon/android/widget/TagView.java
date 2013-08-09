@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.halloon.android.R;
@@ -67,8 +66,6 @@ public class TagView extends View {
 		height = getMeasuredHeight();
 		
 		singleWidth = (width - margin * 3) / 4;
-		
-		Log.d(TAG, singleWidth + ":" + width);
 		
 		if(null != contents && contents.length > 0){
 			int line = (int) Math.ceil(contents.length / 4);

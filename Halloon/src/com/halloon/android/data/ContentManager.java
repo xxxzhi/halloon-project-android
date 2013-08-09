@@ -504,8 +504,6 @@ public class ContentManager {
 			temp_tweet.setTweetImage(tweetInfoObject.optString("image"));
 			temp_tweet.setLongitude(tweetInfoObject.optString("longitude"));
 			temp_tweet.setLatitude(tweetInfoObject.optString("latitude"));
-			System.out.println(temp_tweet.getLongitude() + ","
-					+ temp_tweet.getLatitude());
 			temp_tweet.setGeo(tweetInfoObject.getString("geo"));
 
 			JSONObject videoObject = tweetInfoObject.optJSONObject("video");
@@ -533,7 +531,6 @@ public class ContentManager {
 				sourceTweetBean.setTweetImage(sourceTweetObject.optString("image"));
 				sourceTweetBean.setLongitude(sourceTweetObject.optString("longitude"));
 				sourceTweetBean.setLatitude(sourceTweetObject.optString("latitude"));
-				System.out.println(sourceTweetBean.getLongitude() + "," + sourceTweetBean.getLatitude());
 				sourceTweetBean.setGeo(sourceTweetObject.getString("geo"));
 
 				JSONObject sourceVideoObject = sourceTweetObject.optJSONObject("video");

@@ -17,68 +17,6 @@ public class EmojiContainer {
 		return context.getResources().getIdentifier(context.getPackageName() + ":drawable/" + name, null, null);
 	}
 	
-	/*
-	 * public static final String[] emojiName = {"左太极","左哼哼","足球","呲牙","转圈",
-	 * "抓狂","猪头","咒骂","折磨","炸弹", "再见","晕","月亮","右太极","右哼哼",
-	 * "拥抱","阴险","疑问","嘘","心碎", "献吻","吓","西瓜","握手","委屈",
-	 * "微笑","吐","偷笑","跳跳","跳绳", "调皮","太阳","睡","衰","示爱", "胜利","闪电","色","弱","拳头",
-	 * "糗大了","亲亲","敲打","强","乒乓", "撇嘴","瓢虫","啤酒","怄火","难过",
-	 * "玫瑰","流泪","流汗","礼物","冷汗", "篮球","困","快哭了","酷","骷髅",
-	 * "抠鼻","可怜","可爱","磕头","咖啡", "惊讶","惊恐","街舞","激动","饥饿",
-	 * "回头","挥手","坏笑","憨笑","害羞", "哈欠","鼓掌","勾引","尴尬","奋斗",
-	 * "飞吻","饭","发怒","发抖","发呆", "凋谢","得意","刀","蛋糕","大哭",
-	 * "大兵","差劲","菜刀","擦汗","便便", "闭嘴","鄙视","抱拳","白眼","傲慢",
-	 * "爱心","爱情","爱你","ok","no"};
-	 * 
-	 * public static final int[] emojiDrawable =
-	 * {R.drawable.left_taiji,R.drawable
-	 * .left_hum,R.drawable.football,R.drawable.lol,R.drawable.circle,
-	 * R.drawable
-	 * .crazy,R.drawable.pig,R.drawable.curse,R.drawable.torture,R.drawable
-	 * .bomb,
-	 * R.drawable.goodbye,R.drawable.faint,R.drawable.moon,R.drawable.right_taiji
-	 * ,R.drawable.right_hum,
-	 * R.drawable.hug,R.drawable.blackness,R.drawable.question
-	 * ,R.drawable.hush,R.drawable.heart_break,
-	 * R.drawable.kiss,R.drawable.frighten
-	 * ,R.drawable.watermelon,R.drawable.shake_hands,R.drawable.suffer_wrong,
-	 * R.drawable
-	 * .smile,R.drawable.vomit,R.drawable.titter,R.drawable.jump,R.drawable
-	 * .rope_skipping,
-	 * R.drawable.naughty,R.drawable.sun,R.drawable.sleep,R.drawable
-	 * .decline,R.drawable.courtship,
-	 * R.drawable.win,R.drawable.flash,R.drawable.
-	 * se,R.drawable.weak,R.drawable.fist,
-	 * R.drawable.qiu,R.drawable.kiss_you,R.drawable
-	 * .beat,R.drawable.good,R.drawable.ping_pong,
-	 * R.drawable.curl_lip,R.drawable
-	 * .ladybug,R.drawable.beer,R.drawable.annoy,R.drawable.be_grieve,
-	 * R.drawable
-	 * .rose,R.drawable.tear,R.drawable.sweat,R.drawable.gift,R.drawable
-	 * .cold_sweat,
-	 * R.drawable.basket_ball,R.drawable.tire,R.drawable.about_to_cry
-	 * ,R.drawable.cool,R.drawable.skeleton,
-	 * R.drawable.nose,R.drawable.pity,R.drawable
-	 * .cute,R.drawable.kotow,R.drawable.coffee,
-	 * R.drawable.surprise,R.drawable.terrify
-	 * ,R.drawable.hip_hop,R.drawable.excite,R.drawable.hunger,
-	 * R.drawable.turn_around
-	 * ,R.drawable.wave_hand,R.drawable.ridicule,R.drawable
-	 * .simper,R.drawable.shy,
-	 * R.drawable.yawn,R.drawable.applaud,R.drawable.seduce
-	 * ,R.drawable.awkward,R.drawable.struggle,
-	 * R.drawable.throw_kiss,R.drawable.
-	 * rice,R.drawable.angry,R.drawable.shake,R.drawable.daze,
-	 * R.drawable.fade,R.
-	 * drawable.complacent,R.drawable.knift,R.drawable.cake,R.drawable.cry,
-	 * R.drawable
-	 * .soldier,R.drawable.suck,R.drawable.kitchen_knift,R.drawable.wipe_sweat
-	 * ,R.drawable.shit,
-	 * R.drawable.shut_up,R.drawable.contempt,R.drawable.hold_fist
-	 * ,R.drawable.x_w_y,R.drawable.arrogant,
-	 * R.drawable.love,R.drawable.amor,R.drawable
-	 * .love_you,R.drawable.ok,R.drawable.no};
-	 */
 	public static final String[] emoNameContainer;
 
 	static {

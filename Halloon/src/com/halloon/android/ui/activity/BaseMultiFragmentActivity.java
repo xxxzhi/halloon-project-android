@@ -1,19 +1,18 @@
 package com.halloon.android.ui.activity;
 
-import java.util.ArrayList;
-import java.lang.ArrayIndexOutOfBoundsException;
-
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.halloon.android.R;
 import com.halloon.android.ui.BaseActivity;
 import com.halloon.android.ui.fragment.CommentFragment;
 import com.halloon.android.ui.fragment.EditProfileFragment;
+import com.halloon.android.ui.fragment.PublishFragment;
 import com.halloon.android.ui.fragment.TabMainPageFragment;
 import com.halloon.android.ui.fragment.TabMainPageFragment.MainPageFragmentCallback;
 import com.halloon.android.ui.fragment.TabProfileFragment;
@@ -26,26 +25,29 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
                                                                                 TweetDetailFragmentCallback,
 		                                                                        ProfileFragmentCallback {
 	
-	protected ArrayList<Fragment> mFragmentContainer;
 	protected PopupWindowManager mPopupWindowManager;
 
-	protected FragmentManager mFragmentManager;
+	protected static FragmentManager mFragmentManager;
+	
+	protected Fragment currentFragment;
+	
+	private int fragmentCount = 0;
+	private String fragmentTag = "Halloon_Fragment";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_singlepane_empty);
-		mFragmentContainer = new ArrayList<Fragment>();
 		mPopupWindowManager = new PopupWindowManager(this);
 		mFragmentManager = getSupportFragmentManager();
 		
-		mFragmentContainer.add(onCreatePane());
+		currentFragment = onCreatePane();
 		
 		try{
 			//setArguments looking for a answer? support-v4
-			getFragmentDec(1).setArguments(intentToFragmentArguments(getIntent()));
+			currentFragment.setArguments(intentToFragmentArguments(getIntent()));
 			
-			getSupportFragmentManager().beginTransaction().add(R.id.root_container, getFragmentDec(1)).commit();
+			mFragmentManager.beginTransaction().add(R.id.root_container, currentFragment, fragmentTag + fragmentCount).commit();
 		}catch(ArrayIndexOutOfBoundsException e){
 			e.printStackTrace();
 		}
@@ -64,152 +66,72 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
 	 */
 	public void backStackAction() {
 		mFragmentManager.popBackStack();
-		mFragmentContainer.remove(getFragmentDec(1));
+		fragmentCount--;
+		currentFragment = mFragmentManager.findFragmentByTag(fragmentTag + fragmentCount);
+		Log.d("BASE back", fragmentCount + "<<fragmentCount");
 	}
 
 	@Override
 	public void setupTweetListFragment(Bundle bundle) {
-		mFragmentContainer.add(new TabMainPageFragment());
+		TabMainPageFragment fragment = new TabMainPageFragment();
+		fragment.setTweetState(TabMainPageFragment.OTHER_TWEET);
 		
-		Fragment mFragment1;
-		Fragment mFragment2;
-		
-		try{
-			mFragment1 = getFragmentDec(1);
-			mFragment2 = getFragmentDec(2);
-		}catch(ArrayIndexOutOfBoundsException e){
-			e.printStackTrace();
-			return;
-		}
-		
-		mFragment1.setArguments(bundle);
-		((TabMainPageFragment) mFragment1).setTweetState(TabMainPageFragment.OTHER_TWEET);
-		FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-		fragmentTransaction.setCustomAnimations(R.anim.fragment_slide_right_enter,
-				                                R.anim.fragment_slide_left_exit,
-				                                R.anim.fragment_slide_left_enter,
-				                                R.anim.fragment_slide_right_exit);
-		fragmentTransaction.add(R.id.root_container, mFragment1);
-		fragmentTransaction.hide(mFragment2);
-		fragmentTransaction.addToBackStack(null);
-		fragmentTransaction.commit();
+		setupFragment(fragment, bundle);
 	}
 	
 	@Override
 	public void setupEditProfileFragment(Bundle bundle){
-		mFragmentContainer.add(new EditProfileFragment());
-		
-		Fragment mFragment1;
-		Fragment mFragment2;
-		
-		try{
-			mFragment1 = getFragmentDec(1);
-			mFragment2 = getFragmentDec(2);
-		}catch(ArrayIndexOutOfBoundsException e){
-			e.printStackTrace();
-			return;
-		}
-		
-		mFragment1.setArguments(bundle);
-		FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-		fragmentTransaction.setCustomAnimations(R.anim.fragment_slide_right_enter,
-				                                R.anim.fragment_slide_left_exit,
-				                                R.anim.fragment_slide_left_enter,
-				                                R.anim.fragment_slide_right_exit);
-		fragmentTransaction.add(R.id.root_container, mFragment1);
-		fragmentTransaction.hide(mFragment2);
-		fragmentTransaction.addToBackStack(null);
-		fragmentTransaction.commit();
+		setupFragment(new EditProfileFragment(), bundle);
 	}
 
 	@Override
 	public void setupProfileFragment(Bundle bundle) {
-		mFragmentContainer.add(new TabProfileFragment());
+		TabProfileFragment fragment = new TabProfileFragment();
+		fragment.setType(TabProfileFragment.OTHER);
 		
-		Fragment mFragment1;
-		Fragment mFragment2;
-		
-		try{
-			mFragment1 = getFragmentDec(1);
-			mFragment2 = getFragmentDec(2);
-		}catch(ArrayIndexOutOfBoundsException e){
-			e.printStackTrace();
-			return;
-		}
-		
-		mFragment1.setArguments(bundle);
-		((TabProfileFragment) mFragment1).setType(TabProfileFragment.OTHER);
-		FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-		fragmentTransaction.setCustomAnimations(R.anim.fragment_slide_right_enter,
-				                                R.anim.fragment_slide_left_exit,
-				                                R.anim.fragment_slide_left_enter,
-				                                R.anim.fragment_slide_right_exit);
-		fragmentTransaction.add(R.id.root_container, mFragment1);
-		fragmentTransaction.hide(mFragment2);
-		fragmentTransaction.addToBackStack(null);
-		fragmentTransaction.commit();
+		setupFragment(fragment, bundle);
 	}
 
 	@Override
 	public void setupDetailFragment(Bundle bundle) {
-		mFragmentContainer.add(new TweetDetailFragment());
-		
-		Fragment mFragment1;
-		Fragment mFragment2;
-		
-		try{
-			mFragment1 = getFragmentDec(1);
-			mFragment2 = getFragmentDec(2);
-		}catch(ArrayIndexOutOfBoundsException e){
-			e.printStackTrace();
-			return;
-		}
-		
-		mFragment1.setArguments(bundle);
-		FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-		fragmentTransaction.setCustomAnimations(R.anim.fragment_slide_right_enter,
-				                                R.anim.fragment_slide_left_exit,
-				                                R.anim.fragment_slide_left_enter,
-				                                R.anim.fragment_slide_right_exit);
-		fragmentTransaction.add(R.id.root_container, mFragment1);
-		fragmentTransaction.hide(mFragment2);
-		fragmentTransaction.addToBackStack(null);
-		fragmentTransaction.commit();
+		setupFragment(new TweetDetailFragment(), bundle);
 	}
 
 	@Override
 	public void setupCommentFragment(Bundle bundle) {
-		mFragmentContainer.add(new CommentFragment());
+		setupFragment(new CommentFragment(), bundle);
+	}
+	
+	protected void setupFragment(Fragment fragment, Bundle bundle){
 		
-		Fragment mFragment1;
-		Fragment mFragment2;
-		
-		try{
-			mFragment1 = getFragmentDec(1);
-			mFragment2 = getFragmentDec(2);
-		}catch(ArrayIndexOutOfBoundsException e){
-			e.printStackTrace();
-			return;
-		}
-		
-		mFragment1.setArguments(bundle);
+		if(bundle != null) fragment.setArguments(bundle);
 		FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 		fragmentTransaction.setCustomAnimations(R.anim.fragment_slide_right_enter,
 				                                R.anim.fragment_slide_left_exit,
 				                                R.anim.fragment_slide_left_enter,
 				                                R.anim.fragment_slide_right_exit);
-		fragmentTransaction.add(R.id.root_container, mFragment1);
-		fragmentTransaction.hide(mFragment2);
+		fragmentCount++;
+		fragmentTransaction.add(R.id.root_container, fragment, fragmentTag + fragmentCount);
+		fragmentTransaction.hide(currentFragment);
 		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
+		
+		Log.d("BASE", fragmentCount + "<<fragmentCount");
+		
+		currentFragment = fragment;
 	}
 
 	@Override
 	public void setupPublishFragment() {
+		setupFragment(new PublishFragment(), null);
 	}
 
 	@Override
 	public void setupAroundTweetFragment() {
+		TabMainPageFragment fragment = new TabMainPageFragment();
+		fragment.setTweetState(TabMainPageFragment.AROUND_TWEET);
+		
+		setupFragment(fragment, null);
 	}
 
 	@Override
@@ -219,27 +141,17 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
 
 	@Override
 	public void mListChange(int status) {
-		((TweetDetailFragment) getFragmentDec(1)).changeMList(status);
+		((TweetDetailFragment) currentFragment).changeMList(status);
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && mFragmentContainer.size() > 1) {
+		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && mFragmentManager.getBackStackEntryCount() >= 1) {
 			backStackAction();
 			return true;
 		}
 
 		return false;
-	}
-
-	protected Fragment getFragmentDec(int decCount) throws ArrayIndexOutOfBoundsException {
-		System.out.println(mFragmentContainer.size() + ":" + decCount);
-		
-		Fragment fragment = new Fragment();
-		
-		fragment = mFragmentContainer.get(mFragmentContainer.size() - decCount);
-		
-		return fragment;
 	}
 
 }

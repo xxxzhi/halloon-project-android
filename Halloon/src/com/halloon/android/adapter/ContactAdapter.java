@@ -178,7 +178,7 @@ public class ContactAdapter extends StickyListHeadersBaseAdapter implements
 		 * holder.sex.setVisibility(View.GONE); }
 		 */
 		ImageLoader.getInstance(getContext()).displayImage(
-				user.getHead() + "/40", holder.picture, 4);
+				user.getHead() + "/100", holder.picture, 4);
 		return convertView;
 	}
 
