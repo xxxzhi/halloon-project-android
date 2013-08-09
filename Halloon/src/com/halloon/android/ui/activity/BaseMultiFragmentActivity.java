@@ -84,7 +84,7 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
 			case MotionEvent.ACTION_MOVE:
 				int dx = (int) (event.getX() - mx);
 				int dy = (int) (event.getY() - my);
-				if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > this.getWindow().getDecorView().getMeasuredWidth() * 0.2F){
+				if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > this.getWindow().getDecorView().getMeasuredWidth() * 0.2F && mFragmentManager.getBackStackEntryCount() >= 1){
 					Log.d("BASE", "backStackAction perform touch");
 					isPerformBackStackAction++;
 					if(isPerformBackStackAction == 1){
