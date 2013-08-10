@@ -4,16 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
-import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
+import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.widget.HalloonTitleBar;
 
 /**
@@ -21,7 +18,7 @@ import com.halloon.android.widget.HalloonTitleBar;
  * @author 7heaven
  *
  */
-public abstract class BaseTitleBarFragment extends Fragment {
+public abstract class BaseTitleBarFragment extends Fragment implements OnTitleBarClickListener {
 	
 	protected HalloonApplication mApplication;
 	
@@ -50,5 +47,7 @@ public abstract class BaseTitleBarFragment extends Fragment {
 	}
 	
 	protected abstract void init(HalloonTitleBar titleBar, RelativeLayout content);
-
+	
+	@Override
+	public void onTitleContentClick(int contentEnum) {}
 }

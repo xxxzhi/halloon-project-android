@@ -275,24 +275,6 @@ public class ContentTransUtil implements OnTouchDownListener {
 	}
 	
 	private static String convert(String target){
-		/*
-		return target.replaceAll("\\&gt\\;", "＞")
-				     .replaceAll("\\&lt\\;", "＜")
-				     .replaceAll("\\&amp\\;", "＆")
-				     .replaceAll("\\&apos\\;|\\&\\#39\\;", "＇")
-				     .replaceAll("\\&quot\\;", "＂")
-				     .replaceAll("\\&nbsp\\;", "　")
-				     .replaceAll("\\&cent\\;", "¢")
-				     .replaceAll("\\&pound\\;", "£")
-				     .replaceAll("\\&yen\\;", "¥")
-				     .replaceAll("\\&euro\\;", "€")
-				     .replaceAll("\\&sect\\;", "§")
-				     .replaceAll("\\&copy\\;", "©")
-				     .replaceAll("\\&reg\\;", "®")
-				     .replaceAll("\\&times\\;", "×")
-				     .replaceAll("\\&divide\\;", "÷")
-				     .replaceAll("\\&trade\\;", "™");
-		 */
 		
 		return target.replaceAll("\\&gt\\;", ">")
 			     .replaceAll("\\&lt\\;", "<")
@@ -312,6 +294,8 @@ public class ContentTransUtil implements OnTouchDownListener {
 			     .replaceAll("\\&trade\\;", "™");
 	}
 	
+	/*
+	trying to prevent text auto-wrap,but not working
 	private static String convertAgain(String target){
 		return target.replaceAll(CHAR_SPACE, "　")
 				     .replaceAll(CHAR_DOT, "．")
@@ -329,6 +313,7 @@ public class ContentTransUtil implements OnTouchDownListener {
     private static final String CHAR_SEMICOLON = ";";
     private static final String CHAR_SLASH = "/";
     private static final String CHAR_HYPHEN = "-";
+	 */
 	
 	@Deprecated
 	public void copyToClipBoard(String content){

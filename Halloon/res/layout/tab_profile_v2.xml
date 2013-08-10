@@ -5,8 +5,8 @@
     android:background="#FFF5F5F5" >
     
     <include
-        layout="@layout/include_profile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="460dp"
+        layout="@layout/include_profile" />
 
 </ScrollView>

@@ -14,6 +14,35 @@ public class ProfileBean {
 	private String fansNum;
 	private String idolNum;
 	private String favNum;
+	
+	private int isMyFan;
+	private int isMyIdol;
+	
+	private int self;
+	
+	public boolean isSelf() {
+		return self == 0 ? false : true;
+	}
+
+	public void setSelf(int self) {
+		this.self = self;
+	}
+
+	public boolean isMyFan() {
+		return isMyFan == 0 ? false : true;
+	}
+
+	public void setIsMyFan(int isMyFan) {
+		this.isMyFan = isMyFan;
+	}
+
+	public boolean isMyIdol() {
+		return isMyIdol == 0 ? false : true;
+	}
+
+	public void setIsMyIdol(int isMyIdol) {
+		this.isMyIdol = isMyIdol;
+	}
 
 	public String getOpenId() {
 		return openId;

@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.text.Layout;
+import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -69,12 +70,22 @@ public class RoundBackgroundSpan {
 				for(int i = lineStart; i <= lineEnd; i++){
 					Rect rect = new Rect();
 					layout.getLineBounds(i, rect);
+					
 					if(i == lineStart){
 						rect.left = (int) layout.getPrimaryHorizontal(start);
 					}
+				
 					if(i == lineEnd){
 						rect.right = (int) layout.getSecondaryHorizontal(end);
+					}else{
+						float[] width = new float[1];
+						String t = layout.getText().subSequence(layout.getLineEnd(i) - 1, layout.getLineEnd(i)).toString();
+						layout.getPaint().getTextWidths(t, width);
+						rect.right = (int) (layout.getSecondaryHorizontal(layout.getLineEnd(i) - 1) + width[0]);
 					}
+					
+					
+					Log.d("RECT", rect.toString());
 					
 					lines[i - lineStart] = rect;
 				}
@@ -90,24 +101,7 @@ public class RoundBackgroundSpan {
 			
 			//calculate x & y for padding
 			int x = tv.getCompoundPaddingLeft();
-			int y = tv.getExtendedPaddingTop();
-			
-			//paddingTop = compoundPaddingTop + verticaloffset
-			//there's no public function to get verticaloffset, so, reflection is the only way to do it now.
-			try{
-				Method method = TextView.class.getDeclaredMethod("getVerticalOffset", Boolean.class);
-				method.setAccessible(true);
-				Integer returnParam = (Integer) method.invoke(tv, false);
-				y += returnParam;
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			}
+			int y = tv.getTotalPaddingTop();
 			
 			canvas.save();
 			
@@ -120,7 +114,8 @@ public class RoundBackgroundSpan {
 				if(i == 0){
 					canvas.translate(rect.left, rect.top);
 				}else{
-					canvas.translate(-lines[0].left, rect.height());
+					canvas.translate(-lines[i - 1].left, -lines[i - 1].top);
+					canvas.translate(rect.left, rect.top);
 				}
 				
 				mShape.draw(canvas, paint);

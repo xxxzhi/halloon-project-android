@@ -131,6 +131,10 @@ public class ContentManager {
 			profileBean.setFansNum(dataJsonObject.getString("fansnum"));
 			profileBean.setFavNum(dataJsonObject.getString("favnum"));
 			profileBean.setIdolNum(dataJsonObject.getString("idolnum"));
+			
+			profileBean.setIsMyIdol(dataJsonObject.getInt("ismyidol"));
+			profileBean.setIsMyFan(dataJsonObject.getInt("ismyfans"));
+			profileBean.setSelf(dataJsonObject.getInt("self"));
 
 			JSONArray tagArray = dataJsonObject.optJSONArray("tag");
 			String[] temp_tag = new String[tagArray.length()];
@@ -920,6 +924,16 @@ public class ContentManager {
 		return privateDataBeans;
 	}
 	
+	/**
+	 * 获取私信详细对话内容
+	 * @param pageFlag
+	 * @param pageTime
+	 * @param requestNum
+	 * @param lastId
+	 * @param name
+	 * @param fopenId
+	 * @return
+	 */
 	public ArrayList<PrivateDataBean> getPrivateConversation(String pageFlag, String pageTime, String requestNum, String lastId, String name, String fopenId){
 		PrivateMessageAPI privateApi = new PrivateMessageAPI(OAuthConstants.OAUTH_VERSION_2_A);
 		ArrayList<PrivateDataBean> privateDataBeans = new ArrayList<PrivateDataBean>();
@@ -1047,6 +1061,11 @@ public class ContentManager {
 		return tweetBeans;
 	}
 	
+	/**
+	 * 获取长连接
+	 * @param url
+	 * @return
+	 */
 	public String getExpandedUrl(String url){
 		ShortUrlAPI shortUrlApi = new ShortUrlAPI(OAuthConstants.OAUTH_VERSION_2_A);
 		String longUrl = null;
@@ -1059,5 +1078,33 @@ public class ContentManager {
 		}
 		
 		return longUrl;
+	}
+	
+	public int[] addIdol(String name, String openId){
+		FriendsAPI friendsApi = new FriendsAPI(OAuthConstants.OAUTH_VERSION_2_A);
+		int[] returnInts = new int[2];
+		try{
+			JSONObject feedback = new JSONObject(friendsApi.add(preoauth, "json", name, openId));
+			returnInts[0] = feedback.getInt("ret");
+			returnInts[1] = feedback.getInt("errcode");
+		}catch(Exception e){
+			Log.d(Constants.LOG_TAG, "ADD IDOL ERROR: " + e);
+		}
+		
+		return returnInts;
+	}
+	
+	public int[] delIdol(String name, String openId){
+		FriendsAPI friendsApi = new FriendsAPI(OAuthConstants.OAUTH_VERSION_2_A);
+		int[] returnInts = new int[2];
+		try{
+			JSONObject feedback = new JSONObject(friendsApi.del(preoauth, "json", name, openId));
+			returnInts[0] = feedback.getInt("ret");
+			returnInts[1] = feedback.getInt("errcode");
+		}catch(Exception e){
+			Log.d(Constants.LOG_TAG, "DEL IDOL ERROR: " + e);
+		}
+		
+		return returnInts;
 	}
 }

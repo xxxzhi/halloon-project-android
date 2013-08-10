@@ -3,6 +3,7 @@ package com.halloon.android.ui.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.halloon.android.R;
 import com.halloon.android.bean.ProfileBean;
@@ -26,8 +28,7 @@ import com.halloon.android.view.ScrollTextView;
 import com.halloon.android.widget.HalloonTitleBar;
 import com.halloon.android.widget.TagView;
 
-public class TabProfileFragment extends BaseTitleBarFragment implements OnClickListener,
-                                                                        OnTitleBarClickListener{
+public class TabProfileFragment extends BaseTitleBarFragment implements OnClickListener{
 
 	private ProfileFragmentCallback pCallback;
 	private ImageView myHeadicon;
@@ -114,18 +115,12 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 		fanButton.setOnClickListener(this);
 		favButton.setOnClickListener(this);
 		
-		editButton.setOnClickListener(this);
-		if (type == OTHER) {
-			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_NORMAL);
-			myHeadicon.setOnClickListener(this);
-			if(!name.equals(DBManager.getInstance(context).getProfile().getName())){
-				editButton.setText(context.getString(R.string.idol));
-			}else{
-				editButton.setText(context.getString(R.string.edit));
-			}
-		} else {
+		myHeadicon.setOnClickListener(this);
+		
+		if(type == ME){
 			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_RIGHT_BUTTON_ONLY);
-			editButton.setText(context.getString(R.string.edit));
+		}else{
+			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_NORMAL);
 		}
 	}
 
@@ -185,6 +180,18 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 					favButton.setText(context.getString(R.string.fav)+ "\n" + NumberUtil.shortenNumericString(context, profileBean.getFavNum()));
 					
 					tagView.setContents(profileBean.getTag());
+					
+					if(type == OTHER){
+						if(!result.isSelf()){
+							if(result.isMyIdol()){
+								editButton.setText("取消");
+							}else{
+								editButton.setText(context.getString(R.string.idol));
+							}
+						}else{
+							editButton.setText(context.getString(R.string.edit));
+						}
+					}
 
 				}
 				super.onPostExecute(result);
@@ -259,9 +266,57 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 
 	@Override
 	public void onTitleContentClick(int contentEnum) {
+		Log.d("TATATAG", "IDOLING!!!!!!!");
 		switch(contentEnum){
 		case OnTitleBarClickListener.LEFT_BUTTON:
 			((BaseMultiFragmentActivity) context).backStackAction();
+			break;
+		case OnTitleBarClickListener.RIGHT_BUTTON:
+			
+			if(!profileBean.isSelf()){
+				if(profileBean != null){
+					if(!profileBean.isMyIdol()){
+						
+						new BaseCompatiableTask<Void, Void, int[]>(){
+
+							@Override
+							protected int[] doInBackground(Void... params) {
+								return ContentManager.getInstance(context).addIdol(name, id);
+							}
+							
+							@Override
+							protected void onPostExecute(int[] result){
+								if(result[0] != 0){
+									Toast.makeText(context, context.getString(R.string.idol) + context.getString(R.string.failure), Toast.LENGTH_LONG).show();
+								}else{
+									profileBean.setIsMyIdol(1);
+									editButton.setText(context.getString(R.string.cancel));
+									Toast.makeText(context, context.getString(R.string.idol) + context.getString(R.string.success), Toast.LENGTH_LONG).show();
+								}
+							}
+						}.taskExecute();
+					}else{
+						new BaseCompatiableTask<Void, Void, int[]>(){
+
+							@Override
+							protected int[] doInBackground(Void... params) {
+								return ContentManager.getInstance(context).delIdol(name, id);
+							}
+							
+							@Override
+							protected void onPostExecute(int[] result){
+								if(result[0] != 0){
+									Toast.makeText(context, context.getString(R.string.cancel) + context.getString(R.string.idol) + context.getString(R.string.failure), Toast.LENGTH_LONG).show();
+								}else{
+									profileBean.setIsMyIdol(0);
+									editButton.setText(context.getString(R.string.idol));
+									Toast.makeText(context, context.getString(R.string.cancel) + context.getString(R.string.idol) + context.getString(R.string.success), Toast.LENGTH_LONG).show();
+								}
+							}
+						}.taskExecute();
+					}
+				}
+			}
 			break;
 		}
 	}

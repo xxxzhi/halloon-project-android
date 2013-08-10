@@ -63,12 +63,14 @@ public class EditProfileFragment extends BaseTitleBarFragment implements OnClick
 		titleBar.setOnTitleBarClickListener(this);
 		
 		ProfileBean profileBean = DBManager.getInstance(getActivity()).getProfile();
-		contents[0] = profileBean.getNick();
-		contents[1] = profileBean.getSex();
-		contents[2] = profileBean.getName();
-		contents[3] = profileBean.getLocation();
-		contents[4] = profileBean.getIntroduction();
-		contents[5] = profileBean.getTag().toString();
+		if(profileBean != null){
+			contents[0] = profileBean.getNick();
+			contents[1] = profileBean.getSex();
+			contents[2] = profileBean.getName();
+			contents[3] = profileBean.getLocation();
+			contents[4] = profileBean.getIntroduction();
+			contents[5] = profileBean.getTag().toString();
+		}
 		
 		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		content.addView(inflater.inflate(R.layout.fragment_edit_profile, null, false));

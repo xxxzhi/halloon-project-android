@@ -104,4 +104,6 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 		
 	}
 
+	
+
 }
