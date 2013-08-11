@@ -94,7 +94,7 @@ public class HalloonImageView extends ImageView {
 	
 	public void setMode(int mode){
 		this.mode = mode;
-		if(mode == GESTURE_ENABLE || mode == (PLAY_GIF|GESTURE_ENABLE)){
+		if((mode & GESTURE_ENABLE) == GESTURE_ENABLE ){
 			matrix = new Matrix();
 			savedMatrix = new Matrix();
 			start = new PointF();

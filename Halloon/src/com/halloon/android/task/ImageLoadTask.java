@@ -69,17 +69,26 @@ public class ImageLoadTask extends BaseCompatiableTask<String, Float, Bitmap> im
 				baos = new ByteArrayOutputStream();
 				byte[] buf = new byte[128];
 				int read = -1;
-				int count = 0;
-				while ((read = is.read(buf)) != -1) {
+				int count;
+				read = is.read(buf);
+				count = read;
+				publishProgress(count * 1.0F / length);
+				if(isGif(buf)){
+					isGif = true;
+				}else{
+					isGif = false;
+				}
+				
+				do{
 					baos.write(buf, 0, read);
 					count += read;
-					publishProgress(count * 1.0f / length);
-				}
+					publishProgress(count * 1.0F / length);
+				}while((read = is.read(buf)) != -1);
+				
 				byte[] data = baos.toByteArray();
 				Bitmap bit;
 				bit = BitmapFactory.decodeByteArray(data, 0, data.length);
-				if (isGif(data)) {
-					isGif = true;
+				if (isGif) {
 					gifDecoder = new GifDecoder(data, this);
 					gifDecoder.start();
 					while(!decodeFinished){
@@ -89,8 +98,6 @@ public class ImageLoadTask extends BaseCompatiableTask<String, Float, Bitmap> im
 							break;
 						}
 					}
-				} else {
-					isGif = false;
 				}
 				
 				return bit;

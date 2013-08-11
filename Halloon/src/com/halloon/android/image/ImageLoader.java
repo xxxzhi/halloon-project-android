@@ -32,13 +32,20 @@ public class ImageLoader {
 
 	MemoryCache memoryCache = new MemoryCache();
 	FileCache fileCache;
-	private Map<ImageView, String> imageViews = Collections
-			.synchronizedMap(new WeakHashMap<ImageView, String>());
+	private Map<ImageView, String> imageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
 	ExecutorService executorService;
 	Context context;
 
 	private static ImageLoader instance;
 	private int pixel;
+	
+	public static final String FORMAT_GIF = ".gif";
+	public static final String FORMAT_JPG = ".jpg";
+	public static final String FORMAT_PNG = ".png";
+	
+	public interface OnProcessListener{
+		public void onProcess(int progress);
+	}
 
 	private ImageLoader(Context context) {
 		this.context = context;
@@ -56,17 +63,13 @@ public class ImageLoader {
 	final int stub_id = R.drawable.ic_launcher;
 
 	public static String imageSave(Bitmap bmp) {
-		if (android.os.Environment.getExternalStorageState().equals(
-				android.os.Environment.MEDIA_MOUNTED)) {
-			File f = new File(
-					android.os.Environment.getExternalStorageDirectory(),
-					"/Halloon/download/image");
+		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+			File f = new File(android.os.Environment.getExternalStorageDirectory(), "/Halloon/download/image");
 			File sf = new File(f, TimeUtil.getCurrentTimeForFileName() + ".jpg");
 			try {
 				f.mkdirs();
 				sf.createNewFile();
-				BufferedOutputStream bos = new BufferedOutputStream(
-						new FileOutputStream(sf));
+				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(sf));
 				bmp.compress(CompressFormat.JPEG, 100, bos);
 				bos.flush();
 				bos.close();
@@ -96,7 +99,7 @@ public class ImageLoader {
 		executorService.submit(new PhotosLoader(p));
 	}
 
-	public Bitmap getBitmap(String url) {
+	private Bitmap getBitmap(String url, OnProcessListener mOnProcessListener) {
 		File f = fileCache.getFile(url);
 
 		// from SD cache
@@ -108,14 +111,13 @@ public class ImageLoader {
 		try {
 			Bitmap bitmap = null;
 			URL imageUrl = new URL(url);
-			HttpURLConnection conn = (HttpURLConnection) imageUrl
-					.openConnection();
+			HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
 			conn.setConnectTimeout(30000);
 			conn.setReadTimeout(30000);
 			conn.setInstanceFollowRedirects(true);
 			InputStream is = conn.getInputStream();
 			OutputStream os = new FileOutputStream(f);
-			Utils.CopyStream(is, os);
+			Utils.CopyStream(is, os, mOnProcessListener);
 			os.close();
 			bitmap = decodeFile(f);
 			return bitmap;
@@ -177,15 +179,20 @@ public class ImageLoader {
 
 	class PhotosLoader implements Runnable {
 		PhotoToLoad photoToLoad;
+		OnProcessListener mOnProcessListener;
 
 		PhotosLoader(PhotoToLoad photoToLoad) {
 			this.photoToLoad = photoToLoad;
+		}
+		
+		public void setOnProcessListener(OnProcessListener mOnProcessListener){
+			this.mOnProcessListener = mOnProcessListener;
 		}
 
 		public void run() {
 			if (imageViewReused(photoToLoad))
 				return;
-			Bitmap bmp = getBitmap(photoToLoad.url);
+			Bitmap bmp = getBitmap(photoToLoad.url, mOnProcessListener);
 			memoryCache.put(photoToLoad.url, bmp);
 			if (imageViewReused(photoToLoad))
 				return;
@@ -220,10 +227,7 @@ public class ImageLoader {
 			else
 				photoToLoad.imageView.setImageResource(stub_id);
 
-			photoToLoad.imageView.setImageBitmap(ImageUtil
-					.getRoundedCornerBitmap(
-							((BitmapDrawable) photoToLoad.imageView
-									.getDrawable()).getBitmap(), pixel));
+			photoToLoad.imageView.setImageBitmap(ImageUtil.getRoundedCornerBitmap(((BitmapDrawable) photoToLoad.imageView.getDrawable()).getBitmap(), pixel));
 		}
 
 	}
