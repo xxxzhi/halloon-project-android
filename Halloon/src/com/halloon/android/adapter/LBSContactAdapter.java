@@ -64,7 +64,7 @@ public class LBSContactAdapter extends BaseAdapter {
 			holder = (UserHolder) convertView.getTag();
 		}
 
-		ImageLoader.getInstance(context).displayImage(userBean.getHead() + "/100", holder.head, 0);
+		ImageLoader.getInstance(context).displayImage(userBean.getHead() + "/100", holder.head, 0, null);
 		holder.nick.setText(userBean.getNick());
 		if(userBean.getSex().equals("男")){
 			holder.sex.setImageResource(R.drawable.wb_icon_male);

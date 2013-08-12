@@ -1,5 +1,7 @@
 package com.halloon.android.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -10,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -31,12 +34,16 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ant.liao.GifAction;
+import com.ant.liao.GifDecoder;
 import com.halloon.android.R;
 import com.halloon.android.bean.UserBean;
 import com.halloon.android.data.ContentManager;
 import com.halloon.android.data.DBManager;
 import com.halloon.android.data.SettingsManager;
 import com.halloon.android.image.ImageLoader;
+import com.halloon.android.image.Utils;
+import com.halloon.android.image.ImageLoader.OnProcessListener;
 import com.halloon.android.task.ImageLoadTask;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 import com.halloon.android.ui.fragment.CommentFragment;
@@ -146,6 +153,8 @@ public class PopupWindowManager {
 				}
 			}
 		};
+		
+		
 		container.findViewById(R.id.back_button).setOnClickListener(buttonClickListener);
 		container.findViewById(R.id.save_button).setOnClickListener(buttonClickListener);
 		popupWindow = new PopupWindow(container, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, true);
@@ -155,8 +164,56 @@ public class PopupWindowManager {
 		popupWindow.showAtLocation(((Activity) context).findViewById(R.id.title_layout), Gravity.NO_GRAVITY, 0, SettingsManager.getInstance(context).getSystemBarHeight());
 
 		picturePopup = (HalloonImageView) container.findViewById(R.id.popup_image);
+		picturePopup.setMode(HalloonImageView.GESTURE_ENABLE|HalloonImageView.PLAY_GIF);
 		picturePopup.setImageBitmap(bitmap);
 		progressBar = (HalloonProgressBar) container.findViewById(R.id.progress_bar);
+		
+		OnProcessListener onProcessListener = new OnProcessListener(){
+
+			@Override
+			public void onProcessStarted(int type) {
+				picturePopup.setVisibility(View.INVISIBLE);
+				progressBar.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onProcess(float f) {
+				progressBar.setProgress(Math.round(f * 100));
+			}
+			
+			@Override
+			public void onProcessEnded(Bitmap bitmap, int type){
+				
+				switch(type){
+				case ImageLoader.TYPE_GIF:
+					gifDeploy(bitmap, picturePopup, progressBar);
+					break;
+				case ImageLoader.TYPE_JPG:
+					jpgDeploy(bitmap, picturePopup, progressBar);
+					break;
+				case ImageLoader.TYPE_UNKNOWN:
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					bitmap.compress(CompressFormat.PNG, 100, baos);
+					if(Utils.isGif(baos.toByteArray())){
+						gifDeploy(bitmap, picturePopup, progressBar);
+					}else{
+						jpgDeploy(bitmap, picturePopup, progressBar);
+					}
+					
+					try{
+						baos.close();
+					}catch(Exception e){
+						
+					}
+					break;
+				}
+			}
+			
+		};
+		
+		ImageLoader.getInstance(context).displayImage(addr, picturePopup, 0, onProcessListener);
+		
+		/*
 		picturePopupTask = new ImageLoadTask(context, picturePopup, progressBar);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -164,6 +221,47 @@ public class PopupWindowManager {
 		} else {
 			picturePopupTask.execute(addr + size);
 		}
+		 */
+	}
+	
+	private void gifDeploy(Bitmap bitmap, final HalloonImageView imageView, final HalloonProgressBar progressBar){
+		GifAction gifAction = null;
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.PNG, 100, baos);
+		final GifDecoder gifDecoder = new GifDecoder(baos.toByteArray(), gifAction);
+		gifDecoder.start();
+		
+		gifAction = new GifAction(){
+
+			@Override
+			public void parseOk(boolean parseStatus, int frameIndex) {
+				if (parseStatus) {
+					if (frameIndex == -1) {
+						if (gifDecoder.getFrameCount() > 1) {
+							imageView.setVisibility(View.VISIBLE);
+							progressBar.setVisibility(View.GONE);
+							imageView.setGifDecoder(gifDecoder);
+							imageView.setOriginLayout(gifDecoder.getFrameImage(0).getWidth(), gifDecoder.getFrameImage(0).getHeight());
+						}
+					}
+				}
+			}
+			
+		};
+		
+		try {
+			baos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void jpgDeploy(Bitmap bitmap, HalloonImageView imageView, HalloonProgressBar progressBar){
+		imageView.setVisibility(View.VISIBLE);
+		progressBar.setVisibility(View.GONE);
+		imageView.setImageBitmap(bitmap);
+		imageView.setOriginLayout(bitmap.getWidth(), bitmap.getHeight());
 	}
 
 	public void setupCommentBar(int y) {
@@ -420,7 +518,7 @@ public class PopupWindowManager {
 	public void popupWindowDismiss() {
 		if (picturePopupTask != null && picturePopupTask.getStatus() == AsyncTask.Status.RUNNING) picturePopupTask.cancel(true);
 		popupWindow.dismiss();
-		picturePopupTask.clear();
+		//picturePopupTask.clear();
 	}
 
 	public boolean isShowing() {

@@ -177,8 +177,7 @@ public class ContactAdapter extends StickyListHeadersBaseAdapter implements
 		 * holder.sex.setImageResource(R.drawable.wb_icon_female); }else{
 		 * holder.sex.setVisibility(View.GONE); }
 		 */
-		ImageLoader.getInstance(getContext()).displayImage(
-				user.getHead() + "/100", holder.picture, 4);
+		ImageLoader.getInstance(getContext()).displayImage(user.getHead() + "/100", holder.picture, 4, null);
 		return convertView;
 	}
 

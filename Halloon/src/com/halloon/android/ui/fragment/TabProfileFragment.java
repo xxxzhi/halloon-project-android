@@ -160,7 +160,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements OnClickL
 					}else{
 						mTitleBar.getTitleTextView().setText(profileBean.getNick());
 					}
-					ImageLoader.getInstance(context).displayImage(profileBean.getHead() + "/100", myHeadicon, 1);
+					ImageLoader.getInstance(context).displayImage(profileBean.getHead() + "/100", myHeadicon, 1, null);
 					myNick.setText(profileBean.getNick());
 					if(profileBean.getSex() != null){
 						if (profileBean.getSex().equals("男")) {

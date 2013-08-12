@@ -219,15 +219,7 @@ public class HalloonImageView extends ImageView {
 			case MotionEvent.ACTION_POINTER_DOWN:
 				oldPosX = event.getX();
 				oldPosY = event.getY();
-				/*
 				
-				if(firstClick == 0L){
-					firstClick = System.currentTimeMillis();
-				}else if(System.currentTimeMillis() - firstClick < DOUBLE_CLICK_PERSISTENCE_TIME){
-					performDoubleClickEffect(event.getX(), event.getY());
-					firstClick = 0L;
-				}
-				 */
 				oldDistance = spacing(event);
 				if (oldDistance > 10f) {
 					savedMatrix.set(matrix);

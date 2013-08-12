@@ -116,7 +116,7 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 				tweetHeadHolder = (TweetHeadHolder) convertView.getTag();
 			}
 
-			ImageLoader.getInstance(context).displayImage(tweetBean.getHead() + "/50", tweetHeadHolder.tweetHead, 6);
+			ImageLoader.getInstance(context).displayImage(tweetBean.getHead() + "/50", tweetHeadHolder.tweetHead, 6, null);
 
 			tweetHeadHolder.tweetNick.setText(tweetBean.getNick());
 			tweetHeadHolder.tweetFrom.setText(context.getString(R.string.from) + tweetBean.getFrom());
@@ -169,7 +169,7 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 			if (tweetBean.getTweetImage() != null && !tweetBean.getTweetImage().toString().equals("[]")) {
 				tweetContentHolder.tweetImage.setVisibility(View.VISIBLE);
 				try {
-					ImageLoader.getInstance(context).displayImage(tweetBean.getTweetImage().getString(0) + "/460", tweetContentHolder.tweetImage, 0);
+					ImageLoader.getInstance(context).displayImage(tweetBean.getTweetImage().getString(0) + "/460", tweetContentHolder.tweetImage, 0, null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -185,7 +185,7 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 				});
 			} else if (tweetBean.getVideoImage() != null && !tweetBean.getVideoImage().toString().equals("null")) {
 				tweetContentHolder.tweetImage.setVisibility(View.VISIBLE);
-				ImageLoader.getInstance(context).displayImage(tweetBean.getVideoImage(), tweetContentHolder.tweetImage, 0);
+				ImageLoader.getInstance(context).displayImage(tweetBean.getVideoImage(), tweetContentHolder.tweetImage, 0, null);
 				tweetContentHolder.tweetImage.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -218,7 +218,7 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 				if (tweetBean.getSource().getTweetImage() != null && !tweetBean.getSource().getTweetImage().toString().equals("[]")) {
 					tweetContentHolder.forwardImage.setVisibility(View.VISIBLE);
 					try {
-						ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getTweetImage().getString(0) + "/460", tweetContentHolder.forwardImage, 0);
+						ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getTweetImage().getString(0) + "/460", tweetContentHolder.forwardImage, 0, null);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -234,7 +234,7 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 					});
 				} else if (tweetBean.getSource().getVideoImage() != null && !tweetBean.getSource().getVideoImage().toString().equals("null")) {
 					tweetContentHolder.forwardImage.setVisibility(View.VISIBLE);
-					ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getVideoImage(), tweetContentHolder.forwardImage, 0);
+					ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getVideoImage(), tweetContentHolder.forwardImage, 0, null);
 					tweetContentHolder.forwardImage.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
@@ -250,14 +250,14 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 				}
 				if (!tweetBean.getSource().getLongitude().equals("0") && !tweetBean.getSource().getLatitude().equals("0")) {
 					System.out.println(tweetBean.getSource().getLongitude() + "," + tweetBean.getSource().getLatitude());
-					ImageLoader.getInstance(context).displayImage(StaticAPI.getSOSOStaticMap(tweetBean.getSource().getLatitude().toString(), tweetBean.getSource().getLongitude().toString(), 15, DensityUtil.dip2px(context, 300), DensityUtil.dip2px(context, 80)), tweetContentHolder.forwardLocationImage, 1);
+					ImageLoader.getInstance(context).displayImage(StaticAPI.getSOSOStaticMap(tweetBean.getSource().getLatitude().toString(), tweetBean.getSource().getLongitude().toString(), 15, DensityUtil.dip2px(context, 300), DensityUtil.dip2px(context, 80)), tweetContentHolder.forwardLocationImage, 1, null);
 				}
 			} else {
 				tweetContentHolder.forwardContainer.setVisibility(View.GONE);
 			}
 			if ((!tweetBean.getLongitude().equals("0") && !tweetBean.getLatitude().equals("0"))) {
 				System.out.println(tweetBean.getLongitude() + "," + tweetBean.getLatitude());
-				ImageLoader.getInstance(context).displayImage(StaticAPI.getSOSOStaticMap(tweetBean.getLatitude().toString(), tweetBean.getLongitude().toString(), 15, DensityUtil.dip2px(context, 300), DensityUtil.dip2px(context, 80)), tweetContentHolder.locationImage, 1);
+				ImageLoader.getInstance(context).displayImage(StaticAPI.getSOSOStaticMap(tweetBean.getLatitude().toString(), tweetBean.getLongitude().toString(), 15, DensityUtil.dip2px(context, 300), DensityUtil.dip2px(context, 80)), tweetContentHolder.locationImage, 1, null);
 			}
 			break;
 		case TWEET_COMMENT_TITLE:
@@ -313,7 +313,7 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 			} else {
 				ContentTransUtil.getInstance(context).displaySpannableString(cList.getText(), tweetCommentHolder.tweetCommentContent, cList, false, true);
 			}
-			ImageLoader.getInstance(context).displayImage(cList.getHead() + "/50", tweetCommentHolder.commentHead, 0);
+			ImageLoader.getInstance(context).displayImage(cList.getHead() + "/50", tweetCommentHolder.commentHead, 0, null);
 			tweetCommentHolder.commentHead.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {

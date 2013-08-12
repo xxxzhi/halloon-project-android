@@ -191,9 +191,6 @@ public class ImageLoadTask extends BaseCompatiableTask<String, Float, Bitmap> im
 	}
 
 
-	public void drawImage() {
-		pdView.setImageBitmap(gifDecoder.getFrameImage(i));
-	}
 
 	private void printHttpResponse(HttpResponse httpResponse) {
 		Header[] headerArr = httpResponse.getAllHeaders();

@@ -143,7 +143,7 @@ public class TweetContentAdapter extends BaseAdapter {
 		holder.tweetImage.setOnClickListener(tweetListClickListener);
 		holder.forwardImage.setOnClickListener(tweetListClickListener);
 
-		ImageLoader.getInstance(context).displayImage(tweetBean.getHead() + "/50", holder.headImage, 0);
+		ImageLoader.getInstance(context).displayImage(tweetBean.getHead() + "/50", holder.headImage, 0, null);
 		holder.title.setText(tweetBean.getNick());
 		if (tweetBean.getIsVip() == 1) {
 			holder.isVip.setVisibility(View.VISIBLE);
@@ -171,7 +171,7 @@ public class TweetContentAdapter extends BaseAdapter {
 			if(application.getIsMainPageImageMode()){
 				holder.tweetImage.setVisibility(View.VISIBLE);
 				try {
-					ImageLoader.getInstance(context).displayImage(tweetBean.getTweetImage().getString(0) + "/120", holder.tweetImage, 0);
+					ImageLoader.getInstance(context).displayImage(tweetBean.getTweetImage().getString(0) + "/120", holder.tweetImage, 0, null);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -182,7 +182,7 @@ public class TweetContentAdapter extends BaseAdapter {
 			holder.hasImage.setVisibility(View.GONE);
 			if(application.getIsMainPageImageMode()){
 				holder.tweetImage.setVisibility(View.VISIBLE);
-				ImageLoader.getInstance(context).displayImage(tweetBean.getVideoImage(), holder.tweetImage, 0);
+				ImageLoader.getInstance(context).displayImage(tweetBean.getVideoImage(), holder.tweetImage, 0, null);
 			}else{
 				holder.tweetImage.setVisibility(View.GONE);
 			}
@@ -205,13 +205,13 @@ public class TweetContentAdapter extends BaseAdapter {
 			if (tweetBean.getSource().getTweetImage() != null && application.getIsMainPageImageMode()) {
 				holder.forwardImage.setVisibility(View.VISIBLE);
 				try {
-					ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getTweetImage().getString(0) + "/120", holder.forwardImage, 1);
+					ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getTweetImage().getString(0) + "/120", holder.forwardImage, 1, null);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			} else if (tweetBean.getSource().getVideoImage() != null && application.getIsMainPageImageMode()) {
 				holder.forwardImage.setVisibility(View.VISIBLE);
-				ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getVideoImage(), holder.forwardImage, 1);
+				ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getVideoImage(), holder.forwardImage, 1, null);
 			} else {
 				holder.forwardImage.setVisibility(View.GONE);
 			}

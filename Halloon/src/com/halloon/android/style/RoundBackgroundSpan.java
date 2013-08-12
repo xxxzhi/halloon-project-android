@@ -7,6 +7,7 @@ import com.halloon.android.widget.ButtonStyleTextView;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.text.Layout;

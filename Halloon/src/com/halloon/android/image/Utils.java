@@ -2,27 +2,59 @@ package com.halloon.android.image;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Locale;
 
 import com.halloon.android.image.ImageLoader.OnProcessListener;
 
 public class Utils {
-	public static void CopyStream(InputStream is, OutputStream os, OnProcessListener mOnProcessListener) {
-		final int buffer_size = 1024;
+	public static int CopyStream(InputStream is, OutputStream os, OnProcessListener mOnProcessListener, long length) {
+		final int buffer_size = 128;
+		int type = -1;
 		try {
 			byte[] bytes = new byte[buffer_size];
 			int count = 0;
 			int read = -1;
+			read = is.read(bytes);
+			count = read;
+			if(mOnProcessListener != null){
+				if(isGif(bytes)){
+					type = ImageLoader.TYPE_GIF;
+				}else{
+					type = ImageLoader.TYPE_JPG;
+				}
+				
+				mOnProcessListener.onProcessStarted(type);
+			}
 			while((read = is.read(bytes, 0, buffer_size)) != -1){
 				count += read;
+				if(mOnProcessListener != null) mOnProcessListener.onProcess(count * 1.0F / length);
 				os.write(bytes, 0, read);
 			}
-			for (;;) {
-				count += is.read(bytes, 0, buffer_size);
-				if (count == -1)
-					break;
-				os.write(bytes, 0, count);
-			}
+			
 		} catch (Exception ex) {
 		}
+		
+		return type;
+	}
+	
+	public static boolean isGif(byte[] is) {
+		if (is != null) {
+			String id = "";
+			for (int i = 0; i < 6; i++) {
+				int curByte = 0;
+				try {
+					curByte = is[i];
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				id += (char) curByte;
+			}
+			if (!id.toUpperCase(Locale.ENGLISH).startsWith("GIF")) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

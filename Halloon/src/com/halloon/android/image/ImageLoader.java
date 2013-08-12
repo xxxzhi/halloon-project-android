@@ -43,8 +43,14 @@ public class ImageLoader {
 	public static final String FORMAT_JPG = ".jpg";
 	public static final String FORMAT_PNG = ".png";
 	
+	public static final int TYPE_GIF = 0;
+	public static final int TYPE_JPG = 1;
+	public static final int TYPE_UNKNOWN = -1;
+	
 	public interface OnProcessListener{
-		public void onProcess(int progress);
+		public void onProcessStarted(int type);
+		public void onProcess(float f);
+		public void onProcessEnded(Bitmap bitmap, int type);
 	}
 
 	private ImageLoader(Context context) {
@@ -82,28 +88,32 @@ public class ImageLoader {
 		}
 	}
 
-	public void displayImage(String url, ImageView imageView, int pixel) {
+	public void displayImage(String url, ImageView imageView, int pixel, OnProcessListener mOnProcessListener) {
 		this.pixel = pixel;
 		imageViews.put(imageView, url);
 		Bitmap bitmap = memoryCache.get(url);
 		if (bitmap != null) {
 			imageView.setImageBitmap(bitmap);
 		} else {
-			queuePhoto(url, imageView);
+			queuePhoto(url, imageView, mOnProcessListener);
 			imageView.setImageResource(stub_id);
 		}
 	}
 
-	private void queuePhoto(String url, ImageView imageView) {
+	private void queuePhoto(String url, ImageView imageView, OnProcessListener mOnProcessListener) {
 		PhotoToLoad p = new PhotoToLoad(url, imageView);
-		executorService.submit(new PhotosLoader(p));
+		PhotosLoader pl = new PhotosLoader(p);
+		pl.setOnProcessListener(mOnProcessListener);
+		executorService.submit(pl);
 	}
 
 	private Bitmap getBitmap(String url, OnProcessListener mOnProcessListener) {
 		File f = fileCache.getFile(url);
+		
+		int type = -1;
 
 		// from SD cache
-		Bitmap b = decodeFile(f);
+		Bitmap b = decodeFile(f, mOnProcessListener, type);
 		if (b != null)
 			return b;
 
@@ -116,10 +126,11 @@ public class ImageLoader {
 			conn.setReadTimeout(30000);
 			conn.setInstanceFollowRedirects(true);
 			InputStream is = conn.getInputStream();
+			
 			OutputStream os = new FileOutputStream(f);
-			Utils.CopyStream(is, os, mOnProcessListener);
+			type = Utils.CopyStream(is, os, mOnProcessListener, conn.getContentLength());
 			os.close();
-			bitmap = decodeFile(f);
+			bitmap = decodeFile(f, mOnProcessListener, type);
 			return bitmap;
 		} catch (Throwable ex) {
 			ex.printStackTrace();
@@ -130,7 +141,7 @@ public class ImageLoader {
 	}
 
 	// decodes image and scales it to reduce memory consumption
-	private Bitmap decodeFile(File f) {
+	private Bitmap decodeFile(File f, OnProcessListener mOnProcessListener, int type) {
 		try {
 			// decode image size
 			BitmapFactory.Options o = new BitmapFactory.Options();
@@ -157,6 +168,7 @@ public class ImageLoader {
 			o2.inSampleSize = scale;
 			FileInputStream stream2 = new FileInputStream(f);
 			Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
+			if(mOnProcessListener != null) mOnProcessListener.onProcessEnded(bitmap, type);
 			stream2.close();
 			return bitmap;
 		} catch (FileNotFoundException e) {

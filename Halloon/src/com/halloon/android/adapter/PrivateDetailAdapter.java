@@ -61,7 +61,7 @@ public class PrivateDetailAdapter extends BaseAdapter {
 			}else{
 				privateOtherHolder = (PrivateOtherHolder) convertView.getTag();
 			}
-			ImageLoader.getInstance(context).displayImage(privateDataBean.getHead() + "/50", privateOtherHolder.headImage, 1);
+			ImageLoader.getInstance(context).displayImage(privateDataBean.getHead() + "/50", privateOtherHolder.headImage, 1, null);
 			privateOtherHolder.content.setMovementMethod(LinkMovementMethod.getInstance());
 			ContentTransUtil.getInstance(context).displaySpannableString(privateDataBean.getText(), privateOtherHolder.content, null, false, true);
 		}else{
@@ -74,7 +74,7 @@ public class PrivateDetailAdapter extends BaseAdapter {
 			}else{
 				privateMeHolder = (PrivateMeHolder) convertView.getTag();
 			}
-			ImageLoader.getInstance(context).displayImage(privateDataBean.getMyHead() + "/50", privateMeHolder.headImage, 1);
+			ImageLoader.getInstance(context).displayImage(privateDataBean.getMyHead() + "/50", privateMeHolder.headImage, 1, null);
 			privateMeHolder.content.setMovementMethod(LinkMovementMethod.getInstance());
 			ContentTransUtil.getInstance(context).displaySpannableString(privateDataBean.getText(), privateMeHolder.content, null, false, true);
 		}
