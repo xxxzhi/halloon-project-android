@@ -150,8 +150,7 @@ public class HalloonProgressBar extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		float progress = currentValue / (maxValue - minValue) * viewWidth;
-		System.out.println(currentValue / (maxValue - minValue));
-
+		
 		textPaint.setColor(0xFF111111);
 		textPaint.setTextSize(tagHeight * 0.8F);
 		progressPercent = currentValue + "%";

@@ -8,13 +8,14 @@ import com.halloon.android.image.ImageLoader.OnProcessListener;
 
 public class Utils {
 	public static int CopyStream(InputStream is, OutputStream os, OnProcessListener mOnProcessListener, long length) {
-		final int buffer_size = 128;
+		final int buffer_size = 1024;
 		int type = -1;
 		try {
 			byte[] bytes = new byte[buffer_size];
 			int count = 0;
 			int read = -1;
 			read = is.read(bytes);
+			os.write(bytes, 0, read);
 			count = read;
 			if(mOnProcessListener != null){
 				if(isGif(bytes)){
@@ -23,12 +24,13 @@ public class Utils {
 					type = ImageLoader.TYPE_JPG;
 				}
 				
-				mOnProcessListener.onProcessStarted(type);
+				mOnProcessListener.onImageTypeGot(type);
 			}
 			while((read = is.read(bytes, 0, buffer_size)) != -1){
+				
+				os.write(bytes, 0, read);
 				count += read;
 				if(mOnProcessListener != null) mOnProcessListener.onProcess(count * 1.0F / length);
-				os.write(bytes, 0, read);
 			}
 			
 		} catch (Exception ex) {

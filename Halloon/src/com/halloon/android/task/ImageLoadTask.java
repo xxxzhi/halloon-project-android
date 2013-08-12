@@ -32,7 +32,6 @@ public class ImageLoadTask extends BaseCompatiableTask<String, Float, Bitmap> im
 	private HalloonImageView pdView;
 	private Context context;
 	private GifDecoder gifDecoder;
-	private int i = 0;
 
 	private boolean isGif;
 

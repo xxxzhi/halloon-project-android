@@ -346,7 +346,6 @@ public class HalloonImageView extends ImageView {
 	@Override
 	public void onDraw(Canvas canvas){
 		super.onDraw(canvas);
-		System.out.println(touch_mode);
 		
 		 if(touch_mode == NONE){
 			matrix.postTranslate(vx, vy);

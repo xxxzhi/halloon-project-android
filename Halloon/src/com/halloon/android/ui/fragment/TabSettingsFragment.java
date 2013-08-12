@@ -12,12 +12,15 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 
 import com.halloon.android.R;
+import com.halloon.android.image.ImageLoader;
 import com.halloon.android.widget.HalloonTitleBar;
 
 public class TabSettingsFragment extends BaseTitleBarFragment implements OnClickListener{
 	
 	private CheckBox isMainPageImageMode;
 	private SettingAboutCallback aboutCallback;
+	
+	private Context context;
 
 	@Override
 	protected void init(HalloonTitleBar titleBar, RelativeLayout content) {
@@ -39,6 +42,7 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 		content.findViewById(R.id.flowanaly).setOnClickListener(this);
 		content.findViewById(R.id.about).setOnClickListener(this);
 		content.findViewById(R.id.feedback).setOnClickListener(this); 
+		content.findViewById(R.id.clear).setOnClickListener(this);
 		 
 	}
 	
@@ -50,6 +54,7 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+		context = activity;
 		this.aboutCallback = (SettingAboutCallback) activity;
 	}
 	
@@ -96,6 +101,10 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 		case R.id.browser:
 			break;
 		case R.id.setting:
+			break;
+			
+		case R.id.clear:
+			ImageLoader.getInstance(context).clearCache();
 			break;
 			
 		default:

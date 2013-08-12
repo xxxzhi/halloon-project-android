@@ -69,7 +69,7 @@ public class TweetContentAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		TweetViewHolder holder;
-		TweetBean tweetBean = getItem(position);
+		final TweetBean tweetBean = getItem(position);
 
 		if (tweetBean == null) {
 			return null;
@@ -113,7 +113,7 @@ public class TweetContentAdapter extends BaseAdapter {
 						break;
 					case R.id.tweet_image:
 						if (getItem(position).getTweetImage() != null && getItem(position).getTweetImage().length() > 0)
-							((MainPageFragmentCallback) context).setupPictureDialog(getItem(position).getTweetImage().getString(0), "/2000", v.getDrawingCache());
+							((MainPageFragmentCallback) context).setupPictureDialog(tweetBean.getTweetImage().getString(0), "/2000", v.getDrawingCache());
 						if (getItem(position).getVideoImage() != null) {
 							Intent intent = new Intent();
 							intent.setAction("android.intent.action.VIEW");
@@ -123,12 +123,12 @@ public class TweetContentAdapter extends BaseAdapter {
 						}
 						break;
 					case R.id.forward_image:
-						if (getItem(position).getSource().getTweetImage() != null && getItem(position).getSource().getTweetImage().length() > 0)
-							((MainPageFragmentCallback) context).setupPictureDialog(getItem(position).getSource().getTweetImage().getString(0), "/2000", v.getDrawingCache());
-						if (getItem(position).getSource().getVideoImage() != null) {
+						if (tweetBean.getSource().getTweetImage() != null && tweetBean.getSource().getTweetImage().length() > 0)
+							((MainPageFragmentCallback) context).setupPictureDialog(tweetBean.getSource().getTweetImage().getString(0), "/2000", v.getDrawingCache());
+						if (tweetBean.getSource().getVideoImage() != null) {
 							Intent intent = new Intent();
 							intent.setAction("android.intent.action.VIEW");
-							Uri uri = Uri.parse(getItem(position).getSource().getVideoUrl());
+							Uri uri = Uri.parse(tweetBean.getSource().getVideoUrl());
 							intent.setData(uri);
 							context.startActivity(intent);
 						}

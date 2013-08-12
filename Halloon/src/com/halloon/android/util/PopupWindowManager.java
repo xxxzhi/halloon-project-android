@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,7 @@ public class PopupWindowManager {
 	private HalloonProgressBar progressBar;
 	private ImageLoadTask picturePopupTask;
 	//private ArrayList<Integer> imageContainer;
+	private OnProcessListener onProcessListener;
 	
 	private MyHandler mHandler = new MyHandler(context);
 
@@ -168,50 +170,35 @@ public class PopupWindowManager {
 		picturePopup.setImageBitmap(bitmap);
 		progressBar = (HalloonProgressBar) container.findViewById(R.id.progress_bar);
 		
-		OnProcessListener onProcessListener = new OnProcessListener(){
+		onProcessListener = new OnProcessListener(){
 
 			@Override
-			public void onProcessStarted(int type) {
-				picturePopup.setVisibility(View.INVISIBLE);
-				progressBar.setVisibility(View.VISIBLE);
+			public void onProcessStarted() {
+				Log.d("POPUP", "started");
+				((Activity) context).runOnUiThread(new LoadStartedRunnable(-1));
+			}
+			
+			@Override
+			public void onImageTypeGot(int type){
+				
 			}
 
 			@Override
 			public void onProcess(float f) {
-				progressBar.setProgress(Math.round(f * 100));
+				Log.d("POPUP", "process");
+				((Activity) context).runOnUiThread(new LoadProcessingRunnable(f));
 			}
 			
 			@Override
 			public void onProcessEnded(Bitmap bitmap, int type){
+				Log.d("POPUP", "ended");
 				
-				switch(type){
-				case ImageLoader.TYPE_GIF:
-					gifDeploy(bitmap, picturePopup, progressBar);
-					break;
-				case ImageLoader.TYPE_JPG:
-					jpgDeploy(bitmap, picturePopup, progressBar);
-					break;
-				case ImageLoader.TYPE_UNKNOWN:
-					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					bitmap.compress(CompressFormat.PNG, 100, baos);
-					if(Utils.isGif(baos.toByteArray())){
-						gifDeploy(bitmap, picturePopup, progressBar);
-					}else{
-						jpgDeploy(bitmap, picturePopup, progressBar);
-					}
-					
-					try{
-						baos.close();
-					}catch(Exception e){
-						
-					}
-					break;
-				}
+				((Activity) context).runOnUiThread(new LoadEndedRunnable(bitmap, type));
 			}
 			
 		};
 		
-		ImageLoader.getInstance(context).displayImage(addr, picturePopup, 0, onProcessListener);
+		ImageLoader.getInstance(context).displayImage(addr + size, picturePopup, 0, onProcessListener);
 		
 		/*
 		picturePopupTask = new ImageLoadTask(context, picturePopup, progressBar);
@@ -224,7 +211,73 @@ public class PopupWindowManager {
 		 */
 	}
 	
+	private class LoadStartedRunnable implements Runnable{
+		
+		private int type;
+		
+		public LoadStartedRunnable(int type){
+			this.type = type;
+		}
+		
+		@Override
+		public void run(){
+			picturePopup.setVisibility(View.INVISIBLE);
+			progressBar.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	private class LoadProcessingRunnable implements Runnable{
+		private float progress;
+		
+		public LoadProcessingRunnable(float progress){
+			this.progress = progress;
+		}
+		
+		@Override
+		public void run(){
+			progressBar.setProgress(Math.round(progress * 100));
+		}
+	}
+	
+	private class LoadEndedRunnable implements Runnable{
+		private Bitmap bitmap;
+		private int type;
+		
+		public LoadEndedRunnable(Bitmap bitmap, int type){
+			this.bitmap = bitmap;
+			this.type = type;
+		}
+		
+		@Override
+		public void run(){
+			switch(type){
+			case ImageLoader.TYPE_GIF:
+				gifDeploy(bitmap, picturePopup, progressBar);
+				break;
+			case ImageLoader.TYPE_JPG:
+				jpgDeploy(bitmap, picturePopup, progressBar);
+				break;
+			case ImageLoader.TYPE_UNKNOWN:
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				bitmap.compress(CompressFormat.JPEG, 100, baos);
+				if(Utils.isGif(baos.toByteArray())){
+					gifDeploy(bitmap, picturePopup, progressBar);
+				}else{
+					jpgDeploy(bitmap, picturePopup, progressBar);
+				}
+				
+				try{
+					baos.close();
+				}catch(Exception e){
+					
+				}
+				break;
+			}
+		}
+	}
+	
 	private void gifDeploy(Bitmap bitmap, final HalloonImageView imageView, final HalloonProgressBar progressBar){
+		Log.d("POPUP", "parseOK");
 		GifAction gifAction = null;
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -518,6 +571,7 @@ public class PopupWindowManager {
 	public void popupWindowDismiss() {
 		if (picturePopupTask != null && picturePopupTask.getStatus() == AsyncTask.Status.RUNNING) picturePopupTask.cancel(true);
 		popupWindow.dismiss();
+		if(onProcessListener != null) onProcessListener = null;
 		//picturePopupTask.clear();
 	}
 

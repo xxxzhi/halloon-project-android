@@ -48,7 +48,8 @@ public class ImageLoader {
 	public static final int TYPE_UNKNOWN = -1;
 	
 	public interface OnProcessListener{
-		public void onProcessStarted(int type);
+		public void onProcessStarted();
+		public void onImageTypeGot(int type);
 		public void onProcess(float f);
 		public void onProcessEnded(Bitmap bitmap, int type);
 	}
@@ -89,6 +90,7 @@ public class ImageLoader {
 	}
 
 	public void displayImage(String url, ImageView imageView, int pixel, OnProcessListener mOnProcessListener) {
+		if(mOnProcessListener != null) mOnProcessListener.onProcessStarted();
 		this.pixel = pixel;
 		imageViews.put(imageView, url);
 		Bitmap bitmap = memoryCache.get(url);
@@ -102,9 +104,7 @@ public class ImageLoader {
 
 	private void queuePhoto(String url, ImageView imageView, OnProcessListener mOnProcessListener) {
 		PhotoToLoad p = new PhotoToLoad(url, imageView);
-		PhotosLoader pl = new PhotosLoader(p);
-		pl.setOnProcessListener(mOnProcessListener);
-		executorService.submit(pl);
+		executorService.submit(new PhotosLoader(p, mOnProcessListener));
 	}
 
 	private Bitmap getBitmap(String url, OnProcessListener mOnProcessListener) {
@@ -155,8 +155,7 @@ public class ImageLoader {
 			int width_tmp = o.outWidth, height_tmp = o.outHeight;
 			int scale = 1;
 			while (true) {
-				if (width_tmp / 2 < REQUIRED_SIZE
-						|| height_tmp / 2 < REQUIRED_SIZE)
+				if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE)
 					break;
 				width_tmp /= 2;
 				height_tmp /= 2;
@@ -168,8 +167,16 @@ public class ImageLoader {
 			o2.inSampleSize = scale;
 			FileInputStream stream2 = new FileInputStream(f);
 			Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
-			if(mOnProcessListener != null) mOnProcessListener.onProcessEnded(bitmap, type);
+			stream2.reset();
+			byte[] b = new byte[6];
+			stream2.read(b);
+			if(Utils.isGif(b)){
+				type = TYPE_GIF;
+			}else{
+				type = TYPE_JPG;
+			}
 			stream2.close();
+			if(mOnProcessListener != null) mOnProcessListener.onProcessEnded(bitmap, type);
 			return bitmap;
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
@@ -193,11 +200,8 @@ public class ImageLoader {
 		PhotoToLoad photoToLoad;
 		OnProcessListener mOnProcessListener;
 
-		PhotosLoader(PhotoToLoad photoToLoad) {
+		PhotosLoader(PhotoToLoad photoToLoad, OnProcessListener mOnProcessListener) {
 			this.photoToLoad = photoToLoad;
-		}
-		
-		public void setOnProcessListener(OnProcessListener mOnProcessListener){
 			this.mOnProcessListener = mOnProcessListener;
 		}
 
@@ -239,7 +243,9 @@ public class ImageLoader {
 			else
 				photoToLoad.imageView.setImageResource(stub_id);
 
-			photoToLoad.imageView.setImageBitmap(ImageUtil.getRoundedCornerBitmap(((BitmapDrawable) photoToLoad.imageView.getDrawable()).getBitmap(), pixel));
+			if(pixel != 0){
+				photoToLoad.imageView.setImageBitmap(ImageUtil.getRoundedCornerBitmap(((BitmapDrawable) photoToLoad.imageView.getDrawable()).getBitmap(), pixel));
+			}
 		}
 
 	}

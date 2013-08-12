@@ -12,9 +12,7 @@ public class FileCache {
 		// Find the dir to save cached images
 		if (android.os.Environment.getExternalStorageState().equals(
 				android.os.Environment.MEDIA_MOUNTED))
-			cacheDir = new File(
-					android.os.Environment.getExternalStorageDirectory(),
-					"/Android/data/com.halloon.android/cache");
+			cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), "/Halloon/data/cache");
 		else
 			cacheDir = context.getCacheDir();
 		if (!cacheDir.exists())
