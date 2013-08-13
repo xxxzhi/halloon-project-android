@@ -174,7 +174,6 @@ public class PopupWindowManager {
 
 			@Override
 			public void onProcessStarted() {
-				Log.d("POPUP", "started");
 				((Activity) context).runOnUiThread(new LoadStartedRunnable(-1));
 			}
 			
@@ -185,13 +184,11 @@ public class PopupWindowManager {
 
 			@Override
 			public void onProcess(float f) {
-				Log.d("POPUP", "process");
 				((Activity) context).runOnUiThread(new LoadProcessingRunnable(f));
 			}
 			
 			@Override
 			public void onProcessEnded(Bitmap bitmap, int type){
-				Log.d("POPUP", "ended");
 				
 				((Activity) context).runOnUiThread(new LoadEndedRunnable(bitmap, type));
 			}
@@ -301,6 +298,7 @@ public class PopupWindowManager {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		bitmap.compress(CompressFormat.JPEG, 100, baos);
 		gifDecoder = new GifDecoder(baos.toByteArray(), gifAction);
+		gifDecoder.parseOk();
 		
 		gifDecoder.start();
 		

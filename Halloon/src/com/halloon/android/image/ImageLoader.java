@@ -128,7 +128,6 @@ public class ImageLoader {
 		if (b != null){
 			if(mOnProcessListener != null){
 				try {
-					Log.d("IMAGELOADER", "endededed");
 					FileInputStream fileStream = new FileInputStream(f);
 					byte[] by  = new byte[1024];
 					fileStream.read(by);
