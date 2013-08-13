@@ -6,6 +6,8 @@ import android.content.Context;
 
 public class FileCache {
 
+	public static final long MAX_SIZE = 1024 * 1024 * 100;
+	
 	private File cacheDir;
 
 	public FileCache(Context context) {
@@ -28,6 +30,18 @@ public class FileCache {
 		File f = new File(cacheDir, filename);
 		return f;
 
+	}
+	
+	public long checkSize(){
+		long size = 0;
+		File[] files = cacheDir.listFiles();
+		if(files == null)
+			return 0;
+		for(File f : files){
+			size += f.length();
+		}
+		
+		return size;
 	}
 
 	public void clear() {

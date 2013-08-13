@@ -118,6 +118,7 @@
     <string name="flow_count">流量统计</string>
     <string name="about_halloon">关于哈恩</string>
     <string name="feedback">意见反馈</string>
+    <string name="clear_cache">清除缓存</string>
     
     <!--  about message -->
     <string name="about_title">名称:恩哈\n版本:1.0.0\n</string>

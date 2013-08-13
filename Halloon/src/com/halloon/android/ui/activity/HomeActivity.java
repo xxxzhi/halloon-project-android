@@ -28,6 +28,8 @@ import android.widget.TextView;
 import com.halloon.android.R;
 import com.halloon.android.data.DBManager;
 import com.halloon.android.data.SettingsManager;
+import com.halloon.android.image.FileCache;
+import com.halloon.android.image.ImageLoader;
 import com.halloon.android.util.Constants;
 
 @SuppressWarnings("deprecation")
@@ -168,6 +170,14 @@ public class HomeActivity extends TabActivity implements OnTabChangeListener {
 	public void onStop() {
 		super.onStop();
 		unregisterReceiver(mBroadcastReceiver);
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		if(ImageLoader.getInstance(this).checkSize() >= FileCache.MAX_SIZE){
+			ImageLoader.getInstance(this).clearCache();
+		}
 	}
 
 	private class MyBroadCastReceiver extends BroadcastReceiver {

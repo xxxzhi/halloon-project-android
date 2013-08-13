@@ -15,7 +15,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -65,6 +64,7 @@ public class PopupWindowManager {
 	private ImageLoadTask picturePopupTask;
 	//private ArrayList<Integer> imageContainer;
 	private OnProcessListener onProcessListener;
+	private GifDecoder gifDecoder;
 	
 	private MyHandler mHandler = new MyHandler(context);
 
@@ -277,23 +277,18 @@ public class PopupWindowManager {
 	}
 	
 	private void gifDeploy(Bitmap bitmap, final HalloonImageView imageView, final HalloonProgressBar progressBar){
-		Log.d("POPUP", "parseOK");
-		GifAction gifAction = null;
-		
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		bitmap.compress(CompressFormat.PNG, 100, baos);
-		final GifDecoder gifDecoder = new GifDecoder(baos.toByteArray(), gifAction);
-		gifDecoder.start();
-		
-		gifAction = new GifAction(){
+		GifAction gifAction = new GifAction(){
 
 			@Override
 			public void parseOk(boolean parseStatus, int frameIndex) {
+				if(imageView.getVisibility() == View.INVISIBLE || imageView.getVisibility() == View.GONE){
+					imageView.setVisibility(View.VISIBLE);
+					progressBar.setVisibility(View.GONE);
+				}
+				Log.d("POPUP", "parseOK");
 				if (parseStatus) {
 					if (frameIndex == -1) {
 						if (gifDecoder.getFrameCount() > 1) {
-							imageView.setVisibility(View.VISIBLE);
-							progressBar.setVisibility(View.GONE);
 							imageView.setGifDecoder(gifDecoder);
 							imageView.setOriginLayout(gifDecoder.getFrameImage(0).getWidth(), gifDecoder.getFrameImage(0).getHeight());
 						}
@@ -302,6 +297,12 @@ public class PopupWindowManager {
 			}
 			
 		};
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.JPEG, 100, baos);
+		gifDecoder = new GifDecoder(baos.toByteArray(), gifAction);
+		
+		gifDecoder.start();
 		
 		try {
 			baos.close();
@@ -314,6 +315,7 @@ public class PopupWindowManager {
 		imageView.setVisibility(View.VISIBLE);
 		progressBar.setVisibility(View.GONE);
 		imageView.setImageBitmap(bitmap);
+		Log.d("POPUP", bitmap.toString());
 		imageView.setOriginLayout(bitmap.getWidth(), bitmap.getHeight());
 	}
 
@@ -526,13 +528,11 @@ public class PopupWindowManager {
 
 			@Override
 			public UserBean getItem(int position) {
-				// TODO Auto-generated method stub
 				return arrayList.get(position);
 			}
 
 			@Override
 			public long getItemId(int position) {
-				// TODO Auto-generated method stub
 				return position;
 			}
 

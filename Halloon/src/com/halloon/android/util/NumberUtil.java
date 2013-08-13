@@ -19,7 +19,9 @@ public class NumberUtil {
 
 	public static String formatBytesSize(Context context, long bytes) {
 		String size = "";
-		if (bytes > 0 && bytes < 1024) {
+		if (bytes <= 0) {
+			size = "0B";
+		} else if (bytes > 0 && bytes < 1024) {
 			size = bytes + "B";
 		} else if (bytes > 1024 && bytes < 1024 * 1024) {
 			bytes /= 1024;

@@ -22,6 +22,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.halloon.android.R;
@@ -30,7 +31,7 @@ import com.halloon.android.util.TimeUtil;
 
 public class ImageLoader {
 
-	MemoryCache memoryCache = new MemoryCache();
+	//MemoryCache memoryCache = new MemoryCache();
 	FileCache fileCache;
 	private Map<ImageView, String> imageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
 	ExecutorService executorService;
@@ -93,13 +94,23 @@ public class ImageLoader {
 		if(mOnProcessListener != null) mOnProcessListener.onProcessStarted();
 		this.pixel = pixel;
 		imageViews.put(imageView, url);
+		/*
 		Bitmap bitmap = memoryCache.get(url);
 		if (bitmap != null) {
-			imageView.setImageBitmap(bitmap);
+			if(mOnProcessListener != null){
+				mOnProcessListener.onProcessEnded(bitmap, TYPE_JPG);
+			}else{
+				imageView.setImageBitmap(bitmap);
+			}
+			
 		} else {
 			queuePhoto(url, imageView, mOnProcessListener);
 			imageView.setImageResource(stub_id);
 		}
+		 */
+		
+		queuePhoto(url, imageView, mOnProcessListener);
+		imageView.setImageResource(stub_id);
 	}
 
 	private void queuePhoto(String url, ImageView imageView, OnProcessListener mOnProcessListener) {
@@ -113,10 +124,32 @@ public class ImageLoader {
 		int type = -1;
 
 		// from SD cache
-		Bitmap b = decodeFile(f, mOnProcessListener, type);
-		if (b != null)
+		Bitmap b = decodeFile(f);
+		if (b != null){
+			if(mOnProcessListener != null){
+				try {
+					Log.d("IMAGELOADER", "endededed");
+					FileInputStream fileStream = new FileInputStream(f);
+					byte[] by  = new byte[1024];
+					fileStream.read(by);
+					if(Utils.isGif(by)){
+						type = TYPE_GIF;
+					}else{
+						type = TYPE_JPG;
+					}
+					mOnProcessListener.onProcessEnded(b, type);
+					fileStream.close();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			return b;
-
+		}
+		
 		// from web
 		try {
 			Bitmap bitmap = null;
@@ -130,18 +163,21 @@ public class ImageLoader {
 			OutputStream os = new FileOutputStream(f);
 			type = Utils.CopyStream(is, os, mOnProcessListener, conn.getContentLength());
 			os.close();
-			bitmap = decodeFile(f, mOnProcessListener, type);
+			bitmap = decodeFile(f);
+			if(mOnProcessListener != null) mOnProcessListener.onProcessEnded(bitmap, type);
 			return bitmap;
 		} catch (Throwable ex) {
 			ex.printStackTrace();
+			/*
 			if (ex instanceof OutOfMemoryError)
 				memoryCache.clear();
+			 */
 			return null;
 		}
 	}
 
 	// decodes image and scales it to reduce memory consumption
-	private Bitmap decodeFile(File f, OnProcessListener mOnProcessListener, int type) {
+	private Bitmap decodeFile(File f) {
 		try {
 			// decode image size
 			BitmapFactory.Options o = new BitmapFactory.Options();
@@ -167,16 +203,7 @@ public class ImageLoader {
 			o2.inSampleSize = scale;
 			FileInputStream stream2 = new FileInputStream(f);
 			Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
-			stream2.reset();
-			byte[] b = new byte[6];
-			stream2.read(b);
-			if(Utils.isGif(b)){
-				type = TYPE_GIF;
-			}else{
-				type = TYPE_JPG;
-			}
 			stream2.close();
-			if(mOnProcessListener != null) mOnProcessListener.onProcessEnded(bitmap, type);
 			return bitmap;
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
@@ -209,12 +236,14 @@ public class ImageLoader {
 			if (imageViewReused(photoToLoad))
 				return;
 			Bitmap bmp = getBitmap(photoToLoad.url, mOnProcessListener);
-			memoryCache.put(photoToLoad.url, bmp);
+			//memoryCache.put(photoToLoad.url, bmp);
 			if (imageViewReused(photoToLoad))
 				return;
-			BitmapDisplayer bd = new BitmapDisplayer(bmp, photoToLoad);
-			Activity a = (Activity) photoToLoad.imageView.getContext();
-			a.runOnUiThread(bd);
+			if(mOnProcessListener == null){
+				BitmapDisplayer bd = new BitmapDisplayer(bmp, photoToLoad);
+				Activity a = (Activity) photoToLoad.imageView.getContext();
+				a.runOnUiThread(bd);
+			}
 		}
 	}
 
@@ -251,8 +280,12 @@ public class ImageLoader {
 	}
 
 	public void clearCache() {
-		memoryCache.clear();
+		//memoryCache.clear();
 		fileCache.clear();
+	}
+	
+	public long checkSize(){
+		return fileCache.checkSize();
 	}
 
 }

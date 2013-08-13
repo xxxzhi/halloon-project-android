@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.halloon.android.R;
 import com.halloon.android.image.ImageLoader;
+import com.halloon.android.util.NumberUtil;
 import com.halloon.android.widget.HalloonTitleBar;
 
 public class TabSettingsFragment extends BaseTitleBarFragment implements OnClickListener{
@@ -21,6 +23,8 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 	private SettingAboutCallback aboutCallback;
 	
 	private Context context;
+	
+	private Button clearButton;
 
 	@Override
 	protected void init(HalloonTitleBar titleBar, RelativeLayout content) {
@@ -42,7 +46,8 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 		content.findViewById(R.id.flowanaly).setOnClickListener(this);
 		content.findViewById(R.id.about).setOnClickListener(this);
 		content.findViewById(R.id.feedback).setOnClickListener(this); 
-		content.findViewById(R.id.clear).setOnClickListener(this);
+		clearButton = (Button) content.findViewById(R.id.clear);
+		clearButton.setOnClickListener(this);
 		 
 	}
 	
@@ -56,6 +61,12 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 		super.onAttach(activity);
 		context = activity;
 		this.aboutCallback = (SettingAboutCallback) activity;
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		clearButton.setText(context.getString(R.string.clear_cache) + "(" + NumberUtil.formatBytesSize(context, ImageLoader.getInstance(context).checkSize()) + ")");
 	}
 	
 	@Override
@@ -93,7 +104,6 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 			break;
 		case R.id.theme:
 			
-			
 			break;
 		case R.id.account:
 			
@@ -105,6 +115,7 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 			
 		case R.id.clear:
 			ImageLoader.getInstance(context).clearCache();
+			clearButton.setText(context.getString(R.string.clear_cache) + "(" + NumberUtil.formatBytesSize(context, ImageLoader.getInstance(context).checkSize()) + ")");
 			break;
 			
 		default:

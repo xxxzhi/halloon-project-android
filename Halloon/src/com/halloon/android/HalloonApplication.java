@@ -22,6 +22,7 @@ public class HalloonApplication extends Application {
 		shortList = new HashMap<String, String>();
 	}
 	
+	
 	public void setIsMainPageImageMode(boolean isMainPageImageMode){
 		SettingsManager.getInstance(this).setIsMainPageImageMode(isMainPageImageMode);
 	}
