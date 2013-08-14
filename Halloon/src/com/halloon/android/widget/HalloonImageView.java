@@ -107,8 +107,8 @@ public class HalloonImageView extends ImageView {
 			originWidth = 0;
 			originHeight = 0;
 			
-			width = getWidth();
-			height = getHeight();
+			width = getMeasuredWidth();
+			height = getMeasuredHeight();
 			
 			vx = 0;
 			vy = 0;

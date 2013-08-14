@@ -535,8 +535,7 @@ public class DBManager extends SQLiteOpenHelper {
 		cv.put(PrivateColumns.PRIVATE_NAME, privateBean.getName());
 		cv.put(PrivateColumns.PRIVATE_NICK, privateBean.getNick());
 		cv.put(PrivateColumns.PRIVATE_CONTENT, privateBean.getText());
-		if (null != privateBean.getImage())
-			cv.put(PrivateColumns.PRIVATE_IMAGE, privateBean.getImage().toString());
+		if (null != privateBean.getImage()) cv.put(PrivateColumns.PRIVATE_IMAGE, privateBean.getImage().toString());
 		cv.put(PrivateColumns.PRIVATE_TIMESTAMP, privateBean.getPubTime());
 
 		return cv;
@@ -564,19 +563,118 @@ public class DBManager extends SQLiteOpenHelper {
 		 * + "|" + TABLE_AT_LIST);
 		 */
 
-		String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_CONTACTS_ME + "(" + ContactsColumns.KEY_OPEN_ID + " TEXT PRIMARY KEY," + ContactsColumns.KEY_NAME + " TEXT," + ContactsColumns.KEY_NICK + " TEXT," + ContactsColumns.KEY_NAME_FORMATTED + " TEXT," + ContactsColumns.KEY_HEAD + " TEXT," + ContactsColumns.KEY_SEX + " TEXT," + ContactsColumns.KEY_TWEET + " TEXT)";
+		String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + 
+		                                TABLE_CONTACTS_ME + "(" + 
+				                        ContactsColumns.KEY_OPEN_ID + " TEXT PRIMARY KEY," + 
+		                                ContactsColumns.KEY_NAME + " TEXT," + 
+				                        ContactsColumns.KEY_NICK + " TEXT," + 
+		                                ContactsColumns.KEY_NAME_FORMATTED + " TEXT," + 
+				                        ContactsColumns.KEY_HEAD + " TEXT," + 
+		                                ContactsColumns.KEY_SEX + " TEXT," + 
+				                        ContactsColumns.KEY_TWEET + " TEXT)";
 
-		String CREATE_PROFILE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_MY_PROFILE + "(" + ProfileColumns.PROFILE_OPEN_ID + " TEXT PRIMARY KEY," + ProfileColumns.PROFILE_NICK + " TEXT," + ProfileColumns.PROFILE_NAME + " TEXT," + ProfileColumns.PROFILE_HEAD + " TEXT," + ProfileColumns.PROFILE_SEX + " TEXT," + ProfileColumns.PROFILE_INTRO + " TEXT," + ProfileColumns.PROFILE_LOCATION + " TEXT," + ProfileColumns.PROFILE_TAG + " TEXT," + ProfileColumns.PROFILE_TWEETNUM + " TEXT," + ProfileColumns.PROFILE_IDOLNUM + " TEXT," + ProfileColumns.PROFILE_FANSNUM + " TEXT," + ProfileColumns.PROFILE_FAVNUM + " TEXT)";
+		String CREATE_PROFILE_TABLE = "CREATE TABLE IF NOT EXISTS " + 
+		                               TABLE_MY_PROFILE + "(" + 
+				                       ProfileColumns.PROFILE_OPEN_ID + " TEXT PRIMARY KEY," + 
+		                               ProfileColumns.PROFILE_NICK + " TEXT," + 
+				                       ProfileColumns.PROFILE_NAME + " TEXT," + 
+		                               ProfileColumns.PROFILE_HEAD + " TEXT," + 
+				                       ProfileColumns.PROFILE_SEX + " TEXT," + 
+		                               ProfileColumns.PROFILE_INTRO + " TEXT," + 
+				                       ProfileColumns.PROFILE_LOCATION + " TEXT," + 
+		                               ProfileColumns.PROFILE_TAG + " TEXT," + 
+				                       ProfileColumns.PROFILE_TWEETNUM + " TEXT," + 
+		                               ProfileColumns.PROFILE_IDOLNUM + " TEXT," + 
+				                       ProfileColumns.PROFILE_FANSNUM + " TEXT," + 
+		                               ProfileColumns.PROFILE_FAVNUM + " TEXT)";
 
-		String CREATE_TWEET_LIST_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_TWEET_LIST + "(" + TweetsColumns.TWEET_ID + " TEXT PRIMARY KEY," + TweetsColumns.TWEET_USER_ID + " TEXT," + TweetsColumns.TWEET_HEAD + " TEXT," + TweetsColumns.TWEET_NICK + " TEXT," + TweetsColumns.TWEET_NAME + " TEXT," + TweetsColumns.TWEET_TIMESTAMP + " INTEGER," + TweetsColumns.TWEET_FROM + " TEXT," + TweetsColumns.TWEET_CONTENT + " TEXT," + TweetsColumns.TWEET_IMAGE + " TEXT," + TweetsColumns.TWEET_VIDEO_IMAGE + " TEXT," + TweetsColumns.TWEET_VIDEO_PLAYER + " TEXT," + TweetsColumns.TWEET_VIDEO_URL + " TEXT," + TweetsColumns.TWEET_MUSIC_AUTHOR + " TEXT," + TweetsColumns.TWEET_MUSIC_ID + " TEXT," + TweetsColumns.TWEET_MUSIC_TITLE + " TEXT," + TweetsColumns.TWEET_MUSIC_URL + " TEXT,"
-				+ TweetsColumns.COMMENT_COUNT + " TEXT," + TweetsColumns.R_COUNT + " TEXT," + TweetsColumns.SOURCE_NICK + " TEXT," + TweetsColumns.SOURCE_CONTENT + " TEXT," + TweetsColumns.SOURCE_IMAGE + " TEXT," + TweetsColumns.SOURCE_VIDEO_IMAGE + " TEXT," + TweetsColumns.SOURCE_VIDEO_PLAYER + " TEXT," + TweetsColumns.SOURCE_VIDEO_URL + " TEXT," + TweetsColumns.SOURCE_MUSIC_AUTHOR + " TEXT," + TweetsColumns.SOURCE_MUSIC_ID + " TEXT," + TweetsColumns.SOURCE_MUSIC_TITLE + " TEXT," + TweetsColumns.SOURCE_MUSIC_URL + " TEXT," + TweetsColumns.SOURCE_LONGITUDE + " TEXT," + TweetsColumns.SOURCE_LATITUDE + " TEXT," + TweetsColumns.SOURCE_GEO + " TEXT," + TweetsColumns.TWEET_MUSER + " TEXT," + TweetsColumns.TWEET_IS_VIP + " TEXT," + TweetsColumns.TWEET_LONGITUDE + " TEXT,"
-				+ TweetsColumns.TWEET_LATITUDE + " TEXT," + TweetsColumns.TWEET_GEO + " TEXT)";
+		String CREATE_TWEET_LIST_TABLE = "CREATE TABLE IF NOT EXISTS " + 
+		                                  TABLE_TWEET_LIST + "(" + 
+				                          TweetsColumns.TWEET_ID + " TEXT PRIMARY KEY," + 
+		                                  TweetsColumns.TWEET_USER_ID + " TEXT," + 
+				                          TweetsColumns.TWEET_HEAD + " TEXT," + 
+		                                  TweetsColumns.TWEET_NICK + " TEXT," + 
+				                          TweetsColumns.TWEET_NAME + " TEXT," + 
+		                                  TweetsColumns.TWEET_TIMESTAMP + " INTEGER," + 
+				                          TweetsColumns.TWEET_FROM + " TEXT," + 
+		                                  TweetsColumns.TWEET_CONTENT + " TEXT," + 
+				                          TweetsColumns.TWEET_IMAGE + " TEXT," + 
+		                                  TweetsColumns.TWEET_VIDEO_IMAGE + " TEXT," + 
+				                          TweetsColumns.TWEET_VIDEO_PLAYER + " TEXT," + 
+		                                  TweetsColumns.TWEET_VIDEO_URL + " TEXT," + 
+				                          TweetsColumns.TWEET_MUSIC_AUTHOR + " TEXT," + 
+		                                  TweetsColumns.TWEET_MUSIC_ID + " TEXT," + 
+				                          TweetsColumns.TWEET_MUSIC_TITLE + " TEXT," + 
+		                                  TweetsColumns.TWEET_MUSIC_URL + " TEXT," + 
+				                          TweetsColumns.COMMENT_COUNT + " TEXT," + 
+		                                  TweetsColumns.R_COUNT + " TEXT," + 
+				                          TweetsColumns.SOURCE_NICK + " TEXT," + 
+		                                  TweetsColumns.SOURCE_CONTENT + " TEXT," + 
+				                          TweetsColumns.SOURCE_IMAGE + " TEXT," + 
+		                                  TweetsColumns.SOURCE_VIDEO_IMAGE + " TEXT," + 
+				                          TweetsColumns.SOURCE_VIDEO_PLAYER + " TEXT," + 
+		                                  TweetsColumns.SOURCE_VIDEO_URL + " TEXT," + 
+				                          TweetsColumns.SOURCE_MUSIC_AUTHOR + " TEXT," + 
+		                                  TweetsColumns.SOURCE_MUSIC_ID + " TEXT," + 
+				                          TweetsColumns.SOURCE_MUSIC_TITLE + " TEXT," + 
+		                                  TweetsColumns.SOURCE_MUSIC_URL + " TEXT," + 
+				                          TweetsColumns.SOURCE_LONGITUDE + " TEXT," + 
+		                                  TweetsColumns.SOURCE_LATITUDE + " TEXT," + 
+				                          TweetsColumns.SOURCE_GEO + " TEXT," + 
+		                                  TweetsColumns.TWEET_MUSER + " TEXT," + 
+				                          TweetsColumns.TWEET_IS_VIP + " TEXT," + 
+		                                  TweetsColumns.TWEET_LONGITUDE + " TEXT," + 
+				                          TweetsColumns.TWEET_LATITUDE + " TEXT," + 
+		                                  TweetsColumns.TWEET_GEO + " TEXT)";
 
-		String CREATE_PRIVATE_LIST_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_PRIVATE_LIST + "(" + PrivateColumns.PRIVATE_ID + " TEXT_PRIMARY KEY," + PrivateColumns.PRIVATE_HEAD + " TEXT," + PrivateColumns.PRIVATE_NAME + " TEXT," + PrivateColumns.PRIVATE_NICK + " TEXT," + PrivateColumns.PRIVATE_CONTENT + " TEXT," + PrivateColumns.PRIVATE_IMAGE + " TEXT," + PrivateColumns.PRIVATE_TIMESTAMP + " TEXT)";
+		String CREATE_PRIVATE_LIST_TABLE = "CREATE TABLE IF NOT EXISTS " + 
+		                                    TABLE_PRIVATE_LIST + "(" + 
+				                            PrivateColumns.PRIVATE_ID + " TEXT_PRIMARY KEY," + 
+		                                    PrivateColumns.PRIVATE_HEAD + " TEXT," + 
+				                            PrivateColumns.PRIVATE_NAME + " TEXT," + 
+		                                    PrivateColumns.PRIVATE_NICK + " TEXT," + 
+				                            PrivateColumns.PRIVATE_CONTENT + " TEXT," + 
+		                                    PrivateColumns.PRIVATE_IMAGE + " TEXT," + 
+				                            PrivateColumns.PRIVATE_TIMESTAMP + " TEXT)";
 
-		String CREATE_AT_LIST_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_AT_LIST + "(" + TweetsColumns.TWEET_ID + " TEXT PRIMARY KEY," + TweetsColumns.TWEET_USER_ID + " TEXT," + TweetsColumns.TWEET_HEAD + " TEXT," + TweetsColumns.TWEET_NICK + " TEXT," + TweetsColumns.TWEET_NAME + " TEXT," + TweetsColumns.TWEET_TIMESTAMP + " INTEGER," + TweetsColumns.TWEET_FROM + " TEXT," + TweetsColumns.TWEET_CONTENT + " TEXT," + TweetsColumns.TWEET_IMAGE + " TEXT," + TweetsColumns.TWEET_VIDEO_IMAGE + " TEXT," + TweetsColumns.TWEET_VIDEO_PLAYER + " TEXT," + TweetsColumns.TWEET_VIDEO_URL + " TEXT," + TweetsColumns.TWEET_MUSIC_AUTHOR + " TEXT," + TweetsColumns.TWEET_MUSIC_ID + " TEXT," + TweetsColumns.TWEET_MUSIC_TITLE + " TEXT," + TweetsColumns.TWEET_MUSIC_URL + " TEXT," + TweetsColumns.COMMENT_COUNT
-				+ " TEXT," + TweetsColumns.R_COUNT + " TEXT," + TweetsColumns.SOURCE_NICK + " TEXT," + TweetsColumns.SOURCE_CONTENT + " TEXT," + TweetsColumns.SOURCE_IMAGE + " TEXT," + TweetsColumns.SOURCE_VIDEO_IMAGE + " TEXT," + TweetsColumns.SOURCE_VIDEO_PLAYER + " TEXT," + TweetsColumns.SOURCE_VIDEO_URL + " TEXT," + TweetsColumns.SOURCE_MUSIC_AUTHOR + " TEXT," + TweetsColumns.SOURCE_MUSIC_ID + " TEXT," + TweetsColumns.SOURCE_MUSIC_TITLE + " TEXT," + TweetsColumns.SOURCE_MUSIC_URL + " TEXT," + TweetsColumns.SOURCE_LONGITUDE + " TEXT," + TweetsColumns.SOURCE_LATITUDE + " TEXT," + TweetsColumns.SOURCE_GEO + " TEXT," + TweetsColumns.TWEET_MUSER + " TEXT," + TweetsColumns.TWEET_IS_VIP + " TEXT," + TweetsColumns.TWEET_LONGITUDE + " TEXT," + TweetsColumns.TWEET_LATITUDE + " TEXT,"
-				+ TweetsColumns.TWEET_GEO + " TEXT)";
+		String CREATE_AT_LIST_TABLE = "CREATE TABLE IF NOT EXISTS " + 
+		                               TABLE_AT_LIST + "(" + 
+				                       TweetsColumns.TWEET_ID + " TEXT PRIMARY KEY," + 
+		                               TweetsColumns.TWEET_USER_ID + " TEXT," + 
+				                       TweetsColumns.TWEET_HEAD + " TEXT," + 
+		                               TweetsColumns.TWEET_NICK + " TEXT," + 
+				                       TweetsColumns.TWEET_NAME + " TEXT," + 
+		                               TweetsColumns.TWEET_TIMESTAMP + " INTEGER," + 
+				                       TweetsColumns.TWEET_FROM + " TEXT," + 
+		                               TweetsColumns.TWEET_CONTENT + " TEXT," + 
+				                       TweetsColumns.TWEET_IMAGE + " TEXT," + 
+		                               TweetsColumns.TWEET_VIDEO_IMAGE + " TEXT," + 
+				                       TweetsColumns.TWEET_VIDEO_PLAYER + " TEXT," + 
+		                               TweetsColumns.TWEET_VIDEO_URL + " TEXT," + 
+				                       TweetsColumns.TWEET_MUSIC_AUTHOR + " TEXT," + 
+		                               TweetsColumns.TWEET_MUSIC_ID + " TEXT," + 
+				                       TweetsColumns.TWEET_MUSIC_TITLE + " TEXT," + 
+		                               TweetsColumns.TWEET_MUSIC_URL + " TEXT," + 
+				                       TweetsColumns.COMMENT_COUNT + " TEXT," + 
+		                               TweetsColumns.R_COUNT + " TEXT," + 
+				                       TweetsColumns.SOURCE_NICK + " TEXT," + 
+		                               TweetsColumns.SOURCE_CONTENT + " TEXT," + 
+				                       TweetsColumns.SOURCE_IMAGE + " TEXT," + 
+		                               TweetsColumns.SOURCE_VIDEO_IMAGE + " TEXT," + 
+				                       TweetsColumns.SOURCE_VIDEO_PLAYER + " TEXT," + 
+		                               TweetsColumns.SOURCE_VIDEO_URL + " TEXT," + 
+				                       TweetsColumns.SOURCE_MUSIC_AUTHOR + " TEXT," + 
+		                               TweetsColumns.SOURCE_MUSIC_ID + " TEXT," + 
+				                       TweetsColumns.SOURCE_MUSIC_TITLE + " TEXT," + 
+		                               TweetsColumns.SOURCE_MUSIC_URL + " TEXT," + 
+				                       TweetsColumns.SOURCE_LONGITUDE + " TEXT," + 
+		                               TweetsColumns.SOURCE_LATITUDE + " TEXT," + 
+				                       TweetsColumns.SOURCE_GEO + " TEXT," + 
+		                               TweetsColumns.TWEET_MUSER + " TEXT," + 
+				                       TweetsColumns.TWEET_IS_VIP + " TEXT," + 
+		                               TweetsColumns.TWEET_LONGITUDE + " TEXT," + 
+				                       TweetsColumns.TWEET_LATITUDE + " TEXT," + 
+		                               TweetsColumns.TWEET_GEO + " TEXT)";
 
 		db.execSQL(CREATE_CONTACTS_TABLE);
 		SettingsManager.getInstance(context).setContactStatus(CONTACT_STATUS_INIT);

@@ -12,8 +12,8 @@ import android.util.Log;
 public class MemoryCache {
 
 	private static final String TAG = "MemoryCache";
-	private Map<String, Bitmap> cache = Collections
-			.synchronizedMap(new LinkedHashMap<String, Bitmap>(10, 1.5f, true));// Last
+	private Map<String, TypedBitmap> cache = Collections
+			.synchronizedMap(new LinkedHashMap<String, TypedBitmap>(10, 1.5f, true));// Last
 																				// argument
 																				// true
 																				// for
@@ -32,7 +32,7 @@ public class MemoryCache {
 		Log.i(TAG, "MemoryCache will use up to " + limit / 1024. / 1024. + "MB");
 	}
 
-	public Bitmap get(String id) {
+	public TypedBitmap get(String id) {
 		try {
 			if (!cache.containsKey(id))
 				return null;
@@ -45,22 +45,26 @@ public class MemoryCache {
 		}
 	}
 
-	public void put(String id, Bitmap bitmap) {
+	public void put(String id, Bitmap bitmap, int type) {
 		try {
 			if (cache.containsKey(id))
-				size -= getSizeInBytes(cache.get(id));
-			cache.put(id, bitmap);
+				size -= getSizeInBytes(cache.get(id).getBitmap());
+			cache.put(id, new TypedBitmap(bitmap, type));
 			size += getSizeInBytes(bitmap);
 			checkSize();
 		} catch (Throwable th) {
 			th.printStackTrace();
 		}
 	}
+	
+	public void put(String id, TypedBitmap bitmap){
+		put(id, bitmap.getBitmap(), bitmap.getType());
+	}
 
 	private void checkSize() {
 		Log.i(TAG, "cache size=" + size + " length=" + cache.size());
 		if (size > limit) {
-			Iterator<Entry<String, Bitmap>> iter = cache.entrySet().iterator();// least
+			Iterator<Entry<String, TypedBitmap>> iter = cache.entrySet().iterator();// least
 																				// recently
 																				// accessed
 																				// item
@@ -71,8 +75,8 @@ public class MemoryCache {
 																				// one
 																				// iterated
 			while (iter.hasNext()) {
-				Entry<String, Bitmap> entry = iter.next();
-				size -= getSizeInBytes(entry.getValue());
+				Entry<String, TypedBitmap> entry = iter.next();
+				size -= getSizeInBytes(entry.getValue().getBitmap());
 				iter.remove();
 				if (size <= limit)
 					break;

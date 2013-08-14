@@ -19,9 +19,9 @@ public class Utils {
 			count = read;
 			if(mOnProcessListener != null){
 				if(isGif(bytes)){
-					type = ImageLoader.TYPE_GIF;
+					type = TypedBitmap.TYPE_GIF;
 				}else{
-					type = ImageLoader.TYPE_JPG;
+					type = TypedBitmap.TYPE_JPG;
 				}
 				
 				mOnProcessListener.onImageTypeGot(type);

@@ -22,7 +22,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.halloon.android.R;
@@ -31,7 +30,7 @@ import com.halloon.android.util.TimeUtil;
 
 public class ImageLoader {
 
-	//MemoryCache memoryCache = new MemoryCache();
+	MemoryCache memoryCache = new MemoryCache();
 	FileCache fileCache;
 	private Map<ImageView, String> imageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
 	ExecutorService executorService;
@@ -44,15 +43,11 @@ public class ImageLoader {
 	public static final String FORMAT_JPG = ".jpg";
 	public static final String FORMAT_PNG = ".png";
 	
-	public static final int TYPE_GIF = 0;
-	public static final int TYPE_JPG = 1;
-	public static final int TYPE_UNKNOWN = -1;
-	
 	public interface OnProcessListener{
 		public void onProcessStarted();
 		public void onImageTypeGot(int type);
 		public void onProcess(float f);
-		public void onProcessEnded(Bitmap bitmap, int type);
+		public void onProcessEnded(TypedBitmap bitmap);
 	}
 
 	private ImageLoader(Context context) {
@@ -94,23 +89,19 @@ public class ImageLoader {
 		if(mOnProcessListener != null) mOnProcessListener.onProcessStarted();
 		this.pixel = pixel;
 		imageViews.put(imageView, url);
-		/*
-		Bitmap bitmap = memoryCache.get(url);
+		TypedBitmap bitmap = memoryCache.get(url);
 		if (bitmap != null) {
 			if(mOnProcessListener != null){
-				mOnProcessListener.onProcessEnded(bitmap, TYPE_JPG);
+				mOnProcessListener.onProcessEnded(bitmap);
 			}else{
-				imageView.setImageBitmap(bitmap);
+				imageView.setImageBitmap(bitmap.getBitmap());
 			}
 			
 		} else {
 			queuePhoto(url, imageView, mOnProcessListener);
 			imageView.setImageResource(stub_id);
 		}
-		 */
 		
-		queuePhoto(url, imageView, mOnProcessListener);
-		imageView.setImageResource(stub_id);
 	}
 
 	private void queuePhoto(String url, ImageView imageView, OnProcessListener mOnProcessListener) {
@@ -118,25 +109,25 @@ public class ImageLoader {
 		executorService.submit(new PhotosLoader(p, mOnProcessListener));
 	}
 
-	private Bitmap getBitmap(String url, OnProcessListener mOnProcessListener) {
+	private TypedBitmap getBitmap(String url, OnProcessListener mOnProcessListener) {
 		File f = fileCache.getFile(url);
 		
 		int type = -1;
 
 		// from SD cache
-		Bitmap b = decodeFile(f);
-		if (b != null){
+		TypedBitmap b = new TypedBitmap(decodeFile(f), -1);
+		if (b.getBitmap() != null){
 			if(mOnProcessListener != null){
 				try {
 					FileInputStream fileStream = new FileInputStream(f);
 					byte[] by  = new byte[1024];
 					fileStream.read(by);
 					if(Utils.isGif(by)){
-						type = TYPE_GIF;
+						b.setType(TypedBitmap.TYPE_GIF);
 					}else{
-						type = TYPE_JPG;
+						b.setType(TypedBitmap.TYPE_JPG);
 					}
-					mOnProcessListener.onProcessEnded(b, type);
+					mOnProcessListener.onProcessEnded(b);
 					fileStream.close();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -163,14 +154,16 @@ public class ImageLoader {
 			type = Utils.CopyStream(is, os, mOnProcessListener, conn.getContentLength());
 			os.close();
 			bitmap = decodeFile(f);
-			if(mOnProcessListener != null) mOnProcessListener.onProcessEnded(bitmap, type);
-			return bitmap;
+			b.setBitmap(bitmap);
+			b.setType(type);
+			if(mOnProcessListener != null) mOnProcessListener.onProcessEnded(b);
+			return b;
 		} catch (Throwable ex) {
 			ex.printStackTrace();
-			/*
+			
 			if (ex instanceof OutOfMemoryError)
 				memoryCache.clear();
-			 */
+			
 			return null;
 		}
 	}
@@ -234,12 +227,12 @@ public class ImageLoader {
 		public void run() {
 			if (imageViewReused(photoToLoad))
 				return;
-			Bitmap bmp = getBitmap(photoToLoad.url, mOnProcessListener);
-			//memoryCache.put(photoToLoad.url, bmp);
+			TypedBitmap bmp = getBitmap(photoToLoad.url, mOnProcessListener);
+			memoryCache.put(photoToLoad.url, bmp);
 			if (imageViewReused(photoToLoad))
 				return;
 			if(mOnProcessListener == null){
-				BitmapDisplayer bd = new BitmapDisplayer(bmp, photoToLoad);
+				BitmapDisplayer bd = new BitmapDisplayer(bmp.getBitmap(), photoToLoad);
 				Activity a = (Activity) photoToLoad.imageView.getContext();
 				a.runOnUiThread(bd);
 			}
@@ -279,7 +272,7 @@ public class ImageLoader {
 	}
 
 	public void clearCache() {
-		//memoryCache.clear();
+		memoryCache.clear();
 		fileCache.clear();
 	}
 	
