@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -197,7 +198,9 @@ public class PopupWindowManager {
 		
 		ImageLoader.getInstance(context).displayImage(addr + size, picturePopup, 0, onProcessListener);
 		
+		
 		/*
+		 * 
 		picturePopupTask = new ImageLoadTask(context, picturePopup, progressBar);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -206,6 +209,7 @@ public class PopupWindowManager {
 			picturePopupTask.execute(addr + size);
 		}
 		 */
+		
 	}
 	
 	private class LoadStartedRunnable implements Runnable{

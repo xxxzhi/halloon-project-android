@@ -228,7 +228,8 @@ public class ContentTransUtil implements OnTouchDownListener {
 			if(shortList != null){
 				String shortMatch = shortList.get(shortUrl);
 				if(shortMatch != null){
-					if(shortMatch.startsWith("http://music.qq.com/qqmusic.html?id")){
+					if(shortMatch.startsWith("http://music.qq.com/qqmusic.html?id") ||
+					   shortMatch.startsWith("http://y.qq.com/#type=album")){
 						id = R.drawable.button_music_link;
 					}else if(shortMatch.startsWith("http://v.youku.com/") ||
 							 shortMatch.startsWith("http://www.tudou.com/") || 
