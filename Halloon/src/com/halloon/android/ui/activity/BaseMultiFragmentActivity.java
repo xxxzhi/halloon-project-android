@@ -20,6 +20,7 @@ import com.halloon.android.ui.fragment.TabProfileFragment;
 import com.halloon.android.ui.fragment.TabProfileFragment.ProfileFragmentCallback;
 import com.halloon.android.ui.fragment.TweetDetailFragment;
 import com.halloon.android.ui.fragment.TweetDetailFragment.TweetDetailFragmentCallback;
+import com.halloon.android.util.GifDecoder;
 import com.halloon.android.util.PopupWindowManager;
 
 public abstract class BaseMultiFragmentActivity extends BaseActivity implements MainPageFragmentCallback, 
@@ -63,6 +64,9 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
 		homeGoToDashboard = false;
 		
 		init();
+		
+		//JNI startup test,just ignore it
+		Log.d("FROM JNI", GifDecoder.getTweetBean().getName());
 	}
 	
 	protected abstract Fragment onCreatePane();

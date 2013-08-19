@@ -171,6 +171,7 @@ public class PopupWindowManager {
 		picturePopup.setMode(HalloonImageView.GESTURE_ENABLE|HalloonImageView.PLAY_GIF);
 		progressBar = (HalloonProgressBar) container.findViewById(R.id.progress_bar);
 		
+		/*
 		onProcessListener = new OnProcessListener(){
 
 			@Override
@@ -197,10 +198,8 @@ public class PopupWindowManager {
 		};
 		
 		ImageLoader.getInstance(context).displayImage(addr + size, picturePopup, 0, onProcessListener);
+		 */
 		
-		
-		/*
-		 * 
 		picturePopupTask = new ImageLoadTask(context, picturePopup, progressBar);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -208,7 +207,6 @@ public class PopupWindowManager {
 		} else {
 			picturePopupTask.execute(addr + size);
 		}
-		 */
 		
 	}
 	

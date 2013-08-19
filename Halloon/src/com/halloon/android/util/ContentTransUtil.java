@@ -130,7 +130,7 @@ public class ContentTransUtil implements OnTouchDownListener {
 				ss.setSpan(new ClickableSpan(){
 					@Override
 					public void onClick(View widget) {
-						Toast.makeText(context, "clickSpan", Toast.LENGTH_LONG).show();
+						Toast.makeText(context, group, Toast.LENGTH_LONG).show();
 						ss.setSpan(new ForegroundColorSpan(0xFFFFFFFF), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 					}
 					
@@ -138,6 +138,9 @@ public class ContentTransUtil implements OnTouchDownListener {
 					public void updateDrawState(TextPaint tp){}
 					
 				}, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				if(tv instanceof ButtonStyleTextView){
+					ss.setSpan(new RoundBackgroundSpan((ButtonStyleTextView) tv, 0x660085DF, tv.getTextSize() * 0.3F, start, end), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				}
 			}else if(group.startsWith("@")){
 				String name = null;
 				String temp = null;
