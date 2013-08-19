@@ -18,5 +18,6 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := halloon-jni
 LOCAL_SRC_FILES := test.c
+LOCAL_LDLIBS    := -llog -ljnigraphics
 
 include $(BUILD_SHARED_LIBRARY)

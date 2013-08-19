@@ -1,5 +1,6 @@
 package com.halloon.android.util;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.halloon.android.bean.TweetBean;
@@ -15,6 +16,8 @@ public class GifDecoder {
 	
 	public static native TweetBean init();
 	public static native void callInTime(int i, DelayListener delayListener);//this function will call DelayListener.onDelay() in C
+	public static native void reverseBitmap(Bitmap bitmap);
+	public static native void convertToGray(Bitmap bitmapColor, Bitmap bitmapGray);
 	
 	public static TweetBean getTweetBean(){
 		//callInTime(1, delayListener);
@@ -24,8 +27,8 @@ public class GifDecoder {
 	private static DelayListener delayListener = new DelayListener(){
 
 		@Override
-		public void onDelay() {
-			Log.d("FROM C", "this interface was called from C");
+		public void onDelay(int i) {
+			Log.d("FROM C", "this interface was called from C:" + i);
 		}
 		
 	};

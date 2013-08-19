@@ -24,6 +24,7 @@ import com.halloon.android.image.ImageLoader;
 import com.halloon.android.ui.fragment.TabMainPageFragment.MainPageFragmentCallback;
 import com.halloon.android.ui.fragment.TweetDetailFragment.TweetDetailFragmentCallback;
 import com.halloon.android.util.ContentTransUtil;
+import com.halloon.android.util.GifDecoder;
 import com.halloon.android.util.TimeUtil;
 import com.halloon.android.widget.ButtonStyleTextView;
 
