@@ -182,6 +182,9 @@ JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_convertToGray(JN
 	AndroidBitmap_unlockPixels(env, bitmapGray);
 }
 
+//Color Matrix function with the Color Matrix Algorithm I find in AS3 reference website, it can be use for color bitmap convert into gray bitmap, or reverse bitmap.
+//it works fine except the red channel & the alpha channel are always mix up,
+//my guess is that it's cause by the different RGBA format in C & java,still don't know what kind of format is in C and java,looking for a answer.
 JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_colorMatrix(JNIEnv * env, jobject obj, jobject sourceBitmap, jobject destBitmap, jfloatArray matrix){
 
 	AndroidBitmapInfo sourceInfo;
@@ -267,6 +270,8 @@ JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_colorMatrix(JNIE
 	AndroidBitmap_unlockPixels(env, destBitmap);
 }
 
+//here's another algorithm from AS3 reference website, convolution filter, it's very useful in edge detection or something like that.
+//it's not working, the algorithm that I wrote is right, but there's problem with getting pixel from bitmap with x & y.
 JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_convolutionFilter(JNIEnv * env, jobject obj, jobject sourceBitmap, jobject destBitmap, jfloatArray matrix, jint matrixX, jint matrixY, jfloat divisor, jfloat bias){
 
 	AndroidBitmapInfo sourceInfo;
@@ -324,13 +329,15 @@ JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_convolutionFilte
 	int divX = (matrixX - 1) / 2;
 	int divY = (matrixY - 1) / 2;
 
-	sourcePixels = (char *) sourcePixels + (sourceInfo.stride * divY);
-	destPixels = (char *) destPixels + (destInfo.stride * divY);
+	argb * line = (argb *) sourcePixels;
+	argb * destLine = (argb *) destPixels;
 
+	//the algorithm is
+	//dst (x, y) = ((src (x-1, y-1) * a0 + src(x, y-1) * a1.... src(x, y+1) * a7 + src (x+1,y+1) * a8) / divisor) + bias
+	//for every channel in each pixel
 	for(y = divY; y < sourceInfo.height - divY; y++){
-		argb * line = (argb *) sourcePixels;
-		argb * destLine = (argb *) destPixels;
-		for(x = divX; x <sourceInfo.width - divX; x++){
+
+		for(x = divX; x < sourceInfo.width - divX; x++){
 			int16_t   dRed = 0;
 			int16_t dGreen = 0;
 			int16_t  dBlue = 0;
@@ -338,14 +345,32 @@ JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_convolutionFilte
 
 			for(my = 0; my < matrixY; my++){
 				for(mx = 0; mx < matrixX; mx++){
-					dRed += matrix[mx * my]
+					dRed   += matrixC[mx * my] * line[(y + (my - divY)) * (x + (mx - divX))].red;
+					dGreen += matrixC[mx * my] * line[(y + (my - divY)) * (x + (mx - divX))].green;
+					dBlue  += matrixC[mx * my] * line[(y + (my - divY)) * (x + (mx - divX))].blue;
+					dAlpha += matrixC[mx * my] * line[(y + (my - divY)) * (x + (mx - divX))].alpha;
 				}
 			}
 
-		}
+			dRed   = (dRed / divisor) + bias;
+			dGreen = (dGreen / divisor) + bias;
+			dBlue  = (dBlue / divisor) + bias;
+			dAlpha = (dAlpha / divisor) + bias;
 
-		sourcePixels = (char *) sourcePixels + sourceInfo.stride;
-		destPixels = (char *) destPixels + destInfo.stride;
+			if(dRed > 255) dRed = 255;
+			if(dRed < 0) dRed = 0;
+			if(dGreen > 255) dGreen = 255;
+			if(dGreen < 0) dGreen = 0;
+			if(dBlue > 255) dBlue = 255;
+			if(dBlue < 0) dBlue = 0;
+			if(dAlpha > 255) dAlpha = 255;
+	        if(dAlpha < 0) dAlpha = 0;
+
+			destLine[x].red = dRed;
+			destLine[x].green = dGreen;
+			destLine[x].blue = dBlue;
+		    destLine[x].alpha = dAlpha;
+		}
 	}
 
 	LOGI("unlocking pixels");

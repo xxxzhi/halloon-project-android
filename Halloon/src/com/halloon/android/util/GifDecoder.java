@@ -19,6 +19,7 @@ public class GifDecoder {
 	public static native void reverseBitmap(Bitmap sourceBitmap, Bitmap destBitmap);
 	public static native void convertToGray(Bitmap bitmapColor, Bitmap bitmapGray);
 	public static native void colorMatrix(Bitmap sourceBitmap, Bitmap destBitmap, float[] matrix);
+	public static native void convolutionFilter(Bitmap sourceBitmap, Bitmap destBitmap, float[] matrix, int matrixX, int matrixY, float divisor, float bias);
 	
 	public static TweetBean getTweetBean(){
 		//callInTime(1, delayListener);
