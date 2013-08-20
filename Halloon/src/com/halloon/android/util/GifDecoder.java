@@ -16,8 +16,9 @@ public class GifDecoder {
 	
 	public static native TweetBean init();
 	public static native void callInTime(int i, DelayListener delayListener);//this function will call DelayListener.onDelay() in C
-	public static native void reverseBitmap(Bitmap bitmap);
+	public static native void reverseBitmap(Bitmap sourceBitmap, Bitmap destBitmap);
 	public static native void convertToGray(Bitmap bitmapColor, Bitmap bitmapGray);
+	public static native void colorMatrix(Bitmap sourceBitmap, Bitmap destBitmap, float[] matrix);
 	
 	public static TweetBean getTweetBean(){
 		//callInTime(1, delayListener);

@@ -178,8 +178,11 @@ public class ImageLoadTask extends BaseCompatiableTask<String, Float, Bitmap> im
 						pdView.setOriginLayout(gifDecoder.getFrameImage(0).getWidth(), gifDecoder.getFrameImage(0).getHeight());
 					}
 				} else {
-					Bitmap grayBitmap = Bitmap.createBitmap(bit.getWidth(), bit.getHeight(), Bitmap.Config.ALPHA_8);
-					com.halloon.android.util.GifDecoder.convertToGray(bit, grayBitmap);
+					Bitmap grayBitmap = Bitmap.createBitmap(bit.getWidth(), bit.getHeight(), Bitmap.Config.ARGB_8888);
+					com.halloon.android.util.GifDecoder.colorMatrix(bit, grayBitmap, new float[]{0.30F, 0.59F, 0.11F, 0, 0,
+							                                                                     0.30F, 0.59F, 0.11F, 0, 0,
+							                                                                     0.30F, 0.59F, 0.11F, 0, 0,
+							                                                                     0.30F, 0.59F, 0.11F, 0, 0,});
 					
 					pdView.setImageBitmap(grayBitmap);
 					pdView.setOriginLayout(bit.getWidth(), bit.getHeight());
