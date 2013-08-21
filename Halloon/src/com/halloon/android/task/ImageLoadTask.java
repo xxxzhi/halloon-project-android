@@ -179,18 +179,18 @@ public class ImageLoadTask extends BaseCompatiableTask<String, Float, Bitmap> im
 					}
 				} else {
 					Bitmap grayBitmap = Bitmap.createBitmap(bit.getWidth(), bit.getHeight(), Bitmap.Config.ARGB_8888);
+					
 					/*
 					com.halloon.android.util.GifDecoder.colorMatrix(bit, grayBitmap, new float[]{0.30F, 0.59F, 0.11F, 0, 0,
 							                                                                     0.30F, 0.59F, 0.11F, 0, 0,
 							                                                                     0.30F, 0.59F, 0.11F, 0, 0,
 							                                                                     0.30F, 0.59F, 0.11F, 0, 0,});
 					 */
+					 
 					
-					com.halloon.android.util.GifDecoder.convolutionFilter(bit, grayBitmap, new float[]{-1, 2, -1,
-							                                                                            0, 0,  0,
-							                                                                           -1, 2, -1}, 3, 3, 1, 0);
-					
-					
+					com.halloon.android.util.GifDecoder.convolutionFilter(bit, grayBitmap, new float[]{1, 1, 1,
+							                                                                           1, 1, 1,
+							                                                                           1, 1, 1}, 1, 0);
 					pdView.setImageBitmap(grayBitmap);
 					pdView.setOriginLayout(bit.getWidth(), bit.getHeight());
 				}

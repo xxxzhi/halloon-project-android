@@ -272,7 +272,75 @@ JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_colorMatrix(JNIE
 
 //here's another algorithm from AS3 reference website, convolution filter, it's very useful in edge detection or something like that.
 //it's not working, the algorithm that I wrote is right, but there's problem with getting pixel from bitmap with x & y.
-JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_convolutionFilter(JNIEnv * env, jobject obj, jobject sourceBitmap, jobject destBitmap, jfloatArray matrix, jint matrixX, jint matrixY, jfloat divisor, jfloat bias){
+JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_convolutionFilter(JNIEnv * env, jobject obj, jobject sourceBitmap, jobject destBitmap, jfloatArray matrix, jfloat divisor, jfloat bias){
+
+
+	/*
+	jclass jBitmapClass = (*env)->FindClass(env, "android/graphics/Bitmap");
+	jmethodID jBitmapGetPixelMethod = (*env)->GetMethodID(env, jBitmapClass, "getPixel", "(II)I");
+	jmethodID jBitmapSetPixelMethod = (*env)->GetMethodID(env, jBitmapClass, "setPixel", "(III)V");
+	jmethodID jBitmapWidthMethod = (*env)->GetMethodID(env, jBitmapClass, "getWidth", "()I");
+	jmethodID jBitmapHeightMethod = (*env)->GetMethodID(env, jBitmapClass, "getHeight", "()I");
+
+	int width = (*env)->CallIntMethod(env, sourceBitmap, jBitmapWidthMethod);
+	int height = (*env)->CallIntMethod(env, sourceBitmap, jBitmapHeightMethod);
+
+	int x;
+	int y;
+	int mx;
+	int my;
+
+	int divX = (matrixX - 1) / 2;
+	int divY = (matrixY - 1) / 2;
+
+	jfloat *matrixC = (*env)->GetFloatArrayElements(env, matrix, 0);
+
+	for(y = 0; y < height; y++){
+		for(x = 0; x < width; x++){
+			if(y > divY && y < height - divY && x > divX && x < width - divX){
+
+				int16_t dAlpha = 0;
+				int16_t   dRed = 0;
+				int16_t dGreen = 0;
+				int16_t  dBlue = 0;
+
+				for(my = 0; my < matrixY; my++){
+					for(mx = 0; mx < matrixX; mx++){
+						uint32_t pixel = (*env)->CallIntMethod(env, sourceBitmap, jBitmapGetPixelMethod, x + (mx - divX), y + (my - divY));
+
+						int16_t sAlpha = pixel >> 24;
+						int16_t   sRed = pixel >> 16 & 0xFF;
+						int16_t sGreen = pixel >> 8 & 0xFF;
+						int16_t  sBlue = pixel & 0xFF;
+
+                        dAlpha += matrixC[my * matrixY + mx] * sAlpha;
+                        dRed += matrixC[my * matrixY + mx] * sRed;
+                        dGreen += matrixC[my * matrixY + mx] * sGreen;
+                        dBlue += matrixC[my * matrixY + mx] * sBlue;
+					}
+				}
+
+				dAlpha = (dAlpha / divisor) + bias;
+				dRed = (dRed / divisor) + bias;
+				dGreen = (dGreen / divisor) + bias;
+				dBlue = (dBlue / divisor) + bias;
+
+				if(dRed > 255) dRed = 255;
+				if(dRed < 0) dRed = 0;
+				if(dGreen > 255) dGreen = 255;
+				if(dGreen < 0) dGreen = 0;
+				if(dBlue > 255) dBlue = 255;
+				if(dBlue < 0) dBlue = 0;
+				if(dAlpha > 255) dAlpha = 255;
+				if(dAlpha < 0) dAlpha = 0;
+
+				int32_t color = dAlpha << 24 | dRed << 16 | dGreen << 8 | dBlue;
+
+				(*env)->CallVoidMethod(env, destBitmap, jBitmapSetPixelMethod, x, y, color);
+			}
+		}
+	}
+	 */
 
 	AndroidBitmapInfo sourceInfo;
 	void*             sourcePixels;
@@ -286,8 +354,8 @@ JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_convolutionFilte
 	int              my;
 
 	jsize len = (*env)->GetArrayLength(env, matrix);
-	if(len != 20){
-		LOGE("matrix length error! must be 20");
+	if(len != 9){
+		LOGE("matrix length error! must be 9");
 		return;
 	}
 
@@ -325,40 +393,43 @@ JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_convolutionFilte
 	}
 
 	jfloat *matrixC = (*env)->GetFloatArrayElements(env, matrix, 0);
+	jint *pixels;
 
-	int divX = (matrixX - 1) / 2;
-	int divY = (matrixY - 1) / 2;
+	jclass jBitmapClass = (*env)->FindClass(env, "android/graphics/Bitmap");
+	jmethodID jBitmapGetPixelsID = (*env)->GetMethodID(env, jBitmapClass, "getPixels", "([IIIIIII)V");
+	(*env)->CallVoidMethod(env, sourceBitmap, jBitmapGetPixelsID, pixels);
 
-	argb * line = (argb *) sourcePixels;
-	argb * destLine = (argb *) destPixels;
-
+	/*
 	//the algorithm is
 	//dst (x, y) = ((src (x-1, y-1) * a0 + src(x, y-1) * a1.... src(x, y+1) * a7 + src (x+1,y+1) * a8) / divisor) + bias
 	//for every channel in each pixel
 	for(y = 0; y < sourceInfo.height; y++){
+		argb * line = (argb *) sourcePixels;
+		argb * destLine = (argb *) destPixels;
 
 		for(x = 0; x < sourceInfo.width; x++){
 
-
-			destLine[y * sourceInfo.height + x].red = line[y * sourceInfo.height + x].red;
-			destLine[y * sourceInfo.height + x].green = line[y * sourceInfo.height + x].green;
-			destLine[y * sourceInfo.height + x].blue = line[y * sourceInfo.height + x].blue;
-			destLine[y * sourceInfo.height + x].alpha = line[y * sourceInfo.height + x].alpha;
-
-			/*
-			if(y > divY && y < sourceInfo.height - divY && x > divX && x < sourceInfo.width - divX){
+			if(y > 0 && y < sourceInfo.height - 1 && x > 0 && x < sourceInfo.width - 1){
 
 				int16_t   dRed = 0;
 				int16_t dGreen = 0;
 				int16_t  dBlue = 0;
 				int16_t dAlpha = 0;
 
-				for(my = 0; my < matrixY; my++){
-					for(mx = 0; mx < matrixX; mx++){
-						dRed   += matrixC[my * matrixY + mx] * line[(y + (my - divY)) * sourceInfo.height + (x + (mx - divX))].red;
-						dGreen += matrixC[my * matrixY + mx] * line[(y + (my - divY)) * sourceInfo.height + (x + (mx - divX))].green;
-						dBlue  += matrixC[my * matrixY + mx] * line[(y + (my - divY)) * sourceInfo.height + (x + (mx - divX))].blue;
-						dAlpha += matrixC[my * matrixY + mx] * line[(y + (my - divY)) * sourceInfo.height + (x + (mx - divX))].alpha;
+				for(my = 0; my < 3; my++){
+					for(mx = 0; mx < 3; mx++){
+
+						uint32_t color = pixels[(y + (my - 1)) * sourceInfo.height + x + (mx - 1)];
+
+						uint8_t sAlpha = color >> 24;
+						uint8_t sRed = color >> 16 & 0xFF;
+						uint8_t sGreen = color >> 8 & 0xFF;
+						uint8_t sBlue = color & 0xFF;
+
+						dAlpha += matrixC[my * 3 + mx] * sAlpha;
+						dRed   += matrixC[my * 3 + mx] * sRed;
+						dGreen += matrixC[my * 3 + mx] * sGreen;
+						dBlue  += matrixC[my * 3 + mx] * sBlue;
 					}
 				}
 
@@ -381,9 +452,12 @@ JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_convolutionFilte
 				destLine[x * y].blue = dBlue;
 				destLine[x * y].alpha = dAlpha;
 		    }
-			 */
+
 		}
+		sourcePixels = (char *) sourcePixels + sourceInfo.stride;
+		destPixels = (char *) destPixels + destInfo.stride;
 	}
+	 */
 
 	LOGI("unlocking pixels");
 	AndroidBitmap_unlockPixels(env, sourceBitmap);
