@@ -359,7 +359,6 @@ JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_convolutionFilte
 		return;
 	}
 
-	LOGI("convertToGray");
 	if((ret = AndroidBitmap_getInfo(env, sourceBitmap, &sourceInfo)) < 0){
 		LOGE("AndroidBitmap_getInfo() failed ! error=%d", ret);
 		return;
@@ -385,51 +384,73 @@ JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_convolutionFilte
 	}
 
 	if((ret = AndroidBitmap_lockPixels(env, sourceBitmap, &sourcePixels)) < 0){
-		LOGE("AndroidBitmap_lockPixels() failed ! error=%d", ret);
+		LOGE("AndroidBItmap_lockPixels() failed ! error=%d", ret);
 	}
 
 	if((ret = AndroidBitmap_lockPixels(env, destBitmap, &destPixels)) < 0){
 		LOGE("AndroidBitmap_lockPixels() failed ! error=%d", ret);
 	}
 
+	int width = sourceInfo.width;
+	int height = sourceInfo.height;
+
 	jfloat *matrixC = (*env)->GetFloatArrayElements(env, matrix, 0);
-	jint *pixels;
+	/*
+
+	jintArray pixelArray = (*env)->NewIntArray(env, width * height);
 
 	jclass jBitmapClass = (*env)->FindClass(env, "android/graphics/Bitmap");
 	jmethodID jBitmapGetPixelsID = (*env)->GetMethodID(env, jBitmapClass, "getPixels", "([IIIIIII)V");
-	(*env)->CallVoidMethod(env, sourceBitmap, jBitmapGetPixelsID, pixels);
 
-	/*
+	(*env)->CallVoidMethod(env, sourceBitmap, jBitmapGetPixelsID, pixelArray, 0, width, 0, 0, width, height);
+
+	jint *pixels = (*env)->GetIntArrayElements(env, pixelArray, 0);
+	argb * color = (argb *) pixels;
+	 */
+
 	//the algorithm is
 	//dst (x, y) = ((src (x-1, y-1) * a0 + src(x, y-1) * a1.... src(x, y+1) * a7 + src (x+1,y+1) * a8) / divisor) + bias
 	//for every channel in each pixel
-	for(y = 0; y < sourceInfo.height; y++){
-		argb * line = (argb *) sourcePixels;
+	for(y = 0; y < height; y++){
+		argb * sourLine = (argb *) sourcePixels;
 		argb * destLine = (argb *) destPixels;
 
-		for(x = 0; x < sourceInfo.width; x++){
+		for(x = 0; x < width; x++){
 
-			if(y > 0 && y < sourceInfo.height - 1 && x > 0 && x < sourceInfo.width - 1){
+			if(y > 0 && y < height - 1 && x > 0 && x < width - 1){
 
-				int16_t   dRed = 0;
-				int16_t dGreen = 0;
-				int16_t  dBlue = 0;
+				argb * preLine = (argb *) ((char *) sourcePixels - sourceInfo.stride);
+				argb * nxtLine = (argb *) ((char *) sourcePixels + sourceInfo.stride);
+
+				/*
 				int16_t dAlpha = 0;
+				int16_t dRed = 0;
+				int16_t dGreen = 0;
+				int16_t dBlue = 0;
 
 				for(my = 0; my < 3; my++){
 					for(mx = 0; mx < 3; mx++){
 
-						uint32_t color = pixels[(y + (my - 1)) * sourceInfo.height + x + (mx - 1)];
-
-						uint8_t sAlpha = color >> 24;
-						uint8_t sRed = color >> 16 & 0xFF;
-						uint8_t sGreen = color >> 8 & 0xFF;
-						uint8_t sBlue = color & 0xFF;
-
-						dAlpha += matrixC[my * 3 + mx] * sAlpha;
-						dRed   += matrixC[my * 3 + mx] * sRed;
-						dGreen += matrixC[my * 3 + mx] * sGreen;
-						dBlue  += matrixC[my * 3 + mx] * sBlue;
+						switch(my){
+						case 0:
+							dAlpha += matrixC[my * 3 + mx] * preLine[x + (mx - 1)].alpha;
+							dRed   += matrixC[my * 3 + mx] * preLine[x + (mx - 1)].red;
+							dGreen += matrixC[my * 3 + mx] * preLine[x + (mx - 1)].green;
+							dBlue  += matrixC[my * 3 + mx] * preLine[x + (mx - 1)].blue;
+							break;
+						case 1:
+							dAlpha += matrixC[my * 3 + mx] * sourLine[x + (mx - 1)].alpha;
+						    dRed   += matrixC[my * 3 + mx] * sourLine[x + (mx - 1)].red;
+							dGreen += matrixC[my * 3 + mx] * sourLine[x + (mx - 1)].green;
+							dBlue  += matrixC[my * 3 + mx] * sourLine[x + (mx - 1)].blue;
+							break;
+						case 2:
+							dAlpha += matrixC[my * 3 + mx] * nxtLine[x + (mx - 1)].alpha;
+						    dRed   += matrixC[my * 3 + mx] * nxtLine[x + (mx - 1)].red;
+							dGreen += matrixC[my * 3 + mx] * nxtLine[x + (mx - 1)].green;
+							dBlue  += matrixC[my * 3 + mx] * nxtLine[x + (mx - 1)].blue;
+							break;
+						}
 					}
 				}
 
@@ -447,19 +468,19 @@ JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_convolutionFilte
 				if(dAlpha > 255) dAlpha = 255;
 			    if(dAlpha < 0) dAlpha = 0;
 
-				destLine[x * y].red = dRed;
-				destLine[x * y].green = dGreen;
-				destLine[x * y].blue = dBlue;
-				destLine[x * y].alpha = dAlpha;
+				destLine[y * height + x].red = dRed;
+				destLine[y * height + x].green = dGreen;
+				destLine[y * height + x].blue = dBlue;
+				destLine[y * height + x].alpha = dAlpha;
+				 */
 		    }
 
 		}
+
 		sourcePixels = (char *) sourcePixels + sourceInfo.stride;
 		destPixels = (char *) destPixels + destInfo.stride;
 	}
-	 */
 
 	LOGI("unlocking pixels");
-	AndroidBitmap_unlockPixels(env, sourceBitmap);
 	AndroidBitmap_unlockPixels(env, destBitmap);
 }

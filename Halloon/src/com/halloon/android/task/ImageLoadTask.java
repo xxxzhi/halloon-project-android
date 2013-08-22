@@ -186,7 +186,10 @@ public class ImageLoadTask extends BaseCompatiableTask<String, Float, Bitmap> im
 							                                                                     0.30F, 0.59F, 0.11F, 0, 0,
 							                                                                     0.30F, 0.59F, 0.11F, 0, 0,});
 					 */
+					
+					int[] pixels = new int[grayBitmap.getWidth() * grayBitmap.getHeight()];
 					 
+					grayBitmap.getPixels(pixels, 0, grayBitmap.getWidth(), 0, 0, grayBitmap.getWidth(), grayBitmap.getHeight());
 					
 					com.halloon.android.util.GifDecoder.convolutionFilter(bit, grayBitmap, new float[]{1, 1, 1,
 							                                                                           1, 1, 1,
