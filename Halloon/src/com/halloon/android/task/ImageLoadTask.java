@@ -17,6 +17,7 @@ import org.apache.http.params.HttpParams;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -118,6 +119,7 @@ public class ImageLoadTask extends BaseCompatiableTask<String, Float, Bitmap> im
 			}
 		}
 		return null;
+		
 	}
 
 	@Override
@@ -178,22 +180,24 @@ public class ImageLoadTask extends BaseCompatiableTask<String, Float, Bitmap> im
 						pdView.setOriginLayout(gifDecoder.getFrameImage(0).getWidth(), gifDecoder.getFrameImage(0).getHeight());
 					}
 				} else {
+					
+					long currentMillis = System.currentTimeMillis();
+					
+					Bitmap edgeBitmap = Bitmap.createBitmap(bit.getWidth(), bit.getHeight(), Bitmap.Config.ARGB_8888);
+					
+					com.halloon.android.util.GifDecoder.convolutionFilter(bit, edgeBitmap, new float[]{-1, -1, -1,
+                                                                                                       -1,  8, -1,
+                                                                                                       -1, -1, -1}, 1, 0);
+					
 					Bitmap grayBitmap = Bitmap.createBitmap(bit.getWidth(), bit.getHeight(), Bitmap.Config.ARGB_8888);
-					
-					/*
-					com.halloon.android.util.GifDecoder.colorMatrix(bit, grayBitmap, new float[]{0.30F, 0.59F, 0.11F, 0, 0,
-							                                                                     0.30F, 0.59F, 0.11F, 0, 0,
-							                                                                     0.30F, 0.59F, 0.11F, 0, 0,
-							                                                                     0.30F, 0.59F, 0.11F, 0, 0,});
-					 */
-					
-					int[] pixels = new int[grayBitmap.getWidth() * grayBitmap.getHeight()];
 					 
-					grayBitmap.getPixels(pixels, 0, grayBitmap.getWidth(), 0, 0, grayBitmap.getWidth(), grayBitmap.getHeight());
+					com.halloon.android.util.GifDecoder.reverseAndGray(edgeBitmap, grayBitmap);
 					
-					com.halloon.android.util.GifDecoder.convolutionFilter(bit, grayBitmap, new float[]{1, 1, 1,
-							                                                                           1, 1, 1,
-							                                                                           1, 1, 1}, 1, 0);
+					
+					
+					
+					Log.d("TIME", ":" + (System.currentTimeMillis() - currentMillis));
+					
 					pdView.setImageBitmap(grayBitmap);
 					pdView.setOriginLayout(bit.getWidth(), bit.getHeight());
 				}

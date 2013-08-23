@@ -1,18 +1,12 @@
 package com.halloon.android.style;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import com.halloon.android.widget.ButtonStyleTextView;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.text.Layout;
-import android.util.Log;
-import android.widget.TextView;
 
 /**
  * 
@@ -84,9 +78,6 @@ public class RoundBackgroundSpan {
 						layout.getPaint().getTextWidths(t, width);
 						rect.right = (int) (layout.getSecondaryHorizontal(layout.getLineEnd(i) - 1) + width[0]);
 					}
-					
-					
-					Log.d("RECT", rect.toString());
 					
 					lines[i - lineStart] = rect;
 				}
