@@ -167,7 +167,7 @@ JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_convertToGray(JN
 		for(x = 0; x <infoColor.width; x++){
 
 
-		    uint8_t c = line[x].red * 0.3 + line[x].green * 0.59 + line[x].blue * 0.11;
+			uint8_t c = (77 * line[x].red + 151 * line[x].green + 28 * line[x].blue) >> 8;
 
 		    destLine[x].alpha = c;
 			destLine[x].red = c;
@@ -239,7 +239,7 @@ JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_reverseAndGray(J
 			//uint8_t c = (line[x].red shr 2) + (line[x].red shr 4) + (line[x].green shr 1) + (line[x].green shr 4) + (line[x].blue shr 3);
             uint8_t c = (77 * line[x].red + 151 * line[x].green + 28 * line[x].blue) >> 8;
 
-		    //c = 255 - c;
+		    c = 255 - c;
 
 		    destLine[x].alpha = c;
 			destLine[x].red = c;
