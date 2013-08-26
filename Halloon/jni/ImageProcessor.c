@@ -356,8 +356,8 @@ JNIEXPORT void JNICALL Java_com_halloon_android_util_GifDecoder_convolutionFilte
 	int               y;
 	int               x;
 
-	int              mx;
-	int              my;
+	int               mx;
+	int               my;
 
 	jsize len = (*env)->GetArrayLength(env, matrix);
 	if(len != 9){
