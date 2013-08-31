@@ -185,20 +185,27 @@ public class ImageLoadTask extends BaseCompatiableTask<String, Float, Bitmap> im
 					
 					Bitmap edgeBitmap = Bitmap.createBitmap(bit.getWidth(), bit.getHeight(), Bitmap.Config.ARGB_8888);
 					
-					com.halloon.android.util.GifDecoder.convolutionFilter(bit, edgeBitmap, new float[]{-1, -1, -1,
+					/*
+					 com.halloon.android.util.GifDecoder.convolutionFilter(bit, edgeBitmap, new float[]{-1, -1, -1,
                                                                                                        -1,  8, -1,
                                                                                                        -1, -1, -1}, 1, 0);
+					 */
+					com.halloon.android.util.GifDecoder.convolutionFilter(bit, edgeBitmap, new float[]{0.0947416F, 0.1183180F, 0.0947416F,//3X3 高斯卷积核
+							                                                                           0.1183180F, 0.1477610F, 0.1183180F,
+							                                                                           0.0947416F, 0.1183180F, 0.0947416F}, 1, 0);
 					
+					/*
 					Bitmap grayBitmap = Bitmap.createBitmap(bit.getWidth(), bit.getHeight(), Bitmap.Config.ARGB_8888);
 					 
 					com.halloon.android.util.GifDecoder.reverseAndGray(edgeBitmap, grayBitmap);
+					 */
 					
 					
 					
 					
 					Log.d("TIME", ":" + (System.currentTimeMillis() - currentMillis));
 					
-					pdView.setImageBitmap(grayBitmap);
+					pdView.setImageBitmap(edgeBitmap);
 					pdView.setOriginLayout(bit.getWidth(), bit.getHeight());
 				}
 
