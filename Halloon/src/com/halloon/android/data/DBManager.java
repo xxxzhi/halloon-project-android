@@ -23,7 +23,8 @@ public class DBManager extends SQLiteOpenHelper {
 	public final static int CONTACT_STATUS_INIT = 0;
 	public final static int CONTACT_STATUS_TO_UPDATE = 1;
 	public final static int CONTACT_STATUS_READY = 2;
-
+	
+	//profile status I has change the init state to 1
 	public final static int PROFILE_STATUS_INIT = 0;
 	public final static int PROFILE_STATUS_READY = 1;
 
@@ -139,7 +140,12 @@ public class DBManager extends SQLiteOpenHelper {
 		ContentValues cv = createProfileContent(profileBean);
 		SQLiteDatabase db = getWritableDatabase();
 
-		db.replace(TABLE_MY_PROFILE, null, cv);
+		long rt = db.replace(TABLE_MY_PROFILE, null, cv);
+		
+		//if insert success ,update the profile status
+		if(rt != - 1){
+			SettingsManager.getInstance(context).setProfileStatus(DBManager.PROFILE_STATUS_READY);
+		}
 	}
 
 	public ProfileBean getProfile() {

@@ -24,15 +24,16 @@
         android:visibility="gone" />
     
     <TextView 
+        android:layout_marginTop="20dp"
         android:id="@+id/update_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="下拉刷新"
         android:textColor="#888888"
         android:textSize="15.0dip"
+        android:layout_above="@+id/placehoderline"
         android:layout_centerInParent="true"
         android:gravity="center" />
-
     <TextView
         android:id="@+id/last_update_time"
         android:layout_width="wrap_content"
@@ -40,7 +41,7 @@
         android:layout_below="@+id/update_text"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:gravity="center"
+        android:gravity="top"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:text="2013-10-10 12:00"

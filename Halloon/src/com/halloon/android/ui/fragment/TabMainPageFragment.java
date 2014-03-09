@@ -33,10 +33,12 @@ import com.halloon.android.data.DBManager;
 import com.halloon.android.data.SettingsManager;
 import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.task.LocationTask;
+import com.halloon.android.image.ImageLoader;
 import com.halloon.android.listener.OnLocationSeekListener;
 import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 import com.halloon.android.util.Constants;
+import com.halloon.android.util.NumberUtil;
 import com.halloon.android.util.PopupWindowManager;
 import com.halloon.android.util.TimeUtil;
 import com.halloon.android.widget.HalloonPullableView;
@@ -157,16 +159,30 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 			if (SettingsManager.getInstance(context).getProfileStatus() == DBManager.PROFILE_STATUS_READY && tmp_nick != null) {
 				titleText.setText(tmp_nick);
 			} else {
-				new Thread() {
+				
+				new BaseCompatiableTask<Void, Void, ProfileBean>() {
+					
 					@Override
-					public void run() {
+					protected ProfileBean doInBackground(Void... arg0) {
 						ProfileBean profileBean = ContentManager.getInstance(context).getMyProfile();
 						DBManager.getInstance(context).upgradeProfile(profileBean);
-						return;
+
+						return profileBean;
 					}
-				}.start();
+
+					@Override
+					protected void onPostExecute(ProfileBean result) {
+						if(SettingsManager.getInstance(context).getProfileStatus() == DBManager.PROFILE_STATUS_READY && result != null 
+								&& result.getNick() != null){
+							titleText.setText(DBManager.getInstance(context).getProfile().getNick());
+						}
+					}
+				}.taskExecute();
+
 				
-				titleText.setText(DBManager.getInstance(context).getProfile().getNick());
+				
+				
+				
 			}
 			break;
 		case OTHER_TWEET:
@@ -188,7 +204,27 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 			if (SettingsManager.getInstance(context).getProfileStatus() == DBManager.PROFILE_STATUS_READY) {
 				titleText.setText(DBManager.getInstance(context).getProfile().getNick());
 			} else {
-				titleText.setText(ContentManager.getInstance(context).getMyProfile().getNick());
+				
+				// after request url ,get the profile,update titleText.
+				new BaseCompatiableTask<Void, Void, ProfileBean>() {
+					
+					@Override
+					protected ProfileBean doInBackground(Void... arg0) {
+						ProfileBean profileBean = ContentManager.getInstance(context).getMyProfile();
+						DBManager.getInstance(context).upgradeProfile(profileBean);
+
+						return profileBean;
+					}
+
+					@Override
+					protected void onPostExecute(ProfileBean result) {
+						if(SettingsManager.getInstance(context).getProfileStatus() == DBManager.PROFILE_STATUS_READY && result != null 
+								&& result.getNick() != null){
+							titleText.setText(DBManager.getInstance(context).getProfile().getNick());
+						}
+					}
+				}.taskExecute();
+				
 			}
 			break;
 		}

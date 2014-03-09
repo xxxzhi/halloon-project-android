@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.OneActivity" >
     
-    <ImageView
+    <com.halloon.android.widget.CircleImageView
         android:id="@+id/tweet_head"
         android:layout_width="40.0dip"
         android:layout_height="40.0dip"
