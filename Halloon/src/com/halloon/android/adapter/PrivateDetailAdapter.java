@@ -6,6 +6,7 @@ import com.halloon.android.R;
 import com.halloon.android.bean.PrivateDataBean;
 import com.halloon.android.image.ImageLoader;
 import com.halloon.android.util.ContentTransUtil;
+import com.halloon.android.util.TimeUtil;
 
 import android.content.Context;
 import android.text.method.LinkMovementMethod;
@@ -43,7 +44,7 @@ public class PrivateDetailAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
-
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		PrivateOtherHolder privateOtherHolder = null;
@@ -57,6 +58,7 @@ public class PrivateDetailAdapter extends BaseAdapter {
 				privateOtherHolder = new PrivateOtherHolder();
 				privateOtherHolder.headImage = (ImageView) convertView.findViewById(R.id.private_head);
 				privateOtherHolder.content = (TextView) convertView.findViewById(R.id.private_content);
+				privateOtherHolder.time = (TextView) convertView.findViewById(R.id.private_time);
 				convertView.setTag(privateOtherHolder);
 			}else{
 				privateOtherHolder = (PrivateOtherHolder) convertView.getTag();
@@ -64,12 +66,14 @@ public class PrivateDetailAdapter extends BaseAdapter {
 			ImageLoader.getInstance(context).displayImage(privateDataBean.getHead() + "/50", privateOtherHolder.headImage, 1, null);
 			privateOtherHolder.content.setMovementMethod(LinkMovementMethod.getInstance());
 			ContentTransUtil.getInstance(context).displaySpannableString(privateDataBean.getText(), privateOtherHolder.content, null, false, true);
+			privateOtherHolder.time.setText(TimeUtil.converTime(privateDataBean.getPubTime(), 0x2));
 		}else{
 			if(convertView == null || !convertView.getTag().equals(privateMeHolder)){
 				convertView = layoutInflater.inflate(R.layout.private_message_me_content, null);
 				privateMeHolder = new PrivateMeHolder();
 				privateMeHolder.headImage = (ImageView) convertView.findViewById(R.id.private_head);
 				privateMeHolder.content = (TextView) convertView.findViewById(R.id.private_content);
+				privateMeHolder.time = (TextView) convertView.findViewById(R.id.private_time);
 				convertView.setTag(privateMeHolder);
 			}else{
 				privateMeHolder = (PrivateMeHolder) convertView.getTag();
@@ -77,6 +81,7 @@ public class PrivateDetailAdapter extends BaseAdapter {
 			ImageLoader.getInstance(context).displayImage(privateDataBean.getMyHead() + "/50", privateMeHolder.headImage, 1, null);
 			privateMeHolder.content.setMovementMethod(LinkMovementMethod.getInstance());
 			ContentTransUtil.getInstance(context).displaySpannableString(privateDataBean.getText(), privateMeHolder.content, null, false, true);
+			privateMeHolder.time.setText(TimeUtil.converTime(privateDataBean.getPubTime(), 0x2));
 		}
 	    
 	    return convertView;
@@ -85,11 +90,13 @@ public class PrivateDetailAdapter extends BaseAdapter {
 	private static class PrivateOtherHolder{
 		ImageView headImage;
 		TextView content;
+		TextView time;
 	}
 	
 	private static class PrivateMeHolder{
 		ImageView headImage;
 		TextView content;
+		TextView time;
 	}
 
 }

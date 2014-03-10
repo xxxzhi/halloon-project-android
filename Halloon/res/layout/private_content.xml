@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:paddingBottom="2.0dip" >
     
-    <ImageView 
+    <com.halloon.android.widget.CircleImageView 
         android:id="@+id/head"
         android:layout_width="50.0dip"
         android:layout_height="50.0dip"

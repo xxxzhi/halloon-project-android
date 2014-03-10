@@ -487,6 +487,7 @@ public class PopupWindowManager {
 		popupWindow.showAtLocation(((Activity) context).findViewById(R.id.title_layout), Gravity.NO_GRAVITY, 0, SettingsManager.getInstance(context).getSystemBarHeight());
 	}
 
+	
 	public void setupTitleListPopup(int parentViewRes, BaseAdapter adapter) {
 		container = (ViewGroup) ((Activity) context).getLayoutInflater().inflate(R.layout.title_list, null);
 		ListView list = (ListView) container.findViewById(R.id.list);
@@ -496,6 +497,37 @@ public class PopupWindowManager {
 		popupWindow.setBackgroundDrawable(new ColorDrawable(-00000));
 		popupWindow.setAnimationStyle(R.style.PopupWindowSlideFade);
 		popupWindow.showAtLocation(((Activity) context).findViewById(parentViewRes), Gravity.CENTER | Gravity.TOP, 0, ((Activity) context).findViewById(parentViewRes).getBottom() + SettingsManager.getInstance(context).getSystemBarHeight());
+		
+	}
+	
+	
+	/**
+	 * 
+	 * @param parentViewRes
+	 * @param adapter
+	 * @param onItemClickListener
+	 */
+	public void setupTitleListPopup(int parentViewRes, BaseAdapter adapter,final AdapterView.OnItemClickListener onItemClickListener) {
+		container = (ViewGroup) ((Activity) context).getLayoutInflater().inflate(R.layout.title_list, null);
+		ListView list = (ListView) container.findViewById(R.id.list);
+		list.setAdapter(adapter);
+		popupWindow = new PopupWindow(container, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+		popupWindow.setFocusable(true);
+		popupWindow.setBackgroundDrawable(new ColorDrawable(-00000));
+		popupWindow.setAnimationStyle(R.style.PopupWindowSlideFade);
+		popupWindow.showAtLocation(((Activity) context).findViewById(parentViewRes), Gravity.CENTER | Gravity.TOP, 0, ((Activity) context).findViewById(parentViewRes).getBottom() + SettingsManager.getInstance(context).getSystemBarHeight());
+		
+		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				if(onItemClickListener != null){
+					onItemClickListener.onItemClick(parent, view, position, id);
+				}
+			}
+			
+		});
 	}
 	
 	public void setupAtListPopup(int parentViewRes, int x, int y, String searchString){

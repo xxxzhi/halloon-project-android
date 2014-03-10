@@ -4,36 +4,48 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <ImageView
+    <com.halloon.android.widget.CircleImageView
         android:id="@+id/private_head"
         android:layout_width="40.0dip"
         android:layout_height="40.0dip"
         android:layout_alignParentRight="true"
         android:layout_marginRight="6.0dip"
-        android:layout_marginTop="8.0dip"
+        android:layout_below="@+id/private_time"
         android:src="@drawable/ic_launcher" />
-    
+    <!-- I don't what to do with this ImageView so I set the visibility invisible -->
     <ImageView
         android:layout_width="40.0dip"
         android:layout_height="40.0dip"
+        android:visibility="invisible"
         android:layout_alignParentRight="true"
         android:layout_marginRight="6.0dip"
-        android:layout_marginTop="8.0dip"
+        android:layout_below="@+id/private_time"
         android:src="@drawable/avatar_mask" />
     
     <com.halloon.android.widget.ButtonStyleTextView 
         android:id="@+id/private_content"
+        android:layout_below="@+id/private_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="40.0dip"
         android:maxWidth="230.0dip"
         android:layout_toLeftOf="@+id/private_head"
         android:layout_marginRight="8.0dip"
-        android:layout_marginTop="8.0dip"
         android:text="231823791283124610249614581639862340"
         android:textColor="#555555"
         android:textSize="15.0dip"
         android:gravity="center|left"
         android:background="@drawable/round_corner_light_blue" />
+
+<TextView
+        android:layout_marginTop="8.0dip"
+        android:id="@+id/private_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:textSize="12sp"
+        
+        android:text="time" />
 
 </RelativeLayout>

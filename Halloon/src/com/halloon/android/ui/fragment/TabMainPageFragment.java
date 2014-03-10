@@ -538,12 +538,20 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 			if (tweetState == MAIN_TIMELINE_TWEET) {
 				PopupWindowManager pwManager = new PopupWindowManager(context);
 				ArrayList<String> arrayList = new ArrayList<String>();
-				arrayList.add("your group");
-				arrayList.add("my group");
-				arrayList.add("his group");
-				arrayList.add("her group");
+				arrayList.add(getString(R.string.title_select_all));
+				arrayList.add(getString(R.string.title_select_auth));
+				arrayList.add(getString(R.string.title_select_official));
+				arrayList.add(getString(R.string.title_select_special));
 				ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, arrayList);
-				pwManager.setupTitleListPopup(R.id.title_text, adapter);
+				pwManager.setupTitleListPopup(R.id.title_text, adapter,new AdapterView.OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						
+					}
+					
+				});
 			}
 			break;
 		}
