@@ -17,7 +17,7 @@
         android:layout_below="@+id/title_layout"
         android:layout_marginBottom="10.0dip" >
         
-        <ImageView
+        <com.halloon.android.widget.CircleImageView
             android:id="@+id/my_headicon"
             android:layout_width="75.0dip"
             android:layout_height="75.0dip"
@@ -27,6 +27,7 @@
             android:src="@drawable/ic_launcher" />
         
         <ImageView
+            android:visibility="invisible"
             android:layout_width="75.0dip"
             android:layout_height="75.0dip"
             android:layout_marginLeft="20.0dip"
