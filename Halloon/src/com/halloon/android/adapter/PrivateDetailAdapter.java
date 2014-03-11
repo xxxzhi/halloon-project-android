@@ -63,7 +63,7 @@ public class PrivateDetailAdapter extends BaseAdapter {
 			}else{
 				privateOtherHolder = (PrivateOtherHolder) convertView.getTag();
 			}
-			ImageLoader.getInstance(context).displayImage(privateDataBean.getHead() + "/50", privateOtherHolder.headImage, 1, null);
+			ImageLoader.getInstance(context).displayImage(privateDataBean.getHead() + "/100", privateOtherHolder.headImage, 1, null);
 			privateOtherHolder.content.setMovementMethod(LinkMovementMethod.getInstance());
 			ContentTransUtil.getInstance(context).displaySpannableString(privateDataBean.getText(), privateOtherHolder.content, null, false, true);
 			privateOtherHolder.time.setText(TimeUtil.converTime(privateDataBean.getPubTime(), 0x2));

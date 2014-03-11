@@ -7,7 +7,7 @@
     android:background="#11000000"
     tools:context=".ui.fragment.TabProfileFragment" >
     
-    <ImageView 
+    <com.halloon.android.widget.CircleImageView 
         android:id="@+id/tweet_head"
         android:layout_width="50.0dip"
         android:layout_height="50.0dip"

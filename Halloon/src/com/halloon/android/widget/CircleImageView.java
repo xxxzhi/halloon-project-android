@@ -26,40 +26,40 @@ import android.widget.ImageView;
  * 
  */
 public class CircleImageView extends ImageView {
-	Path path;
-
-	private PaintFlagsDrawFilter mPaintFlagsDrawFilter;
-	Paint paint;
+//	Path path;
+//
+//	private PaintFlagsDrawFilter mPaintFlagsDrawFilter;
+//	Paint paint;
 
 	public CircleImageView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		init();
+//		init();
 	}
 
 	public CircleImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		init();
+//		init();
 	}
 
 	public CircleImageView(Context context) {
 		super(context);
-		init();
+//		init();
 	}
 
-	private void init() {
-		// skip reinit.
-		if (mPaintFlagsDrawFilter != null)
-			return;
-
-		mPaintFlagsDrawFilter = new PaintFlagsDrawFilter(0,
-				Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
-
-		paint = new Paint();
-		paint.setAntiAlias(true);
-		paint.setFilterBitmap(true);
-		paint.setColor(Color.WHITE);
-	}
+//	private void init() {
+//		// skip reinit.
+//		if (mPaintFlagsDrawFilter != null)
+//			return;
+//
+//		mPaintFlagsDrawFilter = new PaintFlagsDrawFilter(0,
+//				Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+//
+//		paint = new Paint();
+//		paint.setAntiAlias(true);
+//		paint.setFilterBitmap(true);
+//		paint.setColor(Color.WHITE);
+//	}
 
 	// @Override
 	// protected void onDraw(Canvas canvas) {
@@ -165,8 +165,8 @@ public class CircleImageView extends ImageView {
 		paint.setDither(true);
 		canvas.drawARGB(0, 0, 0, 0);
 		paint.setColor(Color.parseColor("#BAB399"));
-		canvas.drawCircle(sbmp.getWidth() / 2 + 0.7f,
-				sbmp.getHeight() / 2 + 0.7f, sbmp.getWidth() / 2 + 0.1f, paint);
+		canvas.drawCircle(sbmp.getWidth() / 2.0f,
+				sbmp.getHeight() / 2.0f,dia/2.0f, paint);
 		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
 		canvas.drawBitmap(sbmp, rect, rect, paint);
 

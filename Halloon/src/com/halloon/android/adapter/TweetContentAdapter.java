@@ -144,7 +144,7 @@ public class TweetContentAdapter extends BaseAdapter {
 		holder.tweetImage.setOnClickListener(tweetListClickListener);
 		holder.forwardImage.setOnClickListener(tweetListClickListener);
 
-		ImageLoader.getInstance(context).displayImage(tweetBean.getHead() + "/50", holder.headImage, 0, null);
+		ImageLoader.getInstance(context).displayImage(tweetBean.getHead() + "/100", holder.headImage, 0, null);
 		holder.title.setText(tweetBean.getNick());
 		if (tweetBean.getIsVip() == 1) {
 			holder.isVip.setVisibility(View.VISIBLE);

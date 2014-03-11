@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
     
-    <ImageView
+    <com.halloon.android.widget.CircleImageView
         android:id="@+id/comment_head"
         android:layout_width="40.0dip"
         android:layout_height="40.0dip"
