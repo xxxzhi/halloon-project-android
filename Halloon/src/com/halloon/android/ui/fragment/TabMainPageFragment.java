@@ -46,10 +46,9 @@ import com.halloon.android.widget.HalloonPullableView.OnHeaderRefreshListener;
 import com.halloon.android.widget.HalloonPullableView.OnFooterRefreshListener;
 import com.halloon.android.widget.HalloonTitleBar;
 
-public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitleBarClickListener,
-                                                                         OnHeaderRefreshListener,
-                                                                         OnFooterRefreshListener,
-                                                                         OnLocationSeekListener{
+public class TabMainPageFragment extends BaseTitleBarFragment implements
+		OnTitleBarClickListener, OnHeaderRefreshListener,
+		OnFooterRefreshListener, OnLocationSeekListener {
 	private HalloonApplication application;
 
 	private MainPageFragmentCallback mpCallback;
@@ -68,18 +67,30 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 	public static final int OTHER_TWEET = 2;
 	public static final int AROUND_TWEET = 3;
 
+	/**
+	 * author user's tweet
+	 */
+	public static final int VIP_TWEET = 4;
+
+	/**
+	 * guangbodating
+	 */
+	public static final int PUBLIC_TWEET = 5;
+	public static final int SPECIAL_TWEET = 6;
+
 	private int tweetState = MAIN_TIMELINE_TWEET;
+
 	private String otherName;
 	private String myName;
 	private String nick;
-	
+
 	private int page = 0;
 	private String longitude;
 	private String latitude;
-	
+
 	private String newResponTime;
 	private String oldResponTime;
-	
+
 	private LayoutInflater layoutInflater;
 	private View footer;
 
@@ -96,7 +107,8 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 
 		public void setupAroundTweetFragment();
 
-		public void setupPictureDialog(String addr, String preSize, Bitmap bitmap);
+		public void setupPictureDialog(String addr, String preSize,
+				Bitmap bitmap);
 
 	}
 
@@ -107,124 +119,136 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 		context = activity;
 		application = (HalloonApplication) activity.getApplication();
 
-		if(getArguments() != null){
-			if (getArguments().getString("name") != null) otherName = getArguments().getString("name");
-			if (getArguments().getString("nick") != null) nick = getArguments().getString("nick");
+		if (getArguments() != null) {
+			if (getArguments().getString("name") != null)
+				otherName = getArguments().getString("name");
+			if (getArguments().getString("nick") != null)
+				nick = getArguments().getString("nick");
 		}
 	}
-	
+
 	@Override
 	protected void init(HalloonTitleBar titleBar, RelativeLayout content) {
-		layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		
+		layoutInflater = (LayoutInflater) getActivity().getSystemService(
+				Context.LAYOUT_INFLATER_SERVICE);
+
 		titleBar.setOnTitleBarClickListener(this);
-		
+
 		titleText = titleBar.getTitleTextView();
-		
-		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		LayoutInflater inflater = (LayoutInflater) getActivity()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		content.addView(inflater.inflate(R.layout.tab_mainpage, null, false));
-		
-		pullAndDrop = (HalloonPullableView) content.findViewById(R.id.pull_layout);
+
+		pullAndDrop = (HalloonPullableView) content
+				.findViewById(R.id.pull_layout);
 		pullAndDrop.setOnHeaderRefreshListener(this);
 		pullAndDrop.setOnFooterRefreshListener(this);
-		
+
 		list = (ListView) content.findViewById(R.id.list);
-		
+
 		tweetContainer = new ArrayList<TweetBean>();
 		tweetContentAdapter = new TweetContentAdapter(context, tweetContainer);
 		footer = inflater.inflate(R.layout.tweet_content_more, null, false);
 		list.addFooterView(footer);
 		list.setAdapter(tweetContentAdapter);
-		
-		if(tweetState == AROUND_TWEET){
+
+		if (tweetState == AROUND_TWEET) {
 			locationTask = new LocationTask(context);
 			locationTask.setOnLocationSeekListener(this);
 		}
 	}
 
-	
-
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
+
 		switch (tweetState) {
 		case MAIN_TIMELINE_TWEET:
 			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_IMAGE);
-			
+
 			sendButton = mTitleBar.getLeftImageButton();
 			aroundButton = mTitleBar.getRightImageButton();
-			
-			String tmp_nick = DBManager.getInstance(context).getProfile().getNick();
-			if (SettingsManager.getInstance(context).getProfileStatus() == DBManager.PROFILE_STATUS_READY && tmp_nick != null) {
+
+			String tmp_nick = DBManager.getInstance(context).getProfile()
+					.getNick();
+			if (SettingsManager.getInstance(context).getProfileStatus() == DBManager.PROFILE_STATUS_READY
+					&& tmp_nick != null) {
 				titleText.setText(tmp_nick);
 			} else {
-				
+
 				new BaseCompatiableTask<Void, Void, ProfileBean>() {
-					
+
 					@Override
 					protected ProfileBean doInBackground(Void... arg0) {
-						ProfileBean profileBean = ContentManager.getInstance(context).getMyProfile();
-						DBManager.getInstance(context).upgradeProfile(profileBean);
+						ProfileBean profileBean = ContentManager.getInstance(
+								context).getMyProfile();
+						DBManager.getInstance(context).upgradeProfile(
+								profileBean);
 
 						return profileBean;
 					}
 
 					@Override
 					protected void onPostExecute(ProfileBean result) {
-						if(SettingsManager.getInstance(context).getProfileStatus() == DBManager.PROFILE_STATUS_READY && result != null 
-								&& result.getNick() != null){
-							titleText.setText(DBManager.getInstance(context).getProfile().getNick());
+						if (SettingsManager.getInstance(context)
+								.getProfileStatus() == DBManager.PROFILE_STATUS_READY
+								&& result != null && result.getNick() != null) {
+							titleText.setText(DBManager.getInstance(context)
+									.getProfile().getNick());
 						}
 					}
 				}.taskExecute();
 
-				
-				
-				
-				
 			}
 			break;
 		case OTHER_TWEET:
-			if(otherName != null && !otherName.equals(myName)){
+			if (otherName != null && !otherName.equals(myName)) {
 				mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_NORMAL);
 				fanButton = mTitleBar.getRightButton(R.string.idol);
-			}else{
-				mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_BACK_BUTTON_ONLY);
+			} else {
+				mTitleBar
+						.setTitleStyle(HalloonTitleBar.TITLE_STYLE_BACK_BUTTON_ONLY);
 			}
 			backButton = mTitleBar.getLeftButton();
 			titleText.setText(nick);
 			break;
 		case AROUND_TWEET:
-			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_BACK_BUTTON_ONLY);
+			mTitleBar
+					.setTitleStyle(HalloonTitleBar.TITLE_STYLE_BACK_BUTTON_ONLY);
 			backButton = mTitleBar.getLeftButton();
 			titleText.setText(context.getString(R.string.nearby_tweet));
 			break;
 		default:
 			if (SettingsManager.getInstance(context).getProfileStatus() == DBManager.PROFILE_STATUS_READY) {
-				titleText.setText(DBManager.getInstance(context).getProfile().getNick());
+				titleText.setText(DBManager.getInstance(context).getProfile()
+						.getNick());
 			} else {
-				
+
 				// after request url ,get the profile,update titleText.
 				new BaseCompatiableTask<Void, Void, ProfileBean>() {
-					
+
 					@Override
 					protected ProfileBean doInBackground(Void... arg0) {
-						ProfileBean profileBean = ContentManager.getInstance(context).getMyProfile();
-						DBManager.getInstance(context).upgradeProfile(profileBean);
+						ProfileBean profileBean = ContentManager.getInstance(
+								context).getMyProfile();
+						DBManager.getInstance(context).upgradeProfile(
+								profileBean);
 
 						return profileBean;
 					}
 
 					@Override
 					protected void onPostExecute(ProfileBean result) {
-						if(SettingsManager.getInstance(context).getProfileStatus() == DBManager.PROFILE_STATUS_READY && result != null 
-								&& result.getNick() != null){
-							titleText.setText(DBManager.getInstance(context).getProfile().getNick());
+						if (SettingsManager.getInstance(context)
+								.getProfileStatus() == DBManager.PROFILE_STATUS_READY
+								&& result != null && result.getNick() != null) {
+							titleText.setText(DBManager.getInstance(context)
+									.getProfile().getNick());
 						}
 					}
 				}.taskExecute();
-				
+
 			}
 			break;
 		}
@@ -234,8 +258,9 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 				@Override
 				public void run() {
 					ProfileBean profileBean = new ProfileBean();
-					while(profileBean.getName() == null){
-						profileBean = ContentManager.getInstance(context).getMyProfile();
+					while (profileBean.getName() == null) {
+						profileBean = ContentManager.getInstance(context)
+								.getMyProfile();
 					}
 					DBManager.getInstance(context).upgradeProfile(profileBean);
 					myName = profileBean.getName();
@@ -245,42 +270,40 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 		} else {
 			myName = DBManager.getInstance(context).getProfile().getName();
 		}
-		
+
 		loadData(25, false);
 
 		// customize fastscroll bar style
 		/*
-		try {
-			Field f = AbsListView.class.getDeclaredField("mFastScroller");
-			f.setAccessible(true);
-			Object o = f.get(list);
-			f = f.getType().getDeclaredField("mThumbDrawable");
-			f.setAccessible(true);
-			Drawable drawable = (Drawable) f.get(o);
-			drawable = context.getResources().getDrawable(R.drawable.ic_launcher);
-			f.set(o, drawable);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		*/ 
+		 * try { Field f = AbsListView.class.getDeclaredField("mFastScroller");
+		 * f.setAccessible(true); Object o = f.get(list); f =
+		 * f.getType().getDeclaredField("mThumbDrawable");
+		 * f.setAccessible(true); Drawable drawable = (Drawable) f.get(o);
+		 * drawable =
+		 * context.getResources().getDrawable(R.drawable.ic_launcher); f.set(o,
+		 * drawable); } catch (Exception e) { e.printStackTrace(); }
+		 */
 		list.setFocusable(true);
 
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if(position < list.getCount() - 1){
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				if (position < list.getCount() - 1) {
 					Bundle bundle = new Bundle();
 					bundle.putString("id", String.valueOf(id));
-					bundle.putBundle("tweetBean", tweetContentAdapter.getItem(position).toBundle());
+					bundle.putBundle("tweetBean",
+							tweetContentAdapter.getItem(position).toBundle());
 					mpCallback.setupDetailFragment(bundle);
-				}else{
-					if(footer != null){
+				} else {
+					if (footer != null) {
 						list.removeFooterView(footer);
-						footer = layoutInflater.inflate(R.layout.footer_loading, null, false);
+						footer = layoutInflater.inflate(
+								R.layout.footer_loading, null, false);
 						list.addFooterView(footer);
 					}
-					
+
 					getMoreData();
 				}
 			}
@@ -289,15 +312,32 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 		list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
 			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				PopupWindowManager popupWindowManager = new PopupWindowManager(context);
-				if(position < list.getCount() - 1){
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				PopupWindowManager popupWindowManager = new PopupWindowManager(
+						context);
+				if (position < list.getCount() - 1) {
 					if (otherName != null && otherName.equals(myName)) {
-						popupWindowManager.setupCommentFunctionPopup(tweetContentAdapter.getItem(position).getId(), tweetContentAdapter.getItem(position).getName().equals(myName), tweetContentAdapter.getItem(position).getText(), PopupWindowManager.TWEET_LIST, position);
+						popupWindowManager.setupCommentFunctionPopup(
+								tweetContentAdapter.getItem(position).getId(),
+								tweetContentAdapter.getItem(position).getName()
+										.equals(myName), tweetContentAdapter
+										.getItem(position).getText(),
+								PopupWindowManager.TWEET_LIST, position);
 					} else if (otherName == null && tweetState == OTHER_TWEET) {
-						popupWindowManager.setupCommentFunctionPopup(tweetContentAdapter.getItem(position).getId(), tweetContentAdapter.getItem(position).getName().equals(myName), tweetContentAdapter.getItem(position).getText(), PopupWindowManager.TWEET_LIST, position);
+						popupWindowManager.setupCommentFunctionPopup(
+								tweetContentAdapter.getItem(position).getId(),
+								tweetContentAdapter.getItem(position).getName()
+										.equals(myName), tweetContentAdapter
+										.getItem(position).getText(),
+								PopupWindowManager.TWEET_LIST, position);
 					} else {
-						popupWindowManager.setupCommentFunctionPopup(tweetContentAdapter.getItem(position).getId(), tweetContentAdapter.getItem(position).getName().equals(myName), tweetContentAdapter.getItem(position).getText(), PopupWindowManager.TWEET_LIST, position);
+						popupWindowManager.setupCommentFunctionPopup(
+								tweetContentAdapter.getItem(position).getId(),
+								tweetContentAdapter.getItem(position).getName()
+										.equals(myName), tweetContentAdapter
+										.getItem(position).getText(),
+								PopupWindowManager.TWEET_LIST, position);
 					}
 				}
 				return true;
@@ -305,7 +345,6 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 
 		});
 
-		
 	}
 
 	@Override
@@ -322,67 +361,108 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 
 		if (tweetState != AROUND_TWEET) {
 			new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
-				
+
 				@Override
 				protected ArrayList<TweetBean> doInBackground(Void... arg0) {
 					ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
-					
+
 					switch (tweetState) {
 					case MAIN_TIMELINE_TWEET:
-						tmpArrayList = DBManager.getInstance(context).getAllTweetList();
-						if (SettingsManager.getInstance(context).getTweetListStatus() == DBManager.TWEET_LIST_STATUS_INIT || refresh || tmpArrayList.size() <= 0) {
-							tmpArrayList = ContentManager.getInstance(context).getHomeTimeLineTweet("", "", tweetNumber, "", "");
+						tmpArrayList = DBManager.getInstance(context)
+								.getAllTweetList();
+						if (SettingsManager.getInstance(context)
+								.getTweetListStatus() == DBManager.TWEET_LIST_STATUS_INIT
+								|| refresh || tmpArrayList.size() <= 0) {
+							tmpArrayList = ContentManager.getInstance(context)
+									.getHomeTimeLineTweet("", "", tweetNumber,
+											"", "");
 
 							HashMap<String, TweetBean> tweetLists = new HashMap<String, TweetBean>();
 							for (int i = 0; i < tmpArrayList.size(); i++) {
-								tweetLists.put(tmpArrayList.get(i).getTimestamp(), (TweetBean) tmpArrayList.get(i));
+								tweetLists.put(tmpArrayList.get(i)
+										.getTimestamp(),
+										(TweetBean) tmpArrayList.get(i));
 							}
 
-							DBManager.getInstance(context).addTweetListContent(tmpArrayList, true);
+							DBManager.getInstance(context).addTweetListContent(
+									tmpArrayList, true);
 
-							SettingsManager.getInstance(context).setLastUpdateTime(context.getString(R.string.refresh_at) + TimeUtil.getCurrentTime());
+							SettingsManager
+									.getInstance(context)
+									.setLastUpdateTime(
+											context.getString(R.string.refresh_at)
+													+ TimeUtil.getCurrentTime());
 						}
 						break;
 					case OTHER_TWEET:
-						tmpArrayList = ContentManager.getInstance(context).getOtherTimeLine("", "", tweetNumber, "", otherName, null, "", "");
+						tmpArrayList = ContentManager.getInstance(context)
+								.getOtherTimeLine("", "", tweetNumber, "",
+										otherName, null, "", "");
+						break;
+					case VIP_TWEET:
+						tmpArrayList = ContentManager.getInstance(context)
+								.getVipTimeLine("", "", tweetNumber, "0");
+						break;
+					case PUBLIC_TWEET:
+						tmpArrayList = ContentManager.getInstance(context)
+								.getPublicTimeLine("", "", tweetNumber, 0);
+						break;
+					case SPECIAL_TWEET:
+						tmpArrayList = ContentManager.getInstance(context)
+								.getSpecialTimeLine("", "", tweetNumber, "0",
+										"0", "0");
 						break;
 					}
-					
-					if(tmpArrayList != null){
+
+					if (tmpArrayList != null) {
 						int i = 0;
-						do{
+						do {
 							String text = tmpArrayList.get(i).getText();
 							String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
 							Pattern pattern = Pattern.compile(ADDR_PATTERN);
 							Matcher matcher = pattern.matcher(text);
-							if(tmpArrayList.get(i).getMusicUrl() != null || tmpArrayList.get(i).getVideoImage() != null){
-								
-								while(matcher.find()){
+							if (tmpArrayList.get(i).getMusicUrl() != null
+									|| tmpArrayList.get(i).getVideoImage() != null) {
+
+								while (matcher.find()) {
 									String group = matcher.group();
-									group = group.substring(group.lastIndexOf("/") + 1);
-									if(application.getShortList().get(group) == null){
-										String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
-										application.getShortList().put(group, longUrl);
+									group = group.substring(group
+											.lastIndexOf("/") + 1);
+									if (application.getShortList().get(group) == null) {
+										String longUrl = ContentManager
+												.getInstance(context)
+												.getExpandedUrl(group);
+										application.getShortList().put(group,
+												longUrl);
 									}
 								}
 							}
-							
-							if(tmpArrayList.get(i).getSource() != null){
-								if(tmpArrayList.get(i).getSource().getMusicUrl() != null || tmpArrayList.get(i).getSource().getVideoImage() != null){
-									matcher = pattern.matcher(tmpArrayList.get(i).getSource().getText());
-									while(matcher.find()){
-										
+
+							if (tmpArrayList.get(i).getSource() != null) {
+								if (tmpArrayList.get(i).getSource()
+										.getMusicUrl() != null
+										|| tmpArrayList.get(i).getSource()
+												.getVideoImage() != null) {
+									matcher = pattern.matcher(tmpArrayList
+											.get(i).getSource().getText());
+									while (matcher.find()) {
+
 										String group = matcher.group();
-										group = group.substring(group.lastIndexOf("/") + 1);
-										if(application.getShortList().get(group) == null){
-											String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
-											application.getShortList().put(group, longUrl);
+										group = group.substring(group
+												.lastIndexOf("/") + 1);
+										if (application.getShortList().get(
+												group) == null) {
+											String longUrl = ContentManager
+													.getInstance(context)
+													.getExpandedUrl(group);
+											application.getShortList().put(
+													group, longUrl);
 										}
-										
+
 									}
 								}
 							}
-						}while(++i < tmpArrayList.size());
+						} while (++i < tmpArrayList.size());
 					}
 
 					return tmpArrayList;
@@ -391,9 +471,9 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 				@Override
 				protected void onPostExecute(ArrayList<TweetBean> result) {
 					super.onPostExecute(result);
-					if(result != null && result.size() > 0){
-						
-						if(!refresh){
+					if (result != null && result.size() > 0) {
+
+						if (!refresh) {
 							Intent intent = new Intent();
 							intent.setAction(Constants.GLOBAL_TAB_VISIBILITY);
 							Bundle bundle = new Bundle();
@@ -405,104 +485,150 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 						tweetContainer.clear();
 						tweetContainer.addAll(result);
 						tweetContentAdapter.notifyDataSetChanged();
-						
-						oldResponTime = result.get(result.size() - 1).getTimestamp();
+
+						oldResponTime = result.get(result.size() - 1)
+								.getTimestamp();
 						newResponTime = result.get(0).getTimestamp();
-						
+
 					} else {
-						Toast.makeText(context, context.getString(R.string.refresh_failure), Toast.LENGTH_LONG).show();
+						Toast.makeText(context,
+								context.getString(R.string.refresh_failure),
+								Toast.LENGTH_LONG).show();
 					}
-					pullAndDrop.onHeaderRefreshComplete(SettingsManager.getInstance(context).getLastUpdateTime());
+					pullAndDrop.onHeaderRefreshComplete(SettingsManager
+							.getInstance(context).getLastUpdateTime());
 				}
 			}.taskExecute();
-		} else if(!refresh){
+		} else if (!refresh) {
 			locationTask.taskExecute();
 		}
 	}
-	
-	private void getMoreData(){
-		if(tweetState != AROUND_TWEET){
-			new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>(){
+
+	final int PAGE_SIZE = 25;
+	private int pos;
+	private int lastId = 0;
+
+	private void getMoreData() {
+		if (tweetState != AROUND_TWEET) {
+			new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
 				@Override
-				protected ArrayList<TweetBean> doInBackground(Void... params){
+				protected ArrayList<TweetBean> doInBackground(Void... params) {
 					ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
-					switch(tweetState){
+					switch (tweetState) {
 					case MAIN_TIMELINE_TWEET:
-						tmpArrayList = ContentManager.getInstance(context).getHomeTimeLineTweet("1", oldResponTime, 25, "", "");
+						tmpArrayList = ContentManager.getInstance(context)
+								.getHomeTimeLineTweet("1", oldResponTime,
+										PAGE_SIZE, "", "");
 						break;
 					case OTHER_TWEET:
-						tmpArrayList = ContentManager.getInstance(context).getOtherTimeLine("1", oldResponTime, 25, "", otherName, null, "", "");
+						tmpArrayList = ContentManager.getInstance(context)
+								.getOtherTimeLine("1", oldResponTime,
+										PAGE_SIZE, "", otherName, null, "", "");
+						break;
+					case VIP_TWEET:
+						tmpArrayList = ContentManager.getInstance(context)
+								.getVipTimeLine("1", oldResponTime, PAGE_SIZE,
+										"");
+						break;
+					case PUBLIC_TWEET:
+						tmpArrayList = ContentManager.getInstance(context)
+								.getPublicTimeLine("1", oldResponTime,
+										PAGE_SIZE, pos);
+						break;
+					case SPECIAL_TWEET:
+						tmpArrayList = ContentManager.getInstance(context)
+								.getSpecialTimeLine("1", oldResponTime,
+										PAGE_SIZE, "", "0", "0");
 						break;
 					}
-					
-					if(tmpArrayList != null){
+
+					if (tmpArrayList != null) {
 						int i = 0;
-						do{
+						do {
 							String text = tmpArrayList.get(i).getText();
 							String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
 							Pattern pattern = Pattern.compile(ADDR_PATTERN);
 							Matcher matcher = pattern.matcher(text);
-							if(tmpArrayList.get(i).getMusicUrl() != null || tmpArrayList.get(i).getVideoImage() != null){
-								while(matcher.find()){
+							if (tmpArrayList.get(i).getMusicUrl() != null
+									|| tmpArrayList.get(i).getVideoImage() != null) {
+								while (matcher.find()) {
 									String group = matcher.group();
-									group = group.substring(group.lastIndexOf("/") + 1);
-									if(application.getShortList().get(group) == null){
-										String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
-										application.getShortList().put(group, longUrl);
+									group = group.substring(group
+											.lastIndexOf("/") + 1);
+									if (application.getShortList().get(group) == null) {
+										String longUrl = ContentManager
+												.getInstance(context)
+												.getExpandedUrl(group);
+										application.getShortList().put(group,
+												longUrl);
 									}
 								}
-								
+
 							}
-							
-							if(tmpArrayList.get(i).getSource() != null && (tmpArrayList.get(i).getSource().getMusicUrl() != null || tmpArrayList.get(i).getSource().getVideoImage() != null)){
-								matcher = pattern.matcher(tmpArrayList.get(i).getSource().getText());
-								while(matcher.find()){
-									
+
+							if (tmpArrayList.get(i).getSource() != null
+									&& (tmpArrayList.get(i).getSource()
+											.getMusicUrl() != null || tmpArrayList
+											.get(i).getSource().getVideoImage() != null)) {
+								matcher = pattern.matcher(tmpArrayList.get(i)
+										.getSource().getText());
+								while (matcher.find()) {
+
 									String group = matcher.group();
-									group = group.substring(group.lastIndexOf("/") + 1);
-									if(application.getShortList().get(group) == null){
-										String longUrl = ContentManager.getInstance(context).getExpandedUrl(group);
-										application.getShortList().put(group, longUrl);
+									group = group.substring(group
+											.lastIndexOf("/") + 1);
+									if (application.getShortList().get(group) == null) {
+										String longUrl = ContentManager
+												.getInstance(context)
+												.getExpandedUrl(group);
+										application.getShortList().put(group,
+												longUrl);
 									}
 								}
 							}
-						}while(++i < tmpArrayList.size());
+						} while (++i < tmpArrayList.size());
 					}
-					
+
 					return tmpArrayList;
 				}
-				
+
 				@Override
-				protected void onPostExecute(ArrayList<TweetBean> result){
+				protected void onPostExecute(ArrayList<TweetBean> result) {
 					super.onPostExecute(result);
-					if(footer != null){
+					if (footer != null) {
 						list.removeFooterView(footer);
-						footer = layoutInflater.inflate(R.layout.tweet_content_more, null, false);
+						footer = layoutInflater.inflate(
+								R.layout.tweet_content_more, null, false);
 						list.addFooterView(footer);
 					}
-					
+
 					pullAndDrop.onFooterRefreshComplete();
-					
-					if(result.size() > 0){
+
+					if (result.size() > 0) {
 						tweetContainer.addAll(result);
 						tweetContentAdapter.notifyDataSetChanged();
-						oldResponTime = result.get(result.size() - 1).getTimestamp();
-					}else{
-						Toast.makeText(context, "更新失败", Toast.LENGTH_LONG).show();
+						oldResponTime = result.get(result.size() - 1)
+								.getTimestamp();
+					} else {
+						Toast.makeText(context, "更新失败", Toast.LENGTH_LONG)
+								.show();
 					}
-					
+
 				}
 			}.taskExecute();
-		}else{
+		} else {
 			loadAroundTweet(longitude, latitude, ++page);
 		}
 	}
 
-	private void loadAroundTweet(final String longitude, final String latitude, final int page) {
+	private void loadAroundTweet(final String longitude, final String latitude,
+			final int page) {
 		new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
 			@Override
 			protected ArrayList<TweetBean> doInBackground(Void... params) {
-				ArrayList<TweetBean> tmp_list = ContentManager.getInstance(context).getAroundTweet(longitude, latitude, String.valueOf(page), "25");
+				ArrayList<TweetBean> tmp_list = ContentManager.getInstance(
+						context).getAroundTweet(longitude, latitude,
+						String.valueOf(page), "25");
 
 				tweetContainer.clear();
 				tweetContainer.addAll(tmp_list);
@@ -511,20 +637,20 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 
 			@Override
 			protected void onPostExecute(ArrayList<TweetBean> result) {
-				if(result != null && result.size() > 0){
-					//tweetContainer.clear();
+				if (result != null && result.size() > 0) {
+					// tweetContainer.clear();
 					tweetContainer.addAll(result);
 					tweetContentAdapter.notifyDataSetChanged();
 				}
-				//pullAndDrop.onHeaderRefreshComplete();
+				// pullAndDrop.onHeaderRefreshComplete();
 				pullAndDrop.onFooterRefreshComplete();
 			}
 		}.taskExecute();
 	}
-	
+
 	@Override
-	public void onTitleContentClick(int contentEnum){
-		switch(contentEnum){
+	public void onTitleContentClick(int contentEnum) {
+		switch (contentEnum) {
 		case OnTitleBarClickListener.LEFT_BUTTON:
 			((BaseMultiFragmentActivity) context).backStackAction();
 			break;
@@ -536,22 +662,41 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 			break;
 		case OnTitleBarClickListener.TITLE_TEXT_VIEW:
 			if (tweetState == MAIN_TIMELINE_TWEET) {
-				PopupWindowManager pwManager = new PopupWindowManager(context);
+				final PopupWindowManager pwManager = new PopupWindowManager(context);
 				ArrayList<String> arrayList = new ArrayList<String>();
 				arrayList.add(getString(R.string.title_select_all));
 				arrayList.add(getString(R.string.title_select_auth));
 				arrayList.add(getString(R.string.title_select_official));
 				arrayList.add(getString(R.string.title_select_special));
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, arrayList);
-				pwManager.setupTitleListPopup(R.id.title_text, adapter,new AdapterView.OnItemClickListener() {
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+						context, android.R.layout.simple_list_item_1, arrayList);
+				pwManager.setupTitleListPopup(R.id.title_text, adapter,
+						new AdapterView.OnItemClickListener() {
 
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						
-					}
-					
-				});
+							@Override
+							public void onItemClick(AdapterView<?> parent,
+									View view, int position, long id) {
+								int state = 0 ;
+								switch (position) {
+								case 0:
+									state = MAIN_TIMELINE_TWEET;
+									break;
+								case 1:
+									state = VIP_TWEET;
+									break;
+								case 2:
+									state = PUBLIC_TWEET;
+									break;
+								case 3:
+									state = SPECIAL_TWEET ;
+									break;
+								}
+								setTweetState(state);
+								loadData(PAGE_SIZE, false);
+								pwManager.popupWindowDismiss();
+							}
+
+						});
 			}
 			break;
 		}
@@ -562,26 +707,26 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 	}
 
 	@Override
-	public void onResume(){
+	public void onResume() {
 		super.onResume();
-		if(application.getMainPageState()){
+		if (application.getMainPageState()) {
 			application.setMainPageState(false);
 			tweetContentAdapter.notifyDataSetChanged();
 		}
 	}
+
 	@Override
-	public void onPause(){
+	public void onPause() {
 		super.onPause();
-		
-		//bitmapRecycle();
+
+		// bitmapRecycle();
 	}
-	
+
 	@Override
 	public void onStop() {
 		super.onStop();
 		context.unregisterReceiver(delBroadCast);
 	}
-	
 
 	private class DelBroadCastReceiver extends BroadcastReceiver {
 		@Override
@@ -590,48 +735,55 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements OnTitle
 			tweetContentAdapter.removeItem(bundle.getInt("position"));
 		}
 	}
-	
-	private void bitmapRecycle(){
-		for(int i = 0; i < tweetContentAdapter.getCount(); i++){
+
+	private void bitmapRecycle() {
+		for (int i = 0; i < tweetContentAdapter.getCount(); i++) {
 			View rootView = tweetContentAdapter.getView(i, null, null);
-			ImageView imageView = (ImageView) rootView.findViewById(R.id.tweet_image);
-			if(imageView != null){
+			ImageView imageView = (ImageView) rootView
+					.findViewById(R.id.tweet_image);
+			if (imageView != null) {
 				Bitmap bmp = imageView.getDrawingCache();
 				imageView.setImageBitmap(null);
-				if(bmp != null && !bmp.isRecycled()){
+				if (bmp != null && !bmp.isRecycled()) {
 					bmp.recycle();
 				}
 			}
-			
-			ImageView sourceImageView = (ImageView) rootView.findViewById(R.id.forward_image);
-			if(sourceImageView != null){
+
+			ImageView sourceImageView = (ImageView) rootView
+					.findViewById(R.id.forward_image);
+			if (sourceImageView != null) {
 				Bitmap bmp = sourceImageView.getDrawingCache();
 				sourceImageView.setImageBitmap(null);
-				if(bmp != null && !bmp.isRecycled()){
+				if (bmp != null && !bmp.isRecycled()) {
 					bmp.recycle();
 				}
 			}
 		}
-		
+
 		System.gc();
 		System.runFinalization();
 	}
 
 	@Override
-	public void onFooterRefresh(HalloonPullableView view) {getMoreData();}
+	public void onFooterRefresh(HalloonPullableView view) {
+		getMoreData();
+	}
 
 	@Override
-	public void onHeaderRefresh(HalloonPullableView view) {loadData(25, true);}
-	
+	public void onHeaderRefresh(HalloonPullableView view) {
+		loadData(25, true);
+	}
+
 	@Override
-	public void onLocationSeeking() {}
-	
+	public void onLocationSeeking() {
+	}
+
 	@Override
-	public void onLocationGot(double longitude, double latitude){
+	public void onLocationGot(double longitude, double latitude) {
 		this.longitude = String.valueOf(longitude);
 		this.latitude = String.valueOf(latitude);
 		loadAroundTweet(this.longitude, this.latitude, 0);
 		page++;
 	}
-	
+
 }

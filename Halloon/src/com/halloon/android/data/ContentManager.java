@@ -12,6 +12,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.halloon.android.api.FavAPI;
+import com.halloon.android.api.HalloonStatusesAPI;
 import com.halloon.android.api.LBSAPI;
 import com.halloon.android.api.OtherAPI;
 import com.halloon.android.api.PrivateMessageAPI;
@@ -408,6 +409,142 @@ public class ContentManager {
 		return tweetContainer;
 	}
 
+	/**
+	 * 获取认证用户时间线
+	 * 
+	 * @param pageFlag
+	 *            分页标识(0x0:第一页,0x1向下翻页,0x2向上翻页)
+	 * @param pageTime
+	 *            本页其实时间(第一页填:0x0,向上翻页:填上一次请求返回的第一条记录时间,向下翻页:填上一次请求返回的最后一条记录时间)
+	 * @param requestNum
+	 *            每次请求的记录条数(1-70);
+	 * @param lastId
+	 *            和pagetime配合使用(第一页:填0,向上翻页:填上一次请求返回的第一条记录id,向下翻页:
+	 *            填上一次请求返回的最后一条记录id)
+	 * @return
+	 */
+	public ArrayList<TweetBean> getVipTimeLine(String pageFlag,
+			String pageTime, int requestNum, String lastId) {
+		HalloonStatusesAPI statusesAPI = new HalloonStatusesAPI(
+				OAuthConstants.OAUTH_VERSION_2_A);
+		ArrayList<TweetBean> tweetContainer = new ArrayList<TweetBean>(
+				requestNum);
+		try {
+			String tweetInfo;
+			tweetInfo = statusesAPI.homeVipTimeline(preoauth, "json", pageFlag,
+					pageTime, requestNum + "", lastId);
+
+			JSONObject jsonObject = new JSONObject(tweetInfo);
+			JSONObject dataJsonObject = jsonObject.getJSONObject("data");
+			JSONArray tweetInfoArray = dataJsonObject.getJSONArray("info");
+			String userInfoObject = dataJsonObject.optString("user");
+			for (int i = 0; i < tweetInfoArray.length(); i++) {
+				JSONObject tweetInfoObject = tweetInfoArray.getJSONObject(i);
+				TweetBean tb = getTweetFromJSON(tweetInfoObject);
+				tb.setMentionedUser(userInfoObject);
+				tweetContainer.add(tb);
+			}
+
+		} catch (Exception e) {
+			Log.d(Constants.LOG_TAG, "GET_USER_TIMELINE_ERROR:" + e);
+		}
+
+		return tweetContainer;
+	}
+
+	/**
+	 * 获取广播时间线
+	 * 
+	 * @param pageFlag
+	 *            分页标识(0x0:第一页,0x1向下翻页,0x2向上翻页)
+	 * @param pageTime
+	 *            本页其实时间(第一页填:0x0,向上翻页:填上一次请求返回的第一条记录时间,向下翻页:填上一次请求返回的最后一条记录时间)
+	 * @param requestNum
+	 *            每次请求的记录条数(1-70);
+	 * @param pos
+	 *            记录的起始位置（第一次请求时填0，继续请求时填上次请求返回的pos）
+	 * @return
+	 */
+	public ArrayList<TweetBean> getPublicTimeLine(String pageFlag,
+			String pageTime, int requestNum,int pos
+			 ) {
+		HalloonStatusesAPI statusesAPI = new HalloonStatusesAPI(
+				OAuthConstants.OAUTH_VERSION_2_A);
+		ArrayList<TweetBean> tweetContainer = new ArrayList<TweetBean>(
+				requestNum);
+		try {
+			String tweetInfo;
+			tweetInfo = statusesAPI.publicTimeline(preoauth, "json", pos+"",
+					requestNum + "");
+
+			JSONObject jsonObject = new JSONObject(tweetInfo);
+			JSONObject dataJsonObject = jsonObject.getJSONObject("data");
+			JSONArray tweetInfoArray = dataJsonObject.getJSONArray("info");
+			String userInfoObject = dataJsonObject.optString("user");
+			for (int i = 0; i < tweetInfoArray.length(); i++) {
+				JSONObject tweetInfoObject = tweetInfoArray.getJSONObject(i);
+				TweetBean tb = getTweetFromJSON(tweetInfoObject);
+				tb.setMentionedUser(userInfoObject);
+				tweetContainer.add(tb);
+			}
+
+		} catch (Exception e) {
+			Log.d(Constants.LOG_TAG, "GET_USER_TIMELINE_ERROR:" + e);
+		}
+
+		return tweetContainer;
+	}
+	
+	
+	/**
+	 * 本接口用于获取特别收听的人发表的微博消息
+	 * 
+	 * @param pageFlag
+	 *            分页标识 (0x0:第一页,0x1向下翻页,0x2向上翻页)
+	 * @param pageTime
+	 *            本页起始时间(第一页填:0x0,向上翻页:填上一次请求返回的第一条记录时间,向下翻页:填上一次请求返回的最后一条记录时间)
+	 * @param requestNum
+	 *            每次请求的记录条数(1-70)
+	 * @param lastid 和pagetime配合使用（第一页：填0，向上翻页：填上一次请求返回的第一条记录id，向下翻页：填上一次请求返回的最后一条记录id）
+	 * @param type
+	 *            拉取类型 0x1 原创发表 0x2 转载
+	 *            如需拉取多个类型请使用|，如(0x1|0x2)得到3，则type=3即可，填零表示拉取所有类型
+	 * @param contentType
+	 *            内容过滤。0-表示所有类型，1-带文本，2-带链接，4-带图片，8-带视频，0x10-带音频
+	 *            建议不使用contentType为1的类型，如果要拉取只有文本的微博，建议使用0x80
+	 * @return
+	 */
+	public ArrayList<TweetBean> getSpecialTimeLine(String pageFlag,
+			String pageTime, int requestNum,String lastid, String type, String contentType) {
+		HalloonStatusesAPI statusesAPI = new HalloonStatusesAPI(
+				OAuthConstants.OAUTH_VERSION_2_A);
+		ArrayList<TweetBean> tweetContainer = new ArrayList<TweetBean>(
+				requestNum);
+		try {
+			String tweetInfo;
+			tweetInfo = statusesAPI.specialTimeline(preoauth, "json", pageFlag,
+					pageTime, requestNum + "",lastid, type, contentType);
+
+			JSONObject jsonObject = new JSONObject(tweetInfo);
+			JSONObject dataJsonObject = jsonObject.getJSONObject("data");
+			JSONArray tweetInfoArray = dataJsonObject.getJSONArray("info");
+			String userInfoObject = dataJsonObject.optString("user");
+			for (int i = 0; i < tweetInfoArray.length(); i++) {
+				JSONObject tweetInfoObject = tweetInfoArray.getJSONObject(i);
+				TweetBean tb = getTweetFromJSON(tweetInfoObject);
+				tb.setMentionedUser(userInfoObject);
+				tweetContainer.add(tb);
+			}
+
+		} catch (Exception e) {
+			Log.d(Constants.LOG_TAG, "GET_HOME_TIME_LINE_TWEET_ERROR:" + e);
+		}
+
+		return tweetContainer;
+
+	}
+	
+	
 	/**
 	 * 从微博唯一ID获取单条微博
 	 * 
