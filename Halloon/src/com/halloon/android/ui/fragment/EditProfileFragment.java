@@ -1,6 +1,7 @@
 package com.halloon.android.ui.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -10,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.halloon.android.bean.ProfileBean;
 import com.halloon.android.data.ContentManager;
@@ -69,7 +71,12 @@ public class EditProfileFragment extends BaseTitleBarFragment implements OnClick
 			contents[2] = profileBean.getName();
 			contents[3] = profileBean.getLocation();
 			contents[4] = profileBean.getIntroduction();
-			contents[5] = profileBean.getTag().toString();
+			if(profileBean.getTag() == null){
+				contents[5] = "";
+			}else{
+				
+				contents[5] = profileBean.getTag().toString();
+			}
 		}
 		
 		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -85,7 +92,24 @@ public class EditProfileFragment extends BaseTitleBarFragment implements OnClick
 	public void onClick(View v){
 		if(editContent.getText().length() > 0){
 			AsyncTask<Integer, Void, int[]> task = new AsyncTask<Integer, Void, int[]>(){
-				
+				ProgressDialog dialog = new ProgressDialog(mActivity);
+				@Override
+				protected void onPostExecute(int[] result) {
+					super.onPostExecute(result);
+					if(result[0] != 0){
+						Toast.makeText(mActivity, "error "+result[0], Toast.LENGTH_SHORT).show();
+					}else{
+						Toast.makeText(mActivity, R.string.save_success, Toast.LENGTH_SHORT).show();
+					}
+					dialog.dismiss();
+				}
+
+				@Override
+				protected void onPreExecute() {
+					super.onPreExecute();
+					dialog.show();
+				}
+
 				@Override
 				protected int[] doInBackground(Integer... params) {
 					

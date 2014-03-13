@@ -59,7 +59,7 @@ public class ContentTransUtil implements OnTouchDownListener {
 		
 		final JSONObject nameList = new JSONObject();
 		JSONArray mentionedUser = new JSONArray();
-		if(tweetBean != null){
+		if(tweetBean != null && tweetBean.getMentionedUser() != null){
 			JSONObject jsonObject = tweetBean.getMentionedUser();
 			mentionedUser = jsonObject.names();
 			int count = mentionedUser.length();

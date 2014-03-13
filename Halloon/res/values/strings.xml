@@ -133,7 +133,7 @@
     <string name="about_sina"> \@Halloon</string>
     <string name="about_weixin"> Halloon</string>
     
-    
-    
-    
+    <!-- profile -->
+    <string name="hint_edit_input">please input </string>
+    <string name="save_success">save success!</string>
 </resources>
