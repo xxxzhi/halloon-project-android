@@ -133,4 +133,9 @@
     <string name="about_tontact">联系我们：</string>
     <string name="about_sina"> \@恩哈</string>
     <string name="about_weixin"> 恩哈</string>
+    
+    
+    <!-- profile -->
+    <string name="hint_edit_input">请输入 </string>
+    <string name="save_success">保存成功</string>
 </resources>
