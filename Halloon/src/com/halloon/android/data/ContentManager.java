@@ -176,7 +176,7 @@ public class ContentManager {
 			Log.d(Constants.LOG_TAG, "GET_PROFILE_ERROR:" + e);
 		}
 		profileBean = paraseMyProfileBean(myInfo);
-
+		profileBean.getTweetBean().setNick(profileBean.getNick());
 		return profileBean;
 	}
 
@@ -256,11 +256,11 @@ public class ContentManager {
 			if (tweetArray != null && tweetArray.length() > 0) {
 				JSONObject tweetJsonObject = tweetArray.getJSONObject(0);
 
-				tweetBean.setText(tweetJsonObject.getString("text"));
-				tweetBean.setId(tweetJsonObject.getString("id"));
-				tweetBean.setFrom(tweetJsonObject.getString("from"));
-				tweetBean.setTimestamp(tweetJsonObject.getString("timestamp"));
-
+//				tweetBean.setText(tweetJsonObject.getString("text"));
+//				tweetBean.setId(tweetJsonObject.getString("id"));
+//				tweetBean.setFrom(tweetJsonObject.getString("from"));
+//				tweetBean.setTimestamp(tweetJsonObject.getString("timestamp"));
+				tweetBean = getTweetFromJSON(tweetJsonObject);
 				profileBean.setTweetBean(tweetBean);
 			}
 		} catch (Exception e) {
@@ -701,12 +701,19 @@ public class ContentManager {
 		TweetBean temp_tweet = new TweetBean();
 
 		try {
+			if(tweetInfoObject.has("openid"))
 			temp_tweet.setOpenId(tweetInfoObject.getString("openid"));
+			if(tweetInfoObject.has("id"))
 			temp_tweet.setId(tweetInfoObject.getString("id"));
+			if(tweetInfoObject.has("head"))
 			temp_tweet.setHead(tweetInfoObject.getString("head"));
+			if(tweetInfoObject.has("nick"))
 			temp_tweet.setNick(tweetInfoObject.getString("nick"));
+			if(tweetInfoObject.has("name"))
 			temp_tweet.setName(tweetInfoObject.getString("name"));
+			if(tweetInfoObject.has("origtext"))
 			temp_tweet.setText(tweetInfoObject.getString("origtext"));
+			if(tweetInfoObject.has("image"))
 			temp_tweet.setTweetImage(tweetInfoObject.optString("image"));
 			temp_tweet.setLongitude(tweetInfoObject.optString("longitude"));
 			temp_tweet.setLatitude(tweetInfoObject.optString("latitude"));
@@ -770,12 +777,14 @@ public class ContentManager {
 
 				temp_tweet.setSource(sourceTweetBean);
 			}
-
-			temp_tweet.setId(tweetInfoObject.getString("id"));
+			
 			temp_tweet.setFrom(tweetInfoObject.getString("from"));
 			temp_tweet.setTimestamp(tweetInfoObject.getString("timestamp"));
+			if(tweetInfoObject.has("count"))
 			temp_tweet.setCount(tweetInfoObject.getString("count"));
+			if(tweetInfoObject.has("mcount"))
 			temp_tweet.setMCount(tweetInfoObject.getString("mcount"));
+			if(tweetInfoObject.has("isvip"))
 			temp_tweet.setIsVip(tweetInfoObject.getInt("isvip"));
 
 		} catch (JSONException e) {
