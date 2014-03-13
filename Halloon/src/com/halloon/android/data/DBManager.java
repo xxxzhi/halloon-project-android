@@ -146,6 +146,12 @@ public class DBManager extends SQLiteOpenHelper {
 		if(rt != - 1){
 			SettingsManager.getInstance(context).setProfileStatus(DBManager.PROFILE_STATUS_READY);
 		}
+		
+		//update tweet
+		ArrayList<TweetBean> tb = new ArrayList<TweetBean>();
+		tb.add(profileBean.getTweetBean());
+		addTweetListContent(tb, false);
+		
 	}
 
 	public ProfileBean getProfile() {
@@ -170,10 +176,17 @@ public class DBManager extends SQLiteOpenHelper {
 			profileBean.setFavNum(cursor.getString(cursor.getColumnIndex(ProfileColumns.PROFILE_FAVNUM)));
 
 		}
-
+		
 		if (!cursor.isClosed())
 			cursor.close();
-
+		
+		sql = "select * from " + TABLE_TWEET_LIST + " where "+ TweetsColumns.TWEET_USER_ID +
+				"= ? ORDER BY " + TweetsColumns.TWEET_TIMESTAMP + " desc limit 1";
+		cursor = db.rawQuery(sql, new String[]{profileBean.getOpenId()});
+		ArrayList<TweetBean> tweetList = getTweetByCursor(cursor);
+		if(tweetList.size() > 0){
+			profileBean.setTweetBean(tweetList.get(0));
+		}
 		return profileBean;
 	}
 
@@ -492,6 +505,7 @@ public class DBManager extends SQLiteOpenHelper {
 				cv.put(TweetsColumns.SOURCE_GEO, tweetBean.getSource().getGeo());
 			}
 		}
+		if(tweetBean.getMentionedUser() != null)
 		cv.put(TweetsColumns.TWEET_MUSER, tweetBean.getMentionedUser().toString());
 		cv.put(TweetsColumns.TWEET_IS_VIP, tweetBean.getIsVip());
 		if (null != tweetBean.getLongitude()) {

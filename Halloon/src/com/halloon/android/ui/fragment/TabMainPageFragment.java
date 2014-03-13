@@ -414,7 +414,7 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements
 						break;
 					}
 
-					if (tmpArrayList != null) {
+					if (tmpArrayList != null && tmpArrayList.size() > 0 ) {
 						int i = 0;
 						do {
 							String text = tmpArrayList.get(i).getText();
@@ -661,7 +661,8 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements
 			mpCallback.setupAroundTweetFragment();
 			break;
 		case OnTitleBarClickListener.TITLE_TEXT_VIEW:
-			if (tweetState == MAIN_TIMELINE_TWEET) {
+			if (tweetState == MAIN_TIMELINE_TWEET || tweetState == VIP_TWEET 
+			|| tweetState == PUBLIC_TWEET || tweetState == SPECIAL_TWEET) {
 				final PopupWindowManager pwManager = new PopupWindowManager(context);
 				ArrayList<String> arrayList = new ArrayList<String>();
 				arrayList.add(getString(R.string.title_select_all));
@@ -693,7 +694,7 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements
 								}
 								setTweetState(state);
 								loadData(PAGE_SIZE, false);
-								pwManager.popupWindowDismiss();
+								pwManager.dismiss();
 							}
 
 						});
