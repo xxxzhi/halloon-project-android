@@ -17,9 +17,10 @@
         layout="@layout/include_profile" />
 
     <include android:id="@+id/single_tweet"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         layout="@layout/tweet_content"

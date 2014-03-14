@@ -179,13 +179,16 @@ public class DBManager extends SQLiteOpenHelper {
 		
 		if (!cursor.isClosed())
 			cursor.close();
-		
-		sql = "select * from " + TABLE_TWEET_LIST + " where "+ TweetsColumns.TWEET_USER_ID +
-				"= ? ORDER BY " + TweetsColumns.TWEET_TIMESTAMP + " desc limit 1";
-		cursor = db.rawQuery(sql, new String[]{profileBean.getOpenId()});
-		ArrayList<TweetBean> tweetList = getTweetByCursor(cursor);
-		if(tweetList.size() > 0){
-			profileBean.setTweetBean(tweetList.get(0));
+		if(profileBean.getOpenId() != null ){
+			sql = "select * from " + TABLE_TWEET_LIST + " where "+ TweetsColumns.TWEET_USER_ID +
+					"= ? ORDER BY " + TweetsColumns.TWEET_TIMESTAMP + " desc limit 1";
+			cursor = db.rawQuery(sql, new String[]{profileBean.getOpenId()});
+			ArrayList<TweetBean> tweetList = getTweetByCursor(cursor);
+			if(tweetList.size() > 0){
+				profileBean.setTweetBean(tweetList.get(0));
+			}
+		}else{
+			profileBean.setTweetBean(new TweetBean());
 		}
 		return profileBean;
 	}
