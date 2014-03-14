@@ -78,6 +78,11 @@ public class ContentTransUtil implements OnTouchDownListener {
 		
 		content = convert(content);
 		
+		//过了html 标签
+        String regEx_html = "<[^>]+>"; // 定义HTML标签的正则表达式  
+        Pattern p_script = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);  
+        content = p_script.matcher(content).replaceAll("");  
+		
 		if(isSource) content = tweetBean.getSource().getNick() + ":" + content;
 		
 		final SpannableString ss = new SpannableString(content);

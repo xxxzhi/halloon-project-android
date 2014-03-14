@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -71,6 +72,8 @@ public class TweetDetailFragment extends BaseTitleBarFragment implements OnClick
 		if (getArguments().getString("id") != null) this.id = getArguments().getString("id");
 		if(getArguments().getBundle("tweetBean") != null) this.tweetDetailBean.decodeFromBundle(getArguments().getBundle("tweetBean"));
 		context = activity;
+		
+		activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 	}
 
 	@Override
@@ -84,7 +87,20 @@ public class TweetDetailFragment extends BaseTitleBarFragment implements OnClick
 		intent.putExtras(bundle);
 		context.sendBroadcast(intent);
 	}
-	
+//	
+//	@Override
+//	public void onPause() {
+//		
+//		super.onPause();
+//		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//	}
+//
+//	@Override
+//	public void onResume() {
+//		super.onResume();
+//		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+//	}
+
 	@Override
 	protected void init(HalloonTitleBar titleBar, RelativeLayout content) {
 		titleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_BACK_BUTTON_ONLY);

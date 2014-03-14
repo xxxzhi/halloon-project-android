@@ -30,7 +30,7 @@
             android:drawablePadding="6dip"
             android:hint="search"
             android:textColorHint="#999999"
-            android:textSize="12.0dip"
+            android:textSize="14sp"
             android:singleLine="true"
             android:textColor="#bcbcbc" >
         </EditText>

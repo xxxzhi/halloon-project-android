@@ -3,6 +3,11 @@
     <string name="app_name">哈恩</string>
     <string name="menu_settings">Settings</string>
     
+        <string  name="title_select_all">主页</string>
+    <string name="title_select_auth">认证用户</string>
+    <string name="title_select_special">特别关注</string>
+    <string name="title_select_official">官方广播</string>
+    
     <!-- pull to refresh  -->
 	<string name="pull_to_refresh_pull_label">下拉可以刷新&#8230;</string>
 	<string name="pull_to_refresh_footer_pull_label">上拉获取更多&#8230;</string>

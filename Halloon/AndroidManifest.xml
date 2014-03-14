@@ -61,7 +61,7 @@
             </intent-filter>
         </activity>
         <activity 
-            android:name=".ui.activity.MainPageActivity" 
+            android:name=".ui.activity.MainPageActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:screenOrientation="portrait" />
         <activity 

@@ -508,6 +508,7 @@ public class PopupWindowManager {
 	 * @param onItemClickListener
 	 */
 	public void setupTitleListPopup(int parentViewRes, BaseAdapter adapter,final AdapterView.OnItemClickListener onItemClickListener) {
+		
 		container = (ViewGroup) ((Activity) context).getLayoutInflater().inflate(R.layout.title_list, null);
 		ListView list = (ListView) container.findViewById(R.id.list);
 		list.setAdapter(adapter);
@@ -525,6 +526,7 @@ public class PopupWindowManager {
 				if(onItemClickListener != null){
 					onItemClickListener.onItemClick(parent, view, position, id);
 				}
+				popupWindow.dismiss();
 			}
 			
 		});
@@ -597,6 +599,12 @@ public class PopupWindowManager {
 		popupWindow.setBackgroundDrawable(new ColorDrawable(-00000));
 		popupWindow.setAnimationStyle(R.style.PopupWindowSlideFade);
 		popupWindow.showAtLocation(((Activity) context).findViewById(parentViewRes), Gravity.CENTER | Gravity.TOP, x, y);
+	}
+	
+	public void dismiss(){
+		if(popupWindow != null && popupWindow.isShowing()){
+			popupWindow.dismiss();
+		}
 	}
 	
 	public void popupWindowDismiss() {
