@@ -337,9 +337,9 @@ public class TweetDetailFragment extends BaseTitleBarFragment implements OnClick
 			InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);  
 			boolean res = imm.hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 			System.out.println("resres ---"+res);
-			if(!res){
-				 imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS); 
-			}
+//			if(!res){
+//				 imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS); 
+//			}
 			((BaseMultiFragmentActivity) context).backStackAction();
 			break;
 		}

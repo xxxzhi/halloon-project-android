@@ -70,7 +70,7 @@
             android:id="@+id/emoji_selector"
             android:layout_width="match_parent"
             android:layout_height="200.0dip"
-            android:visibility="visible" />
+            android:visibility="gone" />
         
     </LinearLayout>
     
