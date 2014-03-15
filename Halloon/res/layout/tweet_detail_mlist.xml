@@ -23,7 +23,7 @@
         android:layout_marginTop="10.0dip"
         android:layout_marginLeft="15.0dip"
         android:layout_marginBottom="3.0dip"
-        android:background="@drawable/wb_head_default" />
+        android:src="@drawable/wb_head_default" />
     
     <RelativeLayout 
         android:layout_width="wrap_content"
