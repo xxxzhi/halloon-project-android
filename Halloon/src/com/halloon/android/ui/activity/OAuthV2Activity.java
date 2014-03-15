@@ -130,7 +130,7 @@ public class OAuthV2Activity extends Activity {
 						mActivity.oAuthV2.getAccessToken());
 				intent.putExtra("oauth", mActivity.oAuthV2);
 				intent.putExtra("flag", 1);
-				intent.setClass(mActivity, HomeActivity.class);
+				intent.setClass(mActivity, SlideHomeActivity.class);
 				mActivity.startActivity(intent);
 				mActivity.finish();
 

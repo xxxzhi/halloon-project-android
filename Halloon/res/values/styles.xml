@@ -1,7 +1,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppTheme" parent="android:Theme.Holo.Light" />
-    
+
     <style name="Theme.Halloon" parent="@style/Theme.Sherlock.Light">
         <item name="vpiTabPageIndicatorStyle">@style/HalloonTabPageIndicator</item>
         <item name="android:actionBarStyle">@style/Theme.Halloon.Styled.ActionBar</item>
@@ -14,6 +14,7 @@
         <item name="background">#568ee2</item>
         <item name="android:background">#568ee2</item>
     </style>
+
     <style name="HalloonTabPageIndicator" parent="Widget.TabPageIndicator">
         <item name="android:background">@drawable/custom_tab_indicator</item>
         <item name="android:textAppearance">@style/CustomTabPageIndicator.Text</item>
@@ -23,53 +24,76 @@
         <item name="android:dividerPadding">5dp</item>
         <item name="android:showDividers">middle</item>
     </style>
+
     <style name="CustomTabPageIndicator.Text" parent="android:TextAppearance.Medium">
         <item name="android:typeface">monospace</item>
     </style>
- 
+
     <style name="PopupWindowYAxisSlide" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/popup_slide_top_in</item>
         <item name="android:windowExitAnimation">@anim/popup_slide_top_out</item>
     </style>
-    
+
     <style name="PopupWindowFade" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/popup_fade_in</item>
         <item name="android:windowExitAnimation">@anim/popup_fade_out</item>
     </style>
-    
+
     <style name="CommentBarZoom" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/popup_zoom_in</item>
         <item name="android:windowExitAnimation">@anim/popup_zoom_out</item>
     </style>
-    
+
     <style name="PopupWindowSlideFade" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/popup_fade_slide_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/popup_fade_slide_bottom_out</item>
     </style>
-    
+
     <style name="FragmentSlideRight" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/fragment_slide_right_enter</item>
         <item name="android:windowExitAnimation">@anim/fragment_slide_right_exit</item>
     </style>
-    
+
     <style name="FragmentSlideLeft" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/fragment_slide_left_enter</item>
         <item name="android:windowExitAnimation">@anim/fragment_slide_left_exit</item>
     </style>
-    
+
     <style name="FragmentFadeZoom" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/fragment_fade_zoom_out</item>
         <item name="android:windowExitAnimation">@anim/fragment_fade_zoom_in</item>
     </style>
 
-    <style name="SlideChildLinear" >
+    <style name="SlideChildLinear">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/slide_linear_height</item>
         <item name="android:background">@drawable/tab_bg_selector</item>
         <item name="android:padding">2dip</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_alignParentLeft">true</item>
     </style>
-    
+
+    <style name="SlideImg">
+        <item name="android:layout_width">@dimen/slide_img_side</item>
+        <item name="android:layout_height">@dimen/slide_img_side</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+    </style>
+
+    <style name="SlideTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:paddingTop">1dip</item>
+        <item name="android:shadowDx">0.2</item>
+        <item name="android:shadowDy">0.0</item>
+        <item name="android:shadowRadius">0.2</item>
+        <item name="android:textColor">@drawable/tab_text_selector</item>
+        <item name="android:textSize">16dip</item>
+    </style>
+
 </resources>

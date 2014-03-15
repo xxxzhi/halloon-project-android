@@ -114,7 +114,7 @@ public class OAuthActivity extends Activity {
 			switch (msg.what) {
 			case 0:
 				Intent intent = new Intent();
-				intent.setClass(OAuthActivity.this, HomeActivity.class);
+				intent.setClass(OAuthActivity.this, SlideHomeActivity.class);
 				startActivity(intent);
 				finish();
 

@@ -18,4 +18,5 @@
     <color name="indexer_preview_text_color">#0085DF</color>
     <color name="indexer_preview_text_bkg">#aaa</color>
 
+    <color name="bg_slide_menu">#000000</color>
 </resources>

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/slide_width"
+    android:background="@color/bg_slide_menu"
     android:layout_height="match_parent" >
 
     <RelativeLayout
         android:id="@+id/relative_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="5dp" >
+        android:layout_marginBottom="5dp"
+        android:paddingTop="40dp" >
 
-        <ImageView
+        <com.halloon.android.widget.CircleImageView
             android:id="@+id/iv_icon"
             android:layout_width="@dimen/slide_icon_side"
             android:layout_height="@dimen/slide_icon_side"
@@ -24,115 +25,58 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_icon"
             android:layout_centerHorizontal="true"
-            android:text=""
+            android:layout_marginTop="5dp"
+            android:textColor="@color/tab_page_indicator_text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/linear_main"
         style="@style/SlideChildLinear"
         android:layout_below="@+id/relative_profile" >
 
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="@dimen/slide_img_side"
-            android:layout_height="@dimen/slide_img_side"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp" />
+            style="@style/SlideImg"
+            android:src="@drawable/ic_tab_home" />
 
         <TextView
             android:id="@+id/tabsText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingTop="1dip"
-            android:shadowDx="0.2"
-            android:shadowDy="0.0"
-            android:shadowRadius="0.2"
-            android:text="Title"
-            android:textColor="@drawable/tab_text_selector"
-            android:textSize="12dip" />
+            android:text="@string/tab_mainpage"
+            style="@style/SlideTextView" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linear_message"
         style="@style/SlideChildLinear"
-        android:layout_below="@+id/linearLayout1" >
+        android:layout_below="@+id/linear_main" >
 
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="@dimen/slide_img_side"
-            android:layout_height="@dimen/slide_img_side"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp" />
+            style="@style/SlideImg"
+            android:src="@drawable/ic_tab_msg" />
 
         <TextView
             android:id="@+id/tabsText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingTop="1dip"
-            android:shadowDx="0.2"
-            android:shadowDy="0.0"
-            android:shadowRadius="0.2"
-            android:text="Title"
-            android:textColor="@drawable/tab_text_selector"
-            android:textSize="12dip" />
+            android:text="@string/tab_message"
+            style="@style/SlideTextView" />
     </LinearLayout>
 
+
     <LinearLayout
-        android:id="@+id/linearLayout3"
+        android:id="@+id/linear_contacts"
         style="@style/SlideChildLinear"
-        android:layout_below="@+id/linearLayout2" >
+        android:layout_below="@+id/linear_message" >
 
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="@dimen/slide_img_side"
-            android:layout_height="@dimen/slide_img_side"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp" />
+            style="@style/SlideImg"
+            android:src="@drawable/ic_tab_contacts" />
 
         <TextView
             android:id="@+id/tabsText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingTop="1dip"
-            android:shadowDx="0.2"
-            android:shadowDy="0.0"
-            android:shadowRadius="0.2"
-            android:text="Title"
-            android:textColor="@drawable/tab_text_selector"
-            android:textSize="12dip" />
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/SlideChildLinear"
-        android:layout_below="@+id/linearLayout3" >
-
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="@dimen/slide_img_side"
-            android:layout_height="@dimen/slide_img_side"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp" />
-
-        <TextView
-            android:id="@+id/tabsText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingTop="1dip"
-            android:shadowDx="0.2"
-            android:shadowDy="0.0"
-            android:shadowRadius="0.2"
-            android:text="Title"
-            android:textColor="@drawable/tab_text_selector"
-            android:textSize="12dip" />
+            android:text="@string/tab_contacts"
+            style="@style/SlideTextView" />
     </LinearLayout>
 
 </RelativeLayout>
