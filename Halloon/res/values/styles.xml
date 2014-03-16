@@ -96,4 +96,21 @@
         <item name="android:textSize">16dip</item>
     </style>
 
+    
+    <style name="ListViewTweet">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:cacheColorHint">#00000000</item>
+        <item name="android:fadingEdge">none</item>
+        
+        <item name="android:fadingEdgeLength">0.0dip</item>
+        <item name="android:dividerHeight">0dip</item>
+        <item name="android:divider">#00000000</item>
+        <item name="android:fastScrollEnabled">true</item>
+        <item name="android:listSelector">@drawable/tweet_content_list_bg_selector</item>
+        
+        <item name="android:background">#FFF5F5F5</item>
+        <item name="android:longClickable">true</item>
+    </style>
 </resources>

@@ -121,12 +121,17 @@ public class SlideHomeActivity extends ActivityGroup implements
 				.findViewById(R.id.linear_contacts);
 		LinearLayout message = (LinearLayout) menuView
 				.findViewById(R.id.linear_message);
-
+		LinearLayout more = (LinearLayout) menuView
+				.findViewById(R.id.linear_more);
+		
+		
 		profile.setOnClickListener(this);
 		main.setOnClickListener(this);
 		contacts.setOnClickListener(this);
 		message.setOnClickListener(this);
-
+		more.setOnClickListener(this);
+		
+		
 		myHeadIcon = (ImageView) profile.findViewById(R.id.iv_icon);
 		myNick = (TextView) profile.findViewById(R.id.tv_name);
 		loadProfile();
@@ -349,7 +354,7 @@ public class SlideHomeActivity extends ActivityGroup implements
 			intent.putExtra("flag", getIntent().getIntExtra("flag", 1));
 			intent.setClass(this, MyMessageActivity.class);
 			break;
-		default:
+		case R.id.linear_more:
 			intent = new Intent();
 			intent.putExtra("accesstoken",
 					getIntent().getStringExtra("accessToken"));

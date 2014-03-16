@@ -78,7 +78,7 @@
     
     <LinearLayout
         android:id="@+id/count_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/background"
         android:layout_centerHorizontal="true"
@@ -87,7 +87,8 @@
         
         <Button
             android:id="@+id/tweet"
-            android:layout_width="75.0dip"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="45.0dip"
             android:text="@string/wblog"
             android:textColor="#FF666666"
@@ -96,7 +97,8 @@
         
         <Button
             android:id="@+id/idol"
-            android:layout_width="75.0dip"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="45.0dip"
             android:text="@string/idol"
             android:textColor="#FF666666"
@@ -105,7 +107,8 @@
         
         <Button
             android:id="@+id/fans"
-            android:layout_width="75.0dip"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="45.0dip"
             android:text="@string/fan"
             android:textColor="#FF666666"
@@ -114,9 +117,20 @@
         
         <Button
             android:id="@+id/fav"
-            android:layout_width="75.0dip"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="45.0dip"
             android:text="@string/fav"
+            android:textColor="#FF666666"
+            android:textSize="14sp"
+            android:background="@drawable/selector_profilecount_middle" />
+        
+        <Button
+            android:id="@+id/tag"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="45.0dip"
+            android:text="@string/tag"
             android:textColor="#FF666666"
             android:textSize="14sp"
             android:background="@drawable/selector_profilecount_right" />
@@ -131,6 +145,8 @@
         android:layout_marginTop="10.0dip"
         android:background="#FFCCCCCC" />
     
+    
+    <!-- 
     <TextView
         android:id="@+id/tag_title"
         android:layout_width="wrap_content"
@@ -140,6 +156,7 @@
         android:layout_marginLeft="15.0dip"
         android:text="@string/tag"
         android:textSize="14sp"
+        
         android:textColor="#FF666666" />
     
     <com.halloon.android.widget.TagView
@@ -152,5 +169,5 @@
         android:paddingBottom="20.0dip"
         halloon:margin="2.0dip"
         halloon:singleHeight = "23.0dip" />
-
+ -->
 </RelativeLayout>

@@ -79,4 +79,21 @@
             style="@style/SlideTextView" />
     </LinearLayout>
 
+    
+    <LinearLayout
+        android:id="@+id/linear_more"
+        style="@style/SlideChildLinear"
+        android:layout_below="@+id/linear_contacts" >
+
+        <ImageView
+            android:id="@+id/icon"
+            style="@style/SlideImg"
+            android:src="@drawable/ic_tab_more" />
+
+        <TextView
+            android:id="@+id/tabsText"
+            android:text="@string/tab_more"
+            style="@style/SlideTextView" />
+    </LinearLayout>
+    
 </RelativeLayout>

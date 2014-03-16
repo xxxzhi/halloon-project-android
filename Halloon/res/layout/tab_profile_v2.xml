@@ -3,27 +3,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF5F5F5" >
-    
-    <LinearLayout 
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        
-   
-    <include
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/include_profile" />
 
-    <include android:id="@+id/single_tweet"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/tweet_content"
-        />
-     </LinearLayout>
+        android:orientation="vertical" >
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/include_profile" />
+        
+    <!--     <ListView 
+            android:id="@+id/listview_profile_tweet"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
+            android:fastScrollEnabled="false"
+            android:fastScrollAlwaysVisible="false"
+            android:fadeScrollbars="false"
+            android:layout_height="match_parent"
+            style="@style/ListViewTweet"
+            >
+        </ListView> -->
+        
+        <LinearLayout
+            android:id="@+id/linear_tweet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            
+            >
+            
+        </LinearLayout>
+
+        <TextView
+            android:textColor="@color/text_hint_color"
+            android:id="@+id/tv_more"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="@string/more"
+            android:layout_marginBottom="15dp"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+    </LinearLayout>
+
 </ScrollView>
