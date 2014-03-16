@@ -121,10 +121,12 @@ public class SlideHomeActivity extends ActivityGroup implements
 				.findViewById(R.id.linear_contacts);
 		LinearLayout message = (LinearLayout) menuView
 				.findViewById(R.id.linear_message);
+		LinearLayout square = (LinearLayout) menuView
+				.findViewById(R.id.linear_square);
 		LinearLayout more = (LinearLayout) menuView
 				.findViewById(R.id.linear_more);
 		
-		
+		square.setOnClickListener(this);
 		profile.setOnClickListener(this);
 		main.setOnClickListener(this);
 		contacts.setOnClickListener(this);
@@ -357,6 +359,14 @@ public class SlideHomeActivity extends ActivityGroup implements
 			intent.putExtra("oauth", getIntent().getSerializableExtra("oauth"));
 			intent.putExtra("flag", getIntent().getIntExtra("flag", 1));
 			intent.setClass(this, MyMessageActivity.class);
+			break;
+		case R.id.linear_square:
+//			intent = new Intent();
+//			intent.putExtra("accesstoken",
+//					getIntent().getStringExtra("accessToken"));
+//			intent.putExtra("oauth", getIntent().getSerializableExtra("oauth"));
+//			intent.putExtra("flag", getIntent().getIntExtra("flag", 1));
+//			intent.setClass(this, MyMessageActivity.class);
 			break;
 		case R.id.linear_more:
 			intent = new Intent();
