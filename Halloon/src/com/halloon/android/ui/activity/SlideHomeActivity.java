@@ -217,6 +217,10 @@ public class SlideHomeActivity extends ActivityGroup implements
 
 	}
 
+	public void toggleSlideMenu(){
+		menu.toggle(true);
+	}
+	
 	public String getLocalIpAddress() {
 		try {
 			for (Enumeration<NetworkInterface> en = NetworkInterface

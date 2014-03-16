@@ -37,6 +37,7 @@ import com.halloon.android.image.ImageLoader;
 import com.halloon.android.listener.OnLocationSeekListener;
 import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
+import com.halloon.android.ui.activity.SlideHomeActivity;
 import com.halloon.android.util.Constants;
 import com.halloon.android.util.NumberUtil;
 import com.halloon.android.util.PopupWindowManager;
@@ -655,10 +656,14 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements
 			((BaseMultiFragmentActivity) context).backStackAction();
 			break;
 		case OnTitleBarClickListener.LEFT_IMAGE_BUTTON:
-			mpCallback.setupPublishFragment();
+			Activity parent = getActivity().getParent() ;
+			if(parent instanceof SlideHomeActivity){
+				((SlideHomeActivity)parent).toggleSlideMenu();
+			}
 			break;
 		case OnTitleBarClickListener.RIGHT_IMAGE_BUTTON:
-			mpCallback.setupAroundTweetFragment();
+			mpCallback.setupPublishFragment();
+//			mpCallback.setupAroundTweetFragment();
 			break;
 		case OnTitleBarClickListener.TITLE_TEXT_VIEW:
 			if (tweetState == MAIN_TIMELINE_TWEET || tweetState == VIP_TWEET 

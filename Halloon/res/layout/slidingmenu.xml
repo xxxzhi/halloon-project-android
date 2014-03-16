@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/slide_width"
-    android:background="@color/bg_slide_menu"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/bg_slide_menu" >
 
     <RelativeLayout
         android:id="@+id/relative_profile"
@@ -26,74 +26,101 @@
             android:layout_below="@+id/iv_icon"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
-            android:textColor="@color/tab_page_indicator_text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/tab_page_indicator_text" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/linear_main"
-        style="@style/SlideChildLinear"
-        android:layout_below="@+id/relative_profile" >
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/relative_profile" >
 
-        <ImageView
-            android:id="@+id/icon"
-            style="@style/SlideImg"
-            android:src="@drawable/ic_tab_home" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/tabsText"
-            android:text="@string/tab_mainpage"
-            style="@style/SlideTextView" />
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linear_main"
+                style="@style/SlideChildLinear"
+                android:layout_below="@+id/relative_profile" >
 
-    <LinearLayout
-        android:id="@+id/linear_message"
-        style="@style/SlideChildLinear"
-        android:layout_below="@+id/linear_main" >
+                <ImageView
+                    android:id="@+id/icon"
+                    style="@style/SlideImg"
+                    android:src="@drawable/ic_tab_home" />
 
-        <ImageView
-            android:id="@+id/icon"
-            style="@style/SlideImg"
-            android:src="@drawable/ic_tab_msg" />
+                <TextView
+                    android:id="@+id/tabsText"
+                    style="@style/SlideTextView"
+                    android:text="@string/tab_mainpage" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/tabsText"
-            android:text="@string/tab_message"
-            style="@style/SlideTextView" />
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linear_message"
+                style="@style/SlideChildLinear"
+                android:layout_below="@+id/linear_main" >
 
+                <ImageView
+                    android:id="@+id/icon"
+                    style="@style/SlideImg"
+                    android:src="@drawable/ic_tab_msg" />
 
-    <LinearLayout
-        android:id="@+id/linear_contacts"
-        style="@style/SlideChildLinear"
-        android:layout_below="@+id/linear_message" >
+                <TextView
+                    android:id="@+id/tabsText"
+                    style="@style/SlideTextView"
+                    android:text="@string/tab_message" />
+            </LinearLayout>
 
-        <ImageView
-            android:id="@+id/icon"
-            style="@style/SlideImg"
-            android:src="@drawable/ic_tab_contacts" />
+            <LinearLayout
+                android:id="@+id/linear_contacts"
+                style="@style/SlideChildLinear"
+                android:layout_below="@+id/linear_message" >
 
-        <TextView
-            android:id="@+id/tabsText"
-            android:text="@string/tab_contacts"
-            style="@style/SlideTextView" />
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/icon"
+                    style="@style/SlideImg"
+                    android:src="@drawable/ic_tab_contacts" />
 
-    
-    <LinearLayout
-        android:id="@+id/linear_more"
-        style="@style/SlideChildLinear"
-        android:layout_below="@+id/linear_contacts" >
+                <TextView
+                    android:id="@+id/tabsText"
+                    style="@style/SlideTextView"
+                    android:text="@string/tab_contacts" />
+            </LinearLayout>
 
-        <ImageView
-            android:id="@+id/icon"
-            style="@style/SlideImg"
-            android:src="@drawable/ic_tab_more" />
+            <LinearLayout
+                android:id="@+id/linear_square"
+                style="@style/SlideChildLinear"
+                android:layout_below="@+id/linear_contacts" >
 
-        <TextView
-            android:id="@+id/tabsText"
-            android:text="@string/tab_more"
-            style="@style/SlideTextView" />
-    </LinearLayout>
-    
+                <ImageView
+                    android:id="@+id/icon"
+                    style="@style/SlideImg"
+                    android:src="@drawable/ic_tab_square" />
+
+                <TextView
+                    android:id="@+id/tabsText"
+                    style="@style/SlideTextView"
+                    android:text="@string/tab_square" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_more"
+                style="@style/SlideChildLinear"
+                android:layout_below="@+id/linear_square" >
+
+                <ImageView
+                    android:id="@+id/icon"
+                    style="@style/SlideImg"
+                    android:src="@drawable/ic_tab_more" />
+
+                <TextView
+                    android:id="@+id/tabsText"
+                    style="@style/SlideTextView"
+                    android:text="@string/tab_more" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
 </RelativeLayout>

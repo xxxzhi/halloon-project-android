@@ -57,6 +57,7 @@
     <string name="tab_message">消息</string>
     <string name="tab_profile">我的资料</string>
     <string name="tab_contacts">通讯录</string>
+    <string name="tab_square">广场</string>
     <string name="tab_more">更多</string>
     
     <!-- content -->

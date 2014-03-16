@@ -54,6 +54,7 @@
     <string name="tab_message">message</string>
     <string name="tab_profile">profile</string>
     <string name="tab_contacts">contacts</string>
+    <string name="tab_square">square</string>
     <string name="tab_more">more</string>
     
     <!-- content -->
