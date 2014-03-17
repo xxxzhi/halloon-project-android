@@ -6,6 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/parent"
+    android:layout_marginLeft="7dp"
+    android:layout_marginRight="7dp"
+    android:background="@drawable/bg_weibo_item"
     tools:context=".ui.activity.OneActivity" >
     
     <com.halloon.android.widget.CircleImageView
@@ -33,7 +36,7 @@
         android:layout_marginLeft="6.0dip"
         android:layout_marginBottom="3.0dip"
         android:text="阿蔡"
-        android:textColor="#0085DF"
+        android:textColor="@color/txt_weibo_name"
         android:textSize="16.0sp" />
     
     <ImageView 
@@ -56,7 +59,7 @@
         android:layout_alignRight="@+id/tweet_content"
         android:gravity="right"
         android:text="24分钟"
-        android:textColor="#777777"
+        android:textColor="@color/txt_time"
         android:textSize="13.0sp" />
     
     <TextView 
@@ -64,7 +67,7 @@
         android:layout_width="170.0dip"
         android:layout_height="wrap_content"
         android:layout_marginTop="6.0dip"
-        android:layout_below="@+id/tweet_location_text"
+        android:layout_below="@+id/line"
         android:layout_alignLeft="@+id/tweet_content"
         android:gravity="left"
         android:text="来自哈恩客户端啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
@@ -93,7 +96,7 @@
         android:layout_marginRight="6.0dip"
         android:text="今天天气好清爽，处处好风光"
         android:lineSpacingExtra="2.0dip"
-        android:textColor="#777777"
+        android:textColor="@color/txt_weibo"
         android:textColorLink="#777777"
         android:textSize="15.0sp" />
     
@@ -163,7 +166,7 @@
         android:id="@+id/comment_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tweet_location_text"
+        android:layout_below="@+id/line"
         android:layout_toLeftOf="@+id/comment_count"
         android:layout_marginTop="6.0dip"
         android:text="@string/comment"
@@ -174,7 +177,7 @@
         android:id="@+id/comment_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tweet_location_text"
+        android:layout_below="@+id/line"
         android:layout_toLeftOf="@+id/forward_icon"
         android:layout_marginTop="6.0dip"
         android:layout_marginLeft="4.0dip"
@@ -186,7 +189,7 @@
         android:id="@+id/forward_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tweet_location_text"
+        android:layout_below="@+id/line"
         android:layout_toLeftOf="@+id/forward_count"
         android:layout_marginTop="6.0dip"
         android:layout_marginLeft="4.0dip"
@@ -198,7 +201,7 @@
         android:id="@+id/forward_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tweet_location_text"
+        android:layout_below="@+id/line"
         android:layout_alignRight="@+id/tweet_content"
         android:layout_marginTop="6.0dip"
         android:layout_marginLeft="4.0dip"
@@ -208,10 +211,12 @@
         android:textSize="13.0sp" />
     
     <View
+        android:layout_below="@+id/tweet_location_text"
+        android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1.0px"
         android:layout_marginTop="3.0dip"
         android:background="#FFCCCCCC"
-        android:layout_below="@+id/forward_count" />
+        />
    
 </RelativeLayout>

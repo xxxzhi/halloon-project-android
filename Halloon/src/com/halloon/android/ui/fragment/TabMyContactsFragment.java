@@ -33,6 +33,7 @@ import com.halloon.android.data.DBManager;
 import com.halloon.android.data.SettingsManager;
 import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.task.BaseCompatiableTask;
+import com.halloon.android.ui.activity.SlideHomeActivity;
 import com.halloon.android.util.Constants;
 import com.halloon.android.util.PopupWindowManager;
 import com.halloon.android.widget.HalloonTitleBar;
@@ -242,8 +243,12 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 		Bundle bundle = new Bundle();
 		bundle.putString("name", listItems.get(position).getName());
 		bundle.putString("id", listItems.get(position).getOpenId());
-		((InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(),
-				InputMethodManager.HIDE_NOT_ALWAYS);
+		try{
+			((InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(),
+					InputMethodManager.HIDE_NOT_ALWAYS);
+			}catch(Exception e){
+			e.printStackTrace();
+		}
 		cfCallback.setupProfileFragment(bundle);
 	}
 
@@ -272,6 +277,12 @@ public class TabMyContactsFragment extends BaseTitleBarFragment implements OnTou
 			arrayList.add("粉丝");
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, arrayList);
 			pwManager.setupTitleListPopup(R.id.title_text, adapter);
+			break;
+		case OnTitleBarClickListener.LEFT_IMAGE_BUTTON:
+			Activity parent = getActivity().getParent() ;
+			if(parent instanceof SlideHomeActivity){
+				((SlideHomeActivity)parent).toggleSlideMenu();
+			}
 			break;
 		}
 	}

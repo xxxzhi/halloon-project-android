@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.halloon.android.R;
 import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
+import com.halloon.android.ui.activity.SlideHomeActivity;
 import com.halloon.android.widget.HalloonTitleBar;
 
 public class SettingsAboutFragment extends BaseTitleBarFragment implements OnTitleBarClickListener{
@@ -39,6 +40,12 @@ public class SettingsAboutFragment extends BaseTitleBarFragment implements OnTit
 		case OnTitleBarClickListener.LEFT_BUTTON:
 			((InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 			((BaseMultiFragmentActivity) context).backStackAction();
+			break;
+		case OnTitleBarClickListener.LEFT_IMAGE_BUTTON:
+			Activity parent = getActivity().getParent() ;
+			if(parent instanceof SlideHomeActivity){
+				((SlideHomeActivity)parent).toggleSlideMenu();
+			}
 			break;
 		}
 	}

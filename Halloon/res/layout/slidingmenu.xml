@@ -32,6 +32,7 @@
 
     <ScrollView
         android:id="@+id/scrollView1"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/relative_profile" >
@@ -56,7 +57,11 @@
                     style="@style/SlideTextView"
                     android:text="@string/tab_mainpage" />
             </LinearLayout>
-
+			<View
+			    android:layout_width="match_parent"
+			    android:layout_height="1dp"
+			    android:background="@color/line_slide_menu" 
+			    />
             <LinearLayout
                 android:id="@+id/linear_message"
                 style="@style/SlideChildLinear"
@@ -72,7 +77,11 @@
                     style="@style/SlideTextView"
                     android:text="@string/tab_message" />
             </LinearLayout>
-
+<View
+			    android:layout_width="match_parent"
+			    android:layout_height="1dp"
+			    android:background="@color/line_slide_menu" 
+			    />
             <LinearLayout
                 android:id="@+id/linear_contacts"
                 style="@style/SlideChildLinear"
@@ -88,7 +97,11 @@
                     style="@style/SlideTextView"
                     android:text="@string/tab_contacts" />
             </LinearLayout>
-
+<View
+			    android:layout_width="match_parent"
+			    android:layout_height="1dp"
+			    android:background="@color/line_slide_menu" 
+			    />
             <LinearLayout
                 android:id="@+id/linear_square"
                 style="@style/SlideChildLinear"
@@ -104,7 +117,11 @@
                     style="@style/SlideTextView"
                     android:text="@string/tab_square" />
             </LinearLayout>
-
+<View
+			    android:layout_width="match_parent"
+			    android:layout_height="1dp"
+			    android:background="@color/line_slide_menu" 
+			    />
             <LinearLayout
                 android:id="@+id/linear_more"
                 style="@style/SlideChildLinear"

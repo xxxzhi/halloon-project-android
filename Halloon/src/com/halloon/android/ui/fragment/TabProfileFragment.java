@@ -438,10 +438,14 @@ private View tweetMore ;
 							+ "\n"
 							+ NumberUtil.shortenNumericString(context,
 									profileBean.getFavNum()));
+					int tags = 0 ;
+					if(profileBean.getTag() != null ){
+						tags = profileBean.getTag().length ;
+					}
 					tagButton.setText(context.getString(R.string.tag)
 							+ "\n"
 							+ NumberUtil.shortenNumericString(context,
-									profileBean.getTag().length+""));
+									tags+""));
 //					tagView.setContents(profileBean.getTag());
 
 					if (type == OTHER) {

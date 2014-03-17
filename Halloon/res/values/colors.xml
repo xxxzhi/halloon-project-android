@@ -5,7 +5,7 @@
     <color name="tab_page_indicator_underline">#90a4bc</color>
     <color name="main_style_color">#0085DF</color>
     <color name="text_hint_color">#AAAAAA</color>
-    <color name="header_bar_color">#007EB6</color>
+    <color name="header_bar_color">#2a8ae0</color>
     <color name="list_background_color">#FFF5F5F5</color>
     <color name="normal_text_color">#EEEEEE</color>
     <color name="normal_content_color">#777777</color>
@@ -17,6 +17,30 @@
     <color name="indexer_bar_bkg">#aaa</color>
     <color name="indexer_preview_text_color">#0085DF</color>
     <color name="indexer_preview_text_bkg">#aaa</color>
+   <!--     左侧菜单背景色： -->
+    <color name="bg_slide_menu">#364145</color>
+    
+     <!--左侧菜单字体色：-->
+    <color name="txt_slide_menu">#a2adb3</color>
+    
+    <!-- 左侧菜单分割线： -->
+	<color name="line_slide_menu">#44515a</color>
 
-    <color name="bg_slide_menu">#000000</color>
+	
+	
+	
+	<color name="txt_time">#a2adb3</color>
+	<color name="txt_weibo">#707b81</color>
+	<color name="txt_weibo_name">#4794da</color>
+	
+	
+	<color name="bg_weibo">#fbfcff</color>
+	<!-- 右侧微博转发背景色：#eaeff3   -->
+	<color name="bg_trans_weibo">#eaeff3</color>
+<!--
+    右侧顶部蓝色值：
+右侧时间颜色: #a2adb3
+右侧微博字体色：#707b81
+右侧微博背景色：#fbfcff
+右侧微博转发背景色：#eaeff3   -->
 </resources>

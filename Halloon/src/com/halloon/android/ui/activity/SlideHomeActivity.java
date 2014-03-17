@@ -378,6 +378,9 @@ public class SlideHomeActivity extends ActivityGroup implements
 
 			break;
 		}
+		if(intent == null )
+			return ;
+		
 		intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		container.removeAllViews();
 		container.addView(getLocalActivityManager().startActivity("Module1",
