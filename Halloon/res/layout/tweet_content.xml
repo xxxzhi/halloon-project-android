@@ -13,11 +13,23 @@
     
     <com.halloon.android.widget.CircleImageView
         android:id="@+id/tweet_head"
-        android:layout_width="40.0dip"
-        android:layout_height="40.0dip"
+        android:layout_width="55.0dip"
+        android:layout_height="55.0dip"
         android:layout_marginLeft="6.0dip"
         android:layout_marginTop="6.0dip"
         android:src="@drawable/wb_head_default" />
+    
+    
+    <View
+        android:layout_below="@+id/tweet_head"
+        android:id="@+id/line_head"
+        android:layout_width="match_parent"
+        android:layout_height="1.0px"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="3.0dip"
+        android:background="#FFCCCCCC"
+        />
     
     <!-- 
     <ImageView
@@ -92,7 +104,7 @@
         android:id="@+id/tweet_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tweet_head"
+        android:layout_below="@+id/line_head"
         android:layout_marginTop="5dip"
         android:layout_marginRight="6.0dip"
         android:text="今天天气好清爽，处处好风光"
@@ -115,7 +127,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tweet_image"
-        android:layout_alignLeft="@+id/tweet_title"
+        android:layout_alignLeft="@+id/tweet_head"
         android:layout_marginTop="6.0dip"
         android:layout_marginRight="6.0dip"
         android:background="@drawable/round_corner"
