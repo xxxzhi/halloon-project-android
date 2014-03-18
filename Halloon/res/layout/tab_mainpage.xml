@@ -20,13 +20,13 @@
             android:cacheColorHint="#00000000"
             android:fadingEdge="none"
             android:fadingEdgeLength="0.0dip"
-            android:dividerHeight="8dip"
+            android:dividerHeight="12dip"
             android:divider="#FFF5F5F5"
-            android:paddingLeft="7dp"
-            android:paddingRight="7dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="8dp"
             android:fastScrollEnabled="true"
             android:listSelector="@drawable/tweet_content_list_bg_selector"
-            android:background="#FFF5F5F5"
+            android:background="#FFf5F5F5"
             android:longClickable="true" />
         
     </com.halloon.android.widget.HalloonPullableView>

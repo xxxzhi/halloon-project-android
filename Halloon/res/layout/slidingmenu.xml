@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/slide_width"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_slide_menu" >
 
@@ -19,6 +19,17 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/ic_launcher" />
 
+        <ImageView
+        android:id="@+id/my_sex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_icon"
+        android:layout_alignRight="@+id/iv_icon"
+        android:layout_marginBottom="6dip"
+        android:layout_marginRight="6dip"
+        android:src="@drawable/wb_icon_male"
+        android:scaleType="centerInside" />
+        
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"

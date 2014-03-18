@@ -16,12 +16,12 @@
     
     <ProgressBar
         android:id="@+id/bar_head"
-        android:layout_width="15.0dip"
-        android:layout_height="15.0dip"
+        android:layout_width="25.0dip"
+        android:layout_height="25.0dip"
         android:layout_toLeftOf="@+id/update_text"
         android:layout_centerVertical="true"
-        android:layout_marginRight="20.0dip"
-        android:visibility="gone" />
+        android:layout_marginRight="40.0dip"
+        android:visibility="visible" />
     
     <TextView 
         android:layout_marginTop="15dp"
