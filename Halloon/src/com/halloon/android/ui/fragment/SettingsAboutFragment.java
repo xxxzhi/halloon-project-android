@@ -33,7 +33,6 @@ public class SettingsAboutFragment extends BaseTitleBarFragment implements OnTit
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		content.addView(inflater.inflate(R.layout.about_fragment, null, false));
 		
-		titleBar.setOnTitleBarClickListener(this);
 	}
 
 	@Override

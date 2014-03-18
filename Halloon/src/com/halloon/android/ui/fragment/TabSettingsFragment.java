@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -14,6 +15,9 @@ import android.widget.RelativeLayout;
 
 import com.halloon.android.R;
 import com.halloon.android.image.ImageLoader;
+import com.halloon.android.listener.OnTitleBarClickListener;
+import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
+import com.halloon.android.ui.activity.SlideHomeActivity;
 import com.halloon.android.util.NumberUtil;
 import com.halloon.android.widget.HalloonTitleBar;
 
@@ -29,6 +33,7 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 	@Override
 	protected void init(HalloonTitleBar titleBar, RelativeLayout content) {
 		titleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_NONE);
+		titleBar.setOnTitleBarClickListener(this);
 		titleBar.getTitleTextView().setText(getString(R.string.tab_more));
 		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		content.addView(inflater.inflate(R.layout.tab_settings, null, false));
@@ -81,7 +86,23 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 			}
 		});
 	}
-
+	@Override
+	public void onTitleContentClick(int contentEnum) {
+		switch(contentEnum){
+		case OnTitleBarClickListener.LEFT_BUTTON:
+			((InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+			((BaseMultiFragmentActivity) context).backStackAction();
+			break;
+		case OnTitleBarClickListener.LEFT_IMAGE_BUTTON:
+			Activity parent = getActivity().getParent() ;
+			if(parent instanceof SlideHomeActivity){
+				((SlideHomeActivity)parent).toggleSlideMenu();
+			}
+			break;
+		}
+	}
+	
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
