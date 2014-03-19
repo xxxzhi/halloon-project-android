@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:halloon="http://schemas.android.com/apk/res/com.halloon.android"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/parent"
     android:layout_marginLeft="7dp"
     android:layout_marginRight="7dp"
     android:background="@drawable/bg_weibo_item"
     tools:context=".ui.activity.OneActivity" >
-    
+
     <com.halloon.android.widget.CircleImageView
         android:id="@+id/tweet_head"
-        android:layout_width="55.0dip"
-        android:layout_height="55.0dip"
+        android:layout_width="48.0dip"
+        android:layout_height="48.0dip"
         android:layout_marginLeft="6.0dip"
         android:layout_marginTop="6.0dip"
         android:src="@drawable/wb_head_default" />
-    
     
     <View
         android:layout_below="@+id/tweet_head"
@@ -37,68 +35,69 @@
         android:layout_height="40.0dip"
         android:layout_marginLeft="6.0dip"
         android:layout_marginTop="6.0dip"
-        android:src="@drawable/avatar_mask_shadow" /> -->
+        android:src="@drawable/avatar_mask_shadow" />
+    -->
 
     <TextView
         android:id="@+id/tweet_title"
         android:layout_width="wrap_content"
         android:layout_height="22.0dip"
-        android:layout_toRightOf="@+id/tweet_head"
-        android:layout_marginTop="6.0dip"
-        android:layout_marginLeft="6.0dip"
         android:layout_marginBottom="3.0dip"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginTop="6.0dip"
+        android:layout_toRightOf="@+id/tweet_head"
         android:text="阿蔡"
         android:textColor="@color/txt_weibo_name"
         android:textSize="16.0sp" />
-    
-    <ImageView 
+
+    <ImageView
         android:id="@+id/is_vip"
         android:layout_width="14.0dip"
         android:layout_height="14.0dip"
-        android:layout_toRightOf="@+id/tweet_title"
         android:layout_alignTop="@+id/tweet_title"
         android:layout_marginLeft="2.0dip"
-        android:layout_marginTop="3.0dip"
         android:layout_marginRight="2.0dip"
+        android:layout_marginTop="3.0dip"
+        android:layout_toRightOf="@+id/tweet_title"
         android:background="@drawable/vip" />
 
     <TextView
         android:id="@+id/tweet_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="6.0dip"
-        android:layout_marginLeft="6dp"
         android:layout_below="@+id/tweet_title"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6.0dip"
         android:layout_toRightOf="@+id/image_icon"
         android:gravity="right"
         android:text="24分钟"
         android:textColor="@color/txt_time"
         android:textSize="13.0sp" />
-    
-    <TextView 
+
+    <TextView
         android:id="@+id/tweet_from"
         android:layout_width="170.0dip"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tweet_title"
+        android:layout_marginLeft="4dp"
         android:layout_toRightOf="@+id/tweet_timestamp"
         android:gravity="left"
-        android:layout_marginLeft="4dp"
-        android:text="来自哈恩客户端啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
         android:singleLine="true"
+        android:text="来自哈恩客户端啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
         android:textColor="#777777"
         android:textSize="13.0sp" />
-    
+
     <ImageView
         android:id="@+id/image_icon"
         android:layout_width="17.0dip"
         android:layout_height="17.0dip"
-        android:layout_toRightOf="@+id/tweet_head"
         android:layout_alignTop="@+id/tweet_timestamp"
-        android:layout_marginTop="0.0dip"
         android:layout_marginLeft="6.0dip"
-        android:visibility="gone"
         android:layout_marginRight="4.0dip"
-        android:background="@drawable/contain_image_2" />
+        android:layout_marginTop="0.0dip"
+        android:layout_toRightOf="@+id/tweet_head"
+        android:background="@drawable/contain_image_2"
+        android:visibility="gone" />
 
     <com.halloon.android.widget.ButtonStyleTextView
         android:id="@+id/tweet_content"
@@ -112,27 +111,27 @@
         android:textColor="@color/txt_weibo"
         android:textColorLink="#777777"
         android:textSize="15.0sp" />
-    
+
     <ImageView
         android:id="@+id/tweet_image"
         android:layout_width="80.0dip"
         android:layout_height="80.0dip"
+        android:layout_alignLeft="@+id/tweet_head"
         android:layout_below="@+id/tweet_content"
-        android:layout_marginTop="6.0dip"
         android:layout_marginLeft="6.0dip"
-        android:layout_alignLeft="@+id/tweet_title" />
-        
+        android:layout_marginTop="6.0dip" />
+
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tweet_image"
         android:layout_alignLeft="@+id/tweet_head"
-        android:layout_marginTop="6.0dip"
+        android:layout_below="@+id/tweet_image"
         android:layout_marginRight="6.0dip"
+        android:layout_marginTop="6.0dip"
         android:background="@drawable/round_corner"
         android:visibility="gone" >
-        
+
         <com.halloon.android.widget.ButtonStyleTextView
             android:id="@+id/forward_content"
             android:layout_width="match_parent"
@@ -141,94 +140,93 @@
             android:textColor="#888888"
             android:textColorLink="#888888"
             android:textSize="15.0sp" />
-        
+
         <ImageView
             android:id="@+id/forward_image"
             android:layout_width="80.0dip"
             android:layout_height="80.0dip"
             android:layout_below="@+id/forward_content"
-            android:layout_marginTop="6.0dip"
-            android:layout_marginLeft="6.0dip" />
-        
+            android:layout_marginLeft="6.0dip"
+            android:layout_marginTop="6.0dip" />
+
         <TextView
             android:id="@+id/forward_location_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/forward_image"
+            android:background="@drawable/round_corner_light_blue"
             android:text="sdf"
-            android:textSize="13.0sp"
             android:textColor="#888888"
-            android:background="@drawable/round_corner_light_blue" />
-        
+            android:textSize="13.0sp" />
     </RelativeLayout>
-    
+
     <TextView
         android:id="@+id/tweet_location_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativeLayout1"
-        android:layout_marginTop="6.0dip"
         android:layout_marginRight="6.0dip"
+        android:layout_marginTop="6.0dip"
+        android:background="@drawable/round_corner_light_blue"
         android:text="我在XXX"
         android:textColor="#777777"
-        android:textSize="13.0sp"
-        android:background="@drawable/round_corner_light_blue" />
+        android:textSize="13.0sp" />
 
-    <TextView
-        android:id="@+id/comment_icon"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/line"
-        android:layout_toLeftOf="@+id/comment_count"
-        android:layout_marginTop="6.0dip"
-        android:text="@string/comment"
-        android:textColor="#333333"
-        android:textSize="13.0sp" />
-    
-    <TextView
-        android:id="@+id/comment_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/line"
-        android:layout_toLeftOf="@+id/forward_icon"
-        android:layout_marginTop="6.0dip"
-        android:layout_marginLeft="4.0dip"
-        android:text="2"
-        android:textColor="#777777"
-        android:textSize="13.0sp" />
-    
-    <TextView
-        android:id="@+id/forward_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/line"
-        android:layout_toLeftOf="@+id/forward_count"
-        android:layout_marginTop="6.0dip"
-        android:layout_marginLeft="4.0dip"
-        android:text="@string/retweet"
-        android:textColor="#333333"
-        android:textSize="13.0sp" />
-    
-    <TextView
-        android:id="@+id/forward_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/line"
-        android:layout_alignRight="@+id/tweet_content"
-        android:layout_marginTop="6.0dip"
-        android:layout_marginLeft="4.0dip"
-        android:layout_marginRight="6.0dip"
-        android:text="2"
-        android:textColor="#777777"
-        android:textSize="13.0sp" />
-    
+        android:layout_marginTop="6.0dip" >
+
+        <TextView
+            android:id="@+id/forward_icon"
+            style="@style/LineTweetIcon"
+            android:singleLine="true"
+            android:text="@string/retweet" />
+
+        <TextView
+            android:id="@+id/forward_count"
+            style="@style/LineTweetText"
+            android:text="2" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/line_partition" />
+
+        <TextView
+            android:id="@+id/comment_icon"
+            style="@style/LineTweetIcon"
+            android:singleLine="true"
+            android:text="@string/comment" />
+
+        <TextView
+            android:id="@+id/comment_count"
+            style="@style/LineTweetText"
+            android:text="2" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/line_partition" />
+
+        <TextView
+            android:id="@+id/like_icon"
+            style="@style/LineTweetIcon"
+            android:text="@string/like" />
+
+        <TextView
+            android:id="@+id/like_count"
+            style="@style/LineTweetText"
+            android:text="2" />
+    </LinearLayout>
+
     <View
-        android:layout_below="@+id/tweet_location_text"
         android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1.0px"
+        android:layout_below="@+id/tweet_location_text"
         android:layout_marginTop="3.0dip"
-        android:background="#FFCCCCCC"
-        />
-   
+        android:background="#FFCCCCCC" />
+
 </RelativeLayout>

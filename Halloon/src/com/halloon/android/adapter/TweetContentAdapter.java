@@ -1,6 +1,9 @@
 package com.halloon.android.adapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONException;
 
@@ -16,13 +19,19 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
 import com.halloon.android.bean.TweetBean;
+import com.halloon.android.data.ContentManager;
+import com.halloon.android.data.DBManager;
+import com.halloon.android.data.SettingsManager;
 import com.halloon.android.image.ImageLoader;
+import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.ui.fragment.TabMainPageFragment.MainPageFragmentCallback;
 import com.halloon.android.ui.fragment.TweetDetailFragment.TweetDetailFragmentCallback;
+import com.halloon.android.util.Constants;
 import com.halloon.android.util.ContentTransUtil;
 import com.halloon.android.util.GifDecoder;
 import com.halloon.android.util.TimeUtil;
@@ -88,6 +97,7 @@ public class TweetContentAdapter extends BaseAdapter {
 			holder.from = (TextView) convertView.findViewById(R.id.tweet_from);
 			holder.commentCount = (TextView) convertView.findViewById(R.id.comment_count);
 			holder.forwardCount = (TextView) convertView.findViewById(R.id.forward_count);
+			holder.like = (TextView) convertView.findViewById(R.id.like_count);
 			holder.tweetContent = (ButtonStyleTextView) convertView.findViewById(R.id.tweet_content);
 			holder.tweetLocationText = (TextView) convertView.findViewById(R.id.tweet_location_text);
 			holder.tweetImage = (ImageView) convertView.findViewById(R.id.tweet_image);
@@ -95,6 +105,7 @@ public class TweetContentAdapter extends BaseAdapter {
 			holder.forwardLocationText = (TextView) convertView.findViewById(R.id.forward_location_text);
 			holder.forwardImage = (ImageView) convertView.findViewById(R.id.forward_image);
 			holder.hasImage = (ImageView) convertView.findViewById(R.id.image_icon);
+			
 			holder.sourceLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayout1);
 			convertView.setTag(holder);
 		} else {
@@ -134,6 +145,29 @@ public class TweetContentAdapter extends BaseAdapter {
 							context.startActivity(intent);
 						}
 						break;
+					case R.id.like_count:
+						new BaseCompatiableTask<Void, Void, Boolean>() {
+
+							@Override
+							protected  Boolean doInBackground(Void... arg0) {
+								boolean res = false;
+								try {
+									res = ContentManager.getInstance(application).like(tweetBean.getId());
+								} catch (Exception e) {
+									e.printStackTrace();
+									res = false;
+								}
+								return res;
+							}
+
+							@Override
+							protected void onPostExecute( Boolean result) {
+								super.onPostExecute(result);
+								tweetBean.setLike(result);
+								notifyDataSetChanged();
+							}
+						}.taskExecute();
+						break;
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -143,7 +177,15 @@ public class TweetContentAdapter extends BaseAdapter {
 		holder.headImage.setOnClickListener(tweetListClickListener);
 		holder.tweetImage.setOnClickListener(tweetListClickListener);
 		holder.forwardImage.setOnClickListener(tweetListClickListener);
+		holder.like.setOnClickListener(tweetListClickListener);
 
+		if(tweetBean.isLike()){
+			holder.like.setText("+1");
+		}else{
+			holder.like.setText("");
+		}
+		
+		
 		ImageLoader.getInstance(context).displayImage(tweetBean.getHead() + "/100", holder.headImage, 0, null);
 		holder.title.setText(tweetBean.getNick());
 		if (tweetBean.getIsVip() == 1) {
@@ -224,11 +266,13 @@ public class TweetContentAdapter extends BaseAdapter {
 	}
 
 	private static final class TweetViewHolder {
+		
 		ImageView headImage;
 		TextView title;
 		ImageView isVip;
 		TextView timestamp;
 		TextView from;
+		TextView like;
 		TextView commentCount;
 		TextView forwardCount;
 		ButtonStyleTextView tweetContent;

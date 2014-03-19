@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.halloon.android.bean.PrivateDataBean;
 import com.halloon.android.bean.ProfileBean;
@@ -110,6 +111,9 @@ public class DBManager extends SQLiteOpenHelper {
 		private static final String TWEET_LONGITUDE = "tweet_longitude";
 		private static final String TWEET_LATITUDE = "tweet_latitude";
 		private static final String TWEET_GEO = "tweet_geo";
+		private static final String TWEET_I_LIKE = "tweet_I_like";
+
+		
 	}
 
 	private class PrivateColumns {
@@ -193,6 +197,28 @@ public class DBManager extends SQLiteOpenHelper {
 		return profileBean;
 	}
 
+	/**
+	 * 
+	 * @param tweetBean
+	 */
+	public void updateTweet(TweetBean tweetBean){
+		if(tweetBean.getId() == null || tweetBean.getId().length() == 0){
+			Log.e("DBManager", "tweetBean.getId()  ="+tweetBean.getId());
+			return ;
+		}
+		
+		SQLiteDatabase db = getWritableDatabase();
+
+		ContentValues cv = createTweetsContent(tweetBean);
+		db.update(TABLE_TWEET_LIST, cv, TweetsColumns.TWEET_ID +" = ?", new String[]{tweetBean.getId()});
+		
+		db.close();
+	}
+	/**
+	 * 
+	 * @param tweetBeans
+	 * @param isUpdate
+	 */
 	public void addTweetListContent(ArrayList<TweetBean> tweetBeans, boolean isUpdate) {
 		SQLiteDatabase db = getWritableDatabase();
 
@@ -288,6 +314,8 @@ public class DBManager extends SQLiteOpenHelper {
 				tweetList.setLatitude(cursor.getString(cursor.getColumnIndex(TweetsColumns.TWEET_LATITUDE)));
 				tweetList.setGeo(cursor.getString(cursor.getColumnIndex(TweetsColumns.TWEET_GEO)));
 				tweetList.setOpenId(cursor.getString(cursor.getColumnIndex(TweetsColumns.TWEET_USER_ID)));
+				if(!cursor.isNull(cursor.getColumnIndex(TweetsColumns.TWEET_I_LIKE)))
+					tweetList.setLike(cursor.getInt(cursor.getColumnIndex(TweetsColumns.TWEET_I_LIKE) ) > 0);
 
 				tweetLists.add(tweetList);
 			} while (cursor.moveToNext());
@@ -349,6 +377,13 @@ public class DBManager extends SQLiteOpenHelper {
 		return privateList;
 	}
 
+	
+	
+	/**
+	 * used to private message list
+	 * @param tweetBeans
+	 * @param isUpdate
+	 */
 	public void addAtList(ArrayList<TweetBean> tweetBeans, boolean isUpdate) {
 		SQLiteDatabase db = getWritableDatabase();
 
@@ -516,7 +551,9 @@ public class DBManager extends SQLiteOpenHelper {
 			cv.put(TweetsColumns.TWEET_LATITUDE, tweetBean.getLatitude());
 			cv.put(TweetsColumns.TWEET_GEO, tweetBean.getGeo());
 		}
-
+		
+		cv.put(TweetsColumns.TWEET_I_LIKE, tweetBean.isLike());
+		
 		return cv;
 	}
 
@@ -648,6 +685,7 @@ public class DBManager extends SQLiteOpenHelper {
 				                          TweetsColumns.TWEET_IS_VIP + " TEXT," + 
 		                                  TweetsColumns.TWEET_LONGITUDE + " TEXT," + 
 				                          TweetsColumns.TWEET_LATITUDE + " TEXT," + 
+		                                  TweetsColumns.TWEET_I_LIKE + " BOOLEAN," +
 		                                  TweetsColumns.TWEET_GEO + " TEXT)";
 
 		String CREATE_PRIVATE_LIST_TABLE = "CREATE TABLE IF NOT EXISTS " + 

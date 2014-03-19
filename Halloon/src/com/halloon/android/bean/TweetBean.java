@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 public class TweetBean{
 
-	
+	private boolean like = false;
 	private String openId;
 	private String id;
 	private String from;
@@ -61,6 +61,7 @@ public class TweetBean{
 		this.longitude = tweetBean.longitude;
 		this.latitude = tweetBean.latitude;
 		this.geo = tweetBean.geo;
+		this.like = tweetBean.like;
 	}
 	
 	public Bundle toBundle(){
@@ -89,7 +90,7 @@ public class TweetBean{
 		bundle.putString("longitude", longitude);
 		bundle.putString("latitude", latitude);
 		bundle.putString("geo", geo);
-		
+		bundle.putBoolean("like", like);
 		return bundle;
 	}
 	
@@ -121,6 +122,7 @@ public class TweetBean{
 		longitude = bundle.getString("longitude");
 		latitude = bundle.getString("latitude");
 		geo = bundle.getString("geo");
+		like = bundle.getBoolean("like");
 	}
 	
 	public void setOpenId(String openId){
@@ -360,5 +362,12 @@ public class TweetBean{
 	public String getGeo() {
 		return geo;
 	}
-	
+	public boolean isLike() {
+		return like;
+	}
+
+	public void setLike(boolean like) {
+		this.like = like;
+	}
+
 }
