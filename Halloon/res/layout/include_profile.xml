@@ -82,7 +82,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/background"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10.0dip"
         android:orientation="horizontal" >
         
         <Button
@@ -94,6 +93,13 @@
             android:textColor="#FF666666"
             android:textSize="14sp"
             android:background="@drawable/selector_profilecount_left" />
+          <View
+            android:layout_width="1px"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_height="match_parent"
+            android:background="@color/line_partition" />
+        
         
         <Button
             android:id="@+id/idol"
@@ -104,7 +110,12 @@
             android:textColor="#FF666666"
             android:textSize="14sp"
             android:background="@drawable/selector_profilecount_middle" />
-        
+          <View
+            android:layout_width="1px"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_height="match_parent"
+            android:background="@color/line_partition" />
         <Button
             android:id="@+id/fans"
             android:layout_width="0dp"
@@ -114,7 +125,12 @@
             android:textColor="#FF666666"
             android:textSize="14sp"
             android:background="@drawable/selector_profilecount_middle" />
-        
+          <View
+            android:layout_width="1px"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_height="match_parent"
+            android:background="@color/line_partition" />
         <Button
             android:id="@+id/fav"
             android:layout_width="0dp"
@@ -124,7 +140,12 @@
             android:textColor="#FF666666"
             android:textSize="14sp"
             android:background="@drawable/selector_profilecount_middle" />
-        
+          <View
+            android:layout_width="1px"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_height="match_parent"
+            android:background="@color/line_partition" />
         <Button
             android:id="@+id/tag"
             android:layout_width="0dp"

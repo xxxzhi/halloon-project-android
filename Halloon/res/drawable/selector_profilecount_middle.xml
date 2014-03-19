@@ -5,7 +5,7 @@
         android:state_focused="false"
         android:state_selected="false"
         android:state_pressed="false"
-        android:drawable="@drawable/background_profile_count_middle_normal" />
+        android:drawable="@color/bg_weibo" />
     
     <item
         android:state_focused="true"
