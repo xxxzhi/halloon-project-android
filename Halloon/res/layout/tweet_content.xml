@@ -118,7 +118,7 @@
         android:id="@+id/tweet_image"
         android:layout_width="80.0dip"
         android:layout_height="80.0dip"
-        android:layout_alignLeft="@+id/tweet_title"
+        android:layout_alignLeft="@+id/tweet_head"
         android:layout_below="@+id/tweet_content"
         android:layout_marginLeft="6.0dip"
         android:layout_marginTop="6.0dip" />
