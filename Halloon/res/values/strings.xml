@@ -66,6 +66,7 @@
     <string name="from">from</string>
     <string name="re_tweet">retweet:</string>
     <string name="retweet">retweet</string>
+    <string name="like">like</string>
     <string name="copy">copy</string>
     <string name="delete">delete</string>
     <string name="say_something">say something</string>

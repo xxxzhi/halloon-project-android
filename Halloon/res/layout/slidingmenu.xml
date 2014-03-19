@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="230dp"
     android:layout_height="match_parent"
     android:background="@color/bg_slide_menu" >
 
     <RelativeLayout
         android:id="@+id/relative_profile"
         android:layout_width="match_parent"
+        android:background="@color/bg_slide_menu"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:paddingTop="40dp" >
@@ -20,16 +21,16 @@
             android:src="@drawable/ic_launcher" />
 
         <ImageView
-        android:id="@+id/my_sex"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/iv_icon"
-        android:layout_alignRight="@+id/iv_icon"
-        android:layout_marginBottom="6dip"
-        android:layout_marginRight="6dip"
-        android:src="@drawable/wb_icon_male"
-        android:scaleType="centerInside" />
-        
+            android:id="@+id/my_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/iv_icon"
+            android:layout_alignRight="@+id/iv_icon"
+            android:layout_marginBottom="6dip"
+            android:layout_marginRight="6dip"
+            android:scaleType="centerInside"
+            android:src="@drawable/wb_icon_male" />
+
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
@@ -43,10 +44,11 @@
 
     <ScrollView
         android:id="@+id/scrollView1"
-        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/relative_profile" >
+        android:background="@color/bg_slide_menu"
+        android:layout_below="@id/relative_profile"
+        android:paddingTop="5dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,7 +58,7 @@
             <LinearLayout
                 android:id="@+id/linear_main"
                 style="@style/SlideChildLinear"
-                android:layout_below="@+id/relative_profile" >
+                >
 
                 <ImageView
                     android:id="@+id/icon"
@@ -68,15 +70,16 @@
                     style="@style/SlideTextView"
                     android:text="@string/tab_mainpage" />
             </LinearLayout>
-			<View
-			    android:layout_width="match_parent"
-			    android:layout_height="1dp"
-			    android:background="@color/line_slide_menu" 
-			    />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_slide_menu" />
+
             <LinearLayout
                 android:id="@+id/linear_message"
                 style="@style/SlideChildLinear"
-                android:layout_below="@+id/linear_main" >
+                >
 
                 <ImageView
                     android:id="@+id/icon"
@@ -88,15 +91,16 @@
                     style="@style/SlideTextView"
                     android:text="@string/tab_message" />
             </LinearLayout>
-<View
-			    android:layout_width="match_parent"
-			    android:layout_height="1dp"
-			    android:background="@color/line_slide_menu" 
-			    />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_slide_menu" />
+
             <LinearLayout
                 android:id="@+id/linear_contacts"
                 style="@style/SlideChildLinear"
-                android:layout_below="@+id/linear_message" >
+                 >
 
                 <ImageView
                     android:id="@+id/icon"
@@ -108,15 +112,16 @@
                     style="@style/SlideTextView"
                     android:text="@string/tab_contacts" />
             </LinearLayout>
-<View
-			    android:layout_width="match_parent"
-			    android:layout_height="1dp"
-			    android:background="@color/line_slide_menu" 
-			    />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_slide_menu" />
+
             <LinearLayout
                 android:id="@+id/linear_square"
                 style="@style/SlideChildLinear"
-                android:layout_below="@+id/linear_contacts" >
+                >
 
                 <ImageView
                     android:id="@+id/icon"
@@ -128,11 +133,12 @@
                     style="@style/SlideTextView"
                     android:text="@string/tab_square" />
             </LinearLayout>
-<View
-			    android:layout_width="match_parent"
-			    android:layout_height="1dp"
-			    android:background="@color/line_slide_menu" 
-			    />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_slide_menu" />
+
             <LinearLayout
                 android:id="@+id/linear_more"
                 style="@style/SlideChildLinear"

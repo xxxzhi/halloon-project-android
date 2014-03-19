@@ -3,6 +3,7 @@ package com.halloon.android.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +14,7 @@ import android.util.Log;
 
 import com.halloon.android.api.FavAPI;
 import com.halloon.android.api.HalloonStatusesAPI;
+import com.halloon.android.api.HalloonTAPI;
 import com.halloon.android.api.LBSAPI;
 import com.halloon.android.api.OtherAPI;
 import com.halloon.android.api.PrivateMessageAPI;
@@ -27,8 +29,10 @@ import com.tencent.weibo.api.FriendsAPI;
 import com.tencent.weibo.api.StatusesAPI;
 import com.tencent.weibo.api.TAPI;
 import com.tencent.weibo.api.UserAPI;
+import com.tencent.weibo.beans.OAuth;
 import com.tencent.weibo.constants.OAuthConstants;
 import com.tencent.weibo.oauthv2.OAuthV2;
+import com.tencent.weibo.utils.QArrayList;
 
 public class ContentManager {
 	private static ContentManager instance;
@@ -214,6 +218,9 @@ public class ContentManager {
 		return returnInt;
 	}
 
+	
+	
+	
 	/**
 	 * 
 	 * @param myInfo
@@ -592,6 +599,10 @@ public class ContentManager {
 
 	}
 
+	public boolean getTweetLike(String id,String name){
+		return false;
+	}
+	
 	/**
 	 * 从微博唯一ID获取单条微博
 	 * 
@@ -980,6 +991,89 @@ public class ContentManager {
 		return returnInts;
 	}
 
+	
+	/**
+	 * 赞一条微博
+	 * 
+	 * @param id  微博id
+	 */
+	public boolean like(String id)
+			throws Exception {
+		
+		HalloonTAPI tapi = new HalloonTAPI(OAuthConstants.OAUTH_VERSION_2_A);
+		int[] returnInts = new int[2];
+		returnInts[0] = 1;
+		try {
+			JSONObject feedBack = new JSONObject(tapi.like(preoauth, "json", id));
+			returnInts[0] = feedBack.getInt("ret");
+			returnInts[1] = feedBack.getInt("errcode");
+		} catch (Exception e) {
+			Log.d(Constants.LOG_TAG, "COMMENT_ERROR:" + e);
+		}
+		
+		return returnInts[0] == 0 || returnInts[0] == 4 && returnInts[1] == 6;
+	}
+    
+	
+	/**
+	 * 取消赞一条微博
+	 * 
+	 * @param id  微博id
+	 * @param favoriteId 
+	 */
+	public boolean unlike(String id,String favoriteId)
+			throws Exception {
+		HalloonTAPI tapi = new HalloonTAPI(OAuthConstants.OAUTH_VERSION_2_A);
+		int[] returnInts = new int[2];
+		returnInts[0] = 1;
+		try {
+			JSONObject feedBack = new JSONObject(tapi.unlike(preoauth, "json", id,favoriteId));
+			returnInts[0] = feedBack.getInt("ret");
+			returnInts[1] = feedBack.getInt("errcode");
+		} catch (Exception e) {
+			Log.d(Constants.LOG_TAG, "COMMENT_ERROR:" + e);
+		}
+		
+		return returnInts[0] == 0 ;
+	}
+	
+	/**
+	 * 获取自己是否赞了一条微博
+	 * 
+	 * @param id  微博id
+	 * @param name
+	 * @param openid
+	 */
+	public boolean haslike(OAuth oAuth, String format,String id,String name,String openid)
+			throws Exception {
+		HalloonTAPI tapi = new HalloonTAPI(OAuthConstants.OAUTH_VERSION_2_A);
+		int[] returnInts = new int[2];
+		returnInts[0] = 1;
+		try {
+			JSONObject feedBack = new JSONObject(tapi.haslike(preoauth, "json", id,name,openid));
+			returnInts[0] = feedBack.getInt("ret");
+			returnInts[1] = feedBack.getInt("errcode");
+		} catch (Exception e) {
+			Log.d(Constants.LOG_TAG, "COMMENT_ERROR:" + e);
+		}
+		
+		return returnInts[0] == 0 ;
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * 回复带经纬度微博
 	 * 

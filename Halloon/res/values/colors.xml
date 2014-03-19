@@ -28,15 +28,17 @@
 
 	
 	
-	
 	<color name="txt_time">#a2adb3</color>
-	<color name="txt_weibo">#707b81</color>
+	<color name="txt_weibo">#777777</color>
 	<color name="txt_weibo_name">#4794da</color>
 	
 	
 	<color name="bg_weibo">#fbfcff</color>
 	<!-- 右侧微博转发背景色：#eaeff3   -->
 	<color name="bg_trans_weibo">#eaeff3</color>
+	
+	<color name="line_partition">#efcbd4d9</color>
+	
 <!--
     右侧顶部蓝色值：
 右侧时间颜色: #a2adb3

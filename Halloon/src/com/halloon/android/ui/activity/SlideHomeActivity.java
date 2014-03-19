@@ -125,17 +125,17 @@ public class SlideHomeActivity extends ActivityGroup implements
 				.findViewById(R.id.linear_square);
 		LinearLayout more = (LinearLayout) menuView
 				.findViewById(R.id.linear_more);
-		
+
 		square.setOnClickListener(this);
 		profile.setOnClickListener(this);
 		main.setOnClickListener(this);
 		contacts.setOnClickListener(this);
 		message.setOnClickListener(this);
 		more.setOnClickListener(this);
-		
-		
+
 		myHeadIcon = (ImageView) profile.findViewById(R.id.iv_icon);
 		myNick = (TextView) profile.findViewById(R.id.tv_name);
+		mySex = (ImageView) profile.findViewById(R.id.my_sex);
 		loadProfile();
 
 		container = (ViewGroup) findViewById(R.id.container);
@@ -219,10 +219,10 @@ public class SlideHomeActivity extends ActivityGroup implements
 
 	}
 
-	public void toggleSlideMenu(){
+	public void toggleSlideMenu() {
 		menu.toggle(true);
 	}
-	
+
 	public String getLocalIpAddress() {
 		try {
 			for (Enumeration<NetworkInterface> en = NetworkInterface
@@ -283,17 +283,17 @@ public class SlideHomeActivity extends ActivityGroup implements
 							.displayImage(profileBean.getHead() + "/100",
 									myHeadIcon, 1, null);
 					myNick.setText(profileBean.getNick());
-					// if (profileBean.getSex() != null) {
-					// if (profileBean.getSex().equals("男")) {
-					// mySex.setVisibility(View.VISIBLE);
-					// mySex.setImageResource(R.drawable.wb_icon_male);
-					// } else if (profileBean.getSex().equals("女")) {
-					// mySex.setVisibility(View.VISIBLE);
-					// mySex.setImageResource(R.drawable.wb_icon_female);
-					// } else {
-					// mySex.setVisibility(View.GONE);
-					// }
-					// }
+					if (profileBean.getSex() != null) {
+						if (profileBean.getSex().equals("男")) {
+							mySex.setVisibility(View.VISIBLE);
+							mySex.setImageResource(R.drawable.wb_icon_male);
+						} else if (profileBean.getSex().equals("女")) {
+							mySex.setVisibility(View.VISIBLE);
+							mySex.setImageResource(R.drawable.wb_icon_female);
+						} else {
+							mySex.setVisibility(View.GONE);
+						}
+					}
 
 					// mySign.setText(profileBean.getIntroduction());
 					// tweetButton.setText(context.getString(R.string.wblog)
@@ -361,12 +361,13 @@ public class SlideHomeActivity extends ActivityGroup implements
 			intent.setClass(this, MyMessageActivity.class);
 			break;
 		case R.id.linear_square:
-//			intent = new Intent();
-//			intent.putExtra("accesstoken",
-//					getIntent().getStringExtra("accessToken"));
-//			intent.putExtra("oauth", getIntent().getSerializableExtra("oauth"));
-//			intent.putExtra("flag", getIntent().getIntExtra("flag", 1));
-//			intent.setClass(this, MyMessageActivity.class);
+			// intent = new Intent();
+			// intent.putExtra("accesstoken",
+			// getIntent().getStringExtra("accessToken"));
+			// intent.putExtra("oauth",
+			// getIntent().getSerializableExtra("oauth"));
+			// intent.putExtra("flag", getIntent().getIntExtra("flag", 1));
+			// intent.setClass(this, MyMessageActivity.class);
 			break;
 		case R.id.linear_more:
 			intent = new Intent();
@@ -378,9 +379,9 @@ public class SlideHomeActivity extends ActivityGroup implements
 
 			break;
 		}
-		if(intent == null )
-			return ;
-		
+		if (intent == null)
+			return;
+
 		intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		container.removeAllViews();
 		container.addView(getLocalActivityManager().startActivity("Module1",
