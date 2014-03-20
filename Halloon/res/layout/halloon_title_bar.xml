@@ -25,7 +25,7 @@
         android:layout_marginLeft="6.0dip"
         android:textColor="#EEEEEE"
         android:textSize="14.0dip"
-        android:background="@drawable/send_tweet_button_selector" />
+        android:background="@drawable/selector_menu" />
     
     <Button
         android:id="@+id/left_button"

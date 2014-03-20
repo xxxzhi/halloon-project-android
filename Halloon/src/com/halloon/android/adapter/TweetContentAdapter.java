@@ -146,13 +146,18 @@ public class TweetContentAdapter extends BaseAdapter {
 						}
 						break;
 					case R.id.like_count:
+						
 						new BaseCompatiableTask<Void, Void, Boolean>() {
 
 							@Override
 							protected  Boolean doInBackground(Void... arg0) {
 								boolean res = false;
 								try {
-									res = ContentManager.getInstance(application).like(tweetBean.getId());
+									if(!tweetBean.isLike()){
+										res = ContentManager.getInstance(application).like(tweetBean.getId());
+									}else{
+										res = ContentManager.getInstance(application).like(tweetBean.getId());
+									}
 								} catch (Exception e) {
 									e.printStackTrace();
 									res = false;
@@ -163,7 +168,10 @@ public class TweetContentAdapter extends BaseAdapter {
 							@Override
 							protected void onPostExecute( Boolean result) {
 								super.onPostExecute(result);
-								tweetBean.setLike(result);
+								if(result){
+									tweetBean.setLike(!tweetBean.isLike());
+								}
+								
 								notifyDataSetChanged();
 							}
 						}.taskExecute();
