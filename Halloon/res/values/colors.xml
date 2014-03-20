@@ -39,6 +39,8 @@
 	
 	<color name="line_partition">#efcbd4d9</color>
 	
+	
+	<color name="bg_list_divider">#FFF5F5F5</color>
 <!--
     右侧顶部蓝色值：
 右侧时间颜色: #a2adb3

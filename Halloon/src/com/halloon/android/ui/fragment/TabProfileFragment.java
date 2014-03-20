@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,6 +36,7 @@ import com.halloon.android.image.ImageLoader;
 import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
+import com.halloon.android.ui.activity.SlideHomeActivity;
 import com.halloon.android.ui.fragment.TabMainPageFragment.MainPageFragmentCallback;
 import com.halloon.android.ui.fragment.TweetDetailFragment.TweetDetailFragmentCallback;
 import com.halloon.android.util.ContentTransUtil;
@@ -114,7 +116,6 @@ private View tweetMore ;
 		if (getArguments().getString("id") != null)
 			this.id = getArguments().getString("id");
 	}
-
 	@Override
 	public void init(HalloonTitleBar titleBar, RelativeLayout content) {
 		LayoutInflater inflater = (LayoutInflater) getActivity()
@@ -218,7 +219,20 @@ private View tweetMore ;
 
 		if (type == ME) {
 			mTitleBar
-					.setTitleStyle(HalloonTitleBar.TITLE_STYLE_RIGHT_BUTTON_ONLY);
+					.setTitleStyle(HalloonTitleBar.TITLE_STYLE_HIDE_TITLE);
+			View menuButton = mContent.findViewById(R.id.menu);
+			menuButton.setVisibility(View.VISIBLE);
+			menuButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					Activity parent = getActivity().getParent() ;
+					if(parent instanceof SlideHomeActivity){
+						((SlideHomeActivity)parent).toggleSlideMenu();
+					}
+				}
+			});
+			
 		} else {
 			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_NORMAL);
 		}
@@ -362,7 +376,15 @@ private View tweetMore ;
 				
 				for(int i = 0 ; i!= tweetContentAdapter.getCount() ; ++ i){
 					View item = tweetContentAdapter.getView(i, null, tweetLinear);
-					
+					if(i!= 0){
+						LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)item.getLayoutParams();
+						if(params == null ){
+							params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+									LinearLayout.LayoutParams.MATCH_PARENT);
+						}
+						params.topMargin = getResources().getDimensionPixelSize(R.dimen.list_diver_height);
+						item.setLayoutParams(params);
+					}
 					tweetLinear.addView(item);
 					
 				}

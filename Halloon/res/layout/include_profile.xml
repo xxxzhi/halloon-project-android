@@ -5,6 +5,8 @@
     android:layout_height="wrap_content"
     android:background="#FFF5F5F5" >
     
+
+    
     <ImageView
         android:id="@+id/background"
         android:layout_width="match_parent"
@@ -190,4 +192,17 @@
         halloon:margin="2.0dip"
         halloon:singleHeight = "23.0dip" />
  -->
+ 
+     <Button
+        android:id="@+id/menu"
+        android:layout_width="35.0dip"
+        android:layout_height="35.0dip"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="6.0dip"
+        android:textColor="#EEEEEE"
+        android:textSize="14.0dip"
+        android:visibility="gone"
+        android:background="@drawable/selector_menu" />
+ 
 </RelativeLayout>

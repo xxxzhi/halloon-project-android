@@ -134,7 +134,6 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements
 				Context.LAYOUT_INFLATER_SERVICE);
 
 		titleBar.setOnTitleBarClickListener(this);
-
 		titleText = titleBar.getTitleTextView();
 
 		LayoutInflater inflater = (LayoutInflater) getActivity()
