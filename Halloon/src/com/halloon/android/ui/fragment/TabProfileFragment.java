@@ -376,16 +376,18 @@ private View tweetMore ;
 				
 				for(int i = 0 ; i!= tweetContentAdapter.getCount() ; ++ i){
 					View item = tweetContentAdapter.getView(i, null, tweetLinear);
-					if(i!= 0){
-						LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)item.getLayoutParams();
-						if(params == null ){
-							params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-									LinearLayout.LayoutParams.MATCH_PARENT);
-						}
-						params.topMargin = getResources().getDimensionPixelSize(R.dimen.list_diver_height);
-						item.setLayoutParams(params);
-					}
+					
 					tweetLinear.addView(item);
+					
+					if(i < tweetContentAdapter.getCount()){
+						LinearLayout.LayoutParams params = null;
+							params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+									getResources().getDimensionPixelSize(R.dimen.list_diver_height));
+						View line  = new View(mActivity);
+						
+						line.setLayoutParams(params);
+						tweetLinear.addView(line);
+					}
 					
 				}
 				if(tweetContentAdapter.getCount()==3){

@@ -98,6 +98,8 @@ public class TweetContentAdapter extends BaseAdapter {
 			holder.commentCount = (TextView) convertView.findViewById(R.id.comment_count);
 			holder.forwardCount = (TextView) convertView.findViewById(R.id.forward_count);
 			holder.like = (TextView) convertView.findViewById(R.id.like_count);
+			holder.likeIcon = (TextView) convertView.findViewById(R.id.like_icon);
+			
 			holder.tweetContent = (ButtonStyleTextView) convertView.findViewById(R.id.tweet_content);
 			holder.tweetLocationText = (TextView) convertView.findViewById(R.id.tweet_location_text);
 			holder.tweetImage = (ImageView) convertView.findViewById(R.id.tweet_image);
@@ -281,6 +283,7 @@ public class TweetContentAdapter extends BaseAdapter {
 		TextView timestamp;
 		TextView from;
 		TextView like;
+		TextView likeIcon;
 		TextView commentCount;
 		TextView forwardCount;
 		ButtonStyleTextView tweetContent;
