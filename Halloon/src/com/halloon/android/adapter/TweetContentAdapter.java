@@ -210,7 +210,7 @@ public class TweetContentAdapter extends BaseAdapter {
 		}
 		
 		if (tweetBean.getTweetImage() != null ) {
-			holder.hasImage.setVisibility(View.VISIBLE);
+//			holder.hasImage.setVisibility(View.VISIBLE);
 			if(application.getIsMainPageImageMode()){
 				holder.tweetImage.setVisibility(View.VISIBLE);
 				try {
@@ -222,7 +222,7 @@ public class TweetContentAdapter extends BaseAdapter {
 				holder.tweetImage.setVisibility(View.GONE);
 			}
 		} else if (tweetBean.getVideoImage() != null) {
-			holder.hasImage.setVisibility(View.GONE);
+//			holder.hasImage.setVisibility(View.GONE);
 			if(application.getIsMainPageImageMode()){
 				holder.tweetImage.setVisibility(View.VISIBLE);
 				ImageLoader.getInstance(context).displayImage(tweetBean.getVideoImage(), holder.tweetImage, 0, null);

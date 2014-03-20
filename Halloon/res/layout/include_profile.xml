@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/background"
         android:layout_width="match_parent"
-        android:layout_height="220.0dip"
+        android:layout_height="240.0dip"
         android:src="@drawable/hot_balloon"
         android:scaleType="centerCrop" />
     
@@ -88,7 +88,7 @@
             android:id="@+id/tweet"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="45.0dip"
+            android:layout_height="@dimen/tag_height"
             android:text="@string/wblog"
             android:textColor="#FF666666"
             android:textSize="14sp"
@@ -105,7 +105,7 @@
             android:id="@+id/idol"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="45.0dip"
+            android:layout_height="@dimen/tag_height"
             android:text="@string/idol"
             android:textColor="#FF666666"
             android:textSize="14sp"
@@ -120,7 +120,7 @@
             android:id="@+id/fans"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="45.0dip"
+            android:layout_height="@dimen/tag_height"
             android:text="@string/fan"
             android:textColor="#FF666666"
             android:textSize="14sp"
@@ -135,7 +135,7 @@
             android:id="@+id/fav"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="45.0dip"
+            android:layout_height="@dimen/tag_height"
             android:text="@string/fav"
             android:textColor="#FF666666"
             android:textSize="14sp"
@@ -150,7 +150,7 @@
             android:id="@+id/tag"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="45.0dip"
+            android:layout_height="@dimen/tag_height"
             android:text="@string/tag"
             android:textColor="#FF666666"
             android:textSize="14sp"
@@ -163,7 +163,6 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@+id/count_layout"
-        android:layout_marginTop="10.0dip"
         android:background="#FFCCCCCC" />
     
     
