@@ -7,8 +7,12 @@ import org.json.JSONException;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.MediaStore.Images.Media;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +53,8 @@ import com.halloon.android.widget.TagView;
 
 public class TabProfileFragment extends BaseTitleBarFragment implements
 		OnClickListener {
-
+	public static final int REQUEST_IMG = 1;
+	
 	static final class ProfileTweetViewHolder {
 		ImageView headImage;
 		TextView title;
@@ -66,7 +71,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		ImageView forwardImage;
 		ImageView hasImage;
 		RelativeLayout sourceLayout;
-		RelativeLayout parent ; 
+		RelativeLayout parent;
 	}
 
 	private ProfileFragmentCallback pCallback;
@@ -75,16 +80,18 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 	private ImageView mySex;
 	private TextView mySign;
 	private Button editButton;
-//	private TagView tagView;
+	
+	private ImageView backGround ; 
+	// private TagView tagView;
 
 	private Button tweetButton;
 	private Button idolButton;
 	private Button fanButton;
 	private Button favButton;
 	private Button tagButton;
-	
-private View tweetMore ;
-	
+
+	private View tweetMore;
+
 	private Context context;
 
 	private ProfileBean profileBean;
@@ -97,8 +104,9 @@ private View tweetMore ;
 	private String name;
 	private String id;
 	private String nick;
-	
-	private LinearLayout tweetLinear = null ;
+
+	private LinearLayout tweetLinear = null;
+
 	public interface ProfileFragmentCallback {
 		public void setupTweetListFragment(Bundle bundle);
 
@@ -116,6 +124,7 @@ private View tweetMore ;
 		if (getArguments().getString("id") != null)
 			this.id = getArguments().getString("id");
 	}
+
 	@Override
 	public void init(HalloonTitleBar titleBar, RelativeLayout content) {
 		LayoutInflater inflater = (LayoutInflater) getActivity()
@@ -132,52 +141,57 @@ private View tweetMore ;
 		mySex = (ImageView) content.findViewById(R.id.my_sex);
 
 		mySign = (ScrollTextView) content.findViewById(R.id.my_sign);
-//		tagView = (TagView) content.findViewById(R.id.tag);
+		// tagView = (TagView) content.findViewById(R.id.tag);
 
 		tweetButton = (Button) content.findViewById(R.id.tweet);
 		idolButton = (Button) content.findViewById(R.id.idol);
 		fanButton = (Button) content.findViewById(R.id.fans);
 		favButton = (Button) content.findViewById(R.id.fav);
 		tagButton = (Button) content.findViewById(R.id.tag);
+		backGround = (ImageView) content.findViewById(R.id.background);
+		
 		
 		editButton = titleBar.getRightButton(R.string.edit);
 
-		
-		//tweet list
-//		tweetListView = (ListView) content.findViewById(R.id.listview_profile_tweet);
+		// tweet list
+		// tweetListView = (ListView)
+		// content.findViewById(R.id.listview_profile_tweet);
 		tweetLinear = (LinearLayout) content.findViewById(R.id.linear_tweet);
 		tweetMore = content.findViewById(R.id.tv_more);
-//		content.findViewById(R.id.tweet_head).setVisibility(View.GONE);
-//
-//		tweetViewHolder.headImage = (ImageView) content
-//				.findViewById(R.id.tweet_head);
-//		tweetViewHolder.title = (TextView) content
-//				.findViewById(R.id.tweet_title);
-//		tweetViewHolder.isVip = (ImageView) content.findViewById(R.id.is_vip);
-//		tweetViewHolder.timestamp = (TextView) content
-//				.findViewById(R.id.tweet_timestamp);
-//		tweetViewHolder.from = (TextView) content.findViewById(R.id.tweet_from);
-//		tweetViewHolder.commentCount = (TextView) content
-//				.findViewById(R.id.comment_count);
-//		tweetViewHolder.forwardCount = (TextView) content
-//				.findViewById(R.id.forward_count);
-//		tweetViewHolder.tweetContent = (ButtonStyleTextView) content
-//				.findViewById(R.id.tweet_content);
-//		tweetViewHolder.tweetLocationText = (TextView) content
-//				.findViewById(R.id.tweet_location_text);
-//		tweetViewHolder.tweetImage = (ImageView) content
-//				.findViewById(R.id.tweet_image);
-//		tweetViewHolder.forwardContent = (ButtonStyleTextView) content
-//				.findViewById(R.id.forward_content);
-//		tweetViewHolder.forwardLocationText = (TextView) content
-//				.findViewById(R.id.forward_location_text);
-//		tweetViewHolder.forwardImage = (ImageView) content
-//				.findViewById(R.id.forward_image);
-//		tweetViewHolder.hasImage = (ImageView) content
-//				.findViewById(R.id.image_icon);
-//		tweetViewHolder.sourceLayout = (RelativeLayout) content
-//				.findViewById(R.id.relativeLayout1);
-//		tweetViewHolder.parent = (RelativeLayout) content.findViewById(R.id.parent);
+		// content.findViewById(R.id.tweet_head).setVisibility(View.GONE);
+		//
+		// tweetViewHolder.headImage = (ImageView) content
+		// .findViewById(R.id.tweet_head);
+		// tweetViewHolder.title = (TextView) content
+		// .findViewById(R.id.tweet_title);
+		// tweetViewHolder.isVip = (ImageView)
+		// content.findViewById(R.id.is_vip);
+		// tweetViewHolder.timestamp = (TextView) content
+		// .findViewById(R.id.tweet_timestamp);
+		// tweetViewHolder.from = (TextView)
+		// content.findViewById(R.id.tweet_from);
+		// tweetViewHolder.commentCount = (TextView) content
+		// .findViewById(R.id.comment_count);
+		// tweetViewHolder.forwardCount = (TextView) content
+		// .findViewById(R.id.forward_count);
+		// tweetViewHolder.tweetContent = (ButtonStyleTextView) content
+		// .findViewById(R.id.tweet_content);
+		// tweetViewHolder.tweetLocationText = (TextView) content
+		// .findViewById(R.id.tweet_location_text);
+		// tweetViewHolder.tweetImage = (ImageView) content
+		// .findViewById(R.id.tweet_image);
+		// tweetViewHolder.forwardContent = (ButtonStyleTextView) content
+		// .findViewById(R.id.forward_content);
+		// tweetViewHolder.forwardLocationText = (TextView) content
+		// .findViewById(R.id.forward_location_text);
+		// tweetViewHolder.forwardImage = (ImageView) content
+		// .findViewById(R.id.forward_image);
+		// tweetViewHolder.hasImage = (ImageView) content
+		// .findViewById(R.id.image_icon);
+		// tweetViewHolder.sourceLayout = (RelativeLayout) content
+		// .findViewById(R.id.relativeLayout1);
+		// tweetViewHolder.parent = (RelativeLayout)
+		// content.findViewById(R.id.parent);
 	}
 
 	private ProfileTweetViewHolder tweetViewHolder = new ProfileTweetViewHolder();
@@ -214,94 +228,100 @@ private View tweetMore ;
 		favButton.setOnClickListener(this);
 		tagButton.setOnClickListener(this);
 		
+		backGround.setOnClickListener(this);
+		
 		tweetMore.setOnClickListener(this);
 		myHeadicon.setOnClickListener(this);
 
+		String imgPath  = SettingsManager.getInstance(mActivity).getProfileBackGroundImg();
+		if(imgPath != null && imgPath.length() > 1){
+			backGround.setImageBitmap(BitmapFactory.decodeFile(imgPath));
+		}
+		
 		if (type == ME) {
-			mTitleBar
-					.setTitleStyle(HalloonTitleBar.TITLE_STYLE_HIDE_TITLE);
+			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_HIDE_TITLE);
 			View menuButton = mContent.findViewById(R.id.menu);
 			menuButton.setVisibility(View.VISIBLE);
 			menuButton.setOnClickListener(new View.OnClickListener() {
-				
+
 				@Override
 				public void onClick(View arg0) {
-					Activity parent = getActivity().getParent() ;
-					if(parent instanceof SlideHomeActivity){
-						((SlideHomeActivity)parent).toggleSlideMenu();
+					Activity parent = getActivity().getParent();
+					if (parent instanceof SlideHomeActivity) {
+						((SlideHomeActivity) parent).toggleSlideMenu();
 					}
 				}
 			});
-			
+
 		} else {
 			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_NORMAL);
 		}
 
-//		/* tweet */
-//		OnClickListener tweetListClickListener = new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				try {
-//					switch (v.getId()) {
-//					case R.id.tweet_head:
-//						Bundle bundle = new Bundle();
-//						bundle.putString("name", profileBean.getTweetBean()
-//								.getName());
-//						bundle.putString("id", profileBean.getTweetBean()
-//								.getOpenId());
-//						((TweetDetailFragmentCallback) context)
-//								.setupProfileFragment(bundle);
-//						break;
-//					case R.id.tweet_image:
-//						if (profileBean.getTweetBean().getTweetImage() != null
-//								&& profileBean.getTweetBean().getTweetImage()
-//										.length() > 0)
-//							((MainPageFragmentCallback) context)
-//									.setupPictureDialog(profileBean
-//											.getTweetBean().getTweetImage()
-//											.getString(0), "/2000",
-//											v.getDrawingCache());
-//						if (profileBean.getTweetBean().getVideoImage() != null) {
-//							Intent intent = new Intent();
-//							intent.setAction("android.intent.action.VIEW");
-//							Uri uri = Uri.parse(profileBean.getTweetBean()
-//									.getVideoUrl());
-//							intent.setData(uri);
-//							context.startActivity(intent);
-//						}
-//						break;
-//					case R.id.forward_image:
-//						if (profileBean.getTweetBean().getSource()
-//								.getTweetImage() != null
-//								&& profileBean.getTweetBean().getSource()
-//										.getTweetImage().length() > 0)
-//							((MainPageFragmentCallback) context)
-//									.setupPictureDialog(profileBean
-//											.getTweetBean().getSource()
-//											.getTweetImage().getString(0),
-//											"/2000", v.getDrawingCache());
-//						if (profileBean.getTweetBean().getSource()
-//								.getVideoImage() != null) {
-//							Intent intent = new Intent();
-//							intent.setAction("android.intent.action.VIEW");
-//							Uri uri = Uri.parse(profileBean.getTweetBean()
-//									.getSource().getVideoUrl());
-//							intent.setData(uri);
-//							context.startActivity(intent);
-//						}
-//						break;
-//					}
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		};
-//
-//		tweetViewHolder.headImage.setOnClickListener(tweetListClickListener);
-//		tweetViewHolder.tweetImage.setOnClickListener(tweetListClickListener);
-//		tweetViewHolder.forwardImage.setOnClickListener(tweetListClickListener);
-//
-//		tweetViewHolder.sourceLayout.setVisibility(View.GONE);
+		// /* tweet */
+		// OnClickListener tweetListClickListener = new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// try {
+		// switch (v.getId()) {
+		// case R.id.tweet_head:
+		// Bundle bundle = new Bundle();
+		// bundle.putString("name", profileBean.getTweetBean()
+		// .getName());
+		// bundle.putString("id", profileBean.getTweetBean()
+		// .getOpenId());
+		// ((TweetDetailFragmentCallback) context)
+		// .setupProfileFragment(bundle);
+		// break;
+		// case R.id.tweet_image:
+		// if (profileBean.getTweetBean().getTweetImage() != null
+		// && profileBean.getTweetBean().getTweetImage()
+		// .length() > 0)
+		// ((MainPageFragmentCallback) context)
+		// .setupPictureDialog(profileBean
+		// .getTweetBean().getTweetImage()
+		// .getString(0), "/2000",
+		// v.getDrawingCache());
+		// if (profileBean.getTweetBean().getVideoImage() != null) {
+		// Intent intent = new Intent();
+		// intent.setAction("android.intent.action.VIEW");
+		// Uri uri = Uri.parse(profileBean.getTweetBean()
+		// .getVideoUrl());
+		// intent.setData(uri);
+		// context.startActivity(intent);
+		// }
+		// break;
+		// case R.id.forward_image:
+		// if (profileBean.getTweetBean().getSource()
+		// .getTweetImage() != null
+		// && profileBean.getTweetBean().getSource()
+		// .getTweetImage().length() > 0)
+		// ((MainPageFragmentCallback) context)
+		// .setupPictureDialog(profileBean
+		// .getTweetBean().getSource()
+		// .getTweetImage().getString(0),
+		// "/2000", v.getDrawingCache());
+		// if (profileBean.getTweetBean().getSource()
+		// .getVideoImage() != null) {
+		// Intent intent = new Intent();
+		// intent.setAction("android.intent.action.VIEW");
+		// Uri uri = Uri.parse(profileBean.getTweetBean()
+		// .getSource().getVideoUrl());
+		// intent.setData(uri);
+		// context.startActivity(intent);
+		// }
+		// break;
+		// }
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
+		// };
+		//
+		// tweetViewHolder.headImage.setOnClickListener(tweetListClickListener);
+		// tweetViewHolder.tweetImage.setOnClickListener(tweetListClickListener);
+		// tweetViewHolder.forwardImage.setOnClickListener(tweetListClickListener);
+		//
+		// tweetViewHolder.sourceLayout.setVisibility(View.GONE);
 
 	}
 
@@ -319,8 +339,8 @@ private View tweetMore ;
 					} else {
 						tmp_profileBean = DBManager.getInstance(context)
 								.getProfile();
-						if (tmp_profileBean
-								.getName() == null || tmp_profileBean.getTweetBean() == null) {
+						if (tmp_profileBean.getName() == null
+								|| tmp_profileBean.getTweetBean() == null) {
 							tmp_profileBean = ContentManager.getInstance(
 									context).getMyProfile();
 						}
@@ -331,96 +351,96 @@ private View tweetMore ;
 							.getOtherProfile(name, id);
 					System.out.println(name + ":" + id);
 				}
-				publishProgress(1,tmp_profileBean);
-				if(tweetLinear.getChildCount() !=3){
-					ArrayList<TweetBean> tmpArrayList = ContentManager.getInstance(context)
-							.getOtherTimeLine("", "", 3, "",
-									name, null, "", "");
-					if(tmpArrayList != null ){
-						publishProgress(2,tmpArrayList);
+				publishProgress(1, tmp_profileBean);
+				if (tweetLinear.getChildCount() != 3) {
+					ArrayList<TweetBean> tmpArrayList = ContentManager
+							.getInstance(context).getOtherTimeLine("", "", 3,
+									"", name, null, "", "");
+					if (tmpArrayList != null) {
+						publishProgress(2, tmpArrayList);
 					}
 				}
-				
+
 				return tmp_profileBean;
 			}
-			
+
 			@Override
 			protected void onProgressUpdate(Object... values) {
-				if(values != null && values.length >1 ){
-					int type = (Integer)values[0];
+				if (values != null && values.length > 1) {
+					int type = (Integer) values[0];
 					switch (type) {
 					case 1:
-						//update profile
-						updateProfile((ProfileBean)values[1]);
+						// update profile
+						updateProfile((ProfileBean) values[1]);
 						break;
 					case 2:
-						//update profile tweet
-						if(values[1] instanceof ArrayList<?>)
-							showTweetList((ArrayList<TweetBean>)values[1]);
+						// update profile tweet
+						if (values[1] instanceof ArrayList<?>)
+							showTweetList((ArrayList<TweetBean>) values[1]);
 						break;
 					default:
 						break;
 					}
 				}
 			}
-			
-			private void showTweetList(ArrayList<TweetBean> list){
+
+			private void showTweetList(ArrayList<TweetBean> list) {
 				
 				TweetContentAdapter tweetContentAdapter;
 				tweetContentAdapter = new TweetContentAdapter(context, list);
-//				tweetListView.setAdapter(tweetContentAdapter);
-				
-				
-				//repair tweetlist height ;
-				
-				
-				for(int i = 0 ; i!= tweetContentAdapter.getCount() ; ++ i){
-					View item = tweetContentAdapter.getView(i, null, tweetLinear);
-					
+				// tweetListView.setAdapter(tweetContentAdapter);
+
+				// repair tweetlist height ;
+				tweetLinear.removeAllViews();
+				for (int i = 0; i != tweetContentAdapter.getCount(); ++i) {
+					View item = tweetContentAdapter.getView(i, null,
+							tweetLinear);
+
 					tweetLinear.addView(item);
-					
-					if(i < tweetContentAdapter.getCount()){
+
+					if (i < tweetContentAdapter.getCount()) {
 						LinearLayout.LayoutParams params = null;
-							params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-									getResources().getDimensionPixelSize(R.dimen.list_diver_height));
-						View line  = new View(mActivity);
-						
+						params = new LinearLayout.LayoutParams(
+								LinearLayout.LayoutParams.MATCH_PARENT,
+								getResources().getDimensionPixelSize(
+										R.dimen.list_diver_height));
+						View line = new View(mActivity);
+
 						line.setLayoutParams(params);
 						tweetLinear.addView(line);
 					}
-					
+
 				}
-				if(tweetContentAdapter.getCount()==3){
+				if (tweetContentAdapter.getCount() == 3) {
 					tweetMore.setVisibility(View.VISIBLE);
 				}
-//				LayoutParams params = listview.getLayoutParams() ;
-//				params.height = height + listview.getDividerHeight() * (adapter.getCount()-1) ;
-//				listview.setLayoutParams(params);
-//				setListViewHeight(tweetListView);
+				// LayoutParams params = listview.getLayoutParams() ;
+				// params.height = height + listview.getDividerHeight() *
+				// (adapter.getCount()-1) ;
+				// listview.setLayoutParams(params);
+				// setListViewHeight(tweetListView);
 			}
-			
-			
-			
-			private void setListViewHeight(ListView listview){
+
+			private void setListViewHeight(ListView listview) {
 				ListAdapter adapter = listview.getAdapter();
-				
-				int height = 0 ; 
-				for(int i = 0 ; i!= adapter.getCount() ; ++ i){
+
+				int height = 0;
+				for (int i = 0; i != adapter.getCount(); ++i) {
 					View item = adapter.getView(i, null, listview);
-					
+
 					item.measure(0, 0);
-					
+
 					height += item.getMeasuredHeight();
-					
+
 				}
-				
-				LayoutParams params = listview.getLayoutParams() ;
-				params.height = height + listview.getDividerHeight() * (adapter.getCount()-1) ;
+
+				LayoutParams params = listview.getLayoutParams();
+				params.height = height + listview.getDividerHeight()
+						* (adapter.getCount() - 1);
 				listview.setLayoutParams(params);
 			}
-			
-			
-			private void updateProfile(ProfileBean result){
+
+			private void updateProfile(ProfileBean result) {
 				if (result != null) {
 					profileBean = result;
 					if (type == ME) {
@@ -462,15 +482,15 @@ private View tweetMore ;
 							+ "\n"
 							+ NumberUtil.shortenNumericString(context,
 									profileBean.getFavNum()));
-					int tags = 0 ;
-					if(profileBean.getTag() != null ){
-						tags = profileBean.getTag().length ;
+					int tags = 0;
+					if (profileBean.getTag() != null) {
+						tags = profileBean.getTag().length;
 					}
 					tagButton.setText(context.getString(R.string.tag)
 							+ "\n"
-							+ NumberUtil.shortenNumericString(context,
-									tags+""));
-//					tagView.setContents(profileBean.getTag());
+							+ NumberUtil.shortenNumericString(context, tags
+									+ ""));
+					// tagView.setContents(profileBean.getTag());
 
 					if (type == OTHER) {
 						if (!result.isSelf()) {
@@ -487,169 +507,169 @@ private View tweetMore ;
 					}
 				}
 			}
-			
+
 			@Override
 			protected void onPostExecute(ProfileBean result) {
 
-				
-//					if (profileBean.getTweetBean() != null) {
-//						tweetViewHolder.sourceLayout
-//								.setVisibility(View.VISIBLE);
-//						/* tweet init */
-//						HalloonApplication application = (HalloonApplication) context
-//								.getApplicationContext();
-//						ImageLoader.getInstance(context).displayImage(
-//								profileBean.getTweetBean().getHead() + "/100",
-//								tweetViewHolder.headImage, 0, null);
-//						tweetViewHolder.title.setText(profileBean
-//								.getTweetBean().getNick());
-//						if (profileBean.getTweetBean().getIsVip() == 1) {
-//							tweetViewHolder.isVip.setVisibility(View.VISIBLE);
-//						} else {
-//							tweetViewHolder.isVip.setVisibility(View.GONE);
-//						}
-//						tweetViewHolder.timestamp.setText(TimeUtil.converTime(
-//								profileBean.getTweetBean().getTimestamp(), 1));
-//						tweetViewHolder.from.setText(context
-//								.getString(R.string.from)
-//								+ profileBean.getTweetBean().getFrom());
-//						tweetViewHolder.commentCount.setText(profileBean
-//								.getTweetBean().getMCount());
-//						tweetViewHolder.forwardCount.setText(profileBean
-//								.getTweetBean().getCount());
-//						if (profileBean.getTweetBean().getGeo() != null
-//								&& profileBean.getTweetBean().getGeo().length() > 0) {
-//							tweetViewHolder.tweetLocationText
-//									.setVisibility(View.VISIBLE);
-//							tweetViewHolder.tweetLocationText.setText(context
-//									.getString(R.string.i_am)
-//									+ profileBean.getTweetBean().getGeo());
-//						} else {
-//							tweetViewHolder.tweetLocationText
-//									.setVisibility(View.GONE);
-//						}
-//						if (profileBean.getTweetBean().getSource() != null
-//								&& profileBean.getTweetBean().getText()
-//										.length() == 0) {
-//							tweetViewHolder.tweetContent.setText(context
-//									.getString(R.string.re_tweet));
-//						} else {
-//							ContentTransUtil.getInstance(context)
-//									.displaySpannableString(
-//											profileBean.getTweetBean()
-//													.getText(),
-//											tweetViewHolder.tweetContent,
-//											profileBean.getTweetBean(), false,
-//											true);
-//						}
-//
-//						if (profileBean.getTweetBean().getTweetImage() != null) {
-//							tweetViewHolder.hasImage
-//									.setVisibility(View.VISIBLE);
-//							if (application.getIsMainPageImageMode()) {
-//								tweetViewHolder.tweetImage
-//										.setVisibility(View.VISIBLE);
-//								try {
-//									ImageLoader.getInstance(context)
-//											.displayImage(
-//													profileBean.getTweetBean()
-//															.getTweetImage()
-//															.getString(0)
-//															+ "/120",
-//													tweetViewHolder.tweetImage,
-//													0, null);
-//								} catch (JSONException e) {
-//									e.printStackTrace();
-//								}
-//							} else {
-//								tweetViewHolder.tweetImage
-//										.setVisibility(View.GONE);
-//							}
-//						} else if (profileBean.getTweetBean().getVideoImage() != null) {
-//							tweetViewHolder.hasImage.setVisibility(View.GONE);
-//							if (application.getIsMainPageImageMode()) {
-//								tweetViewHolder.tweetImage
-//										.setVisibility(View.VISIBLE);
-//								ImageLoader.getInstance(context).displayImage(
-//										profileBean.getTweetBean()
-//												.getVideoImage(),
-//										tweetViewHolder.tweetImage, 0, null);
-//							} else {
-//								tweetViewHolder.tweetImage
-//										.setVisibility(View.GONE);
-//							}
-//						} else {
-//							tweetViewHolder.tweetImage.setVisibility(View.GONE);
-//							tweetViewHolder.hasImage.setVisibility(View.GONE);
-//						}
-//
-//						// 是否转发
-//						if (profileBean.getTweetBean().getSource() != null) {
-//							tweetViewHolder.sourceLayout
-//									.setVisibility(View.VISIBLE);
-//							String tmp_source_text = profileBean.getTweetBean()
-//									.getSource().getText();
-//							if (profileBean.getTweetBean().getSource().getGeo() != null
-//									&& profileBean.getTweetBean().getSource()
-//											.getGeo().length() > 0) {
-//								tweetViewHolder.forwardLocationText
-//										.setVisibility(View.VISIBLE);
-//								tweetViewHolder.forwardLocationText
-//										.setText(context
-//												.getString(R.string.i_am)
-//												+ profileBean.getTweetBean()
-//														.getSource().getGeo());
-//							} else {
-//								tweetViewHolder.forwardLocationText
-//										.setVisibility(View.GONE);
-//							}
-//							ContentTransUtil.getInstance(context)
-//									.displaySpannableString(tmp_source_text,
-//											tweetViewHolder.forwardContent,
-//											profileBean.getTweetBean(), true,
-//											true);
-//							if (profileBean.getTweetBean().getSource()
-//									.getTweetImage() != null
-//									&& application.getIsMainPageImageMode()) {
-//								tweetViewHolder.forwardImage
-//										.setVisibility(View.VISIBLE);
-//								try {
-//									ImageLoader
-//											.getInstance(context)
-//											.displayImage(
-//													profileBean.getTweetBean()
-//															.getSource()
-//															.getTweetImage()
-//															.getString(0)
-//															+ "/120",
-//													tweetViewHolder.forwardImage,
-//													1, null);
-//								} catch (JSONException e) {
-//									e.printStackTrace();
-//								}
-//							} else if (profileBean.getTweetBean().getSource()
-//									.getVideoImage() != null
-//									&& ((HalloonApplication) getActivity()
-//											.getApplication())
-//											.getIsMainPageImageMode()) {
-//								tweetViewHolder.forwardImage
-//										.setVisibility(View.VISIBLE);
-//								ImageLoader.getInstance(context).displayImage(
-//										profileBean.getTweetBean().getSource()
-//												.getVideoImage(),
-//										tweetViewHolder.forwardImage, 1, null);
-//							} else {
-//								tweetViewHolder.forwardImage
-//										.setVisibility(View.GONE);
-//							}
-//						} else {
-//							tweetViewHolder.sourceLayout
-//									.setVisibility(View.GONE);
-//						}
-//
-//					}else{
-//						
-//					}
+				// if (profileBean.getTweetBean() != null) {
+				// tweetViewHolder.sourceLayout
+				// .setVisibility(View.VISIBLE);
+				// /* tweet init */
+				// HalloonApplication application = (HalloonApplication) context
+				// .getApplicationContext();
+				// ImageLoader.getInstance(context).displayImage(
+				// profileBean.getTweetBean().getHead() + "/100",
+				// tweetViewHolder.headImage, 0, null);
+				// tweetViewHolder.title.setText(profileBean
+				// .getTweetBean().getNick());
+				// if (profileBean.getTweetBean().getIsVip() == 1) {
+				// tweetViewHolder.isVip.setVisibility(View.VISIBLE);
+				// } else {
+				// tweetViewHolder.isVip.setVisibility(View.GONE);
+				// }
+				// tweetViewHolder.timestamp.setText(TimeUtil.converTime(
+				// profileBean.getTweetBean().getTimestamp(), 1));
+				// tweetViewHolder.from.setText(context
+				// .getString(R.string.from)
+				// + profileBean.getTweetBean().getFrom());
+				// tweetViewHolder.commentCount.setText(profileBean
+				// .getTweetBean().getMCount());
+				// tweetViewHolder.forwardCount.setText(profileBean
+				// .getTweetBean().getCount());
+				// if (profileBean.getTweetBean().getGeo() != null
+				// && profileBean.getTweetBean().getGeo().length() > 0) {
+				// tweetViewHolder.tweetLocationText
+				// .setVisibility(View.VISIBLE);
+				// tweetViewHolder.tweetLocationText.setText(context
+				// .getString(R.string.i_am)
+				// + profileBean.getTweetBean().getGeo());
+				// } else {
+				// tweetViewHolder.tweetLocationText
+				// .setVisibility(View.GONE);
+				// }
+				// if (profileBean.getTweetBean().getSource() != null
+				// && profileBean.getTweetBean().getText()
+				// .length() == 0) {
+				// tweetViewHolder.tweetContent.setText(context
+				// .getString(R.string.re_tweet));
+				// } else {
+				// ContentTransUtil.getInstance(context)
+				// .displaySpannableString(
+				// profileBean.getTweetBean()
+				// .getText(),
+				// tweetViewHolder.tweetContent,
+				// profileBean.getTweetBean(), false,
+				// true);
+				// }
+				//
+				// if (profileBean.getTweetBean().getTweetImage() != null) {
+				// tweetViewHolder.hasImage
+				// .setVisibility(View.VISIBLE);
+				// if (application.getIsMainPageImageMode()) {
+				// tweetViewHolder.tweetImage
+				// .setVisibility(View.VISIBLE);
+				// try {
+				// ImageLoader.getInstance(context)
+				// .displayImage(
+				// profileBean.getTweetBean()
+				// .getTweetImage()
+				// .getString(0)
+				// + "/120",
+				// tweetViewHolder.tweetImage,
+				// 0, null);
+				// } catch (JSONException e) {
+				// e.printStackTrace();
+				// }
+				// } else {
+				// tweetViewHolder.tweetImage
+				// .setVisibility(View.GONE);
+				// }
+				// } else if (profileBean.getTweetBean().getVideoImage() !=
+				// null) {
+				// tweetViewHolder.hasImage.setVisibility(View.GONE);
+				// if (application.getIsMainPageImageMode()) {
+				// tweetViewHolder.tweetImage
+				// .setVisibility(View.VISIBLE);
+				// ImageLoader.getInstance(context).displayImage(
+				// profileBean.getTweetBean()
+				// .getVideoImage(),
+				// tweetViewHolder.tweetImage, 0, null);
+				// } else {
+				// tweetViewHolder.tweetImage
+				// .setVisibility(View.GONE);
+				// }
+				// } else {
+				// tweetViewHolder.tweetImage.setVisibility(View.GONE);
+				// tweetViewHolder.hasImage.setVisibility(View.GONE);
+				// }
+				//
+				// // 是否转发
+				// if (profileBean.getTweetBean().getSource() != null) {
+				// tweetViewHolder.sourceLayout
+				// .setVisibility(View.VISIBLE);
+				// String tmp_source_text = profileBean.getTweetBean()
+				// .getSource().getText();
+				// if (profileBean.getTweetBean().getSource().getGeo() != null
+				// && profileBean.getTweetBean().getSource()
+				// .getGeo().length() > 0) {
+				// tweetViewHolder.forwardLocationText
+				// .setVisibility(View.VISIBLE);
+				// tweetViewHolder.forwardLocationText
+				// .setText(context
+				// .getString(R.string.i_am)
+				// + profileBean.getTweetBean()
+				// .getSource().getGeo());
+				// } else {
+				// tweetViewHolder.forwardLocationText
+				// .setVisibility(View.GONE);
+				// }
+				// ContentTransUtil.getInstance(context)
+				// .displaySpannableString(tmp_source_text,
+				// tweetViewHolder.forwardContent,
+				// profileBean.getTweetBean(), true,
+				// true);
+				// if (profileBean.getTweetBean().getSource()
+				// .getTweetImage() != null
+				// && application.getIsMainPageImageMode()) {
+				// tweetViewHolder.forwardImage
+				// .setVisibility(View.VISIBLE);
+				// try {
+				// ImageLoader
+				// .getInstance(context)
+				// .displayImage(
+				// profileBean.getTweetBean()
+				// .getSource()
+				// .getTweetImage()
+				// .getString(0)
+				// + "/120",
+				// tweetViewHolder.forwardImage,
+				// 1, null);
+				// } catch (JSONException e) {
+				// e.printStackTrace();
+				// }
+				// } else if (profileBean.getTweetBean().getSource()
+				// .getVideoImage() != null
+				// && ((HalloonApplication) getActivity()
+				// .getApplication())
+				// .getIsMainPageImageMode()) {
+				// tweetViewHolder.forwardImage
+				// .setVisibility(View.VISIBLE);
+				// ImageLoader.getInstance(context).displayImage(
+				// profileBean.getTweetBean().getSource()
+				// .getVideoImage(),
+				// tweetViewHolder.forwardImage, 1, null);
+				// } else {
+				// tweetViewHolder.forwardImage
+				// .setVisibility(View.GONE);
+				// }
+				// } else {
+				// tweetViewHolder.sourceLayout
+				// .setVisibility(View.GONE);
+				// }
+				//
+				// }else{
+				//
+				// }
 				super.onPostExecute(result);
 			}
 		}.taskExecute();
@@ -682,9 +702,14 @@ private View tweetMore ;
 			break;
 		case R.id.fans:
 			break;
+		case R.id.background:
+			Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI	);
+			startActivityForResult(intent, REQUEST_IMG);
+			break;
 		case R.id.fav:
 			break;
 		case R.id.tag:
+			
 		default:
 			editProfile(v.getId());
 			break;
@@ -810,6 +835,24 @@ private View tweetMore ;
 				}
 			}
 			break;
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if(requestCode == REQUEST_IMG && resultCode == Activity.RESULT_OK && data != null){
+			Uri selectImg = data.getData() ;
+			String [] filePathColumn = {MediaStore.Images.Media.DATA};
+			Cursor cursor = getActivity().getContentResolver().query(selectImg, filePathColumn, null, null, null);
+			cursor.moveToFirst();
+			String imgPath = cursor.getString(cursor.getColumnIndex(filePathColumn[0]));
+			cursor.close();
+			
+			SettingsManager.getInstance(mActivity).setProfileBackGroundImg(imgPath);
+			backGround.setImageBitmap(BitmapFactory.decodeFile(imgPath));
+			
 		}
 	}
 

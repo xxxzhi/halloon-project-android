@@ -25,6 +25,8 @@ public class SettingsManager {
 	private final static String DEVICE_IP = "device_ip";
 	private final static String DATABASE_VERSION = "database_version";
 	
+	private final static String PROFILE_IMG_PATH = "profile_img_path";
+	
 	private final static String IS_MAINPAGE_IMAGE_MODE = "isMainPageImageMode";
 
 	private static SettingsManager _instance;
@@ -215,5 +217,17 @@ public class SettingsManager {
 	
 	public boolean getIsMainPageImageMode(){
 		return getSettings().getBoolean(IS_MAINPAGE_IMAGE_MODE, true);
+	}
+	
+	/**
+	 * profile 的 背景图片
+	 * @return
+	 */
+	public String getProfileBackGroundImg(){
+		return getSettings().getString(PROFILE_IMG_PATH, "");
+	}
+	
+	public void setProfileBackGroundImg(String img){
+		saveString(PROFILE_IMG_PATH, img);
 	}
 }
