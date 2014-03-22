@@ -228,16 +228,23 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		favButton.setOnClickListener(this);
 		tagButton.setOnClickListener(this);
 		
-		backGround.setOnClickListener(this);
+		
 		
 		tweetMore.setOnClickListener(this);
 		myHeadicon.setOnClickListener(this);
 
-		String imgPath  = SettingsManager.getInstance(mActivity).getProfileBackGroundImg();
-		if(imgPath != null && imgPath.length() > 1){
-			backGround.setImageBitmap(BitmapFactory.decodeFile(imgPath));
+		if(type == ME){
+			
+			backGround.setOnClickListener(this);
+			
+			String imgPath  = SettingsManager.getInstance(mActivity).getProfileBackGroundImg();
+			if(imgPath != null && imgPath.length() > 1){
+				backGround.setImageBitmap(BitmapFactory.decodeFile(imgPath));
+			}
+		}else{
+			backGround.setOnClickListener(null);
+			backGround.setImageResource(R.drawable.hot_balloon);
 		}
-		
 		if (type == ME) {
 			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_HIDE_TITLE);
 			View menuButton = mContent.findViewById(R.id.menu);
