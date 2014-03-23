@@ -47,6 +47,7 @@
     <string name="edit">edit</string>
     <string name="tweet_detail">tweet detail</string>
     <string name="more">more&#8230;</string>
+    <string name="search_more">more&#8230;</string>
     <string name="tweet_publish">send tweet</string>
     
     <!-- publish toast -->

@@ -361,13 +361,11 @@ public class SlideHomeActivity extends ActivityGroup implements
 			intent.setClass(this, MyMessageActivity.class);
 			break;
 		case R.id.linear_square:
-			// intent = new Intent();
-			// intent.putExtra("accesstoken",
-			// getIntent().getStringExtra("accessToken"));
-			// intent.putExtra("oauth",
-			// getIntent().getSerializableExtra("oauth"));
-			// intent.putExtra("flag", getIntent().getIntExtra("flag", 1));
-			// intent.setClass(this, MyMessageActivity.class);
+			 intent = new Intent();
+			 intent.putExtra("accesstoken",getIntent().getStringExtra("accessToken"));
+			 intent.putExtra("oauth",getIntent().getSerializableExtra("oauth"));
+			 intent.putExtra("flag", getIntent().getIntExtra("flag", 1));
+			 intent.setClass(this, SquareActivity.class);
 			break;
 		case R.id.linear_more:
 			intent = new Intent();

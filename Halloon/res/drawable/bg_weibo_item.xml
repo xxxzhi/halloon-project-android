@@ -3,8 +3,8 @@
     
     <solid android:color="@color/bg_weibo" />
     
-    <padding android:left="6dp" android:right="6dp" android:top="6dp" android:bottom="6dp" />
+    <padding android:top="@dimen/padding_weibo" android:bottom="@dimen/padding_weibo" />
 	
     <stroke android:width="1px" 
-        android:color="@color/txt_weibo"/>
+        android:color="@color/line_weibo"/>
 </shape>

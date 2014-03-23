@@ -26,6 +26,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="3.0dip"
+        android:visibility="gone"
         android:background="#FFCCCCCC"
         />
     
@@ -48,7 +49,7 @@
         android:layout_toRightOf="@+id/tweet_head"
         android:text="阿蔡"
         android:textColor="@color/txt_weibo_name"
-        android:textSize="16.0sp" />
+        android:textSize="15.0sp" />
 
     <ImageView
         android:id="@+id/is_vip"
@@ -72,11 +73,12 @@
         android:gravity="right"
         android:text="24分钟"
         android:textColor="@color/txt_time"
-        android:textSize="13.0sp" />
+        android:textSize="12.0sp" />
 
     <TextView
         android:id="@+id/tweet_from"
         android:layout_width="170.0dip"
+        android:layout_marginRight="6.0dip"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tweet_title"
         android:layout_marginLeft="4dp"
@@ -84,8 +86,8 @@
         android:gravity="left"
         android:singleLine="true"
         android:text="来自哈恩客户端啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
-        android:textColor="#777777"
-        android:textSize="13.0sp" />
+        android:textColor="@color/txt_weibo_from"
+        android:textSize="12.0sp" />
 
     <ImageView
         android:id="@+id/image_icon"
@@ -105,6 +107,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/line_head"
         android:layout_marginTop="5dip"
+        android:layout_marginLeft="6.0dip"
         android:layout_marginRight="6.0dip"
         android:text="今天天气好清爽，处处好风光"
         android:lineSpacingExtra="2.0dip"
@@ -157,7 +160,7 @@
             android:background="@drawable/round_corner_light_blue"
             android:text="sdf"
             android:textColor="#888888"
-            android:textSize="13.0sp" />
+            android:textSize="12.0sp" />
     </RelativeLayout>
 
     <TextView
@@ -166,14 +169,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativeLayout1"
         android:layout_marginRight="6.0dip"
+        android:layout_marginLeft="6.0dip"
         android:layout_marginTop="6.0dip"
         android:background="@drawable/round_corner_light_blue"
         android:text="我在XXX"
         android:textColor="#777777"
-        android:textSize="13.0sp" />
+        android:textSize="12.0sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginRight="6.0dip"
         android:layout_height="wrap_content"
         android:layout_below="@+id/line"
         android:layout_marginTop="6.0dip" >
@@ -192,7 +198,7 @@
         <View
             android:layout_width="1px"
             android:layout_height="match_parent"
-            android:background="@color/line_partition" />
+            android:background="@color/line_weibo" />
 
         <TextView
             android:id="@+id/comment_icon"
@@ -208,7 +214,7 @@
         <View
             android:layout_width="1px"
             android:layout_height="match_parent"
-            android:background="@color/line_partition" />
+            android:background="@color/line_weibo" />
 
         <TextView
             android:id="@+id/like_icon"
@@ -227,6 +233,6 @@
         android:layout_height="1.0px"
         android:layout_below="@+id/tweet_location_text"
         android:layout_marginTop="3.0dip"
-        android:background="#FFCCCCCC" />
+        android:background="@color/line_weibo" />
 
 </RelativeLayout>

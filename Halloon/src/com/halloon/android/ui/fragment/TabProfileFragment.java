@@ -248,7 +248,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		if (type == ME) {
 			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_HIDE_TITLE);
 			View menuButton = mContent.findViewById(R.id.menu);
-			menuButton.setVisibility(View.VISIBLE);
+			menuButton.setVisibility(View.GONE);
 			menuButton.setOnClickListener(new View.OnClickListener() {
 
 				@Override

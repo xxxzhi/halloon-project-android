@@ -47,6 +47,7 @@
     <string name="edit">编辑</string>
     <string name="tweet_detail">微博正文</string>
     <string name="more">更多&#8230;</string>
+    <string name="search_more">查看更多&#8230;</string>
     <string name="tweet_publish">发微博</string>
     
     <!-- publish toast -->

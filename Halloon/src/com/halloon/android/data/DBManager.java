@@ -735,6 +735,7 @@ public class DBManager extends SQLiteOpenHelper {
 				                       TweetsColumns.TWEET_IS_VIP + " TEXT," + 
 		                               TweetsColumns.TWEET_LONGITUDE + " TEXT," + 
 				                       TweetsColumns.TWEET_LATITUDE + " TEXT," + 
+				                       TweetsColumns.TWEET_I_LIKE + " BOOLEAN," +
 		                               TweetsColumns.TWEET_GEO + " TEXT)";
 
 		db.execSQL(CREATE_CONTACTS_TABLE);

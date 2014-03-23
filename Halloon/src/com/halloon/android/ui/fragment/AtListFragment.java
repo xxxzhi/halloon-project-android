@@ -87,7 +87,7 @@ public class AtListFragment extends Fragment implements OnHeaderRefreshListener{
 					tmp_list = DBManager.getInstance(context).getAtList();
 				}
 				
-				if(tmp_list != null){
+				if(tmp_list != null && tmp_list.size() > 0){
 					int i = 0;
 					do{
 						String text = tmp_list.get(i).getText();

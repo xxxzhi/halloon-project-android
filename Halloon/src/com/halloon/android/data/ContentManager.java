@@ -19,6 +19,7 @@ import com.halloon.android.api.LBSAPI;
 import com.halloon.android.api.OtherAPI;
 import com.halloon.android.api.PrivateMessageAPI;
 import com.halloon.android.api.ShortUrlAPI;
+import com.halloon.android.api.TrendsAPI;
 import com.halloon.android.api.UserUpdateAPI;
 import com.halloon.android.bean.PrivateDataBean;
 import com.halloon.android.bean.ProfileBean;
@@ -40,6 +41,10 @@ public class ContentManager {
 	// private OAuthV1 preoauth;
 	private OAuthV2 preoauth;
 	private String[] sexType = { " ", "男", "女" };
+	private int pos = 0 ;
+	public int getPos() {
+		return pos;
+	}
 
 	private static int REQNUM = 30;
 
@@ -63,7 +68,10 @@ public class ContentManager {
 		}
 		return instance;
 	}
-
+	
+	
+	
+	
 	// 获取 通讯录
 	public ArrayList<UserBean> getContacts() {
 		ArrayList<UserBean> beans = new ArrayList<UserBean>();
@@ -359,6 +367,46 @@ public class ContentManager {
 
 	}
 
+	
+	/**
+	 * 本接口用于获取转播次数开前的微博消息列表， 譬如:微博内容， 微博ID等
+	 * @param requestNum 每次请求记录的条数（1-100条）
+	 * @param pos 翻页标识
+	 * @param type 微博消息类型
+	 * 0x1 戴文本 0x2带链接 0x4带图片 0x8 带视频
+	 * 如需拉取多个类型请使用| 如(0x1|0x2) 得到3， 此时type = 3 即可， 填零便是拉取所有类型
+	 * @return
+	 */
+	public ArrayList<TweetBean> getHotTweetBean( int requestNum, int pos, String type
+			) {
+		TrendsAPI statusesAPI =new TrendsAPI(
+				OAuthConstants.OAUTH_VERSION_2_A);
+		ArrayList<TweetBean> tweetContainer = new ArrayList<TweetBean>(
+				requestNum);
+		try {
+			String tweetInfo;
+			tweetInfo = statusesAPI.getReHotList(preoauth, "json",
+					requestNum + "", pos+"", type);
+
+			JSONObject jsonObject = new JSONObject(tweetInfo);
+			JSONObject dataJsonObject = jsonObject.getJSONObject("data");
+			this.pos = dataJsonObject.getInt("pos");
+			JSONArray tweetInfoArray = dataJsonObject.getJSONArray("info");
+			String userInfoObject = dataJsonObject.optString("user");
+			for (int i = 0; i < tweetInfoArray.length(); i++) {
+				JSONObject tweetInfoObject = tweetInfoArray.getJSONObject(i);
+				TweetBean tb = getTweetFromJSON(tweetInfoObject);
+				tb.setMentionedUser(userInfoObject);
+				tweetContainer.add(tb);
+			}
+
+		} catch (Exception e) {
+			Log.d(Constants.LOG_TAG, "GET_BROADCAST_TIMELINE_ERROR:" + e);
+		}
+
+		return tweetContainer;
+	}
+	
 	/**
 	 * 获取个人时间线
 	 * 
@@ -1466,4 +1514,10 @@ public class ContentManager {
 
 		return returnInts;
 	}
+	
+	
+	
+	
+	
+	
 }

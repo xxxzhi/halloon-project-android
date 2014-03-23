@@ -4,12 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragment.TabMainPageFragment"
-    android:background="@color/bg_list_back" >
+    android:background="#E5E5E5" >
+    
+    <EditText
+        android:id="@+id/et_search"
+		android:layout_width="match_parent"
+		android:layout_marginLeft="7dp"
+    	android:layout_marginRight="7dp"
+        android:layout_marginTop="10.0dip"
+		android:layout_height="@dimen/square_search_height"
+        />
+    
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_marginTop="10.0dip"
+        android:layout_below="@+id/et_search"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/square_pager_height"
+        />
     
     <com.halloon.android.widget.HalloonPullableView
         android:id="@+id/pull_layout"
+        android:layout_marginTop="10.0dip"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/viewpager"
         android:orientation="vertical" >
         
         <ListView
@@ -22,14 +41,14 @@
             android:fadingEdgeLength="0.0dip"
  			android:paddingTop="8dp"
  			android:dividerHeight="@dimen/list_diver_height"
-            android:divider="@color/bg_list_back"
+            android:divider="@color/bg_list_divider"
             android:paddingLeft="9dp"
             android:paddingRight="9dp"
             android:fastScrollEnabled="true"
             android:listSelector="@drawable/tweet_content_list_bg_selector"
-            android:background="@color/bg_list_back"
+            android:background="@color/bg_list_divider"
             android:longClickable="true" />
         
     </com.halloon.android.widget.HalloonPullableView>
-
+    
 </RelativeLayout>

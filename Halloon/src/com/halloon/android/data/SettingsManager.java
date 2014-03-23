@@ -175,7 +175,13 @@ public class SettingsManager {
 	}
 
 	public float getScreenDensity() {
-		return getSettings().getFloat(SCREEN_DENSITY, 1);
+		float density = 1 ;
+		try{
+			density=  getSettings().getFloat(SCREEN_DENSITY, 1);
+		}catch(Exception e){
+			
+		}
+		return density;
 	}
 
 	public void setSystemBarHeight(int height) {
