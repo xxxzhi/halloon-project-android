@@ -13,10 +13,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -28,7 +32,9 @@ import com.halloon.android.R;
 import com.halloon.android.adapter.SquarePagerAdapter;
 import com.halloon.android.adapter.TweetContentAdapter;
 import com.halloon.android.bean.TweetBean;
+import com.halloon.android.bean.UserBean;
 import com.halloon.android.data.ContentManager;
+import com.halloon.android.data.DBManager;
 import com.halloon.android.data.SettingsManager;
 import com.halloon.android.listener.OnLocationSeekListener;
 import com.halloon.android.listener.OnTitleBarClickListener;
@@ -59,9 +65,10 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 	private Button fanButton;
 	private Context context;
 	private TextView titleText;
+	private EditText searchEditText;
 	ArrayList<TweetBean> tweetContainer;
 	TweetContentAdapter tweetContentAdapter;
-
+	private Button deleteButton;
 	public static final int MAIN_TIMELINE_TWEET = 1;
 	public static final int OTHER_TWEET = 2;
 	public static final int AROUND_TWEET = 3;
@@ -126,7 +133,8 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		content.addView(inflater.inflate(R.layout.tab_square, null, false));
 		
-		
+		searchEditText = (EditText) content.findViewById(R.id.search_editText);
+		deleteButton = (Button) content.findViewById(R.id.deleteButton);
 		
 		pullAndDrop = (HalloonPullableView) content
 				.findViewById(R.id.pull_layout);
@@ -183,12 +191,40 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 			thread.start();
 		}
 	}
-	
+	private TextWatcher textWatcher = new TextWatcher() {
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			Log.d(Constants.LOG_TAG, "onTextChanged " + s.toString());
+			ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
+			tweetContainer.clear();
+			tweetContainer.addAll(tmpArrayList);
+			tweetContentAdapter.notifyDataSetChanged();
+			if (s.length() == 0) {
+				deleteButton.setVisibility(View.INVISIBLE);
+			} else {
+				deleteButton.setVisibility(View.VISIBLE);
+			}
+		}
+
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+		}
+
+		public void afterTextChanged(Editable s) {
+
+		}
+
+	};
+
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		titleText.setText(R.string.tab_square);
+		
+		searchEditText.addTextChangedListener(textWatcher);
+		
 		switch (tweetState) {
 		case MAIN_TIMELINE_TWEET:
 			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_IMAGE);

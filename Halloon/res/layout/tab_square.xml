@@ -6,19 +6,15 @@
     tools:context=".ui.fragment.TabMainPageFragment"
     android:background="#E5E5E5" >
     
-    <EditText
-        android:id="@+id/et_search"
-		android:layout_width="match_parent"
-		android:layout_marginLeft="7dp"
-    	android:layout_marginRight="7dp"
-        android:layout_marginTop="10.0dip"
-		android:layout_height="@dimen/square_search_height"
-        />
-    
+    <include
+        android:id="@+id/search_box"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/contact_search_box" />
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_marginTop="10.0dip"
-        android:layout_below="@+id/et_search"
+        android:layout_below="@+id/search_box"
         android:layout_width="match_parent"
         android:layout_height="@dimen/square_pager_height"
         />
