@@ -3,11 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:overScrollMode="never"
-    android:background="#FFF5F5F5" >
+    android:background="@color/bg_list_back" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/bg_list_back"
         android:orientation="vertical" >
 
         <include
@@ -15,22 +16,9 @@
             android:layout_height="wrap_content"
             layout="@layout/include_profile" />
         
-    <!--     <ListView 
-            android:id="@+id/listview_profile_tweet"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="20dp"
-            android:fastScrollEnabled="false"
-            android:fastScrollAlwaysVisible="false"
-            android:fadeScrollbars="false"
-            android:layout_height="match_parent"
-            style="@style/ListViewTweet"
-            >
-        </ListView> -->
-        
         <LinearLayout
             android:id="@+id/linear_tweet"
+            android:background="@color/bg_list_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -38,7 +26,6 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="5dp"
-            android:background="@color/bg_list_divider"
             >
             
         </LinearLayout>
@@ -49,6 +36,7 @@
             android:visibility="gone"
             android:layout_height="40dp"
             android:gravity="center"
+            android:textSize="15sp"
             android:textColor="@color/txt_search_more"
             android:text="@string/search_more"
             android:layout_marginBottom="13dp"

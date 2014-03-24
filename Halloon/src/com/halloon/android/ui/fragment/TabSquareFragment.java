@@ -90,7 +90,7 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 	private String myName;
 	private String nick;
 
-	private int page = 0;
+	private int page = 1;
 	private String longitude;
 	private String latitude;
 
@@ -101,8 +101,8 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 	private View footer;
 
 	private LocationTask locationTask;
-	private ViewPager pager = null ;
-	
+	private ViewPager pager = null;
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -118,9 +118,6 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 		}
 	}
 
-	
-	
-	
 	@Override
 	protected void init(HalloonTitleBar titleBar, RelativeLayout content) {
 		layoutInflater = (LayoutInflater) getActivity().getSystemService(
@@ -132,10 +129,10 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 		LayoutInflater inflater = (LayoutInflater) getActivity()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		content.addView(inflater.inflate(R.layout.tab_square, null, false));
-		
+
 		searchEditText = (EditText) content.findViewById(R.id.search_editText);
 		deleteButton = (Button) content.findViewById(R.id.deleteButton);
-		
+
 		pullAndDrop = (HalloonPullableView) content
 				.findViewById(R.id.pull_layout);
 		pullAndDrop.setOnHeaderRefreshListener(this);
@@ -146,8 +143,7 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 		pager = (ViewPager) content.findViewById(R.id.viewpager);
 		pager.setAdapter(new SquarePagerAdapter(getActivity()));
 		initPagerScroll();
-		
-		
+
 		tweetContainer = new ArrayList<TweetBean>();
 		tweetContentAdapter = new TweetContentAdapter(context, tweetContainer);
 		footer = inflater.inflate(R.layout.tweet_content_more, null, false);
@@ -159,16 +155,19 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 			locationTask.setOnLocationSeekListener(this);
 		}
 	}
-	Handler handler = new Handler(){
+
+	Handler handler = new Handler() {
 
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			if(msg.what == 1)
-			pager.setCurrentItem( (pager.getCurrentItem() + 1) % pager.getChildCount());
+			if (msg.what == 1)
+				pager.setCurrentItem((pager.getCurrentItem() + 1)
+						% pager.getChildCount());
 		}
-		
+
 	};
+
 	class ScrollThread extends Thread {
 		@Override
 		public void run() {
@@ -183,20 +182,28 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 			}
 		}
 	}
+
 	ScrollThread thread = null;
-	
-	private void initPagerScroll(){
-		if(thread == null || !thread.isAlive()){
+
+	private void initPagerScroll() {
+		if (thread == null || !thread.isAlive()) {
 			thread = new ScrollThread();
 			thread.start();
 		}
 	}
+
 	private TextWatcher textWatcher = new TextWatcher() {
 
 		@Override
-		public void onTextChanged(CharSequence s, int start, int before, int count) {
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+			page = 1;
 			Log.d(Constants.LOG_TAG, "onTextChanged " + s.toString());
 			ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
+
+			tmpArrayList = ContentManager.getInstance(mActivity).searchTweet(
+					s.toString(), PAGE_SIZE, page, 0, "0", 0, "0", "0", "0");
+
 			tweetContainer.clear();
 			tweetContainer.addAll(tmpArrayList);
 			tweetContentAdapter.notifyDataSetChanged();
@@ -207,7 +214,8 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 			}
 		}
 
-		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
 
 		}
 
@@ -217,14 +225,13 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 
 	};
 
-	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		titleText.setText(R.string.tab_square);
-		
+
 		searchEditText.addTextChangedListener(textWatcher);
-		
+
 		switch (tweetState) {
 		case MAIN_TIMELINE_TWEET:
 			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_IMAGE);
@@ -247,7 +254,6 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 		default:
 			break;
 		}
-
 
 		loadData(25, false);
 
@@ -331,216 +337,87 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 	}
 
 	private void loadData(final int tweetNumber, final boolean refresh) {
+		page = 1;
+		new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
 
-		if (tweetState != AROUND_TWEET) {
-			new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
+			@Override
+			protected ArrayList<TweetBean> doInBackground(Void... arg0) {
+				ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
 
-				@Override
-				protected ArrayList<TweetBean> doInBackground(Void... arg0) {
-					ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
+				switch (tweetState) {
+				case MAIN_TIMELINE_TWEET:
+					// tmpArrayList = DBManager.getInstance(context)
+					// .getAllTweetList();
+					// if (SettingsManager.getInstance(context)
+					// .getTweetListStatus() == DBManager.TWEET_LIST_STATUS_INIT
+					// || refresh || tmpArrayList.size() <= 0) {
+					tmpArrayList = ContentManager.getInstance(context)
+							.getHotTweetBean(tweetNumber, 0, "0");
+					pos = ContentManager.getInstance(context).getPos();
+					// HashMap<String, TweetBean> tweetLists = new
+					// HashMap<String, TweetBean>();
+					// for (int i = 0; i < tmpArrayList.size(); i++) {
+					// tweetLists.put(tmpArrayList.get(i)
+					// .getTimestamp(),
+					// (TweetBean) tmpArrayList.get(i));
+					// }
+					//
+					// DBManager.getInstance(context).addTweetListContent(
+					// tmpArrayList, true);
 
-					switch (tweetState) {
-					case MAIN_TIMELINE_TWEET:
-//						tmpArrayList = DBManager.getInstance(context)
-//								.getAllTweetList();
-//						if (SettingsManager.getInstance(context)
-//								.getTweetListStatus() == DBManager.TWEET_LIST_STATUS_INIT
-//								|| refresh || tmpArrayList.size() <= 0) {
-							tmpArrayList = ContentManager.getInstance(context)
-									.getHotTweetBean(tweetNumber, 0,"0");
-							pos = ContentManager.getInstance(context).getPos();
-//							HashMap<String, TweetBean> tweetLists = new HashMap<String, TweetBean>();
-//							for (int i = 0; i < tmpArrayList.size(); i++) {
-//								tweetLists.put(tmpArrayList.get(i)
-//										.getTimestamp(),
-//										(TweetBean) tmpArrayList.get(i));
-//							}
-//
-//							DBManager.getInstance(context).addTweetListContent(
-//									tmpArrayList, true);
-
-							SettingsManager
-									.getInstance(context)
-									.setLastUpdateTime(
-											context.getString(R.string.refresh_at)
-													+ TimeUtil.getCurrentTime());
-//						}
-						break;
-//					case OTHER_TWEET:
-//						tmpArrayList = ContentManager.getInstance(context)
-//								.getOtherTimeLine("", "", tweetNumber, "",
-//										otherName, null, "", "");
-//						break;
-//					case VIP_TWEET:
-//						tmpArrayList = ContentManager.getInstance(context)
-//								.getVipTimeLine("", "", tweetNumber, "0");
-//						break;
-//					case PUBLIC_TWEET:
-//						tmpArrayList = ContentManager.getInstance(context)
-//								.getPublicTimeLine("", "", tweetNumber, 0);
-//						break;
-//					case SPECIAL_TWEET:
-//						tmpArrayList = ContentManager.getInstance(context)
-//								.getSpecialTimeLine("", "", tweetNumber, "0",
-//										"0", "0");
-//						break;
-					}
-
-					if (tmpArrayList != null && tmpArrayList.size() > 0 ) {
-						int i = 0;
-						do {
-							String text = tmpArrayList.get(i).getText();
-							String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
-							Pattern pattern = Pattern.compile(ADDR_PATTERN);
-							Matcher matcher = pattern.matcher(text);
-							if (tmpArrayList.get(i).getMusicUrl() != null
-									|| tmpArrayList.get(i).getVideoImage() != null) {
-
-								while (matcher.find()) {
-									String group = matcher.group();
-									group = group.substring(group
-											.lastIndexOf("/") + 1);
-									if (application.getShortList().get(group) == null) {
-										String longUrl = ContentManager
-												.getInstance(context)
-												.getExpandedUrl(group);
-										application.getShortList().put(group,
-												longUrl);
-									}
-								}
-							}
-
-							if (tmpArrayList.get(i).getSource() != null) {
-								if (tmpArrayList.get(i).getSource()
-										.getMusicUrl() != null
-										|| tmpArrayList.get(i).getSource()
-												.getVideoImage() != null) {
-									matcher = pattern.matcher(tmpArrayList
-											.get(i).getSource().getText());
-									while (matcher.find()) {
-
-										String group = matcher.group();
-										group = group.substring(group
-												.lastIndexOf("/") + 1);
-										if (application.getShortList().get(
-												group) == null) {
-											String longUrl = ContentManager
-													.getInstance(context)
-													.getExpandedUrl(group);
-											application.getShortList().put(
-													group, longUrl);
-										}
-
-									}
-								}
-							}
-						} while (++i < tmpArrayList.size());
-					}
-
-					return tmpArrayList;
+					SettingsManager.getInstance(context).setLastUpdateTime(
+							context.getString(R.string.refresh_at)
+									+ TimeUtil.getCurrentTime());
+					// }
+					break;
+				// case OTHER_TWEET:
+				// tmpArrayList = ContentManager.getInstance(context)
+				// .getOtherTimeLine("", "", tweetNumber, "",
+				// otherName, null, "", "");
+				// break;
+				// case VIP_TWEET:
+				// tmpArrayList = ContentManager.getInstance(context)
+				// .getVipTimeLine("", "", tweetNumber, "0");
+				// break;
+				// case PUBLIC_TWEET:
+				// tmpArrayList = ContentManager.getInstance(context)
+				// .getPublicTimeLine("", "", tweetNumber, 0);
+				// break;
+				// case SPECIAL_TWEET:
+				// tmpArrayList = ContentManager.getInstance(context)
+				// .getSpecialTimeLine("", "", tweetNumber, "0",
+				// "0", "0");
+				// break;
 				}
 
-				@Override
-				protected void onPostExecute(ArrayList<TweetBean> result) {
-					super.onPostExecute(result);
-					if (result != null && result.size() > 0) {
+				if (tmpArrayList != null && tmpArrayList.size() > 0) {
+					int i = 0;
+					do {
+						String text = tmpArrayList.get(i).getText();
+						String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
+						Pattern pattern = Pattern.compile(ADDR_PATTERN);
+						Matcher matcher = pattern.matcher(text);
+						if (tmpArrayList.get(i).getMusicUrl() != null
+								|| tmpArrayList.get(i).getVideoImage() != null) {
 
-						if (!refresh) {
-							Intent intent = new Intent();
-							intent.setAction(Constants.GLOBAL_TAB_VISIBILITY);
-							Bundle bundle = new Bundle();
-							bundle.putBoolean("isTabShow", true);
-							bundle.putBoolean("isCoverShow", false);
-							intent.putExtras(bundle);
-							context.sendBroadcast(intent);
+							while (matcher.find()) {
+								String group = matcher.group();
+								group = group
+										.substring(group.lastIndexOf("/") + 1);
+								if (application.getShortList().get(group) == null) {
+									String longUrl = ContentManager
+											.getInstance(context)
+											.getExpandedUrl(group);
+									application.getShortList().put(group,
+											longUrl);
+								}
+							}
 						}
-						tweetContainer.clear();
-						tweetContainer.addAll(result);
-						tweetContentAdapter.notifyDataSetChanged();
 
-						oldResponTime = result.get(result.size() - 1)
-								.getTimestamp();
-						newResponTime = result.get(0).getTimestamp();
-
-					} else {
-						Toast.makeText(context,
-								context.getString(R.string.refresh_failure),
-								Toast.LENGTH_LONG).show();
-					}
-					pullAndDrop.onHeaderRefreshComplete(SettingsManager
-							.getInstance(context).getLastUpdateTime());
-				}
-			}.taskExecute();
-		} else if (!refresh) {
-			locationTask.taskExecute();
-		}
-	}
-
-	final int PAGE_SIZE = 25;
-	private int pos;
-	private int lastId = 0;
-
-	private void getMoreData() {
-			new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
-				@Override
-				protected ArrayList<TweetBean> doInBackground(Void... params) {
-					ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
-					switch (tweetState) {
-					case MAIN_TIMELINE_TWEET:
-						tmpArrayList = ContentManager.getInstance(context)
-						.getHotTweetBean(PAGE_SIZE, pos,"0");
-						pos = ContentManager.getInstance(context).getPos();
-						break;
-//					case OTHER_TWEET:
-//						tmpArrayList = ContentManager.getInstance(context)
-//								.getOtherTimeLine("1", oldResponTime,
-//										PAGE_SIZE, "", otherName, null, "", "");
-//						break;
-//					case VIP_TWEET:
-//						tmpArrayList = ContentManager.getInstance(context)
-//								.getVipTimeLine("1", oldResponTime, PAGE_SIZE,
-//										"");
-//						break;
-//					case PUBLIC_TWEET:
-//						tmpArrayList = ContentManager.getInstance(context)
-//								.getPublicTimeLine("1", oldResponTime,
-//										PAGE_SIZE, pos);
-//						break;
-//					case SPECIAL_TWEET:
-//						tmpArrayList = ContentManager.getInstance(context)
-//								.getSpecialTimeLine("1", oldResponTime,
-//										PAGE_SIZE, "", "0", "0");
-//						break;
-					}
-
-					if (tmpArrayList != null) {
-						int i = 0;
-						do {
-							String text = tmpArrayList.get(i).getText();
-							String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
-							Pattern pattern = Pattern.compile(ADDR_PATTERN);
-							Matcher matcher = pattern.matcher(text);
-							if (tmpArrayList.get(i).getMusicUrl() != null
-									|| tmpArrayList.get(i).getVideoImage() != null) {
-								while (matcher.find()) {
-									String group = matcher.group();
-									group = group.substring(group
-											.lastIndexOf("/") + 1);
-									if (application.getShortList().get(group) == null) {
-										String longUrl = ContentManager
-												.getInstance(context)
-												.getExpandedUrl(group);
-										application.getShortList().put(group,
-												longUrl);
-									}
-								}
-
-							}
-
-							if (tmpArrayList.get(i).getSource() != null
-									&& (tmpArrayList.get(i).getSource()
-											.getMusicUrl() != null || tmpArrayList
-											.get(i).getSource().getVideoImage() != null)) {
+						if (tmpArrayList.get(i).getSource() != null) {
+							if (tmpArrayList.get(i).getSource().getMusicUrl() != null
+									|| tmpArrayList.get(i).getSource()
+											.getVideoImage() != null) {
 								matcher = pattern.matcher(tmpArrayList.get(i)
 										.getSource().getText());
 								while (matcher.find()) {
@@ -555,38 +432,160 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 										application.getShortList().put(group,
 												longUrl);
 									}
+
 								}
 							}
-						} while (++i < tmpArrayList.size());
-					}
-
-					return tmpArrayList;
+						}
+					} while (++i < tmpArrayList.size());
 				}
 
-				@Override
-				protected void onPostExecute(ArrayList<TweetBean> result) {
-					super.onPostExecute(result);
-					if (footer != null) {
-						list.removeFooterView(footer);
-						footer = layoutInflater.inflate(
-								R.layout.tweet_content_more, null, false);
-						list.addFooterView(footer);
+				return tmpArrayList;
+			}
+
+			@Override
+			protected void onPostExecute(ArrayList<TweetBean> result) {
+				super.onPostExecute(result);
+				if (result != null && result.size() > 0) {
+
+					if (!refresh) {
+						Intent intent = new Intent();
+						intent.setAction(Constants.GLOBAL_TAB_VISIBILITY);
+						Bundle bundle = new Bundle();
+						bundle.putBoolean("isTabShow", true);
+						bundle.putBoolean("isCoverShow", false);
+						intent.putExtras(bundle);
+						context.sendBroadcast(intent);
 					}
+					tweetContainer.clear();
+					tweetContainer.addAll(result);
+					tweetContentAdapter.notifyDataSetChanged();
 
-					pullAndDrop.onFooterRefreshComplete();
+					oldResponTime = result.get(result.size() - 1)
+							.getTimestamp();
+					newResponTime = result.get(0).getTimestamp();
 
-					if (result.size() > 0) {
-						tweetContainer.addAll(result);
-						tweetContentAdapter.notifyDataSetChanged();
-						oldResponTime = result.get(result.size() - 1)
-								.getTimestamp();
-					} else {
-						Toast.makeText(context, "更新失败", Toast.LENGTH_LONG)
-								.show();
-					}
-
+				} else {
+					Toast.makeText(context,
+							context.getString(R.string.refresh_failure),
+							Toast.LENGTH_LONG).show();
 				}
-			}.taskExecute();
+				pullAndDrop.onHeaderRefreshComplete(SettingsManager
+						.getInstance(context).getLastUpdateTime());
+			}
+		}.taskExecute();
+	}
+
+	final int PAGE_SIZE = 25;
+	private int pos;
+	private int lastId = 0;
+
+	private void getMoreData() {
+		page ++ ;
+		new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
+			@Override
+			protected ArrayList<TweetBean> doInBackground(Void... params) {
+				ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
+				switch (tweetState) {
+				case MAIN_TIMELINE_TWEET:
+					tmpArrayList = ContentManager.getInstance(context)
+							.getHotTweetBean(PAGE_SIZE, pos, "0");
+					pos = ContentManager.getInstance(context).getPos();
+					break;
+				// case OTHER_TWEET:
+				// tmpArrayList = ContentManager.getInstance(context)
+				// .getOtherTimeLine("1", oldResponTime,
+				// PAGE_SIZE, "", otherName, null, "", "");
+				// break;
+				// case VIP_TWEET:
+				// tmpArrayList = ContentManager.getInstance(context)
+				// .getVipTimeLine("1", oldResponTime, PAGE_SIZE,
+				// "");
+				// break;
+				// case PUBLIC_TWEET:
+				// tmpArrayList = ContentManager.getInstance(context)
+				// .getPublicTimeLine("1", oldResponTime,
+				// PAGE_SIZE, pos);
+				// break;
+				// case SPECIAL_TWEET:
+				// tmpArrayList = ContentManager.getInstance(context)
+				// .getSpecialTimeLine("1", oldResponTime,
+				// PAGE_SIZE, "", "0", "0");
+				// break;
+				}
+
+				if (tmpArrayList != null) {
+					int i = 0;
+					do {
+						String text = tmpArrayList.get(i).getText();
+						String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
+						Pattern pattern = Pattern.compile(ADDR_PATTERN);
+						Matcher matcher = pattern.matcher(text);
+						if (tmpArrayList.get(i).getMusicUrl() != null
+								|| tmpArrayList.get(i).getVideoImage() != null) {
+							while (matcher.find()) {
+								String group = matcher.group();
+								group = group
+										.substring(group.lastIndexOf("/") + 1);
+								if (application.getShortList().get(group) == null) {
+									String longUrl = ContentManager
+											.getInstance(context)
+											.getExpandedUrl(group);
+									application.getShortList().put(group,
+											longUrl);
+								}
+							}
+
+						}
+
+						if (tmpArrayList.get(i).getSource() != null
+								&& (tmpArrayList.get(i).getSource()
+										.getMusicUrl() != null || tmpArrayList
+										.get(i).getSource().getVideoImage() != null)) {
+							matcher = pattern.matcher(tmpArrayList.get(i)
+									.getSource().getText());
+							while (matcher.find()) {
+
+								String group = matcher.group();
+								group = group
+										.substring(group.lastIndexOf("/") + 1);
+								if (application.getShortList().get(group) == null) {
+									String longUrl = ContentManager
+											.getInstance(context)
+											.getExpandedUrl(group);
+									application.getShortList().put(group,
+											longUrl);
+								}
+							}
+						}
+					} while (++i < tmpArrayList.size());
+				}
+
+				return tmpArrayList;
+			}
+
+			@Override
+			protected void onPostExecute(ArrayList<TweetBean> result) {
+				super.onPostExecute(result);
+				if (footer != null) {
+					list.removeFooterView(footer);
+					footer = layoutInflater.inflate(
+							R.layout.tweet_content_more, null, false);
+					list.addFooterView(footer);
+				}
+
+				pullAndDrop.onFooterRefreshComplete();
+
+				if (result.size() > 0) {
+					tweetContainer.addAll(result);
+					tweetContentAdapter.notifyDataSetChanged();
+					oldResponTime = result.get(result.size() - 1)
+							.getTimestamp();
+				} else {
+					Toast.makeText(context, "更新失败", Toast.LENGTH_LONG).show();
+				}
+
+			}
+		}.taskExecute();
 	}
 
 	@Override
@@ -596,16 +595,16 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 			((BaseMultiFragmentActivity) context).backStackAction();
 			break;
 		case OnTitleBarClickListener.LEFT_IMAGE_BUTTON:
-			Activity parent = getActivity().getParent() ;
-			if(parent instanceof SlideHomeActivity){
-				((SlideHomeActivity)parent).toggleSlideMenu();
+			Activity parent = getActivity().getParent();
+			if (parent instanceof SlideHomeActivity) {
+				((SlideHomeActivity) parent).toggleSlideMenu();
 			}
 			break;
 		case OnTitleBarClickListener.RIGHT_IMAGE_BUTTON:
-//			mpCallback.setupAroundTweetFragment();
+			// mpCallback.setupAroundTweetFragment();
 			break;
 		case OnTitleBarClickListener.TITLE_TEXT_VIEW:
-			
+
 			break;
 		}
 	}
@@ -681,7 +680,7 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 	public void onLocationGot(double longitude, double latitude) {
 		this.longitude = String.valueOf(longitude);
 		this.latitude = String.valueOf(latitude);
-//		loadAroundTweet(this.longitude, this.latitude, 0);
+		// loadAroundTweet(this.longitude, this.latitude, 0);
 		page++;
 	}
 

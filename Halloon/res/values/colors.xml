@@ -42,7 +42,7 @@
 	
 	<color name="bg_list_back">#e8e8e8</color>
 	<color name="bg_list_divider">#FFF5F5F5</color>
-	<color name="txt_search_more">#000000</color>
+	<color name="txt_search_more">#555555</color>
 <!--
     右侧顶部蓝色值：
 右侧时间颜色: #a2adb3
