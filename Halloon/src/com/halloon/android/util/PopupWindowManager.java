@@ -1,7 +1,6 @@
 package com.halloon.android.util;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -19,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -43,15 +43,15 @@ import com.halloon.android.data.ContentManager;
 import com.halloon.android.data.DBManager;
 import com.halloon.android.data.SettingsManager;
 import com.halloon.android.image.ImageLoader;
+import com.halloon.android.image.ImageLoader.OnProcessListener;
 import com.halloon.android.image.TypedBitmap;
 import com.halloon.android.image.Utils;
-import com.halloon.android.image.ImageLoader.OnProcessListener;
 import com.halloon.android.task.ImageLoadTask;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 import com.halloon.android.ui.fragment.CommentFragment;
 import com.halloon.android.ui.fragment.TabMainPageFragment.MainPageFragmentCallback;
-import com.halloon.android.widget.HalloonProgressBar;
 import com.halloon.android.widget.HalloonImageView;
+import com.halloon.android.widget.HalloonProgressBar;
 
 public class PopupWindowManager {
 	private Context context;
@@ -132,6 +132,29 @@ public class PopupWindowManager {
 		               .show(); 
 	}
 
+	public void setupImageSelectorPopup(final Fragment fragment){
+		 new AlertDialog.Builder(context)
+		                .setItems(new String[]{context.getString(R.string.take_a_shot), context.getString(R.string.find_in_album)}, new DialogInterface.OnClickListener(){
+		                	@Override
+		    				public void onClick(DialogInterface dialog, int which) {
+		    					Intent intent;
+		    					switch(which){
+		    					case 0:
+		    						intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		    						fragment.startActivityForResult(intent, PICK_IMG_1);
+		    						break;
+		    					case 1:
+		    						intent = new Intent(Intent.ACTION_GET_CONTENT);
+		    						intent.setType("image/*");
+		    						fragment.startActivityForResult(intent, PICK_IMG_2);
+		    					}
+		    				}
+		             	  
+		               })
+		               .create()
+		               .show(); 
+	}
+	
 	public void setupPicturePopup(final String addr, final String size, Bitmap bitmap) {
 		container = (ViewGroup) ((Activity) context).getLayoutInflater().inflate(R.layout.popup_picture, null);
 		OnClickListener buttonClickListener = new OnClickListener() {

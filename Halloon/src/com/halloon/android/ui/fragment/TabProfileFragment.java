@@ -717,7 +717,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		case R.id.background:
 			PopupWindowManager popupWindowManager = new PopupWindowManager(
 					mActivity);
-			popupWindowManager.setupImageSelectorPopup();
+			popupWindowManager.setupImageSelectorPopup(this);
 
 			break;
 		case R.id.fav:
