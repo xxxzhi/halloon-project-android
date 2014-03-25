@@ -8,11 +8,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,11 +44,14 @@ import com.halloon.android.image.ImageLoader;
 import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
+import com.halloon.android.ui.activity.MainPageActivity;
 import com.halloon.android.ui.activity.SlideHomeActivity;
 import com.halloon.android.ui.fragment.TabMainPageFragment.MainPageFragmentCallback;
 import com.halloon.android.ui.fragment.TweetDetailFragment.TweetDetailFragmentCallback;
+import com.halloon.android.util.Constants;
 import com.halloon.android.util.ContentTransUtil;
 import com.halloon.android.util.NumberUtil;
+import com.halloon.android.util.PopupWindowManager;
 import com.halloon.android.util.TimeUtil;
 import com.halloon.android.view.ScrollTextView;
 import com.halloon.android.widget.ButtonStyleTextView;
@@ -53,8 +60,8 @@ import com.halloon.android.widget.TagView;
 
 public class TabProfileFragment extends BaseTitleBarFragment implements
 		OnClickListener {
-	public static final int REQUEST_IMG = 1;
-	
+	public static final int REQUEST_IMG = 2;
+
 	static final class ProfileTweetViewHolder {
 		ImageView headImage;
 		TextView title;
@@ -80,8 +87,8 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 	private ImageView mySex;
 	private TextView mySign;
 	private Button editButton;
-	
-	private ImageView backGround ; 
+
+	private ImageView backGround;
 	// private TagView tagView;
 
 	private Button tweetButton;
@@ -149,8 +156,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		favButton = (Button) content.findViewById(R.id.fav);
 		tagButton = (Button) content.findViewById(R.id.tag);
 		backGround = (ImageView) content.findViewById(R.id.background);
-		
-		
+
 		editButton = titleBar.getRightButton(R.string.edit);
 
 		// tweet list
@@ -227,21 +233,20 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		fanButton.setOnClickListener(this);
 		favButton.setOnClickListener(this);
 		tagButton.setOnClickListener(this);
-		
-		
-		
+
 		tweetMore.setOnClickListener(this);
 		myHeadicon.setOnClickListener(this);
 
-		if(type == ME){
-			
+		if (type == ME) {
+
 			backGround.setOnClickListener(this);
-			
-			String imgPath  = SettingsManager.getInstance(mActivity).getProfileBackGroundImg();
-			if(imgPath != null && imgPath.length() > 1){
+
+			String imgPath = SettingsManager.getInstance(mActivity)
+					.getProfileBackGroundImg();
+			if (imgPath != null && imgPath.length() > 1) {
 				backGround.setImageBitmap(BitmapFactory.decodeFile(imgPath));
 			}
-		}else{
+		} else {
 			backGround.setOnClickListener(null);
 			backGround.setImageResource(R.drawable.hot_balloon);
 		}
@@ -392,7 +397,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 			}
 
 			private void showTweetList(ArrayList<TweetBean> list) {
-				
+
 				TweetContentAdapter tweetContentAdapter;
 				tweetContentAdapter = new TweetContentAdapter(context, list);
 				// tweetListView.setAdapter(tweetContentAdapter);
@@ -710,13 +715,15 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		case R.id.fans:
 			break;
 		case R.id.background:
-			Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI	);
-			startActivityForResult(intent, REQUEST_IMG);
+			PopupWindowManager popupWindowManager = new PopupWindowManager(
+					mActivity);
+			popupWindowManager.setupImageSelectorPopup();
+
 			break;
 		case R.id.fav:
 			break;
 		case R.id.tag:
-			
+
 		default:
 			editProfile(v.getId());
 			break;
@@ -845,21 +852,67 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		}
 	}
 
+	String imagePath = "";
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		
-		if(requestCode == REQUEST_IMG && resultCode == Activity.RESULT_OK && data != null){
-			Uri selectImg = data.getData() ;
-			String [] filePathColumn = {MediaStore.Images.Media.DATA};
-			Cursor cursor = getActivity().getContentResolver().query(selectImg, filePathColumn, null, null, null);
-			cursor.moveToFirst();
-			String imgPath = cursor.getString(cursor.getColumnIndex(filePathColumn[0]));
-			cursor.close();
-			
-			SettingsManager.getInstance(mActivity).setProfileBackGroundImg(imgPath);
-			backGround.setImageBitmap(BitmapFactory.decodeFile(imgPath));
-			
+
+		if (resultCode == Activity.RESULT_OK) {
+
+			switch (requestCode) {
+			case PopupWindowManager.PICK_IMG_1:
+				Bundle bundle = data.getExtras();
+				final Bitmap photo = (Bitmap) bundle.get("data");
+				if (photo != null) {
+					Intent intent = new Intent();
+					intent.setAction(Constants.GET_IMAGE_PATH);
+					imagePath = ImageLoader.imageSave(photo);
+				}
+				break;
+			case PopupWindowManager.PICK_IMG_2:
+				try {
+					final Uri uri = data.getData();
+					String[] tmp_proj = { MediaStore.Images.Media.DATA };
+					final String[] proj = tmp_proj;
+					getActivity().getSupportLoaderManager().initLoader(0, null,
+							new LoaderCallbacks<Cursor>() {
+
+								@Override
+								public Loader<Cursor> onCreateLoader(int id,
+										Bundle bundle) {
+									CursorLoader cursorLoader = new CursorLoader(
+											mActivity, uri, proj, null, null,
+											null);
+									return cursorLoader;
+								}
+
+								@Override
+								public void onLoadFinished(
+										Loader<Cursor> loader, Cursor cursor) {
+									int column_index = cursor
+											.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+									cursor.moveToFirst();
+									imagePath = cursor.getString(column_index);
+								}
+
+								@Override
+								public void onLoaderReset(Loader<Cursor> loader) {
+									imagePath = null;
+								}
+
+							});
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				break;
+			}
+
+			if (imagePath != null && imagePath.length() != 0 ) {
+				SettingsManager.getInstance(mActivity).setProfileBackGroundImg(
+						imagePath);
+				backGround.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+			}
 		}
 	}
 

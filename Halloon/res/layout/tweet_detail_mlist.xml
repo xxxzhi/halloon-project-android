@@ -41,7 +41,7 @@
             android:layout_marginTop="3.0dip"
             android:text="阿蔡"
             android:textSize="15.0dip"
-            android:textColor="#0085DF" />
+            android:textColor="@color/txt_weibo_name" />
         
         <TextView
             android:id="@+id/comment_timestamp"

@@ -10,6 +10,72 @@ import android.util.Log;
 
 public class TimeUtil {
 
+	
+	/**
+	 * 解析微博返回的timestamp数据
+	 * 
+	 * @param timestamp
+	 *            微博返回的timestamp数据
+	 * @param type
+	 *            显示类型(0x0 全部以多少时间以前显示 ,0x1 一天以上显示正常时间,0x2 一个小时以上显示正常时间,0x3
+	 *            一分钟以上显示正常时间,0x4 全部以正常时间显示)
+	 * 
+	 * @return String形式的数据
+	 * 
+	 */
+	public static String converTime(String timestamp) {
+		long currentSeconds = System.currentTimeMillis() / 1000;
+		long timestampN = 0;
+		try {
+			timestampN = Long.parseLong(timestamp);
+		} catch (NumberFormatException e) {
+			Log.d(Constants.LOG_TAG, "parseLong:" + timestampN + " error:" + e);
+		}
+		long timeGap = currentSeconds - timestampN;// 与现在时间相差秒数
+		
+		Calendar currentCalendar = Calendar.getInstance();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(timestampN * 1000);
+		
+		String timeStr = null;
+		
+		int dayGap = currentCalendar.get(Calendar.DAY_OF_YEAR) - calendar.get(Calendar.DAY_OF_YEAR);
+		int yearGap = currentCalendar.get(Calendar.YEAR)- calendar.get(Calendar.YEAR); 
+		if(dayGap == 1){
+			timeStr = "昨天 " + getStandardTime(timestamp, "HH:mm");
+			return timeStr;
+		}
+		
+        if(dayGap == 2){
+			timeStr = "前天 " + getStandardTime(timestamp, "HH:mm");
+			return timeStr;
+		}
+        
+        if(dayGap >= 3 && yearGap == 0){
+        	timeStr = getStandardTime(timestamp, "MM-dd HH:mm");
+        	return timeStr;
+        }
+        
+        if(yearGap > 0){
+        	timeStr = getStandardTime(timestamp, "yyyy-MM-dd");
+        	return timeStr;
+        }
+        
+        if(timeGap > 6 * 60 * 60){
+        	timeStr = getStandardTime(timestamp, "HH:mm");
+        }else if(timeGap > 60 * 60){
+			timeStr = timeGap / (60 * 60) + "小时前";
+		}else if(timeGap > 60){
+			timeStr = timeGap / 60 + "分钟前";
+		}else{
+			timeStr = "刚刚";
+		}
+        
+        
+		return timeStr;
+	}
+	
+	
 	/**
 	 * 解析微博返回的timestamp数据
 	 * 

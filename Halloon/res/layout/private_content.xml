@@ -22,7 +22,7 @@
         android:layout_marginTop="2.0dip"
         android:text="nickname"
         android:textSize="16.0dip"
-        android:textColor="@color/main_style_color" />
+        android:textColor="@color/txt_weibo_name" />
     
     <TextView
         android:id="@+id/content"
@@ -30,10 +30,11 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/head"
         android:layout_alignBottom="@+id/head"
+        android:maxLength="15"
         android:layout_marginLeft="6.0dip"
         android:layout_marginRight="30.0dip"
         android:layout_marginBottom="2.0dip"
-        android:text="啦啦啦啦啦啦啦啦啦啦啦啦啊啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦"
+        android:text="12345678901234567"
         android:textSize="15.0dip"
         android:textColor="#888888"
         android:textColorLink="#568ee2"

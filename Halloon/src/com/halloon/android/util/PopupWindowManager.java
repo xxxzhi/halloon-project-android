@@ -105,6 +105,9 @@ public class PopupWindowManager {
 		    super.handleMessage(msg);
 		}
 	}
+	public static final int PICK_IMG_1 = 1;
+	public static final int PICK_IMG_2 = 2;
+	
 	
 	public void setupImageSelectorPopup(){
 		 new AlertDialog.Builder(context)
@@ -115,12 +118,12 @@ public class PopupWindowManager {
 		    					switch(which){
 		    					case 0:
 		    						intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-		    						((Activity) context).startActivityForResult(intent, 1);
+		    						((Activity) context).startActivityForResult(intent, PICK_IMG_1);
 		    						break;
 		    					case 1:
 		    						intent = new Intent(Intent.ACTION_GET_CONTENT);
 		    						intent.setType("image/*");
-		    						((Activity) context).startActivityForResult(intent, 2);
+		    						((Activity) context).startActivityForResult(intent, PICK_IMG_2);
 		    					}
 		    				}
 		             	  
