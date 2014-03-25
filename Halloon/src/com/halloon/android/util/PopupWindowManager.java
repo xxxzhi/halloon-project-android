@@ -147,6 +147,7 @@ public class PopupWindowManager {
 		    						intent = new Intent(Intent.ACTION_GET_CONTENT);
 		    						intent.setType("image/*");
 		    						fragment.startActivityForResult(intent, PICK_IMG_2);
+		    						break;
 		    					}
 		    				}
 		             	  

@@ -1,16 +1,18 @@
 package com.halloon.android.adapter;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import com.halloon.android.R;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 public class SquarePagerAdapter extends PagerAdapter {
-
+	int r[] = new int []{R.drawable.ad1,R.drawable.ad2,R.drawable.ad3};
 	ArrayList<View> list = new ArrayList<View>();
 	public SquarePagerAdapter(Context context){
 		for(int i = 0 ; i != 3; ++ i){
@@ -18,6 +20,8 @@ public class SquarePagerAdapter extends PagerAdapter {
 			ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
 					ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
 			iv.setLayoutParams(params);
+			iv.setScaleType(ScaleType.FIT_XY);
+			iv.setImageResource(r[i]);
 			list.add( iv);
 		}
 	}

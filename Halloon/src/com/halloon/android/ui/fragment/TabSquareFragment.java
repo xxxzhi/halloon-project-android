@@ -18,6 +18,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -118,6 +119,9 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 		}
 	}
 
+	
+	
+	
 	@Override
 	protected void init(HalloonTitleBar titleBar, RelativeLayout content) {
 		layoutInflater = (LayoutInflater) getActivity().getSystemService(
@@ -139,7 +143,7 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 		pullAndDrop.setOnFooterRefreshListener(this);
 
 		list = (ListView) content.findViewById(R.id.list);
-
+		
 		pager = (ViewPager) content.findViewById(R.id.viewpager);
 		pager.setAdapter(new SquarePagerAdapter(getActivity()));
 		initPagerScroll();
@@ -161,9 +165,10 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			if (msg.what == 1)
+			if (msg.what == 1 && pager.getChildCount() > 0){
 				pager.setCurrentItem((pager.getCurrentItem() + 1)
 						% pager.getChildCount());
+			}
 		}
 
 	};
@@ -191,7 +196,7 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 			thread.start();
 		}
 	}
-
+	private ArrayList<TweetBean> tempHotTweetList = new ArrayList<TweetBean>();
 	private TextWatcher textWatcher = new TextWatcher() {
 
 		@Override
@@ -203,11 +208,14 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 
 			tmpArrayList = ContentManager.getInstance(mActivity).searchTweet(
 					s.toString(), PAGE_SIZE, page, 0, "0", 0, "0", "0", "0");
-
+			
+			
 			tweetContainer.clear();
 			tweetContainer.addAll(tmpArrayList);
 			tweetContentAdapter.notifyDataSetChanged();
 			if (s.length() == 0) {
+				tweetContainer.clear();
+				tweetContainer.addAll(tempHotTweetList);
 				deleteButton.setVisibility(View.INVISIBLE);
 			} else {
 				deleteButton.setVisibility(View.VISIBLE);
@@ -224,38 +232,52 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 		}
 
 	};
-
+	
+	private AbsListView.OnScrollListener mScrollListener = new AbsListView.OnScrollListener() {
+		
+		@Override
+		public void onScrollStateChanged(AbsListView view, int scrollState) {
+			
+		}
+		private int lastfirstVisibleItem = 0 ;
+		@Override
+		public void onScroll(AbsListView view, int firstVisibleItem,
+				int visibleItemCount, int totalItemCount) {
+//			if(lastfirstVisibleItem > firstVisibleItem ){
+//				//scroll to down
+//				if(pager.getVisibility() != View.VISIBLE ){
+//					pager.setVisibility(View.VISIBLE);
+//				}
+//			}else{
+//				pager.setVisibility(View.GONE);
+//			}
+//			lastfirstVisibleItem = firstVisibleItem ;
+		}
+	};
+	
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		titleText.setText(R.string.tab_square);
 
 		searchEditText.addTextChangedListener(textWatcher);
-
-		switch (tweetState) {
-		case MAIN_TIMELINE_TWEET:
+		deleteButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				searchEditText.setText("");
+			}
+		});
+		
+		
+		
 			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_IMAGE);
 
 			sendButton = mTitleBar.getLeftImageButton();
 			aroundButton = mTitleBar.getRightImageButton();
 
-			break;
-		case OTHER_TWEET:
-			if (otherName != null && !otherName.equals(myName)) {
-				mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_NORMAL);
-				fanButton = mTitleBar.getRightButton(R.string.idol);
-			} else {
-				mTitleBar
-						.setTitleStyle(HalloonTitleBar.TITLE_STYLE_BACK_BUTTON_ONLY);
-			}
-			backButton = mTitleBar.getLeftButton();
-			titleText.setText(nick);
-			break;
-		default:
-			break;
-		}
-
-		loadData(25, false);
+		
 
 		// customize fastscroll bar style
 		/*
@@ -328,7 +350,10 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 			}
 
 		});
-
+		
+		list.setOnScrollListener(mScrollListener);
+		
+		loadData(25, false);
 	}
 
 	@Override
@@ -456,6 +481,8 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 						intent.putExtras(bundle);
 						context.sendBroadcast(intent);
 					}
+					tempHotTweetList.clear();
+					tempHotTweetList.addAll(result);
 					tweetContainer.clear();
 					tweetContainer.addAll(result);
 					tweetContentAdapter.notifyDataSetChanged();
@@ -576,6 +603,7 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 				pullAndDrop.onFooterRefreshComplete();
 
 				if (result.size() > 0) {
+					tempHotTweetList.addAll(result);
 					tweetContainer.addAll(result);
 					tweetContentAdapter.notifyDataSetChanged();
 					oldResponTime = result.get(result.size() - 1)

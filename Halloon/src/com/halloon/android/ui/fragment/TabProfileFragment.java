@@ -852,12 +852,12 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		}
 	}
 
-	String imagePath = "";
+	
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-
+		String imagePath = "";
 		if (resultCode == Activity.RESULT_OK) {
 
 			switch (requestCode) {
@@ -873,35 +873,47 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 			case PopupWindowManager.PICK_IMG_2:
 				try {
 					final Uri uri = data.getData();
-					String[] tmp_proj = { MediaStore.Images.Media.DATA };
-					final String[] proj = tmp_proj;
-					getActivity().getSupportLoaderManager().initLoader(0, null,
-							new LoaderCallbacks<Cursor>() {
+					if(null != uri){
+					  String[] filePathColumn = { MediaStore.Images.Media.DATA };
+				        Cursor cursor = getActivity().getContentResolver().query(uri,
+				                filePathColumn, null, null, null);
+				        cursor.moveToFirst();
+				        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+				        imagePath = cursor.getString(columnIndex);
+				        cursor.close();
 
-								@Override
-								public Loader<Cursor> onCreateLoader(int id,
-										Bundle bundle) {
-									CursorLoader cursorLoader = new CursorLoader(
-											mActivity, uri, proj, null, null,
-											null);
-									return cursorLoader;
-								}
-
-								@Override
-								public void onLoadFinished(
-										Loader<Cursor> loader, Cursor cursor) {
-									int column_index = cursor
-											.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-									cursor.moveToFirst();
-									imagePath = cursor.getString(column_index);
-								}
-
-								@Override
-								public void onLoaderReset(Loader<Cursor> loader) {
-									imagePath = null;
-								}
-
-							});
+					}
+					
+					      
+//					String[] tmp_proj = { MediaStore.Images.Media.DATA };
+//					final String[] proj = tmp_proj;
+//					getActivity().getSupportLoaderManager().initLoader(0, null,
+//							new LoaderCallbacks<Cursor>() {
+//
+//								@Override
+//								public Loader<Cursor> onCreateLoader(int id,
+//										Bundle bundle) {
+//									CursorLoader cursorLoader = new CursorLoader(
+//											mActivity, uri, proj, null, null,
+//											null);
+//									return cursorLoader;
+//								}
+//
+//								@Override
+//								public void onLoadFinished(
+//										Loader<Cursor> loader, Cursor cursor) {
+//									int column_index = cursor
+//											.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//									cursor.moveToFirst();
+//									imagePath = cursor.getString(column_index);
+//								}
+//
+//								@Override
+//								public void onLoaderReset(Loader<Cursor> loader) {
+//									imagePath = null;
+//								}
+//
+//							});
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
