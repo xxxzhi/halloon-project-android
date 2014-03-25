@@ -143,13 +143,34 @@ public class OAuthV2Activity extends Activity {
 		}
 
 	};
+	
+	public static final String OAUTH_FILE_NAME= "halloon_content";
+	
+	
+	public static void clearOAuth(Activity activity){
+		String s = activity.getFileStreamPath(OAUTH_FILE_NAME).getAbsolutePath();
+		String x = "";
+		try {
+			x = s.substring(0, s.lastIndexOf("/"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			x = "/data/data/com.halloon.android";
+		}
 
+		try {
+			File file = new File(x + "/oauth.data");
+			file.delete();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private boolean isOauth() {
 		boolean token = false;
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
 		try {
-			openFileOutput("halloon_content", Context.MODE_PRIVATE);
+			openFileOutput(OAUTH_FILE_NAME, Context.MODE_PRIVATE);
 			oauthPersistent();
 			fis = new FileInputStream(file);
 			ois = new ObjectInputStream(fis);
@@ -182,7 +203,7 @@ public class OAuthV2Activity extends Activity {
 	}
 
 	private void oauthPersistent() {
-		String s = getFileStreamPath("halloon_content").getAbsolutePath();
+		String s = getFileStreamPath(OAUTH_FILE_NAME).getAbsolutePath();
 		for (String ss : fileList()) {
 			System.out.println("ss==" + ss);
 		}

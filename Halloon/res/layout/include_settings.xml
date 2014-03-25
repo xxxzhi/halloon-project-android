@@ -292,6 +292,15 @@
         android:layout_marginTop="10.0dip"
         android:layout_marginLeft="15.0dip"
         android:layout_marginRight="15.0dip"
-        android:text="清除缓存" />
+        android:text="@string/clear_cache" />
+    
+    <Button
+        android:id="@+id/exit"
+        android:layout_width="match_parent"
+        android:layout_height="40.0dip"
+        android:layout_marginTop="10.0dip"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginRight="15.0dip"
+        android:text="@string/exit" />
     
 </LinearLayout>

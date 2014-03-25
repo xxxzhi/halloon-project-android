@@ -127,7 +127,7 @@
     <string name="about_halloon">关于哈恩</string>
     <string name="feedback">意见反馈</string>
     <string name="clear_cache">清除缓存</string>
-    
+     <string name="exit">退出</string>
     <!--  about message -->
     <string name="about_title">名称:恩哈\n版本:1.0.0\n</string>
     <string name="about_intro">[应用简介]\n\t恩哈客户端是一款基于腾讯微博二次开发的软件。依靠腾讯微博开放平台，全面实现腾讯微博客户端的所有功能，我们的目标是做的是比官方版本更加完美。</string>

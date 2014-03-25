@@ -2,6 +2,7 @@ package com.halloon.android.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.halloon.android.R;
 import com.halloon.android.image.ImageLoader;
 import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
+import com.halloon.android.ui.activity.OAuthV2Activity;
 import com.halloon.android.ui.activity.SlideHomeActivity;
 import com.halloon.android.util.NumberUtil;
 import com.halloon.android.widget.HalloonTitleBar;
@@ -28,7 +30,7 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 	
 	private Context context;
 	
-	private Button clearButton;
+	private Button clearButton,exitButton;
 
 	@Override
 	protected void init(HalloonTitleBar titleBar, RelativeLayout content) {
@@ -52,6 +54,9 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 		content.findViewById(R.id.about).setOnClickListener(this);
 		content.findViewById(R.id.feedback).setOnClickListener(this); 
 		clearButton = (Button) content.findViewById(R.id.clear);
+		exitButton = (Button) content.findViewById(R.id.exit);
+		
+		exitButton.setOnClickListener(this);
 		clearButton.setOnClickListener(this);
 		 
 	}
@@ -138,7 +143,13 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 			ImageLoader.getInstance(context).clearCache();
 			clearButton.setText(context.getString(R.string.clear_cache) + "(" + NumberUtil.formatBytesSize(context, ImageLoader.getInstance(context).checkSize()) + ")");
 			break;
-			
+		case R.id.exit:
+			OAuthV2Activity.clearOAuth(mActivity);
+			Intent intent = new Intent();
+			intent.setClass(mActivity, OAuthV2Activity.class);
+			mActivity.startActivity(intent);
+			mActivity.finish();
+			break;
 		default:
 			break;
 		}

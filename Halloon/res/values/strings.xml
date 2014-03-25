@@ -127,6 +127,9 @@
     <string name="about_halloon">about halloon</string>
     <string name="feedback">feedback</string>
     <string name="clear_cache">clear cache</string>
+    
+    <string name="exit">exit</string>
+    
     <!--  about message -->
     <string name="about_title">name:halloon\nedition:1.0.0\n</string>
     <string name="about_intro">[app info]\n\thallon is an unofficial client for tecent microblog, we intend to impove the user experiment of official tecent microblog.</string>
