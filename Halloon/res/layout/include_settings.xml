@@ -13,7 +13,7 @@
         android:layout_marginLeft="15.0dip"
         android:layout_marginRight="15.0dip"
         android:layout_marginTop="16.0dip"
-        android:background="@drawable/round_corner_margin_blue" >
+         >
 
         <TextView
             android:id="@+id/setting"
@@ -38,7 +38,9 @@
             android:layout_height="1.0dip"
             android:layout_below="@+id/setting"
             android:layout_marginTop="7.0dip"
-            android:background="#0085DF" />
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginRight="6.0dip"
+            android:background="@color/line_setting" />
 
         <TextView
             android:id="@+id/account"
@@ -64,7 +66,9 @@
             android:layout_height="1.0dip"
             android:layout_below="@+id/account"
             android:layout_marginTop="5.0dip"
-            android:background="#0085DF" />
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginRight="6.0dip"
+            android:background="@color/line_setting" />
 
         <TextView
             android:id="@+id/browser"
@@ -88,8 +92,10 @@
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
             android:layout_below="@+id/browser"
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginRight="6.0dip"
             android:layout_marginTop="5.0dip"
-            android:background="#0085DF" />
+            android:background="@color/line_setting" />
 
         <TextView
             android:id="@+id/theme"
@@ -123,7 +129,7 @@
         android:layout_marginBottom="6.0dip"
         android:layout_marginLeft="15.0dip"
         android:layout_marginRight="15.0dip"
-        android:background="@drawable/round_corner_margin_blue">
+        >
         
         <TextView
             android:id="@+id/systemplugin"
@@ -146,9 +152,11 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginRight="6.0dip"
             android:layout_marginTop="6.0dip"
             android:layout_below="@+id/systemplugin"
-            android:background="#0085DF" />
+            android:background="@color/line_setting" />
         
         <TextView
             android:id="@+id/hotsoftware"
@@ -173,8 +181,10 @@
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
             android:layout_marginTop="6.0dip"
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginRight="6.0dip"
             android:layout_below="@+id/hotsoftware"
-            android:background="#0085DF" />
+            android:background="@color/line_setting" />
         
         <TextView
             android:id="@+id/privacy"
@@ -198,9 +208,11 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginRight="6.0dip"
             android:layout_marginTop="6.0dip"
             android:layout_below="@+id/privacy"
-            android:background="#0085DF" />
+            android:background="@color/line_setting" />
         
         <TextView 
             android:id="@+id/flowanaly"
@@ -233,7 +245,7 @@
         android:layout_marginTop="10.0dip"
         android:layout_marginLeft="15.0dip"
         android:layout_marginRight="15.0dip"
-        android:background="@drawable/round_corner_margin_blue">
+        >
         
         <TextView
             android:id="@+id/about"
@@ -257,8 +269,10 @@
             android:layout_width="match_parent"
             android:layout_height="1.0dip"
             android:layout_marginTop="6.0dip"
+            android:layout_marginLeft="12.0dip"
+            android:layout_marginRight="6.0dip"
             android:layout_below="@+id/about"
-            android:background="#0085DF" />
+            android:background="@color/line_setting" />
         
         <TextView
             android:id="@+id/feedback"
