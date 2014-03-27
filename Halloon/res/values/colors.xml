@@ -26,7 +26,7 @@
     <!-- 左侧菜单分割线： -->
 	<color name="line_slide_menu">#44515a</color>
 
-	
+	<color name="line_setting">#efcbd4d9</color>
 	
 	<color name="txt_time">#a2adb3</color>
 	<color name="txt_weibo">#878988</color>
