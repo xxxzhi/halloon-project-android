@@ -18,8 +18,8 @@
     <dimen name="slide_linear_height">50dp</dimen>
     <dimen name="slide_img_side">30dp</dimen>
     <dimen name="slide_icon_side">110dp</dimen>
-    <dimen name="slide_img_padding">30dp</dimen>
-    
+    <dimen name="slide_img_padding">20dp</dimen>
+    <dimen name="slide_txt_margin">10dp</dimen>
     <dimen name="padding_weibo">6dp</dimen>
     <dimen name="list_diver_height">13dp</dimen>
 <dimen name="tag_height">50dp</dimen>

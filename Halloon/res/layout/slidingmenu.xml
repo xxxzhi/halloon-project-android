@@ -7,9 +7,9 @@
     <RelativeLayout
         android:id="@+id/relative_profile"
         android:layout_width="match_parent"
-        android:background="@color/bg_slide_menu"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
+        android:background="@color/bg_slide_menu"
         android:paddingTop="40dp" >
 
         <com.halloon.android.widget.CircleImageView
@@ -32,6 +32,16 @@
             android:src="@drawable/wb_icon_male" />
 
         <TextView
+            android:id="@+id/tv_update_hint"
+            style="@style/SlideUpdateHintTextView"
+            android:visibility="gone"
+            android:layout_alignTop="@+id/iv_icon"
+            android:layout_alignRight="@+id/iv_icon"
+            android:layout_marginTop="6dip"
+            android:layout_marginRight="6dip"
+            />
+        
+        <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,8 +56,8 @@
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg_slide_menu"
         android:layout_below="@id/relative_profile"
+        android:background="@color/bg_slide_menu"
         android:paddingTop="5dp" >
 
         <LinearLayout
@@ -55,31 +65,49 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/linear_main"
-                style="@style/SlideChildLinear"
-                >
+                style="@style/SlideChildLinear" >
 
                 <ImageView
                     android:id="@+id/icon"
                     style="@style/SlideImg"
+                    android:layout_toLeftOf="@+id/v_position"
                     android:src="@drawable/ic_tab_home" />
+
+                <View
+                    android:id="@+id/v_position"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true" />
 
                 <TextView
                     android:id="@+id/tabsText"
                     style="@style/SlideTextView"
+                    android:layout_toRightOf="@+id/v_position"
                     android:text="@string/tab_mainpage" />
-            </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_update_hint"
+                    style="@style/SlideUpdateHintTextView"
+                    android:visibility="gone"
+                    android:layout_toRightOf="@+id/tabsText" />
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line_slide_menu" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/linear_message"
-                style="@style/SlideChildLinear"
-                >
+                style="@style/SlideChildLinear" >
+
+                <View
+                    android:id="@+id/v_position"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true" />
 
                 <ImageView
                     android:id="@+id/icon"
@@ -90,17 +118,27 @@
                     android:id="@+id/tabsText"
                     style="@style/SlideTextView"
                     android:text="@string/tab_message" />
-            </LinearLayout>
+                
+                <TextView
+                    android:id="@+id/tv_update_hint"
+                    style="@style/SlideUpdateHintTextView"
+                    android:layout_toRightOf="@+id/tabsText" />
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line_slide_menu" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/linear_contacts"
-                style="@style/SlideChildLinear"
-                 >
+                style="@style/SlideChildLinear" >
+
+                <View
+                    android:id="@+id/v_position"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true" />
 
                 <ImageView
                     android:id="@+id/icon"
@@ -111,17 +149,27 @@
                     android:id="@+id/tabsText"
                     style="@style/SlideTextView"
                     android:text="@string/tab_contacts" />
-            </LinearLayout>
+                
+                <TextView
+                    android:id="@+id/tv_update_hint"
+                    style="@style/SlideUpdateHintTextView"
+                    android:layout_toRightOf="@+id/tabsText" />
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line_slide_menu" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/linear_square"
-                style="@style/SlideChildLinear"
-                >
+                style="@style/SlideChildLinear" >
+
+                <View
+                    android:id="@+id/v_position"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true" />
 
                 <ImageView
                     android:id="@+id/icon"
@@ -132,17 +180,28 @@
                     android:id="@+id/tabsText"
                     style="@style/SlideTextView"
                     android:text="@string/tab_square" />
-            </LinearLayout>
+                
+                <TextView
+                    android:id="@+id/tv_update_hint"
+                    style="@style/SlideUpdateHintTextView"
+                    android:layout_toRightOf="@+id/tabsText" />
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line_slide_menu" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/linear_more"
                 style="@style/SlideChildLinear"
                 android:layout_below="@+id/linear_square" >
+
+                <View
+                    android:id="@+id/v_position"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true" />
 
                 <ImageView
                     android:id="@+id/icon"
@@ -153,7 +212,12 @@
                     android:id="@+id/tabsText"
                     style="@style/SlideTextView"
                     android:text="@string/tab_more" />
-            </LinearLayout>
+                
+                <TextView
+                    android:id="@+id/tv_update_hint"
+                    style="@style/SlideUpdateHintTextView"
+                    android:layout_toRightOf="@+id/tabsText" />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 

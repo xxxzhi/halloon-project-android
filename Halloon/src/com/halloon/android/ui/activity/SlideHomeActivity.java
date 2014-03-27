@@ -5,18 +5,18 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
-
-import org.json.JSONException;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import android.app.ActivityGroup;
-import android.app.TabActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -24,14 +24,9 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TabHost;
-import android.widget.TabHost.OnTabChangeListener;
-import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
-import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
 import com.halloon.android.bean.ProfileBean;
 import com.halloon.android.data.ContentManager;
@@ -41,9 +36,6 @@ import com.halloon.android.image.FileCache;
 import com.halloon.android.image.ImageLoader;
 import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.util.Constants;
-import com.halloon.android.util.ContentTransUtil;
-import com.halloon.android.util.NumberUtil;
-import com.halloon.android.util.TimeUtil;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 @SuppressWarnings("deprecation")
@@ -56,7 +48,8 @@ public class SlideHomeActivity extends ActivityGroup implements
 
 	SlidingMenu menu;
 	private ViewGroup container = null;
-
+	TextView profileUpdateHint ,mainUpdateHint,contactsUpdateHint,
+	squareUpdateHint,moreUpdateHint,messageUpdateHint;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -115,15 +108,15 @@ public class SlideHomeActivity extends ActivityGroup implements
 		// init slidemenu
 		RelativeLayout profile = (RelativeLayout) menuView
 				.findViewById(R.id.relative_profile);
-		LinearLayout main = (LinearLayout) menuView
+		RelativeLayout main = (RelativeLayout) menuView
 				.findViewById(R.id.linear_main);
-		LinearLayout contacts = (LinearLayout) menuView
+		RelativeLayout contacts = (RelativeLayout) menuView
 				.findViewById(R.id.linear_contacts);
-		LinearLayout message = (LinearLayout) menuView
+		RelativeLayout message = (RelativeLayout) menuView
 				.findViewById(R.id.linear_message);
-		LinearLayout square = (LinearLayout) menuView
+		RelativeLayout square = (RelativeLayout) menuView
 				.findViewById(R.id.linear_square);
-		LinearLayout more = (LinearLayout) menuView
+		RelativeLayout more = (RelativeLayout) menuView
 				.findViewById(R.id.linear_more);
 
 		square.setOnClickListener(this);
@@ -133,6 +126,14 @@ public class SlideHomeActivity extends ActivityGroup implements
 		message.setOnClickListener(this);
 		more.setOnClickListener(this);
 
+		
+		profileUpdateHint = (TextView)profile.findViewById(R.id.tv_update_hint);
+		mainUpdateHint = (TextView)main.findViewById(R.id.tv_update_hint);
+		contactsUpdateHint = (TextView)contacts.findViewById(R.id.tv_update_hint);
+		squareUpdateHint = (TextView)square.findViewById(R.id.tv_update_hint);
+		moreUpdateHint = (TextView)more.findViewById(R.id.tv_update_hint);
+		messageUpdateHint = (TextView)message.findViewById(R.id.tv_update_hint);
+		
 		myHeadIcon = (ImageView) profile.findViewById(R.id.iv_icon);
 		myNick = (TextView) profile.findViewById(R.id.tv_name);
 		mySex = (ImageView) profile.findViewById(R.id.my_sex);
@@ -141,6 +142,8 @@ public class SlideHomeActivity extends ActivityGroup implements
 		container = (ViewGroup) findViewById(R.id.container);
 
 		main.performClick();
+		
+		initRequestCircle();
 	}
 
 	@Override
@@ -158,15 +161,6 @@ public class SlideHomeActivity extends ActivityGroup implements
 		DBManager.getInstance(this);
 	}
 
-	public void onTabChanged(String tabId) {
-	}
-
-	// @Override
-	// public void onPause(){
-	// super.onPause();
-	// DBManager.getInstance(this).closeDatabase();
-	// }
-
 	@Override
 	public void onStop() {
 		super.onStop();
@@ -181,6 +175,56 @@ public class SlideHomeActivity extends ActivityGroup implements
 		}
 	}
 
+	
+	Thread updateThread = new Thread(){
+
+		@Override
+		public void run() {
+			super.run();
+			while(true){
+				try {
+					TimeUnit.SECONDS.sleep(5);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				final HashMap<String, String> map = ContentManager.getInstance(SlideHomeActivity.this).getUnreadCount("0", "");
+				
+				Message message = Message.obtain(handler,new Runnable() {
+					private void update(TextView v,String value){
+						if(value != null && value.length() > 0 && !value.equals("0")){
+							v.setVisibility(View.VISIBLE);
+							v.setText(value);
+						}else{
+							v.setVisibility(View.GONE);
+						}
+					}
+					@Override
+					public void run() {
+						//修改拼音
+						update(mainUpdateHint,map.get("home"));
+						update(messageUpdateHint,map.get("private"));
+						update(profileUpdateHint,map.get("fans"));
+						update(messageUpdateHint,map.get("mentions"));
+//						update(profileUpdateHint,map.get("create"));
+					}
+				});
+				message.sendToTarget();
+			}
+		}
+		
+	};
+	
+	private Handler handler = new Handler(){
+		
+	};
+	
+	
+	private void initRequestCircle(){
+		updateThread.start();
+	}
+	
+	
 	private class MyBroadCastReceiver extends BroadcastReceiver {
 
 		@Override
