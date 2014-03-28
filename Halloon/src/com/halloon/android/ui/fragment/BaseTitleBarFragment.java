@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
 import com.halloon.android.listener.OnTitleBarClickListener;
+import com.halloon.android.ui.activity.SlideHomeActivity;
 import com.halloon.android.widget.HalloonTitleBar;
 
 /**
@@ -45,7 +46,7 @@ public abstract class BaseTitleBarFragment extends Fragment implements OnTitleBa
 		
 		return root;
 	}
-	
+
 	protected abstract void init(HalloonTitleBar titleBar, RelativeLayout content);
 	
 	@Override
