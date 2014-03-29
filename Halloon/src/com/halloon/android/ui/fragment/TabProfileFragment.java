@@ -131,7 +131,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		if (getArguments().getString("id") != null)
 			this.id = getArguments().getString("id");
 	}
-
+	LinearLayout linearLayout = null ;
 	@Override
 	public void init(HalloonTitleBar titleBar, RelativeLayout content) {
 		LayoutInflater inflater = (LayoutInflater) getActivity()
@@ -164,6 +164,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		// content.findViewById(R.id.listview_profile_tweet);
 		tweetLinear = (LinearLayout) content.findViewById(R.id.linear_tweet);
 		tweetMore = content.findViewById(R.id.tv_more);
+		linearLayout = (LinearLayout)content.findViewById(R.id.hori_linear);
 		// content.findViewById(R.id.tweet_head).setVisibility(View.GONE);
 		//
 		// tweetViewHolder.headImage = (ImageView) content
@@ -269,72 +270,6 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_NORMAL);
 		}
 
-		// /* tweet */
-		// OnClickListener tweetListClickListener = new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// try {
-		// switch (v.getId()) {
-		// case R.id.tweet_head:
-		// Bundle bundle = new Bundle();
-		// bundle.putString("name", profileBean.getTweetBean()
-		// .getName());
-		// bundle.putString("id", profileBean.getTweetBean()
-		// .getOpenId());
-		// ((TweetDetailFragmentCallback) context)
-		// .setupProfileFragment(bundle);
-		// break;
-		// case R.id.tweet_image:
-		// if (profileBean.getTweetBean().getTweetImage() != null
-		// && profileBean.getTweetBean().getTweetImage()
-		// .length() > 0)
-		// ((MainPageFragmentCallback) context)
-		// .setupPictureDialog(profileBean
-		// .getTweetBean().getTweetImage()
-		// .getString(0), "/2000",
-		// v.getDrawingCache());
-		// if (profileBean.getTweetBean().getVideoImage() != null) {
-		// Intent intent = new Intent();
-		// intent.setAction("android.intent.action.VIEW");
-		// Uri uri = Uri.parse(profileBean.getTweetBean()
-		// .getVideoUrl());
-		// intent.setData(uri);
-		// context.startActivity(intent);
-		// }
-		// break;
-		// case R.id.forward_image:
-		// if (profileBean.getTweetBean().getSource()
-		// .getTweetImage() != null
-		// && profileBean.getTweetBean().getSource()
-		// .getTweetImage().length() > 0)
-		// ((MainPageFragmentCallback) context)
-		// .setupPictureDialog(profileBean
-		// .getTweetBean().getSource()
-		// .getTweetImage().getString(0),
-		// "/2000", v.getDrawingCache());
-		// if (profileBean.getTweetBean().getSource()
-		// .getVideoImage() != null) {
-		// Intent intent = new Intent();
-		// intent.setAction("android.intent.action.VIEW");
-		// Uri uri = Uri.parse(profileBean.getTweetBean()
-		// .getSource().getVideoUrl());
-		// intent.setData(uri);
-		// context.startActivity(intent);
-		// }
-		// break;
-		// }
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		// }
-		// };
-		//
-		// tweetViewHolder.headImage.setOnClickListener(tweetListClickListener);
-		// tweetViewHolder.tweetImage.setOnClickListener(tweetListClickListener);
-		// tweetViewHolder.forwardImage.setOnClickListener(tweetListClickListener);
-		//
-		// tweetViewHolder.sourceLayout.setVisibility(View.GONE);
-
 	}
 
 	public void updateProfile() {
@@ -390,12 +325,32 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 						if (values[1] instanceof ArrayList<?>)
 							showTweetList((ArrayList<TweetBean>) values[1]);
 						break;
+					case 3:
+						if(values[1] instanceof ArrayList<?>){
+							
+						}
+						break;
 					default:
 						break;
 					}
 				}
 			}
-
+			
+			private void showMicroAlbum(ArrayList<TweetBean> list){
+				LayoutInflater inflater = getActivity().getLayoutInflater();
+				
+				for(TweetBean tweetBean : list){
+					ImageView iv = (ImageView)inflater.inflate(R.layout.include_imageview, null);
+					try {
+						ImageLoader.getInstance(context).displayImage(tweetBean.getTweetImage().getString(0) + "/120", iv, 0, null);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					linearLayout.addView(iv);
+				}
+			}
+			
 			private void showTweetList(ArrayList<TweetBean> list) {
 
 				TweetContentAdapter tweetContentAdapter;
