@@ -44,6 +44,12 @@ public class ContentManager {
 	public int getPos() {
 		return pos;
 	}
+	
+	private int errorCode = 0 ;
+	
+	public int getErrorCode() {
+		return errorCode;
+	}
 
 	private static int REQNUM = 30;
 
@@ -195,6 +201,44 @@ public class ContentManager {
 		return profileBean;
 	}
 
+	public ArrayList<TweetBean> getMicroAlbum(int requestNum,String name,String fopenid,String pageFlag,
+			String pageTime,  String lastId){
+		HalloonStatusesAPI statusesAPI = new HalloonStatusesAPI(
+				OAuthConstants.OAUTH_VERSION_2_A);
+		
+		ArrayList<TweetBean> tweetContainer = new ArrayList<TweetBean>(
+				requestNum);
+		
+		
+		try {
+			String tweetInfo;
+			tweetInfo = statusesAPI.getMicroAlbum(preoauth, "json",requestNum+"", name,
+					fopenid, pageFlag,
+					pageTime, lastId);
+			
+			JSONObject jsonObject = new JSONObject(tweetInfo);
+			int errcode = jsonObject.getInt("errcode");
+			String seqid = jsonObject.getString("seqid");
+			JSONObject dataJsonObject = jsonObject.getJSONObject("data");
+			int hasnext = jsonObject.getInt("hasnext");
+			JSONArray tweetInfoArray = dataJsonObject.getJSONArray("info");
+			for (int i = 0; i < tweetInfoArray.length(); i++) {
+				JSONObject tweetInfoObject = tweetInfoArray.getJSONObject(i);
+				
+				TweetBean tb = new TweetBean();
+				tb.setId(tweetInfoObject.getString("id"));
+				tb.setTimestamp(tweetInfoObject.getString("pubtime"));
+				tb.setTweetImage(tweetInfoObject.getString("image"));
+				tweetContainer.add(tb);
+			}
+
+		} catch (Exception e) {
+			Log.d(Constants.LOG_TAG, "GET_USER_TIMELINE_ERROR:" + e);
+		}
+		return tweetContainer;
+	}
+	
+	
 	public int[] updateProfile(String nick, String sex, String year,
 			String month, String day, String countryCode, String provinceCode,
 			String cityCode, String introduction) {
