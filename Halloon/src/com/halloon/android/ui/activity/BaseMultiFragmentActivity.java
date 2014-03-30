@@ -1,5 +1,6 @@
 package com.halloon.android.ui.activity;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -116,19 +117,35 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
 		fragmentCount--;
 		currentFragment = mFragmentManager.findFragmentByTag(fragmentTag + fragmentCount);
 		Log.d("BASE back", fragmentCount + "<<fragmentCount");
+		
+		changeSlideEnable();
 	}
-
+	
+	private void changeSlideEnable(){
+		//make sure that slidemenu is unenable. when this is not the top fragment stack
+		Activity activity = getParent();
+		if(activity != null && activity instanceof SlideHomeActivity){
+			if(fragmentCount == 0 ){
+				((SlideHomeActivity)activity).setSlidingEnabled(true);
+			}else{
+				((SlideHomeActivity)activity).setSlidingEnabled(false);
+			}
+		}
+	}
+	
 	@Override
 	public void setupTweetListFragment(Bundle bundle) {
 		TabMainPageFragment fragment = new TabMainPageFragment();
 		fragment.setTweetState(TabMainPageFragment.OTHER_TWEET);
 		
 		setupFragment(fragment, bundle);
+		
 	}
 	
 	@Override
 	public void setupEditProfileFragment(Bundle bundle){
 		setupFragment(new EditProfileFragment(), bundle);
+		
 	}
 
 	@Override
@@ -166,11 +183,19 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
 		Log.d("BASE", fragmentCount + "<<fragmentCount");
 		
 		currentFragment = fragment;
+		
+		
+		changeSlideEnable();
 	}
 
 	@Override
 	public void setupPublishFragment() {
 		setupFragment(new PublishFragment(), null);
+		
+		Activity activity = getParent();
+		if(activity != null && activity instanceof SlideHomeActivity){
+			((SlideHomeActivity)activity).setSlidingEnabled(false);
+		}
 	}
 
 	@Override

@@ -10,7 +10,7 @@
         android:layout_height="40.0dip"
         android:layout_marginLeft="6.0dip"
         android:layout_below="@+id/private_time"
-        android:src="@drawable/ic_launcher"/>
+        android:src="@drawable/wb_head_default"/>
     
     <ImageView
         android:id="@+id/head_mask"

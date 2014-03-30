@@ -16,6 +16,25 @@
             android:layout_height="wrap_content"
             layout="@layout/include_profile" />
         
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView1"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_height="80dp" >
+
+            <LinearLayout
+                android:id="@+id/hori_linear"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="horizontal" >
+            </LinearLayout>
+        </HorizontalScrollView>
+        
+        
         <LinearLayout
             android:id="@+id/linear_tweet"
             android:background="@color/bg_list_back"
@@ -39,22 +58,10 @@
             android:textSize="15sp"
             android:textColor="@color/txt_search_more"
             android:text="@string/search_more"
-            android:layout_marginBottom="13dp"
+            android:layout_marginBottom="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollView1"
-            android:layout_width="match_parent"
-            android:layout_height="80dp" >
 
-            <LinearLayout
-                android:id="@+id/hori_linear"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal" >
-            </LinearLayout>
-        </HorizontalScrollView>
-        
     </LinearLayout>
 
 </ScrollView>

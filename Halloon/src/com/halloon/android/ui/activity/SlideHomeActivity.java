@@ -105,6 +105,8 @@ public class SlideHomeActivity extends ActivityGroup implements
 		View menuView = getLayoutInflater().inflate(R.layout.slidingmenu, null);
 		menu.setMenu(menuView);
 
+		
+		
 		// init slidemenu
 		RelativeLayout profile = (RelativeLayout) menuView
 				.findViewById(R.id.relative_profile);
@@ -185,7 +187,6 @@ public class SlideHomeActivity extends ActivityGroup implements
 				try {
 					TimeUnit.SECONDS.sleep(5);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				final HashMap<String, String> map = ContentManager.getInstance(SlideHomeActivity.this).getUnreadCount("0", "");
@@ -203,9 +204,23 @@ public class SlideHomeActivity extends ActivityGroup implements
 					public void run() {
 						//修改拼音
 						update(mainUpdateHint,map.get("home"));
+						
+						
+						
 						update(messageUpdateHint,map.get("private"));
 						update(profileUpdateHint,map.get("fans"));
-						update(messageUpdateHint,map.get("mentions"));
+						int privat =0,mentions=0;
+						try{
+							privat = Integer.valueOf(map.get("private"));
+						}catch (Exception e) {
+							privat = 0 ;
+						}
+						try{
+							mentions =  Integer.valueOf(map.get("mentions"));
+						}catch (Exception e) {
+							mentions = 0 ;
+						}
+						update(messageUpdateHint,(privat+mentions)+"");
 //						update(profileUpdateHint,map.get("create"));
 					}
 				});
@@ -267,6 +282,11 @@ public class SlideHomeActivity extends ActivityGroup implements
 		menu.toggle(true);
 	}
 
+	public void setSlidingEnabled(boolean enable){
+		menu.setSlidingEnabled(enable); 
+	}
+	
+	
 	public String getLocalIpAddress() {
 		try {
 			for (Enumeration<NetworkInterface> en = NetworkInterface
@@ -370,7 +390,7 @@ public class SlideHomeActivity extends ActivityGroup implements
 		Intent intent = null;
 		switch (v.getId()) {
 		case R.id.relative_profile:
-
+			profileUpdateHint.setVisibility(View.GONE);
 			intent = new Intent();
 			intent.putExtra("accesstoken",
 					getIntent().getStringExtra("accessToken"));
@@ -389,6 +409,8 @@ public class SlideHomeActivity extends ActivityGroup implements
 
 			break;
 		case R.id.linear_main:
+			mainUpdateHint.setVisibility(View.GONE);
+			
 			intent = new Intent();
 			intent.putExtra("accesstoken",
 					getIntent().getStringExtra("accessToken"));
@@ -397,6 +419,8 @@ public class SlideHomeActivity extends ActivityGroup implements
 			intent.setClass(this, MainPageActivity.class);
 			break;
 		case R.id.linear_message:
+			messageUpdateHint.setVisibility(View.GONE);
+			
 			intent = new Intent();
 			intent.putExtra("accesstoken",
 					getIntent().getStringExtra("accessToken"));

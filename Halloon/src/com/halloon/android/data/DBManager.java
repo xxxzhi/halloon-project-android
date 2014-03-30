@@ -152,9 +152,9 @@ public class DBManager extends SQLiteOpenHelper {
 		}
 		
 		//update tweet
-		ArrayList<TweetBean> tb = new ArrayList<TweetBean>();
-		tb.add(profileBean.getTweetBean());
-		addTweetListContent(tb, false);
+//		ArrayList<TweetBean> tb = new ArrayList<TweetBean>();
+//		tb.add(profileBean.getTweetBean());
+//		addTweetListContent(tb, false);
 		
 	}
 

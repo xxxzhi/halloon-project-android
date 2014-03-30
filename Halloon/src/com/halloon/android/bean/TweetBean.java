@@ -169,6 +169,10 @@ public class TweetBean{
 		this.tweetImage = tweetImage;
 	}
 
+	public String getTweetImageStr() {
+		return this.tweetImage ;
+	}
+	
 	public JSONArray getTweetImage() {
 		
 		if(null != tweetImage && !tweetImage.equals("null")){
