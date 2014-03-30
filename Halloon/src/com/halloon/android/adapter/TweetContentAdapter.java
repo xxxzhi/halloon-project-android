@@ -224,7 +224,8 @@ public class TweetContentAdapter extends BaseAdapter {
 			if(application.getIsMainPageImageMode()){
 				holder.tweetImage.setVisibility(View.VISIBLE);
 				try {
-					ImageLoader.getInstance(context).displayImage(tweetBean.getTweetImage().getString(0) + "/120", holder.tweetImage, 0, null);
+					ImageLoader.getInstance(context).displayImage(tweetBean.getTweetImage().getString(0) + "/120", holder.tweetImage, 0, 
+							null,R.drawable.ic_launcher);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -235,7 +236,8 @@ public class TweetContentAdapter extends BaseAdapter {
 //			holder.hasImage.setVisibility(View.GONE);
 			if(application.getIsMainPageImageMode()){
 				holder.tweetImage.setVisibility(View.VISIBLE);
-				ImageLoader.getInstance(context).displayImage(tweetBean.getVideoImage(), holder.tweetImage, 0, null);
+				ImageLoader.getInstance(context).displayImage(tweetBean.getVideoImage(), 
+						holder.tweetImage, 0, null,R.drawable.ic_launcher);
 			}else{
 				holder.tweetImage.setVisibility(View.GONE);
 			}
@@ -258,13 +260,15 @@ public class TweetContentAdapter extends BaseAdapter {
 			if (tweetBean.getSource().getTweetImage() != null && application.getIsMainPageImageMode()) {
 				holder.forwardImage.setVisibility(View.VISIBLE);
 				try {
-					ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getTweetImage().getString(0) + "/120", holder.forwardImage, 1, null);
+					ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getTweetImage().getString(0) + "/120", 
+							holder.forwardImage, 1, null,R.drawable.ic_launcher);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			} else if (tweetBean.getSource().getVideoImage() != null && application.getIsMainPageImageMode()) {
 				holder.forwardImage.setVisibility(View.VISIBLE);
-				ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getVideoImage(), holder.forwardImage, 1, null);
+				ImageLoader.getInstance(context).displayImage(tweetBean.getSource().getVideoImage(), 
+						holder.forwardImage, 1, null,R.drawable.ic_launcher);
 			} else {
 				holder.forwardImage.setVisibility(View.GONE);
 			}

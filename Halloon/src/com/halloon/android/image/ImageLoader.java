@@ -85,6 +85,25 @@ public class ImageLoader {
 		}
 	}
 
+	public void displayImage(String url, ImageView imageView, int pixel, OnProcessListener mOnProcessListener,int stub_id) {
+		if(mOnProcessListener != null) mOnProcessListener.onProcessStarted();
+		this.pixel = pixel;
+		imageViews.put(imageView, url);
+		TypedBitmap bitmap = memoryCache.get(url);
+		if (bitmap != null) {
+			if(mOnProcessListener != null){
+				mOnProcessListener.onProcessEnded(bitmap);
+			}else{
+				imageView.setImageBitmap(bitmap.getBitmap());
+			}
+			
+		} else {
+			queuePhoto(url, imageView, mOnProcessListener);
+			imageView.setImageResource(stub_id);
+		}
+		
+	}
+	
 	public void displayImage(String url, ImageView imageView, int pixel, OnProcessListener mOnProcessListener) {
 		if(mOnProcessListener != null) mOnProcessListener.onProcessStarted();
 		this.pixel = pixel;

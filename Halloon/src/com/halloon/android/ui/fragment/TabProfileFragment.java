@@ -329,17 +329,19 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 					iv.setLayoutParams(params);
 					iv.setScaleType(ScaleType.CENTER_INSIDE);
 					
-					final String imgUrl = tweetBean.getTweetImageStr() +"";
+					final String imgUrl = tweetBean.getTweetImageStr();
 					iv.setOnClickListener(new View.OnClickListener() {
 						
 						@Override
 						public void onClick(View v) {
-							((MainPageFragmentCallback) context).setupPictureDialog(imgUrl, "/2000", v.getDrawingCache());
+							((MainPageFragmentCallback) context).setupPictureDialog(imgUrl, "/2000", 
+									v.getDrawingCache());
 						}
 					});
 					
 					System.out.println(""+tweetBean.getTweetImageStr() + "/120");
-					ImageLoader.getInstance(context).displayImage(tweetBean.getTweetImageStr() + "/120", iv, 0, null);
+					ImageLoader.getInstance(context).displayImage(tweetBean.getTweetImageStr() + "/120", 
+							iv,120, null,R.drawable.ic_launcher);
 					linearLayout.addView(iv);
 				}
 			}
