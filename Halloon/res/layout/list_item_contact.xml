@@ -12,7 +12,7 @@
         android:layout_marginLeft="7dip"
         android:layout_marginTop="7dip"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/wb_head_default" />
     
     <ImageView
         android:visibility="invisible"

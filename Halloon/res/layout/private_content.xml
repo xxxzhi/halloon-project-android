@@ -10,7 +10,7 @@
         android:layout_height="50.0dip"
         android:layout_marginLeft="12.0dip"
         android:layout_marginTop="8.0dip"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/wb_head_default" />
     
     <TextView
         android:id="@+id/nick"

@@ -189,7 +189,9 @@ public class ContentManager {
 			Log.d(Constants.LOG_TAG, "GET_PROFILE_ERROR:" + e);
 		}
 		profileBean = paraseMyProfileBean(myInfo);
-		profileBean.getTweetBean().setNick(profileBean.getNick());
+		if(profileBean != null ){
+			profileBean.getTweetBean().setNick(profileBean.getNick());
+		}
 		return profileBean;
 	}
 

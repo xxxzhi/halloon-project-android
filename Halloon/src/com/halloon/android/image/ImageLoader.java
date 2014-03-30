@@ -63,7 +63,7 @@ public class ImageLoader {
 		return instance;
 	}
 
-	final int stub_id = R.drawable.ic_launcher;
+	final int stub_id = R.drawable.wb_head_default;
 
 	public static String imageSave(Bitmap bmp) {
 		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {

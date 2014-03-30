@@ -11,7 +11,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="6.0dip"
         android:layout_below="@+id/private_time"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/wb_head_default" />
     <!-- I don't what to do with this ImageView so I set the visibility invisible -->
     <ImageView
         android:layout_width="40.0dip"

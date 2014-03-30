@@ -126,7 +126,8 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 	protected void init(HalloonTitleBar titleBar, RelativeLayout content) {
 		layoutInflater = (LayoutInflater) getActivity().getSystemService(
 				Context.LAYOUT_INFLATER_SERVICE);
-
+		
+		titleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_NONE);
 		titleBar.setOnTitleBarClickListener(this);
 		titleText = titleBar.getTitleTextView();
 
