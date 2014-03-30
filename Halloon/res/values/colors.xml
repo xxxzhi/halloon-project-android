@@ -31,11 +31,13 @@
 	<color name="txt_time">#a2adb3</color>
 	<color name="txt_weibo">#878988</color>
 	<color name="txt_weibo_name">#474745</color>
-	<color name="txt_weibo_from">#8b8b8b</color>
+	<color name="txt_weibo_from">#a9a9a9</color>
+	<color name="txt_weibo_trans">#626262</color>
+	
 	
 	<color name="bg_weibo">#fbfcff</color>
 	<!-- 右侧微博转发背景色：#eaeff3   -->
-	<color name="bg_trans_weibo">#e8e8e8</color>
+	<color name="bg_trans_weibo">#f0f0f0</color>
 	<color name="line_weibo">#e7e7e7</color>
 	
 	<color name="line_partition">#efcbd4d9</color>
@@ -43,8 +45,8 @@
 	<color name="bg_list_back">#e8e8e8</color>
 	<color name="bg_list_divider">#FFF5F5F5</color>
 	<color name="txt_search_more">#555555</color>
-	
-	
+	<color name="txt_about">#252525</color>
+	<color name="bg_about">#e5eaee</color>
 <!--
     右侧顶部蓝色值：
 右侧时间颜色: #a2adb3

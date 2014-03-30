@@ -87,7 +87,7 @@ public class HalloonTitleBar extends RelativeLayout implements OnClickListener{
 			spliceLine.setVisibility(View.VISIBLE);
 			break;
 		case TITLE_STYLE_NORMAL:
-			leftButton.setVisibility(View.VISIBLE);
+			leftButton.setVisibility(View.GONE);
 			rightButton.setVisibility(View.VISIBLE);
 			leftImageButton.setVisibility(View.VISIBLE);
 			rightImageButton.setVisibility(View.GONE);

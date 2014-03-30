@@ -25,6 +25,7 @@
         android:layout_marginLeft="6.0dip"
         android:textColor="#EEEEEE"
         android:textSize="14.0dip"
+        android:visibility="gone"
         android:background="@drawable/selector_menu" />
     
     <Button
@@ -35,8 +36,7 @@
         android:layout_marginLeft="6.0dip"
         android:textColor="#EEEEEE"
         android:textSize="14.0dip"
-        android:text="@string/back"
-        android:background="@drawable/arrow_left_button_selector" />
+        android:background="@drawable/left" />
     
     <Button
         android:id="@+id/right_image_button"

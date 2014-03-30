@@ -142,4 +142,5 @@
     <!-- profile -->
     <string name="hint_edit_input">please input </string>
     <string name="save_success">save success!</string>
+    <string name="album">album</string>
 </resources>

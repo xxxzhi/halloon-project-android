@@ -299,7 +299,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 				
 				linearLayout.removeAllViews();
 				for(TweetBean tweetBean : list){
-					ImageView iv = (ImageView)inflater.inflate(R.layout.include_imageview, null);
+					ImageView iv = new ImageView(context);
 					
 					int side = getResources().getDimensionPixelOffset(R.dimen.scroll_img_side);
 					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(side, side);
@@ -309,7 +309,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 					params.rightMargin = params.rightMargin ;
 					
 					iv.setLayoutParams(params);
-					iv.setScaleType(ScaleType.CENTER_CROP);
+					iv.setScaleType(ScaleType.CENTER);
 					
 					final String imgUrl = tweetBean.getTweetImageStr();
 					final TweetBean tempBean = tweetBean ;
@@ -329,7 +329,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 					
 					System.out.println(""+tweetBean.getTweetImageStr() + "/120");
 					ImageLoader.getInstance(context).displayImage(tweetBean.getTweetImageStr() + "/120", 
-							iv,120, null,R.drawable.ic_launcher);
+							iv,0, null,R.drawable.ic_launcher);
 					linearLayout.addView(iv);
 				}
 			}

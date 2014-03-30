@@ -4,10 +4,10 @@
     <solid android:color="@color/bg_trans_weibo" />
     
     <corners 
-        android:topLeftRadius="6.0dip"
-        android:topRightRadius="6.0dip"
-        android:bottomLeftRadius="6.0dip"
-        android:bottomRightRadius="6.0dip"
+        android:topLeftRadius="1dip"
+        android:topRightRadius="1dip"
+        android:bottomLeftRadius="1dip"
+        android:bottomRightRadius="1dip"
         />
     <padding android:left="6dp" android:right="6dp" android:top="6dp" android:bottom="6dp" />
 
