@@ -200,7 +200,26 @@ public class ContentManager {
 		}
 		return profileBean;
 	}
-
+	/**
+	 * @param format
+	 *            是 返回数据的格式（json或xml）
+	 * @param reqnum
+	 *            是 每次请求记录的条数（1-200条，默认为50条，最多200条，超过200则仅返回50条）
+	 * @param name
+	 *            否 需要获取微相册的用户的用户名（可选，可以是当前用户或其他用户）
+	 * @param fopenid
+	 *            否 需要获取微相册的用户的openid（可选，可以是当前用户或其他用户）
+	 *  name和fopenid至少选一个
+	 *            ，若同时存在则以name值为主
+	 * @param pageflag
+	 *            是 分页标识（0：第一页，1：向下翻页，2：向上翻页）
+	 * @param pagetime
+	 *            是 本页起始时间（第一页：填0，向上翻页：填上一次请求返回的第一条记录时间，向下翻页：填上一次请求返回的最后一条记录时间）
+	 * @param lastid
+	 *            否 获取其他用户微相册时使用，用于精确翻页，和pagetime配合使用（第一页：填0，向上翻页：
+	 *            填上一次请求返回的第一条记录id，向下翻页：填上一次请求返回的最后一条记录id），当获取当前用户微相册时，不需要使用该参数
+	 * @return
+	 */
 	public ArrayList<TweetBean> getMicroAlbum(int requestNum,String name,String fopenid,String pageFlag,
 			String pageTime,  String lastId){
 		HalloonStatusesAPI statusesAPI = new HalloonStatusesAPI(
@@ -220,7 +239,7 @@ public class ContentManager {
 			int errcode = jsonObject.getInt("errcode");
 			String seqid = jsonObject.getString("seqid");
 			JSONObject dataJsonObject = jsonObject.getJSONObject("data");
-			int hasnext = jsonObject.getInt("hasnext");
+			int hasnext = dataJsonObject.getInt("hasnext");
 			JSONArray tweetInfoArray = dataJsonObject.getJSONArray("info");
 			for (int i = 0; i < tweetInfoArray.length(); i++) {
 				JSONObject tweetInfoObject = tweetInfoArray.getJSONObject(i);

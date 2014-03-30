@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -166,39 +167,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		tweetMore = content.findViewById(R.id.tv_more);
 		linearLayout = (LinearLayout)content.findViewById(R.id.hori_linear);
 		// content.findViewById(R.id.tweet_head).setVisibility(View.GONE);
-		//
-		// tweetViewHolder.headImage = (ImageView) content
-		// .findViewById(R.id.tweet_head);
-		// tweetViewHolder.title = (TextView) content
-		// .findViewById(R.id.tweet_title);
-		// tweetViewHolder.isVip = (ImageView)
-		// content.findViewById(R.id.is_vip);
-		// tweetViewHolder.timestamp = (TextView) content
-		// .findViewById(R.id.tweet_timestamp);
-		// tweetViewHolder.from = (TextView)
-		// content.findViewById(R.id.tweet_from);
-		// tweetViewHolder.commentCount = (TextView) content
-		// .findViewById(R.id.comment_count);
-		// tweetViewHolder.forwardCount = (TextView) content
-		// .findViewById(R.id.forward_count);
-		// tweetViewHolder.tweetContent = (ButtonStyleTextView) content
-		// .findViewById(R.id.tweet_content);
-		// tweetViewHolder.tweetLocationText = (TextView) content
-		// .findViewById(R.id.tweet_location_text);
-		// tweetViewHolder.tweetImage = (ImageView) content
-		// .findViewById(R.id.tweet_image);
-		// tweetViewHolder.forwardContent = (ButtonStyleTextView) content
-		// .findViewById(R.id.forward_content);
-		// tweetViewHolder.forwardLocationText = (TextView) content
-		// .findViewById(R.id.forward_location_text);
-		// tweetViewHolder.forwardImage = (ImageView) content
-		// .findViewById(R.id.forward_image);
-		// tweetViewHolder.hasImage = (ImageView) content
-		// .findViewById(R.id.image_icon);
-		// tweetViewHolder.sourceLayout = (RelativeLayout) content
-		// .findViewById(R.id.relativeLayout1);
-		// tweetViewHolder.parent = (RelativeLayout)
-		// content.findViewById(R.id.parent);
+	
 	}
 
 	private ProfileTweetViewHolder tweetViewHolder = new ProfileTweetViewHolder();
@@ -292,7 +261,8 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 									context).getMyProfile();
 						}
 					}
-
+					name = tmp_profileBean.getName();
+					id = tmp_profileBean.getOpenId();
 				} else {
 					tmp_profileBean = ContentManager.getInstance(context)
 							.getOtherProfile(name, id);
@@ -308,6 +278,12 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 					}
 				}
 
+				ArrayList<TweetBean> listTemp = ContentManager.getInstance(context).
+						getMicroAlbum(15, name, 
+						id, "0", "0", "0");
+				System.out.println(name + ":" + id+": "+listTemp);
+				publishProgress(3,listTemp);
+				
 				return tmp_profileBean;
 			}
 
@@ -327,7 +303,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 						break;
 					case 3:
 						if(values[1] instanceof ArrayList<?>){
-							
+							showMicroAlbum((ArrayList<TweetBean>) values[1]);
 						}
 						break;
 					default:
@@ -339,14 +315,31 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 			private void showMicroAlbum(ArrayList<TweetBean> list){
 				LayoutInflater inflater = getActivity().getLayoutInflater();
 				
+				linearLayout.removeAllViews();
 				for(TweetBean tweetBean : list){
 					ImageView iv = (ImageView)inflater.inflate(R.layout.include_imageview, null);
-					try {
-						ImageLoader.getInstance(context).displayImage(tweetBean.getTweetImage().getString(0) + "/120", iv, 0, null);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					
+					int side = getResources().getDimensionPixelOffset(R.dimen.scroll_img_side);
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(side, side);
+					params.bottomMargin = getResources().getDimensionPixelOffset(R.dimen.padding_small);
+					params.topMargin = params.bottomMargin;
+					params.leftMargin = params.leftMargin;
+					params.rightMargin = params.rightMargin ;
+					
+					iv.setLayoutParams(params);
+					iv.setScaleType(ScaleType.CENTER_INSIDE);
+					
+					final String imgUrl = tweetBean.getTweetImageStr() +"";
+					iv.setOnClickListener(new View.OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							((MainPageFragmentCallback) context).setupPictureDialog(imgUrl, "/2000", v.getDrawingCache());
+						}
+					});
+					
+					System.out.println(""+tweetBean.getTweetImageStr() + "/120");
+					ImageLoader.getInstance(context).displayImage(tweetBean.getTweetImageStr() + "/120", iv, 0, null);
 					linearLayout.addView(iv);
 				}
 			}
