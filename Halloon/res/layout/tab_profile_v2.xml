@@ -41,6 +41,19 @@
             android:text="@string/search_more"
             android:layout_marginBottom="13dp"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView1"
+            android:layout_width="match_parent"
+            android:layout_height="80dp" >
+
+            <LinearLayout
+                android:id="@+id/hori_linear"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+            </LinearLayout>
+        </HorizontalScrollView>
         
     </LinearLayout>
 

@@ -26,4 +26,6 @@
 
 	<dimen name="square_search_height">45dp</dimen>
 	<dimen name="square_pager_height">135dp</dimen>
+	
+	<dimen name="scroll_img_side">70dp</dimen>
 </resources>
