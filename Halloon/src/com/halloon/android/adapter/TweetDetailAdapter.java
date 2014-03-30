@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,7 +53,13 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 		this.tweetBean = tweetBean;
 		this.commentList = commentList;
 	}
-
+	
+	public void setTweetBean(TweetBean tweetBean){
+		Log.i("", "update tweet detail setTweetBean");
+		this.tweetBean = tweetBean ;
+		notifyDataSetChanged();
+	}
+	
 	@Override
 	public int getCount() {
 		return commentList.size() + 3;
@@ -149,6 +156,7 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 			if (tweetBean.getSource() != null && tweetBean.getText().length() == 0) {
 				tweetContentHolder.tweetContent.setText(context.getString(R.string.re_tweet));
 			} else {
+				if(tweetBean.getText() != null )
 				ContentTransUtil.getInstance(context).displaySpannableString(tweetBean.getText(), tweetContentHolder.tweetContent, tweetBean, false, true);
 			}
 
@@ -261,11 +269,13 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 			} else {
 				tweetContentHolder.forwardContainer.setVisibility(View.GONE);
 			}
-			if ((!tweetBean.getLongitude().equals("0") && !tweetBean.getLatitude().equals("0"))) {
-				System.out.println(tweetBean.getLongitude() + "," + tweetBean.getLatitude());
-				ImageLoader.getInstance(context).displayImage(StaticAPI.getSOSOStaticMap(tweetBean.getLatitude().toString(),
-						tweetBean.getLongitude().toString(), 15, DensityUtil.dip2px(context, 300), DensityUtil.dip2px(context, 80)),
-						tweetContentHolder.locationImage, 1, null,R.drawable.ic_launcher);
+			if(tweetBean.getLongitude() != null && tweetBean.getLatitude() != null){
+				if ((!tweetBean.getLongitude().equals("0") && !tweetBean.getLatitude().equals("0"))) {
+					System.out.println(tweetBean.getLongitude() + "," + tweetBean.getLatitude());
+					ImageLoader.getInstance(context).displayImage(StaticAPI.getSOSOStaticMap(tweetBean.getLatitude().toString(),
+							tweetBean.getLongitude().toString(), 15, DensityUtil.dip2px(context, 300), DensityUtil.dip2px(context, 80)),
+							tweetContentHolder.locationImage, 1, null,R.drawable.ic_launcher);
+				}
 			}
 			break;
 		case TWEET_COMMENT_TITLE:

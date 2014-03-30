@@ -63,25 +63,6 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		OnClickListener {
 	public static final int REQUEST_IMG = 2;
 
-	static final class ProfileTweetViewHolder {
-		ImageView headImage;
-		TextView title;
-		ImageView isVip;
-		TextView timestamp;
-		TextView from;
-		TextView commentCount;
-		TextView forwardCount;
-		ButtonStyleTextView tweetContent;
-		TextView tweetLocationText;
-		ImageView tweetImage;
-		ButtonStyleTextView forwardContent;
-		TextView forwardLocationText;
-		ImageView forwardImage;
-		ImageView hasImage;
-		RelativeLayout sourceLayout;
-		RelativeLayout parent;
-	}
-
 	private ProfileFragmentCallback pCallback;
 	private ImageView myHeadicon;
 	private TextView myNick;
@@ -119,6 +100,9 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		public void setupTweetListFragment(Bundle bundle);
 
 		public void setupEditProfileFragment(Bundle bundle);
+		
+		
+		public void setupDetailFragment(Bundle bundle);
 	}
 
 	@Override
@@ -126,7 +110,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		super.onAttach(activity);
 		context = activity;
 		this.pCallback = (ProfileFragmentCallback) activity;
-
+		
 		if (getArguments().getString("name") != null)
 			this.name = getArguments().getString("name");
 		if (getArguments().getString("id") != null)
@@ -169,8 +153,6 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		// content.findViewById(R.id.tweet_head).setVisibility(View.GONE);
 	
 	}
-
-	private ProfileTweetViewHolder tweetViewHolder = new ProfileTweetViewHolder();
 
 	@Override
 	public void onResume() {
@@ -330,12 +312,18 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 					iv.setScaleType(ScaleType.CENTER_CROP);
 					
 					final String imgUrl = tweetBean.getTweetImageStr();
+					final TweetBean tempBean = tweetBean ;
 					iv.setOnClickListener(new View.OnClickListener() {
 						
 						@Override
 						public void onClick(View v) {
-							((MainPageFragmentCallback) context).setupPictureDialog(imgUrl, "/2000", 
-									v.getDrawingCache());
+							
+							Bundle bundle = new Bundle();
+							bundle.putString("id", tempBean.getId());
+//							bundle.putBundle("tweetBean",
+//									tempBean.toBundle());
+							pCallback.setupDetailFragment(bundle);
+							
 						}
 					});
 					
@@ -675,37 +663,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 				        cursor.close();
 
 					}
-					
 					      
-//					String[] tmp_proj = { MediaStore.Images.Media.DATA };
-//					final String[] proj = tmp_proj;
-//					getActivity().getSupportLoaderManager().initLoader(0, null,
-//							new LoaderCallbacks<Cursor>() {
-//
-//								@Override
-//								public Loader<Cursor> onCreateLoader(int id,
-//										Bundle bundle) {
-//									CursorLoader cursorLoader = new CursorLoader(
-//											mActivity, uri, proj, null, null,
-//											null);
-//									return cursorLoader;
-//								}
-//
-//								@Override
-//								public void onLoadFinished(
-//										Loader<Cursor> loader, Cursor cursor) {
-//									int column_index = cursor
-//											.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//									cursor.moveToFirst();
-//									imagePath = cursor.getString(column_index);
-//								}
-//
-//								@Override
-//								public void onLoaderReset(Loader<Cursor> loader) {
-//									imagePath = null;
-//								}
-//
-//							});
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

@@ -39,8 +39,15 @@ public class SettingsAboutFragment extends BaseTitleBarFragment implements OnTit
 	public void onTitleContentClick(int contentEnum) {
 		switch(contentEnum){
 		case OnTitleBarClickListener.LEFT_BUTTON:
-			((InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+			try{
+				((InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE))
+				.hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(),
+						InputMethodManager.HIDE_NOT_ALWAYS);
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
 			((BaseMultiFragmentActivity) context).backStackAction();
+			
 			break;
 		case OnTitleBarClickListener.LEFT_IMAGE_BUTTON:
 			Activity parent = getActivity().getParent() ;

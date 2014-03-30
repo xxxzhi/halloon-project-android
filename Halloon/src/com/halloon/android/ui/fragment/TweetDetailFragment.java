@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.halloon.android.R;
 import com.halloon.android.adapter.TweetDetailAdapter;
 import com.halloon.android.bean.TweetBean;
 import com.halloon.android.data.ContentManager;
+import com.halloon.android.data.DBManager;
 import com.halloon.android.listener.OnEmojiSelectedListener;
 import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.task.BaseCompatiableTask;
@@ -70,7 +72,11 @@ public class TweetDetailFragment extends BaseTitleBarFragment implements OnClick
 		super.onAttach(activity);
 		this.tdCallback = (TweetDetailFragmentCallback) activity;
 		if (getArguments().getString("id") != null) this.id = getArguments().getString("id");
-		if(getArguments().getBundle("tweetBean") != null) this.tweetDetailBean.decodeFromBundle(getArguments().getBundle("tweetBean"));
+		if(getArguments().getBundle("tweetBean") != null){
+			this.tweetDetailBean.decodeFromBundle(getArguments().getBundle("tweetBean"));
+		}else{
+			
+		}
 		context = activity;
 		
 		activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -145,10 +151,29 @@ public class TweetDetailFragment extends BaseTitleBarFragment implements OnClick
 
 			@Override
 			protected ArrayList<TweetBean> doInBackground(Void... params) {
+				if(tweetDetailBean.getName() == null || tweetDetailBean.getName() == ""){
+					Log.i(getTag(), "update tweet detail getTweetFromId");
+					TweetBean temp = ContentManager.getInstance(context).getTweetFromId(id);
+					Log.i(getTag(), "update tweet detail" + temp.getId()  + ","+id);
+					if(temp != null && temp.getId() .equals(id)){
+						tweetDetailBean = temp ;
+						Log.i(getTag(), "update tweet detail");
+						publishProgress();
+					}
+				}
 				ArrayList<TweetBean> tmp_list = ContentManager.getInstance(context).getTweetCommentFromId(id, "1", "0", "0", "10");
 				
 				return tmp_list;
 			}
+			
+			
+			@Override
+			protected void onProgressUpdate(Void... values) {
+				super.onProgressUpdate(values);
+				tweetDetailAdapter.setTweetBean(tweetDetailBean);
+				
+			}
+
 
 			@Override
 			protected void onPostExecute(ArrayList<TweetBean> result) {
