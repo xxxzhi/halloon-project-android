@@ -8,12 +8,14 @@
     <EditText
         android:id="@+id/edit_content"
         android:layout_width="match_parent"
-        android:layout_height="200.0dip"
+        android:layout_height="wrap_content"
+        android:minHeight="45dp"
+        android:paddingLeft="10dp"
         android:layout_marginLeft="6.0dip"
         android:layout_marginRight="6.0dip"
         android:layout_marginTop="6.0dip"
         android:hint="@string/hint_edit_input"
-        android:gravity="top"
+        android:gravity="center_vertical"
         android:background="@drawable/small_round_corner_white" />
     
     <Button
@@ -23,10 +25,16 @@
         android:text="@string/save"
         android:textColor="#EEEEEE"
         android:textSize="14.0dip"
+        android:visibility="gone"
         android:layout_marginTop="6.0dip"
         android:layout_marginLeft="6.0dip"
         android:layout_marginRight="6.0dip"
         android:layout_below="@+id/edit_content"
         android:background="@drawable/rect_button_selector" />
-
+	
+    <View
+        android:layout_below="@+id/confirm"
+        android:layout_width="match_parent" 
+        android:layout_height="match_parent"
+        />
 </RelativeLayout>

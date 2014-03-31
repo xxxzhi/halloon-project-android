@@ -34,6 +34,8 @@ public class HalloonTitleBar extends RelativeLayout implements OnClickListener{
 	public static final int TITLE_STYLE_RIGHT_BUTTON_ONLY = 3;
 	public static final int TITLE_STYLE_NONE = 4;
 	public static final int TITLE_STYLE_OTHERWISE = 5;
+	public static final int TITLE_STYLE_EDIT = 7;
+	public static final int TITLE_STYLE_MENU = 8;
 	
 	/**
 	 * 隐藏标题栏
@@ -115,8 +117,24 @@ public class HalloonTitleBar extends RelativeLayout implements OnClickListener{
 			spliceLine.setVisibility(View.GONE);
 			break;
 		case TITLE_STYLE_HIDE_TITLE:
+			
 			root.setVisibility(View.GONE);
 			break;
+		case TITLE_STYLE_EDIT:
+			leftButton.setVisibility(View.VISIBLE);
+			rightButton.setVisibility(View.VISIBLE);
+			leftImageButton.setVisibility(View.GONE);
+			rightImageButton.setVisibility(View.GONE);
+			spliceLine.setVisibility(View.GONE);
+		break;
+		
+		case TITLE_STYLE_MENU:
+			leftButton.setVisibility(View.GONE);
+			rightButton.setVisibility(View.VISIBLE);
+			leftImageButton.setVisibility(View.GONE);
+			rightImageButton.setVisibility(View.GONE);
+			spliceLine.setVisibility(View.GONE);
+		break;
 		}
 	}
 	

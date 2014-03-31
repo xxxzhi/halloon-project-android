@@ -47,6 +47,7 @@
 	<color name="txt_search_more">#555555</color>
 	<color name="txt_about">#252525</color>
 	<color name="bg_about">#e5eaee</color>
+	<color name="bg_about_item">#ffffff</color>
 <!--
     右侧顶部蓝色值：
 右侧时间颜色: #a2adb3

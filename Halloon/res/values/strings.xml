@@ -132,7 +132,7 @@
     
     <!--  about message -->
     <string name="about_title">name:halloon\nedition:1.0.0\n</string>
-    <string name="about_intro">[app info]\n\thallon is an unofficial client for tecent microblog, we intend to impove the user experiment of official tecent microblog.</string>
+    <string name="about_intro">[app info]\n\thalloon is an unofficial client for tecent microblog, we intend to impove the user experiment of official tecent microblog.</string>
     <string name="about_story">[应用故事]\n\t恩哈的理念是简约却不简单，我们的</string>
     <string name="about_thanks">[致谢]\n\t恩哈客户端里边的内容资源都是由XXX等编码完成。。。</string>
     <string name="about_tontact">contact us\:：</string>
@@ -143,4 +143,7 @@
     <string name="hint_edit_input">please input </string>
     <string name="save_success">save success!</string>
     <string name="album">album</string>
+    <string name="check_update">检查更新</string>
+    <string name="function_intro">功能介绍</string>
+    <string name="welcome_page">欢迎页</string>
 </resources>

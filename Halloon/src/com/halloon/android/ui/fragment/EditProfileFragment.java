@@ -13,13 +13,13 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.halloon.android.R;
 import com.halloon.android.bean.ProfileBean;
 import com.halloon.android.data.ContentManager;
 import com.halloon.android.data.DBManager;
 import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 import com.halloon.android.widget.HalloonTitleBar;
-import com.halloon.android.R;
 
 public class EditProfileFragment extends BaseTitleBarFragment implements OnClickListener,
                                                                          OnTitleBarClickListener{
@@ -59,11 +59,11 @@ public class EditProfileFragment extends BaseTitleBarFragment implements OnClick
 	}
 	@Override
 	protected void init(HalloonTitleBar titleBar, RelativeLayout content) {
-		titleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_BACK_BUTTON_ONLY);
+		titleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_EDIT);
 		
 		titleBar.getTitleTextView().setText(getString(strings[editState]));
 		titleBar.setOnTitleBarClickListener(this);
-		
+		((Button)titleBar.findViewById(R.id.right_button)).setText(R.string.save);
 		ProfileBean profileBean = DBManager.getInstance(getActivity()).getProfile();
 		if(profileBean != null){
 			contents[0] = profileBean.getNick();
@@ -150,6 +150,9 @@ public class EditProfileFragment extends BaseTitleBarFragment implements OnClick
 		switch(contentEnum){
 		case OnTitleBarClickListener.LEFT_BUTTON:
 			((BaseMultiFragmentActivity) context).backStackAction();
+			break;
+		case OnTitleBarClickListener.RIGHT_BUTTON:
+			onClick(null);
 			break;
 		}
 	}

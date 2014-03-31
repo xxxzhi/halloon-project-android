@@ -60,10 +60,6 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 	private MainPageFragmentCallback mpCallback;
 	private HalloonPullableView pullAndDrop;
 	private ListView list;
-	private Button sendButton;
-	private Button aroundButton;
-	private Button backButton;
-	private Button fanButton;
 	private Context context;
 	private TextView titleText;
 	private EditText searchEditText;
@@ -127,7 +123,7 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 		layoutInflater = (LayoutInflater) getActivity().getSystemService(
 				Context.LAYOUT_INFLATER_SERVICE);
 		
-		titleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_NONE);
+		titleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_MENU);
 		titleBar.setOnTitleBarClickListener(this);
 		titleText = titleBar.getTitleTextView();
 
@@ -272,13 +268,8 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 		});
 		
 		
-		
-			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_IMAGE);
 
-			sendButton = mTitleBar.getLeftImageButton();
-			aroundButton = mTitleBar.getRightImageButton();
 
-		
 
 		// customize fastscroll bar style
 		/*
