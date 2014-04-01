@@ -45,6 +45,10 @@ public class ContentManager {
 		return pos;
 	}
 	
+	public static void clear(){
+		instance = null ;
+	}
+	
 	private int errorCode = 0 ;
 	
 	public int getErrorCode() {
@@ -195,7 +199,7 @@ public class ContentManager {
 			Log.d(Constants.LOG_TAG, "GET_PROFILE_ERROR:" + e);
 		}
 		profileBean = paraseMyProfileBean(myInfo);
-		if(profileBean != null ){
+		if(profileBean != null && profileBean.getTweetBean() != null){
 			profileBean.getTweetBean().setNick(profileBean.getNick());
 		}
 		return profileBean;

@@ -134,12 +134,24 @@ public class DBManager extends SQLiteOpenHelper {
 
 		return _instance;
 	}
-
 	private DBManager(Context context) {
 		super(context, HALLOON_DATABASE, null, DATABASE_VERSION);
 
 	}
 
+	public void clear(){
+		_instance = null;
+		SQLiteDatabase db = getWritableDatabase();
+
+		db.delete(TABLE_CONTACTS_ME, null, null);
+		db.delete(TABLE_MY_PROFILE, null, null);
+		db.delete(TABLE_TWEET_LIST, null, null);
+		db.delete(TABLE_PRIVATE_LIST, null, null);
+		db.delete(TABLE_AT_LIST, null, null);
+		
+		db.close();
+	}
+	
 	public void upgradeProfile(ProfileBean profileBean) {
 		ContentValues cv = createProfileContent(profileBean);
 		SQLiteDatabase db = getWritableDatabase();

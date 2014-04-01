@@ -15,6 +15,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 
 import com.halloon.android.R;
+import com.halloon.android.data.ContentManager;
+import com.halloon.android.data.DBManager;
 import com.halloon.android.image.ImageLoader;
 import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
@@ -144,9 +146,12 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 			clearButton.setText(context.getString(R.string.clear_cache) + "(" + NumberUtil.formatBytesSize(context, ImageLoader.getInstance(context).checkSize()) + ")");
 			break;
 		case R.id.exit:
+			ImageLoader.getInstance(context).clearCache();
 			OAuthV2Activity.clearOAuth(mActivity);
 			Intent intent = new Intent();
 			intent.setClass(mActivity, OAuthV2Activity.class);
+			DBManager.getInstance(mActivity).clear();
+			ContentManager.clear();
 			mActivity.startActivity(intent);
 			mActivity.finish();
 			break;

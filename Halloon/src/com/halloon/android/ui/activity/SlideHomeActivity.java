@@ -175,6 +175,7 @@ public class SlideHomeActivity extends ActivityGroup implements
 		if (ImageLoader.getInstance(this).checkSize() >= FileCache.MAX_SIZE) {
 			ImageLoader.getInstance(this).clearCache();
 		}
+		stopUpdate = true ;
 	}
 
 	
@@ -183,7 +184,7 @@ public class SlideHomeActivity extends ActivityGroup implements
 		@Override
 		public void run() {
 			super.run();
-			while(true){
+			while(!stopUpdate){
 				try {
 					TimeUnit.SECONDS.sleep(5);
 				} catch (InterruptedException e) {
@@ -234,7 +235,8 @@ public class SlideHomeActivity extends ActivityGroup implements
 		
 	};
 	
-	
+	boolean stopUpdate = false ;
+
 	private void initRequestCircle(){
 		updateThread.start();
 	}
