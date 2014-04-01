@@ -18,6 +18,21 @@
         android:gravity="center_vertical"
         android:background="@drawable/small_round_corner_white" />
     
+    <TextView
+        android:id="@+id/tv_input_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="30dp"
+        android:layout_below="@id/edit_content"
+        android:paddingLeft="10dp"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginRight="6.0dip"
+        android:layout_marginTop="2.0dip"
+        android:hint="@string/input_name_hint"
+        android:gravity="center_vertical"
+        />
+    
+    
     <Button
         android:id="@+id/confirm"
         android:layout_width="match_parent"
@@ -29,7 +44,7 @@
         android:layout_marginTop="6.0dip"
         android:layout_marginLeft="6.0dip"
         android:layout_marginRight="6.0dip"
-        android:layout_below="@+id/edit_content"
+        android:layout_below="@+id/input_hint"
         android:background="@drawable/rect_button_selector" />
 	
     <View

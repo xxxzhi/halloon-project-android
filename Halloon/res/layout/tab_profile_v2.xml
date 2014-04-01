@@ -41,6 +41,7 @@
                 android:id="@+id/horizontalScrollView1"
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
+                
                 android:layout_height="80dp" >
 
                 <LinearLayout
@@ -48,6 +49,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:dividerPadding="4dp"
+                    android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                     android:layout_gravity="center"
                     android:orientation="horizontal" >
                 </LinearLayout>

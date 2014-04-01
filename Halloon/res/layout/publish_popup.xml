@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="45.0dip"
             android:layout_marginTop="2.0dip"
-            android:background="@drawable/title_background" >
+            android:background="@drawable/publish_bottom_background" >
             
             <ImageView
                 android:id="@+id/p_image"

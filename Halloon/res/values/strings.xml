@@ -146,4 +146,8 @@
     <string name="check_update">检查更新</string>
     <string name="function_intro">功能介绍</string>
     <string name="welcome_page">欢迎页</string>
+    
+    
+    <string name="input_name_hint">4-30个字符，支持中英文、数字</string>
+    <string name="input_sign_hint">请不要超过70个字</string>
 </resources>

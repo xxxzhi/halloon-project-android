@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.halloon.android.R;
@@ -86,6 +87,24 @@ public class EditProfileFragment extends BaseTitleBarFragment implements OnClick
 		editContent.setText(contents[editState]);
 		confirmButton = (Button) content.findViewById(R.id.confirm);
 		confirmButton.setOnClickListener(this);
+		
+		TextView tvHint = (TextView) content.findViewById(R.id.tv_input_hint);
+		switch (editState) {
+		case EDIT_MODE_NICK:
+			tvHint.setHint(R.string.input_name_hint);
+			break;
+		case EDIT_MODE_SEX:
+			break;
+		case EDIT_MODE_NAME:
+			break;
+		case EDIT_MODE_ADDRESS:
+			break;
+		case EDIT_MODE_SIGNATURE:
+			tvHint.setHint(R.string.input_sign_hint);
+			break;
+		case EDIT_MODE_INTEREST:
+			break;
+		}
 	}
 	
 	@Override
