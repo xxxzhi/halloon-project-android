@@ -332,19 +332,19 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 							iv,0, null,R.drawable.ic_launcher);
 					linearLayout.addView(iv);
 					
-					params = new LinearLayout.LayoutParams(2, LinearLayout.LayoutParams.MATCH_PARENT);
-					params.bottomMargin = getResources().getDimensionPixelOffset(R.dimen.padding_small);
-					params.topMargin = params.bottomMargin;
-					
-					View line = new View(context);
-					line.setLayoutParams(params);
-					line.setBackgroundResource(R.color.line_partition);
-					
-					linearLayout.addView(line);
+//					params = new LinearLayout.LayoutParams(2, LinearLayout.LayoutParams.MATCH_PARENT);
+//					params.bottomMargin = getResources().getDimensionPixelOffset(R.dimen.padding_small);
+//					params.topMargin = params.bottomMargin;
+//					
+//					View line = new View(context);
+//					line.setLayoutParams(params);
+//					line.setBackgroundResource(R.color.line_partition);
+//					
+//					linearLayout.addView(line);
 					
 				}
 				
-				linearLayout.removeViewAt(linearLayout.getChildCount() - 1);
+//				linearLayout.removeViewAt(linearLayout.getChildCount() - 1);
 			}
 			
 			private void showTweetList(ArrayList<TweetBean> list) {

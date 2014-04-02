@@ -16,6 +16,7 @@
         android:layout_marginTop="6.0dip"
         android:hint="@string/hint_edit_input"
         android:gravity="center_vertical"
+        android:textSize="13sp"
         android:background="@drawable/small_round_corner_white" />
     
     <TextView
@@ -28,6 +29,7 @@
         android:layout_marginLeft="6.0dip"
         android:layout_marginRight="6.0dip"
         android:layout_marginTop="2.0dip"
+        android:textSize="13sp"
         android:hint="@string/input_name_hint"
         android:gravity="center_vertical"
         />
@@ -44,7 +46,7 @@
         android:layout_marginTop="6.0dip"
         android:layout_marginLeft="6.0dip"
         android:layout_marginRight="6.0dip"
-        android:layout_below="@+id/input_hint"
+        android:layout_below="@+id/tv_input_hint"
         android:background="@drawable/rect_button_selector" />
 	
     <View
