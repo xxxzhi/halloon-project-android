@@ -16,6 +16,7 @@
         android:layout_marginTop="6.0dip"
         android:hint="@string/hint_edit_input"
         android:gravity="center_vertical"
+        android:lineSpacingMultiplier="1.2"
         android:textSize="13sp"
         android:background="@drawable/small_round_corner_white" />
     

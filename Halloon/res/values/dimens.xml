@@ -32,4 +32,6 @@
 	<dimen name="about_item_height">45dp</dimen>
 	<dimen name="txt_about_item">15sp</dimen>
 	<dimen name="about_arrow_side">20dp</dimen>
+	
+	<dimen name="input_sign_hint_min_height">140dp</dimen>
 </resources>

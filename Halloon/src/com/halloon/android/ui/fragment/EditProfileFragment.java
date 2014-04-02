@@ -92,6 +92,7 @@ public class EditProfileFragment extends BaseTitleBarFragment implements OnClick
 		switch (editState) {
 		case EDIT_MODE_NICK:
 			tvHint.setHint(R.string.input_name_hint);
+			
 			break;
 		case EDIT_MODE_SEX:
 			break;
@@ -101,6 +102,7 @@ public class EditProfileFragment extends BaseTitleBarFragment implements OnClick
 			break;
 		case EDIT_MODE_SIGNATURE:
 			tvHint.setHint(R.string.input_sign_hint);
+			editContent.setMinHeight(getResources().getDimensionPixelSize(R.dimen.input_sign_hint_min_height));
 			break;
 		case EDIT_MODE_INTEREST:
 			break;
