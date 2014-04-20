@@ -123,7 +123,7 @@
                     android:layout_height="@dimen/square_img_side"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/location_tag" />
+                    android:src="@drawable/square_hot" />
 
                 <TextView
                     android:id="@+id/title"
@@ -205,8 +205,9 @@
 
         <TextView
             android:id="@+id/forward_icon"
-            style="@style/LineTweetIcon"
             android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="left|center_vertical"
             android:text="@string/retweet" />
 
@@ -222,7 +223,8 @@
 
         <TextView
             android:id="@+id/comment_icon"
-            style="@style/LineTweetIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="left|center_vertical"
             android:singleLine="true"
             android:text="@string/comment" />
