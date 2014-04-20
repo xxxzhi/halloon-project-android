@@ -21,8 +21,10 @@ import com.halloon.android.api.PrivateMessageAPI;
 import com.halloon.android.api.ShortUrlAPI;
 import com.halloon.android.api.TrendsAPI;
 import com.halloon.android.api.UserUpdateAPI;
+import com.halloon.android.bean.FamousBean;
 import com.halloon.android.bean.PrivateDataBean;
 import com.halloon.android.bean.ProfileBean;
+import com.halloon.android.bean.TopicBean;
 import com.halloon.android.bean.TweetBean;
 import com.halloon.android.bean.UserBean;
 import com.halloon.android.util.Constants;
@@ -68,7 +70,7 @@ public class ContentManager {
 
 		preoauth = (OAuthV2) ((Activity) context).getIntent()
 				.getSerializableExtra("oauth");
-
+		System.out.println("test exit : oauthv2 ContentManager "+preoauth.getAccessToken());
 	}
 
 	public static ContentManager getInstance(Context context) {
@@ -79,8 +81,45 @@ public class ContentManager {
 	}
 	
 	
-	
-	
+	/**
+	 * 
+	 * @param content
+	 *            私信内容
+	 * @param clientip
+	 *            用户ip(以分析用户所在地)
+	 * @param name
+	 *            对方用户名（可选）
+	 * @param fopenid
+	 *            对方openid（可选）name和fopenid至少选一个，若同时存在则以name值为主
+	 * @param contentflag
+	 *            私信类型标识，1-普通私信，2-带图私信，此时需带参数pic（默认为1）
+	 * @param pic
+	 *            文件域表单名。本字段不要放在签名的参数中，不然请求时会出现签名错误，图片大小限制在4M。
+	 * @return
+	 */
+	public int[] addPrivateMsg(String content,
+			String clientip, String name, String fopenid, String contentflag,
+			String pic){
+		PrivateMessageAPI privateApi = new PrivateMessageAPI(
+				OAuthConstants.OAUTH_VERSION_2_A);
+		String myInfo = "";
+		int ret = 0 ;
+		int errcode = 0 ;
+		try {
+			myInfo = privateApi.add(preoauth, "json", content, clientip, name, fopenid, contentflag, pic);
+			
+			JSONObject jsonObject = new JSONObject(myInfo);
+			errcode = jsonObject.getInt("errcode");
+			ret = jsonObject.getInt("ret");
+//			JSONObject dataJsonObject = jsonObject.getJSONObject("data");
+			
+			
+		} catch (Exception e) {
+			Log.d(Constants.LOG_TAG, "GET_PROFILE_ERROR:" + e);
+		}
+
+		return new int []{ret,errcode};
+	}
 	
 	
 	// 获取 通讯录
@@ -118,7 +157,7 @@ public class ContentManager {
 						tweetBean.setText(tweetObject.getString("text"));
 						tweetBean.setFrom(tweetObject.getString("from"));
 						tweetBean.setTimestamp(tweetObject
-								.getString("timestamp"));
+								.getString("timestamp"));	
 						userBean.setTweetBean(tweetBean);
 					}
 					beans.add(userBean);
@@ -193,6 +232,7 @@ public class ContentManager {
 		ProfileBean profileBean = null;
 		UserAPI userAPI = new UserAPI(OAuthConstants.OAUTH_VERSION_2_A);
 		String myInfo = "";
+		System.out.println("test exit : preoauth  " + preoauth.getAccessToken());
 		try {
 			myInfo = userAPI.info(preoauth, "json");
 		} catch (Exception e) {
@@ -437,6 +477,100 @@ public class ContentManager {
 
 	}
 
+	/**
+	 * 本接口用于根据话题ID获取话题的相关信息， 譬如：话题ID， 话题名字等
+	 * @param oAuth
+	 * @param format
+	 * @param reqnum 请求个数（最多20)
+	 * @param pos 请求位置，第一次请求时填0，继续填上次返回的pos
+	 * @return
+	 * @throws Exception
+	 * 
+	 * @see <a href="http://wiki.open.t.qq.com/index.php/API%E6%96%87%E6%A1%A3/%E7%83%AD%E5%BA%A6%EF%BC%8C%E8%B6%8B%E5%8A%BF/%E8%AF%9D%E9%A2%98%E7%83%AD%E6%A6%9C">腾讯微博开放平台上关于此条API的文档</a>
+	 */
+	public ArrayList<TopicBean> getHotTopic( int requestNum, int pos){
+		TrendsAPI statusesAPI =new TrendsAPI(
+				OAuthConstants.OAUTH_VERSION_2_A);
+		ArrayList<TopicBean> topicContainer = new ArrayList<TopicBean>(
+				requestNum);
+		try {
+			String tweetInfo;
+			tweetInfo = statusesAPI.getHotList(preoauth, "json",
+					requestNum + "", pos+"");
+
+			JSONObject jsonObject = new JSONObject(tweetInfo);
+			JSONObject dataJsonObject = jsonObject.getJSONObject("data");
+			this.pos = dataJsonObject.getInt("pos");
+			JSONArray topicInfoArray = dataJsonObject.getJSONArray("info");
+			for (int i = 0; i < topicInfoArray.length(); i++) {
+				JSONObject topicObject = topicInfoArray.getJSONObject(i);
+//				TopicBean tb = getTweetFromJSON(tweetInfoObject);
+				TopicBean tb = new TopicBean();
+				tb.setName(topicObject.getString("name"));
+				tb.setKeywords(topicObject.getString("keywords"));
+				tb.setId(topicObject.getString("id"));
+				tb.setFavnum(topicObject.getString("favnum"));
+				tb.setTweetnum(topicObject.getString("tweetnum"));
+				
+				topicContainer.add(tb);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.d(Constants.LOG_TAG, ""+ e);
+		}
+
+		return topicContainer;
+	}
+	
+	
+	
+	/**
+	 * 本接口用于根据请求名人的类别id获取当前类别的推荐名人列表信息，  譬如： 推荐名人的用户帐号， 昵称。用户介绍等
+	 * @param classid 请求的名人类别id，
+	 * @param subclassid 当classid=268 或 294 时使用， 表示请求的名人类别的子类别id，详细信息请参见下表“classid和subclassid类别说明”
+	 * 例如：媒体机构类别下子类别广播id为：subclass_959。  若为空， 则 默认第一个子类别； 没有子类别的， 此处为空
+	 * 
+	 * </br><a href="http://mat1.gtimg.com/app/api_debuger/html/get_famouslist_class.htm" target="_blank">查看classid和subclassid类别说明表</a>
+	 * @return
+	 * @throws Exception
+	 * 
+	 * @see <a href="http://wiki.open.t.qq.com/index.php/API%E6%96%87%E6%A1%A3/%E7%83%AD%E5%BA%A6%EF%BC%8C%E8%B6%8B%E5%8A%BF/%E6%8E%A8%E8%8D%90%E5%90%8D%E4%BA%BA%E5%88%97%E8%A1%A8">微博开放平台上关于此条API的文档</a>
+	 */
+	public ArrayList<FamousBean> getFamousList( String classid, String subclassid) {
+		TrendsAPI statusesAPI =new TrendsAPI(
+				OAuthConstants.OAUTH_VERSION_2_A);
+		ArrayList<FamousBean> tweetContainer = new ArrayList<FamousBean>();
+		try {
+			String info;
+			info = statusesAPI.getFamousList(preoauth, "json",classid, subclassid);
+
+			JSONObject jsonObject = new JSONObject(info);
+			JSONObject dataJsonObject = jsonObject.getJSONObject("data");
+			JSONArray tweetInfoArray = dataJsonObject.getJSONArray("info");
+			String userInfoObject = dataJsonObject.optString("user");
+			for (int i = 0; i < tweetInfoArray.length(); i++) {
+				JSONObject tweetInfoObject = tweetInfoArray.getJSONObject(i);
+				
+				FamousBean userBean = new FamousBean();
+				
+				userBean.setAccount(tweetInfoObject.getString("account"));
+				userBean.setNick(tweetInfoObject.getString("nick"));
+				userBean.setBrief(tweetInfoObject.getString("brief"));
+				userBean.setHead(tweetInfoObject.getString("head"));
+				userBean.setPromocycle(tweetInfoObject.getString("promocycle"));
+				userBean.setPromovalue(tweetInfoObject.getString("promovalue"));
+				userBean.setMaxfollowers(tweetInfoObject.getString("maxfollowers"));
+				
+				tweetContainer.add(userBean);
+			}
+
+		} catch (Exception e) {
+			Log.d(Constants.LOG_TAG, "GET_BROADCAST_TIMELINE_ERROR:" + e);
+		}
+
+		return tweetContainer;
+	}
 	
 	/**
 	 * 本接口用于获取转播次数开前的微博消息列表， 譬如:微博内容， 微博ID等
@@ -447,7 +581,7 @@ public class ContentManager {
 	 * 如需拉取多个类型请使用| 如(0x1|0x2) 得到3， 此时type = 3 即可， 填零便是拉取所有类型
 	 * @return
 	 */
-	public ArrayList<TweetBean> getHotTweetBean( int requestNum, int pos, String type
+	public ArrayList<TweetBean> getReHotTweetBean( int requestNum, int pos, String type
 			) {
 		TrendsAPI statusesAPI =new TrendsAPI(
 				OAuthConstants.OAUTH_VERSION_2_A);
@@ -476,6 +610,7 @@ public class ContentManager {
 
 		return tweetContainer;
 	}
+	
 	
 	/**
 	 * 获取个人时间线
@@ -1707,7 +1842,156 @@ public ArrayList<TweetBean> searchTweet(String keyword,
 	
 	
 	
+	//
+	public ArrayList<UserBean> getUserFans(String name,String fopenid,int startindex) {
+		ArrayList<UserBean> beans = new ArrayList<UserBean>();
+
+		FriendsAPI friendsAPI = new FriendsAPI(OAuthConstants.OAUTH_VERSION_2_A);
+			try {
+				String response = friendsAPI.userFanslist(preoauth, "json", REQNUM
+						+ "",startindex+ "", name,fopenid,"0","0");
+
+				JSONObject jsonObject = new JSONObject(response);
+				JSONObject dataJsonObject = jsonObject.getJSONObject("data");
+				JSONArray jsonArray = dataJsonObject.getJSONArray("info");
+
+				for (int i = 0; i < jsonArray.length(); i++) {
+					JSONObject jObject = jsonArray.getJSONObject(i);
+					/* if (jObject.getBoolean("isidol")) { */
+					UserBean userBean = new UserBean();
+					
+//					name : 帐户名,
+//					openid : 用户唯一id，与name相对应,
+//					nick : 昵称,
+//					head : 头像url,
+//					sex : 用户性别，1-男，2-女，0-未填写,
+//					location : 用户发表微博时的所在地,
+//					country_code : 国家码,
+//					province_code : 省份码,
+//					city_code : 城市码,
+//					tweet : 用户最近发的一条微博
+//					{
+//						text : 微博内容,
+//						from : 来源,
+//						id : 微博id,
+//						timestamp : 微博时间戳
+//					},
+//					fansnum : 听众数,
+//					idolnum : 偶像数,
+//					isfans : 是否我的听众，0-不是，1-是,
+//					isvip : 是否名人用户,
+//					tag : 用户标签
+//					{
+//						id : 标签id,
+//						name : 标签名
+//					}
+//				}
+					
+					
+					userBean.setOpenId(jObject.getString("openid"));
+					userBean.setName(jObject.getString("name"));
+					userBean.setNick(jObject.getString("nick"));
+					userBean.setHead(jObject.getString("head"));
+					userBean.setSex(sexType[jObject.getInt("sex")]);
+					
+					userBean.setFansnum(jObject.getString("fansnum"));
+					userBean.setIdolnum(jObject.getString("idolnum"));
+					userBean.setIsfans(jObject.getString("isfans"));
+					userBean.setIsvip(jObject.getString("isvip"));
+					
+					JSONArray tweetArray = jObject.getJSONArray("tweet");
+					for (int j = 0; j < tweetArray.length(); j++) {
+						JSONObject tweetObject = tweetArray.getJSONObject(j);
+						TweetBean tweetBean = new TweetBean();
+						tweetBean.setId(tweetObject.getString("id"));
+						tweetBean.setText(tweetObject.getString("text"));
+						tweetBean.setFrom(tweetObject.getString("from"));
+						tweetBean.setTimestamp(tweetObject
+								.getString("timestamp"));	
+						userBean.setTweetBean(tweetBean);
+					}
+					
+					//fansnum : xxx,
+//					idolnum : xxx,
+//					isidol : xxx,
+//					isvip : xxx,
+//					tag : [
+//					{
+//						id : xxx,
+//						name : xxx
+//					}]
+					
+					
+					beans.add(userBean);
+
+				}
+			} catch (Exception e) {
+				Log.d(Constants.LOG_TAG, "GET_CONTACTS_ERROR:" + e);
+			}
+			return beans;
+	}
 	
-	
+	//
+	public ArrayList<UserBean> getUserIdol(String name,String fopenid,int startindex) {
+		ArrayList<UserBean> beans = new ArrayList<UserBean>();
+
+		FriendsAPI friendsAPI = new FriendsAPI(OAuthConstants.OAUTH_VERSION_2_A);
+			try {
+				String response = friendsAPI.userIdollist(preoauth, "json", REQNUM
+						+ "",startindex+ "", name,fopenid,"0");
+
+				JSONObject jsonObject = new JSONObject(response);
+				JSONObject dataJsonObject = jsonObject.getJSONObject("data");
+				JSONArray jsonArray = dataJsonObject.getJSONArray("info");
+
+				for (int i = 0; i < jsonArray.length(); i++) {
+					JSONObject jObject = jsonArray.getJSONObject(i);
+					/* if (jObject.getBoolean("isidol")) { */
+					UserBean userBean = new UserBean();
+					userBean.setOpenId(jObject.getString("openid"));
+					userBean.setName(jObject.getString("name"));
+					userBean.setNick(jObject.getString("nick"));
+					userBean.setHead(jObject.getString("head"));
+					userBean.setSex(sexType[jObject.getInt("sex")]);
+
+					
+
+					userBean.setFansnum(jObject.getString("fansnum"));
+					userBean.setIdolnum(jObject.getString("idolnum"));
+					userBean.setIsidol(jObject.getString("isidol"));
+					userBean.setIsvip(jObject.getString("isvip"));
+					
+					
+					JSONArray tweetArray = jObject.getJSONArray("tweet");
+					for (int j = 0; j < tweetArray.length(); j++) {
+						JSONObject tweetObject = tweetArray.getJSONObject(j);
+						TweetBean tweetBean = new TweetBean();
+						tweetBean.setId(tweetObject.getString("id"));
+						tweetBean.setText(tweetObject.getString("text"));
+						tweetBean.setFrom(tweetObject.getString("from"));
+						tweetBean.setTimestamp(tweetObject
+								.getString("timestamp"));	
+						userBean.setTweetBean(tweetBean);
+					}
+					
+					//fansnum : xxx,
+//					idolnum : xxx,
+//					isidol : xxx,
+//					isvip : xxx,
+//					tag : [
+//					{
+//						id : xxx,
+//						name : xxx
+//					}]
+					
+					
+					beans.add(userBean);
+
+				}
+			} catch (Exception e) {
+				Log.d(Constants.LOG_TAG, "GET_CONTACTS_ERROR:" + e);
+			}
+			return beans;
+	}
 	
 }

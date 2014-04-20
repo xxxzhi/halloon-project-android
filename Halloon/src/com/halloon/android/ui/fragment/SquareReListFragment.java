@@ -18,8 +18,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -41,7 +39,6 @@ import com.halloon.android.bean.UserBean;
 import com.halloon.android.data.ContentManager;
 import com.halloon.android.data.DBManager;
 import com.halloon.android.data.SettingsManager;
-import com.halloon.android.image.ImageLoader;
 import com.halloon.android.listener.OnLocationSeekListener;
 import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.task.BaseCompatiableTask;
@@ -57,38 +54,33 @@ import com.halloon.android.widget.HalloonPullableView.OnFooterRefreshListener;
 import com.halloon.android.widget.HalloonPullableView.OnHeaderRefreshListener;
 import com.halloon.android.widget.HalloonTitleBar;
 
-public class TabSquareFragment extends BaseTitleBarFragment implements
-		OnTitleBarClickListener,OnClickListener
-		, OnLocationSeekListener {
-	
-	public interface SquareFragmentCallback {
-		
-		public void setSquareFamousList(ArrayList<FamousBean> famous);
-		
-		public void setSquareTopicList(ArrayList<TopicBean> topic);
-		
-		public void setSquareHotReList(ArrayList<TweetBean> hotRe);
-
-	}
-
-
+public class SquareReListFragment extends BaseTitleBarFragment implements
+		OnTitleBarClickListener, OnHeaderRefreshListener,
+		OnFooterRefreshListener, OnLocationSeekListener {
 	private HalloonApplication application;
 
-	private SquareFragmentCallback mpCallback;
+	private MainPageFragmentCallback mpCallback;
+	private HalloonPullableView pullAndDrop;
+	private ListView list;
 	private Context context;
 	private TextView titleText;
-	private EditText searchEditText;
+	
 	TweetContentAdapter tweetContentAdapter;
-	private Button deleteButton;
+
+	private ArrayList<TweetBean> hotReBeans;
+	
+	
+
+	private String myName;
+	private String nick;
 
 	private int page = 1;
 	private String longitude;
 	private String latitude;
 
-	private ArrayList<TweetBean> hotReBeans = new ArrayList<TweetBean>();
-	private ArrayList<TopicBean> hotTopicBeans = new ArrayList<TopicBean>();
-	private ArrayList<FamousBean> hotFamousBeans = new ArrayList<FamousBean>();
-	
+	private String newResponTime;
+	private String oldResponTime;
+
 	private LayoutInflater layoutInflater;
 	private View footer;
 
@@ -98,108 +90,64 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		this.mpCallback = (SquareFragmentCallback) activity;
+		this.mpCallback = (MainPageFragmentCallback) activity;
 		context = activity;
 		application = (HalloonApplication) activity.getApplication();
+
 	}
 
-	class ViewHolder {
-		ViewGroup parent ;
-		ImageView icon;
-		TextView title;
-		TextView content;
+	public ArrayList<TweetBean> getHotReBeans() {
+		return hotReBeans;
 	}
-	
-	ViewHolder hotTopic = new ViewHolder(),
-			hotRe = new ViewHolder(),
-			hotFamous = new ViewHolder();
+
+	public void setHotReBeans(ArrayList<TweetBean> hotReBeans) {
+		this.hotReBeans = hotReBeans;
+		
+		pos = hotReBeans.size()-1;
+	}
 	
 	
 	@Override
 	protected void init(HalloonTitleBar titleBar, RelativeLayout content) {
+		
+		titleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_BACK_BUTTON_ONLY);
+		
 		layoutInflater = (LayoutInflater) getActivity().getSystemService(
 				Context.LAYOUT_INFLATER_SERVICE);
 		
-		titleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_MENU);
 		titleBar.setOnTitleBarClickListener(this);
 		titleText = titleBar.getTitleTextView();
 
 		LayoutInflater inflater = (LayoutInflater) getActivity()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		content.addView(inflater.inflate(R.layout.tab_square, null, false));
+		content.addView(inflater.inflate(R.layout.fragment_square_list, null, false));
 
-		searchEditText = (EditText) content.findViewById(R.id.search_editText);
-		deleteButton = (Button) content.findViewById(R.id.deleteButton);
-		
-		pager = (ViewPager) content.findViewById(R.id.viewpager);
-		pager.setAdapter(new SquarePagerAdapter(getActivity()));
-		initPagerScroll();
 
+		pullAndDrop = (HalloonPullableView) content
+				.findViewById(R.id.pull_layout);
+		pullAndDrop.setOnHeaderRefreshListener(this);
+		pullAndDrop.setOnFooterRefreshListener(this);
+
+		list = (ListView) content.findViewById(R.id.list);
 		
-		ViewGroup group =(ViewGroup)content.findViewById(R.id.rl_hot_topic);
-		
-		hotTopic.icon = (ImageView) group.findViewById(R.id.imageView1);
-		hotTopic.content = (TextView) group.findViewById(R.id.content);
-		hotTopic.title = (TextView) group.findViewById(R.id.title);
-		
-		findView(hotTopic, (ViewGroup)content.findViewById(R.id.rl_hot_topic));
-		findView(hotRe, (ViewGroup)content.findViewById(R.id.rl_hot_re));
-		findView(hotFamous, (ViewGroup)content.findViewById(R.id.rl_famous));
-	}
-	
-	private void findView(ViewHolder holder ,ViewGroup group){
-		group.setOnClickListener(this);
-		holder.parent = group;
-		holder.icon = (ImageView) group.findViewById(R.id.imageView1);
-		holder.content = (TextView) group.findViewById(R.id.content);
-		holder.title = (TextView) group.findViewById(R.id.title);
+
+		tweetContentAdapter = new TweetContentAdapter(context, hotReBeans);
+		footer = inflater.inflate(R.layout.tweet_content_more, null, false);
+		list.addFooterView(footer);
+		list.setAdapter(tweetContentAdapter);
+
+		titleText.setText(R.string.hot_trans);
 	}
 
-	Handler handler = new Handler() {
-
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			if (msg.what == 1 && pager.getChildCount() > 0){
-				pager.setCurrentItem((pager.getCurrentItem() + 1)
-						% pager.getChildCount());
-			}
-		}
-
-	};
-
-	class ScrollThread extends Thread {
-		@Override
-		public void run() {
-			while (true) {
-				try {
-					TimeUnit.SECONDS.sleep(5);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				handler.sendEmptyMessage(1);
-			}
-		}
-	}
-
-	ScrollThread thread = null;
-
-	private void initPagerScroll() {
-		if (thread == null || !thread.isAlive()) {
-			thread = new ScrollThread();
-			thread.start();
-		}
-	}
-	private ArrayList<TweetBean> tempHotTweetList = new ArrayList<TweetBean>();
-	private TextWatcher textWatcher = new TextWatcher() {
-
-		@Override
-		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
-			page = 1;
-			Log.d(Constants.LOG_TAG, "onTextChanged " + s.toString());
-			ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
-
+//	private TextWatcher textWatcher = new TextWatcher() {
+//
+//		@Override
+//		public void onTextChanged(CharSequence s, int start, int before,
+//				int count) {
+//			page = 1;
+//			Log.d(Constants.LOG_TAG, "onTextChanged " + s.toString());
+//			ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
+//
 //			tmpArrayList = ContentManager.getInstance(mActivity).searchTweet(
 //					s.toString(), PAGE_SIZE, page, 0, "0", 0, "0", "0", "0");
 //			
@@ -214,18 +162,18 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 //			} else {
 //				deleteButton.setVisibility(View.VISIBLE);
 //			}
-		}
-
-		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
-
-		}
-
-		public void afterTextChanged(Editable s) {
-
-		}
-
-	};
+//		}
+//
+//		public void beforeTextChanged(CharSequence s, int start, int count,
+//				int after) {
+//
+//		}
+//
+//		public void afterTextChanged(Editable s) {
+//
+//		}
+//
+//	};
 	
 	private AbsListView.OnScrollListener mScrollListener = new AbsListView.OnScrollListener() {
 		
@@ -249,20 +197,71 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 		}
 	};
 	
-
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		titleText.setText(R.string.tab_square);
 
-		searchEditText.addTextChangedListener(textWatcher);
-		deleteButton.setOnClickListener(new View.OnClickListener() {
-			
+
+
+		// customize fastscroll bar style
+		/*
+		 * try { Field f = AbsListView.class.getDeclaredField("mFastScroller");
+		 * f.setAccessible(true); Object o = f.get(list); f =
+		 * f.getType().getDeclaredField("mThumbDrawable");
+		 * f.setAccessible(true); Drawable drawable = (Drawable) f.get(o);
+		 * drawable =
+		 * context.getResources().getDrawable(R.drawable.ic_launcher); f.set(o,
+		 * drawable); } catch (Exception e) { e.printStackTrace(); }
+		 */
+		list.setFocusable(true);
+
+		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
 			@Override
-			public void onClick(View v) {
-				searchEditText.setText("");
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				if (position < list.getCount() - 1) {
+					Bundle bundle = new Bundle();
+					bundle.putString("id", String.valueOf(id));
+					bundle.putBundle("tweetBean",
+							tweetContentAdapter.getItem(position).toBundle());
+					mpCallback.setupDetailFragment(bundle);
+				} else {
+					if (footer != null) {
+						list.removeFooterView(footer);
+						footer = layoutInflater.inflate(
+								R.layout.footer_loading, null, false);
+						list.addFooterView(footer);
+					}
+
+					getMoreData();
+				}
 			}
+
 		});
+		list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				PopupWindowManager popupWindowManager = new PopupWindowManager(
+						context);
+				if (position < list.getCount() - 1) {
+					popupWindowManager.setupCommentFunctionPopup(
+							tweetContentAdapter.getItem(position).getId(),
+							tweetContentAdapter.getItem(position).getName()
+									.equals(myName), tweetContentAdapter
+									.getItem(position).getText(),
+							PopupWindowManager.TWEET_LIST, position);
+				}
+				return true;
+			}
+
+		});
+		
+		list.setOnScrollListener(mScrollListener);
 		
 		loadData(25, false);
 	}
@@ -271,19 +270,18 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 	public void onStart() {
 		super.onStart();
 	}
-	
+
 	private void loadData(final int tweetNumber, final boolean refresh) {
 		page = 1;
-		new BaseCompatiableTask<Void, Object,Void>() {
+		new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
 
 			@Override
-			protected Void doInBackground(Void... arg0) {
+			protected ArrayList<TweetBean> doInBackground(Void... arg0) {
 				ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
-				ArrayList<TopicBean> temphotTopicBeans = new ArrayList<TopicBean>();
-				ArrayList<FamousBean> temphotFamousBeans = new ArrayList<FamousBean>();
-				
-				tmpArrayList = ContentManager.getInstance(context)
-						.getReHotTweetBean(tweetNumber, 0, "0");
+
+					tmpArrayList = ContentManager.getInstance(context)
+							.getReHotTweetBean(tweetNumber, 0, "0");
+					pos = ContentManager.getInstance(context).getPos();
 
 				if (tmpArrayList != null && tmpArrayList.size() > 0) {
 					int i = 0;
@@ -333,108 +331,130 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 						}
 					} while (++i < tmpArrayList.size());
 				}
-				
-				publishProgress(0,tmpArrayList);
-				
-				temphotFamousBeans = ContentManager.getInstance(context)
-						.getFamousList("101", "");
-				publishProgress(1,temphotFamousBeans);
-				
-				temphotTopicBeans = ContentManager.getInstance(context)
-						.getHotTopic(tweetNumber, 0);
-				publishProgress(2,temphotTopicBeans);
-				
-				return null;
-			}
-			
-			@Override
-			protected void onProgressUpdate(Object... values) {
-				super.onProgressUpdate(values);
-				
-				int type =(Integer) values[0];
-				switch (type) {
-				case 0:
-					ArrayList<TweetBean> tempRe = (ArrayList<TweetBean>) values[1];
-					
-					if (tempRe == null || tempRe.size() == 0) {
-						Toast.makeText(context,
-								context.getString(R.string.refresh_failure),
-								Toast.LENGTH_LONG).show();
-					}else{
-						hotReBeans.clear();
-						hotReBeans.addAll(tempRe);
-						
-						
-						ImageLoader.getInstance(context).displayImage(hotReBeans.get(0).getHead()+ "/120",
-								hotRe.icon, 0, 
-						null,R.drawable.ic_launcher);
-						
-//						hotRe.title .setText( hotReBeans.get(0).getName() ) ;
-						hotRe.content .setText( hotReBeans.get(0).getText() );
-						((TextView)hotRe.parent.findViewById(R.id.forward_count))
-						.setText(hotReBeans.get(0).getCount());
-						
-						((TextView)hotRe.parent.findViewById(R.id.comment_count))
-						.setText(hotReBeans.get(0).getMCount());
-					}
-					
-					break;
-				case 1:
-					ArrayList<FamousBean> tempFamout = (ArrayList<FamousBean>) values[1];
-					
-					if (tempFamout == null || tempFamout.size() == 0) {
-						Toast.makeText(context,
-								context.getString(R.string.refresh_failure),
-								Toast.LENGTH_LONG).show();
-					}else{
-						hotFamousBeans.clear();
-						hotFamousBeans.addAll(tempFamout);
-						
-						ImageLoader.getInstance(context).displayImage(hotFamousBeans.get(0).getHead()+ "/120",
-								hotFamous.icon, 0, 
-						null,R.drawable.ic_launcher);
-						
-//						hotFamous.title .setText( hotFamousBeans.get(0).getNick() ) ;
-						hotFamous.content .setText( hotFamousBeans.get(0).getBrief());
-						
-					}
-					break;
-				case 2:
-					ArrayList<TopicBean> tempToic = (ArrayList<TopicBean>) values[1];
-					
-					if (tempToic == null || tempToic.size() == 0) {
-						Toast.makeText(context,
-								context.getString(R.string.refresh_failure),
-								Toast.LENGTH_LONG).show();
-					}else{
-						hotTopicBeans.clear();
-						hotTopicBeans.addAll(tempToic);
-						
-//						ImageLoader.getInstance(context).displayImage(hotTopicBeans.get(0).getName()+ "/120",
-//								hotTopic.icon, 0, 
-//						null,R.drawable.ic_launcher);
-//						
-//						hotTopic.title .setText( hotTopicBeans.get(0).getName() ) ;
-						hotTopic.content .setText( hotTopicBeans.get(0).getKeywords());
-						
-						
-					}
-					break;
-				default:
-					return ;
-				}
-				
-				
+
+				return tmpArrayList;
 			}
 
 			@Override
-			protected void onPostExecute(Void result) {
+			protected void onPostExecute(ArrayList<TweetBean> result) {
 				super.onPostExecute(result);
-				
+				if (result != null && result.size() > 0) {
+
+					if (!refresh) {
+						Intent intent = new Intent();
+						intent.setAction(Constants.GLOBAL_TAB_VISIBILITY);
+						Bundle bundle = new Bundle();
+						bundle.putBoolean("isTabShow", true);
+						bundle.putBoolean("isCoverShow", false);
+						intent.putExtras(bundle);
+						context.sendBroadcast(intent);
+					}
+					hotReBeans.clear();
+					hotReBeans.addAll(result);
+					tweetContentAdapter.notifyDataSetChanged();
+
+					oldResponTime = result.get(result.size() - 1)
+							.getTimestamp();
+					newResponTime = result.get(0).getTimestamp();
+
+				} else {
+					Toast.makeText(context,
+							context.getString(R.string.refresh_failure),
+							Toast.LENGTH_LONG).show();
+				}
+				pullAndDrop.onHeaderRefreshComplete(SettingsManager
+						.getInstance(context).getLastUpdateTime());
 			}
 		}.taskExecute();
 	}
 
+	final int PAGE_SIZE = 25;
+	private int pos;
+
+	private void getMoreData() {
+		page ++ ;
+		new BaseCompatiableTask<Void, Void, ArrayList<TweetBean>>() {
+			@Override
+			protected ArrayList<TweetBean> doInBackground(Void... params) {
+				ArrayList<TweetBean> tmpArrayList = new ArrayList<TweetBean>();
+				tmpArrayList = ContentManager.getInstance(context)
+							.getReHotTweetBean(PAGE_SIZE, pos, "0");
+				pos = ContentManager.getInstance(context).getPos();
+
+				if (tmpArrayList != null) {
+					int i = 0;
+					do {
+						String text = tmpArrayList.get(i).getText();
+						String ADDR_PATTERN = "http://url\\.cn/[a-zA-Z0-9]+";
+						Pattern pattern = Pattern.compile(ADDR_PATTERN);
+						Matcher matcher = pattern.matcher(text);
+						if (tmpArrayList.get(i).getMusicUrl() != null
+								|| tmpArrayList.get(i).getVideoImage() != null) {
+							while (matcher.find()) {
+								String group = matcher.group();
+								group = group
+										.substring(group.lastIndexOf("/") + 1);
+								if (application.getShortList().get(group) == null) {
+									String longUrl = ContentManager
+											.getInstance(context)
+											.getExpandedUrl(group);
+									application.getShortList().put(group,
+											longUrl);
+								}
+							}
+
+						}
+
+						if (tmpArrayList.get(i).getSource() != null
+								&& (tmpArrayList.get(i).getSource()
+										.getMusicUrl() != null || tmpArrayList
+										.get(i).getSource().getVideoImage() != null)) {
+							matcher = pattern.matcher(tmpArrayList.get(i)
+									.getSource().getText());
+							while (matcher.find()) {
+
+								String group = matcher.group();
+								group = group
+										.substring(group.lastIndexOf("/") + 1);
+								if (application.getShortList().get(group) == null) {
+									String longUrl = ContentManager
+											.getInstance(context)
+											.getExpandedUrl(group);
+									application.getShortList().put(group,
+											longUrl);
+								}
+							}
+						}
+					} while (++i < tmpArrayList.size());
+				}
+
+				return tmpArrayList;
+			}
+
+			@Override
+			protected void onPostExecute(ArrayList<TweetBean> result) {
+				super.onPostExecute(result);
+				if (footer != null) {
+					list.removeFooterView(footer);
+					footer = layoutInflater.inflate(
+							R.layout.tweet_content_more, null, false);
+					list.addFooterView(footer);
+				}
+
+				pullAndDrop.onFooterRefreshComplete();
+
+				if (result.size() > 0) {
+					hotReBeans.addAll(result);
+					tweetContentAdapter.notifyDataSetChanged();
+					oldResponTime = result.get(result.size() - 1)
+							.getTimestamp();
+				} else {
+					Toast.makeText(context, "更新失败", Toast.LENGTH_LONG).show();
+				}
+
+			}
+		}.taskExecute();
+	}
 
 	@Override
 	public void onTitleContentClick(int contentEnum) {
@@ -494,6 +514,15 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 		System.runFinalization();
 	}
 
+	@Override
+	public void onFooterRefresh(HalloonPullableView view) {
+		getMoreData();
+	}
+
+	@Override
+	public void onHeaderRefresh(HalloonPullableView view) {
+		loadData(25, true);
+	}
 
 	@Override
 	public void onLocationSeeking() {
@@ -507,22 +536,4 @@ public class TabSquareFragment extends BaseTitleBarFragment implements
 		page++;
 	}
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.rl_hot_re:
-			mpCallback.setSquareHotReList(hotReBeans);
-			break;
-		case R.id.rl_famous:
-			mpCallback.setSquareFamousList(hotFamousBeans);
-			break;
-			
-		case R.id.rl_hot_topic:
-			
-			break;
-		default:
-			break;
-		}
-	}
-	
 }

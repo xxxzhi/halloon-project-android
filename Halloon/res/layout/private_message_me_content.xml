@@ -6,8 +6,8 @@
     
     <com.halloon.android.widget.CircleImageView
         android:id="@+id/private_head"
-        android:layout_width="40.0dip"
-        android:layout_height="40.0dip"
+        android:layout_width="@dimen/private_icon_side"
+        android:layout_height="@dimen/private_icon_side"
         android:layout_alignParentRight="true"
         android:layout_marginRight="6.0dip"
         android:layout_below="@+id/private_time"
@@ -28,24 +28,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="40.0dip"
-        android:maxWidth="230.0dip"
         android:layout_toLeftOf="@+id/private_head"
         android:layout_marginRight="8.0dip"
-        android:text="231823791283124610249614581639862340"
-        android:textColor="#555555"
-        android:textSize="15.0dip"
+        android:layout_marginLeft="53.0dip"
+        android:textColor="@color/txt_private"
+        android:layout_marginTop="8.0dip"
+        android:textSize="@dimen/txt_private_content"
         android:gravity="center|left"
-        android:background="@drawable/round_corner_light_blue" />
+        
+        android:background="@drawable/bg_private_msg_me" />
 
 <TextView
-        android:layout_marginTop="8.0dip"
         android:id="@+id/private_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:textSize="12sp"
-        
+        android:textSize="@dimen/txt_private_time"
+        android:textColor="@color/txt_private_time"
+        android:background="@drawable/bg_private_time"
+        android:layout_marginBottom="4dp"
         android:text="time" />
-
 </RelativeLayout>

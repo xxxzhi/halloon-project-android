@@ -126,7 +126,8 @@ public class TweetDetailAdapter extends BaseAdapter implements OnClickListener {
 			ImageLoader.getInstance(context).displayImage(tweetBean.getHead() + "/50", tweetHeadHolder.tweetHead, 6, null);
 
 			tweetHeadHolder.tweetNick.setText(tweetBean.getNick());
-			tweetHeadHolder.tweetFrom.setText(context.getString(R.string.from) + tweetBean.getFrom());
+			tweetHeadHolder.tweetFrom.setText(
+					context.getString(R.string.from) + tweetBean.getFrom());
 			tweetHeadHolder.tweetTimestamp.setText(TimeUtil.converTime(tweetBean.getTimestamp(), 2));
 			if (tweetBean.getIsVip() == 1) {
 				tweetHeadHolder.isVip.setVisibility(View.VISIBLE);

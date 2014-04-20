@@ -233,7 +233,8 @@ public class PublishFragment extends Fragment implements OnClickListener,
 			break;
 		case R.id.p_emoji:
 			if (emojiSelector.getVisibility() == View.GONE) {
-				((InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+				if(((Activity) context).getCurrentFocus() != null && ((Activity) context).getCurrentFocus().getWindowToken() != null)
+					((InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 				emojiSelector.setVisibility(View.VISIBLE);
 			} else {
 				emojiSelector.setVisibility(View.GONE);

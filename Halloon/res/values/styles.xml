@@ -146,4 +146,12 @@
         <item name="android:background">#FFF5F5F5</item>
         <item name="android:longClickable">true</item>
     </style>
+    
+    <style name="SquareItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/square_item_height</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:background">@drawable/bg_weibo_item</item>
+    </style>
 </resources>

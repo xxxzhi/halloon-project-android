@@ -9,15 +9,16 @@
         android:id="@+id/edit_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="top|left"
         android:minHeight="45dp"
         android:paddingLeft="10dp"
+        android:paddingTop="5dp"
         android:layout_marginLeft="6.0dip"
         android:layout_marginRight="6.0dip"
         android:layout_marginTop="6.0dip"
         android:hint="@string/hint_edit_input"
-        android:gravity="center_vertical"
         android:lineSpacingMultiplier="1.2"
-        android:textSize="13sp"
+        android:textSize="14sp"
         android:background="@drawable/small_round_corner_white" />
     
     <TextView
@@ -30,7 +31,7 @@
         android:layout_marginLeft="6.0dip"
         android:layout_marginRight="6.0dip"
         android:layout_marginTop="2.0dip"
-        android:textSize="13sp"
+        android:textSize="14sp"
         android:hint="@string/input_name_hint"
         android:gravity="center_vertical"
         />

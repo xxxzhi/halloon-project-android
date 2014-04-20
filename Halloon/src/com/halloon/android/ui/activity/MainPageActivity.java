@@ -26,6 +26,9 @@ public class MainPageActivity extends BaseMultiFragmentActivity implements Publi
 
 	@Override
 	protected Fragment onCreatePane() {
+		
+		System.out.println("test exit:onCreatePane");
+		
 		TabMainPageFragment mFragment = new TabMainPageFragment();
 		mFragment.setTweetState(TabMainPageFragment.MAIN_TIMELINE_TWEET);
 
@@ -89,6 +92,8 @@ public class MainPageActivity extends BaseMultiFragmentActivity implements Publi
 		return imagePath;
 	}
 
+	
+	
 	@Override
 	protected void init() {
 		// TODO Auto-generated method stub

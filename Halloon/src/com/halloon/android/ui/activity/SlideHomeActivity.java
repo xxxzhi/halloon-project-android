@@ -37,6 +37,7 @@ import com.halloon.android.image.ImageLoader;
 import com.halloon.android.task.BaseCompatiableTask;
 import com.halloon.android.util.Constants;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.tencent.weibo.oauthv2.OAuthV2;
 
 @SuppressWarnings("deprecation")
 public class SlideHomeActivity extends ActivityGroup implements
@@ -145,7 +146,7 @@ public class SlideHomeActivity extends ActivityGroup implements
 
 		main.performClick();
 		
-		initRequestCircle();
+//		initRequestCircle();
 	}
 
 	@Override
@@ -175,9 +176,11 @@ public class SlideHomeActivity extends ActivityGroup implements
 		if (ImageLoader.getInstance(this).checkSize() >= FileCache.MAX_SIZE) {
 			ImageLoader.getInstance(this).clearCache();
 		}
-		stopUpdate = true ;
+		SlideHomeActivity.stopUpdate = true ;
+		System.out.println("test exit:onDestory");
 	}
 
+	
 	
 	Thread updateThread = new Thread(){
 
@@ -235,7 +238,7 @@ public class SlideHomeActivity extends ActivityGroup implements
 		
 	};
 	
-	boolean stopUpdate = false ;
+	public static boolean  stopUpdate = false ;
 
 	private void initRequestCircle(){
 		updateThread.start();
@@ -406,6 +409,7 @@ public class SlideHomeActivity extends ActivityGroup implements
 			intent.putExtra("accesstoken",
 					getIntent().getStringExtra("accessToken"));
 			intent.putExtra("oauth", getIntent().getSerializableExtra("oauth"));
+			
 			intent.putExtra("flag", getIntent().getIntExtra("flag", 1));
 			intent.setClass(this, MyContactsActivity.class);
 
@@ -417,6 +421,8 @@ public class SlideHomeActivity extends ActivityGroup implements
 			intent.putExtra("accesstoken",
 					getIntent().getStringExtra("accessToken"));
 			intent.putExtra("oauth", getIntent().getSerializableExtra("oauth"));
+			System.out.println("test exit : oauthv2 linear_main "+((OAuthV2)getIntent().
+					getSerializableExtra("oauth")).getAccessToken());
 			intent.putExtra("flag", getIntent().getIntExtra("flag", 1));
 			intent.setClass(this, MainPageActivity.class);
 			break;

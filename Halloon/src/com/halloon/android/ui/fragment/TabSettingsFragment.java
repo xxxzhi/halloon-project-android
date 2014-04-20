@@ -14,9 +14,11 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 
+import com.halloon.android.HalloonApplication;
 import com.halloon.android.R;
 import com.halloon.android.data.ContentManager;
 import com.halloon.android.data.DBManager;
+import com.halloon.android.data.SettingsManager;
 import com.halloon.android.image.ImageLoader;
 import com.halloon.android.listener.OnTitleBarClickListener;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
@@ -33,6 +35,7 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 	private Context context;
 	
 	private Button clearButton,exitButton;
+	private HalloonApplication application;
 
 	@Override
 	protected void init(HalloonTitleBar titleBar, RelativeLayout content) {
@@ -73,6 +76,8 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 		super.onAttach(activity);
 		context = activity;
 		this.aboutCallback = (SettingAboutCallback) activity;
+		
+		application = (HalloonApplication) activity.getApplication();
 	}
 	
 	@Override
@@ -146,14 +151,18 @@ public class TabSettingsFragment extends BaseTitleBarFragment implements OnClick
 			clearButton.setText(context.getString(R.string.clear_cache) + "(" + NumberUtil.formatBytesSize(context, ImageLoader.getInstance(context).checkSize()) + ")");
 			break;
 		case R.id.exit:
+			SlideHomeActivity.stopUpdate = true ;
 			ImageLoader.getInstance(context).clearCache();
 			OAuthV2Activity.clearOAuth(mActivity);
 			Intent intent = new Intent();
 			intent.setClass(mActivity, OAuthV2Activity.class);
 			DBManager.getInstance(mActivity).clear();
+			SettingsManager.getInstance(mActivity).clear(); 
 			ContentManager.clear();
+			application.getShortList().clear();
 			mActivity.startActivity(intent);
 			mActivity.finish();
+			
 			break;
 		default:
 			break;

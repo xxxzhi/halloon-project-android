@@ -92,7 +92,6 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 
 	private String name;
 	private String id;
-	private String nick;
 
 	private LinearLayout tweetLinear = null;
 
@@ -101,8 +100,13 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 
 		public void setupEditProfileFragment(Bundle bundle);
 		
-		
 		public void setupDetailFragment(Bundle bundle);
+		
+//		public void setupContactFragment(Bundle bundle);
+		
+		public void setupIdolListFragment(String name,String fopenid);
+		
+		public void setupFansListFragment(String name,String fopenid);
 	}
 
 	@Override
@@ -116,6 +120,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		if (getArguments().getString("id") != null)
 			this.id = getArguments().getString("id");
 	}
+	
 	LinearLayout linearLayout = null ;
 	@Override
 	public void init(HalloonTitleBar titleBar, RelativeLayout content) {
@@ -155,9 +160,17 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 	}
 
 	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
+			Bundle savedInstanceState) {
+		View view = super.onCreateView(inflater, parent, savedInstanceState);
+		updateProfile();
+		return view ;
+	}
+
+	@Override
 	public void onResume() {
 		super.onResume();
-		updateProfile();
+//		updateProfile();
 		Log.i("test", "onResume");
 	}
 
@@ -349,8 +362,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 			
 			private void showTweetList(ArrayList<TweetBean> list) {
 
-				TweetContentAdapter tweetContentAdapter;
-				tweetContentAdapter = new TweetContentAdapter(context, list);
+				final TweetContentAdapter tweetContentAdapter = new TweetContentAdapter(context, list);
 				// tweetListView.setAdapter(tweetContentAdapter);
 
 				// repair tweetlist height ;
@@ -372,7 +384,18 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 						line.setLayoutParams(params);
 						tweetLinear.addView(line);
 					}
-
+					final int position = i ;
+					item.setOnClickListener(new View.OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							Bundle bundle = new Bundle();
+							bundle.putString("id", String.valueOf(id));
+							bundle.putBundle("tweetBean",
+									tweetContentAdapter.getItem(position).toBundle());
+							((BaseMultiFragmentActivity)pCallback).setupDetailFragment(bundle);
+						}
+					});
 				}
 				if (tweetContentAdapter.getCount() == 3) {
 					tweetMore.setVisibility(View.VISIBLE);
@@ -500,12 +523,18 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		case R.id.tweet:
 			Bundle bundle = new Bundle();
 			bundle.putString("name", name);
-			bundle.putString("nick", nick);
+			bundle.putString("nick", profileBean.getNick());
 			pCallback.setupTweetListFragment(bundle);
 			break;
 		case R.id.idol:
+			if(profileBean == null )
+				break;
+			pCallback.setupIdolListFragment(profileBean.getNick(), id);
 			break;
 		case R.id.fans:
+			if(profileBean == null )
+				break;
+			pCallback.setupFansListFragment(profileBean.getNick(), id);
 			break;
 		case R.id.background:
 			PopupWindowManager popupWindowManager = new PopupWindowManager(

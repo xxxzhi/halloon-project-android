@@ -17,61 +17,6 @@
         android:divider="#FFFFFFFF"
         android:listSelector="@drawable/tweet_content_list_bg_selector" />
     
-    <LinearLayout 
-        android:id="@+id/quick_reply"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical" >
-        
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50.0dip"
-            android:background="@drawable/tab_bg_unselected" >
-            
-            <ImageView
-                android:id="@+id/emoji_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6.0dip"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/emoji_tag" />
-            
-            <EditText 
-                android:id="@+id/reply"
-                android:layout_width="match_parent"
-                android:layout_height="36.0dip"
-                android:layout_weight="1.0"
-                android:layout_marginTop="6.0dip"
-                android:layout_marginBottom="6.0dip"
-                android:layout_marginLeft="6.0dip"
-                android:layout_marginRight="6.0dip"
-                android:layout_gravity="center_vertical"
-                android:textColor="#888888"
-                android:textSize="18.0dip"
-                android:hint="  说点什么"
-                android:textColorHint="#999999"
-                android:background="@drawable/small_round_corner_white" />
-            
-            <Button
-                android:id="@+id/quick_reply_button"
-                android:layout_width="50.0dip"
-                android:layout_height="40.0dip"
-                android:layout_marginRight="6.0dip"
-                android:layout_gravity="center_vertical"
-                android:text="@string/comment"
-                android:textColor="#EEEEEE"
-                android:textSize="15.0dip"
-                android:background="@drawable/rect_button_selector" />
-            
-        </LinearLayout>
-        
-        <com.halloon.android.widget.HalloonEmojiSelector
-            android:id="@+id/emoji_selector"
-            android:layout_width="match_parent"
-            android:layout_height="200.0dip"
-            android:visibility="gone" />
-        
-    </LinearLayout>
+    <include layout="@layout/include_quick_reply"/>
     
 </RelativeLayout>

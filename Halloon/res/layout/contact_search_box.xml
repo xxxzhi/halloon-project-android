@@ -5,6 +5,7 @@
     android:background="#efefef" >
 
     <LinearLayout
+        android:visibility="visible"
         android:id="@+id/search_linearLayout"
         android:layout_width="fill_parent"
         android:layout_height="30dip"

@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.halloon.android.R;
+import com.halloon.android.data.ContentManager;
 import com.halloon.android.util.Constants;
 import com.tencent.weibo.oauthv2.OAuthV2;
 import com.tencent.weibo.oauthv2.OAuthV2Client;
@@ -76,6 +77,7 @@ public class OAuthV2Activity extends Activity {
 		if (requestCode == 1) {
 			if (resultCode == OAuthV2AuthorizeWebView.RESULT_CODE) {
 				oAuthV2 = (OAuthV2) data.getExtras().getSerializable("oauth");
+				System.out.println("test exit : oauthv2 onActivityResult "+oAuthV2.getAccessToken());
 				if (oAuthV2 != null && oAuthV2.getStatus() == 0) {
 					FileOutputStream fos = null;
 					ObjectOutputStream oos = null;
@@ -128,6 +130,8 @@ public class OAuthV2Activity extends Activity {
 				Intent intent = new Intent();
 				intent.putExtra("accessToken",
 						mActivity.oAuthV2.getAccessToken());
+				ContentManager.clear();
+				System.out.println("test exit : oauthv2 handleMessage "+mActivity.oAuthV2.getAccessToken());
 				intent.putExtra("oauth", mActivity.oAuthV2);
 				intent.putExtra("flag", 1);
 				intent.setClass(mActivity, SlideHomeActivity.class);

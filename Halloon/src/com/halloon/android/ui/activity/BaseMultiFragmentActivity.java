@@ -1,5 +1,7 @@
 package com.halloon.android.ui.activity;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,23 +13,30 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import com.halloon.android.R;
+import com.halloon.android.bean.FamousBean;
+import com.halloon.android.bean.TopicBean;
+import com.halloon.android.bean.TweetBean;
 import com.halloon.android.ui.BaseActivity;
 import com.halloon.android.ui.fragment.CommentFragment;
 import com.halloon.android.ui.fragment.EditProfileFragment;
 import com.halloon.android.ui.fragment.PublishFragment;
+import com.halloon.android.ui.fragment.SquareFamousListFragment;
+import com.halloon.android.ui.fragment.SquareReListFragment;
 import com.halloon.android.ui.fragment.TabMainPageFragment;
 import com.halloon.android.ui.fragment.TabMainPageFragment.MainPageFragmentCallback;
 import com.halloon.android.ui.fragment.TabProfileFragment;
 import com.halloon.android.ui.fragment.TabProfileFragment.ProfileFragmentCallback;
+import com.halloon.android.ui.fragment.TabSquareFragment.SquareFragmentCallback;
 import com.halloon.android.ui.fragment.TweetDetailFragment;
 import com.halloon.android.ui.fragment.TweetDetailFragment.TweetDetailFragmentCallback;
+import com.halloon.android.ui.fragment.UserSimpleListFragment;
 import com.halloon.android.util.GifDecoder;
 import com.halloon.android.util.PopupWindowManager;
 
-public abstract class BaseMultiFragmentActivity extends BaseActivity implements MainPageFragmentCallback, 
-                                                                                TweetDetailFragmentCallback,
-		                                                                        ProfileFragmentCallback {
+public abstract class BaseMultiFragmentActivity extends BaseActivity 
+implements MainPageFragmentCallback,TweetDetailFragmentCallback,ProfileFragmentCallback,SquareFragmentCallback{
 	
+
 	protected PopupWindowManager mPopupWindowManager;
 
 	protected FragmentManager mFragmentManager;
@@ -142,6 +151,29 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
 		
 	}
 	
+
+	@Override
+	public void setSquareFamousList(ArrayList<FamousBean> famous) {
+		SquareFamousListFragment fragment = new SquareFamousListFragment();
+		fragment.setFamousBeans(famous);
+		
+		setupFragment(fragment, new Bundle());
+	}
+
+	@Override
+	public void setSquareTopicList(ArrayList<TopicBean> topic) {
+		
+	}
+
+	@Override
+	public void setSquareHotReList(ArrayList<TweetBean> hotReBeans) {
+		SquareReListFragment fragment = new SquareReListFragment();
+		fragment.setHotReBeans(hotReBeans);
+		
+		setupFragment(fragment, new Bundle());
+	}
+	
+	
 	@Override
 	public void setupEditProfileFragment(Bundle bundle){
 		setupFragment(new EditProfileFragment(), bundle);
@@ -151,7 +183,10 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
 	@Override
 	public void setupProfileFragment(Bundle bundle) {
 		TabProfileFragment fragment = new TabProfileFragment();
-		fragment.setType(TabProfileFragment.OTHER);
+		
+		//判断id是否跟自己的相同
+		int type = bundle.getInt("type",TabProfileFragment.OTHER);
+		fragment.setType(type);
 		
 		setupFragment(fragment, bundle);
 	}
@@ -204,6 +239,36 @@ public abstract class BaseMultiFragmentActivity extends BaseActivity implements 
 		fragment.setTweetState(TabMainPageFragment.AROUND_TWEET);
 		
 		setupFragment(fragment, null);
+	}
+
+	
+	
+	@Override
+	public void setupIdolListFragment(String name,String fopenid) {
+		UserSimpleListFragment fragment = new UserSimpleListFragment();
+		
+		Bundle bundle = new Bundle();
+		fragment.setUserType( UserSimpleListFragment.IDOL);
+//		bundle.putInt("type", UserSimpleListFragment.IDOL);
+		bundle.putString("name",name);
+		bundle.putString("fopenid",fopenid);
+		setupFragment(fragment, bundle);
+	}
+
+	@Override
+	public void setupFansListFragment(String name,String fopenid) {
+		UserSimpleListFragment fragment = new UserSimpleListFragment();
+		
+		Bundle bundle = new Bundle();
+		fragment.setUserType( UserSimpleListFragment.FANS);
+		bundle.putString("name",name);
+		bundle.putString("fopenid",fopenid);
+		setupFragment(fragment, bundle);
+	}
+
+	public void setupUserListFragment(Bundle bundle) {
+		
+		
 	}
 
 	@Override

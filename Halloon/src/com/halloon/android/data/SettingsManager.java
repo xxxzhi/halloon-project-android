@@ -36,6 +36,15 @@ public class SettingsManager {
 		// Defeats instantiationaurelien
 	}
 
+	/**
+	 * 清除所有设置
+	 */
+	public void clear(){
+		SharedPreferences.Editor editor = getSettings().edit();
+		editor.clear();
+		editor.commit();
+	}
+	
 	public static SettingsManager getInstance(Context context) {
 		SettingsManager.context = context;
 		if (_instance == null) {

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/rl_famous"
+            style="@style/SquareItem"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/viewpager" >
+
+            <com.halloon.android.widget.CircleImageView
+                android:id="@+id/imageView1"
+                android:layout_width="@dimen/square_img_side"
+                android:layout_height="@dimen/square_img_side"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_launcher" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:layout_marginLeft="9dp"
+                android:layout_toRightOf="@+id/imageView1"
+                android:text="@string/start_user_recommend"
+                android:layout_alignParentTop="true"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="@dimen/txt_square" />
+
+            <TextView
+                android:id="@+id/content"
+                android:layout_below="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="9dp"
+                android:layout_toLeftOf="@+id/arrow"
+                android:layout_toRightOf="@+id/imageView1"
+                android:text="TextView"
+                android:maxLines="2"
+                android:textSize="@dimen/txt_square" />
+
+            <ImageView
+                android:id="@+id/arrow"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:visibility="gone"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/h_arrow" />
+        </RelativeLayout>
+

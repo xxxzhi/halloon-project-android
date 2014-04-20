@@ -125,7 +125,10 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements
 				otherName = getArguments().getString("name");
 			if (getArguments().getString("nick") != null)
 				nick = getArguments().getString("nick");
-		}
+		} 
+		
+		
+		System.out.println("test exit: main fragment onAttach   "+ otherName +","+nick);
 	}
 
 	@Override
@@ -157,6 +160,8 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements
 			locationTask = new LocationTask(context);
 			locationTask.setOnLocationSeekListener(this);
 		}
+		
+		System.out.println("test exit: init");
 	}
 
 	@Override
@@ -727,6 +732,9 @@ public class TabMainPageFragment extends BaseTitleBarFragment implements
 		// bitmapRecycle();
 	}
 
+	
+	
+	
 	@Override
 	public void onStop() {
 		super.onStop();

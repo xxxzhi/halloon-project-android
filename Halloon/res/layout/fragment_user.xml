@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.TabMainPageFragment"
+    android:background="@color/bg_list_back" >
+    
+    <com.halloon.android.widget.HalloonPullableView
+        android:id="@+id/pull_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fadeScrollbars="false"
+            android:cacheColorHint="#00000000"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0.0dip"
+ 			android:paddingTop="5dp"
+ 			android:dividerHeight="@dimen/list_diver_height"
+            android:divider="@color/bg_list_back"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:fastScrollEnabled="true"
+            android:listSelector="@drawable/tweet_content_list_bg_selector"
+            android:background="@color/bg_list_back"
+            android:longClickable="true" />
+        
+    </com.halloon.android.widget.HalloonPullableView>
+
+</RelativeLayout>

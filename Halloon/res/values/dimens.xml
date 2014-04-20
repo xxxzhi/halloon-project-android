@@ -34,4 +34,16 @@
 	<dimen name="about_arrow_side">20dp</dimen>
 	
 	<dimen name="input_sign_hint_min_height">140dp</dimen>
+	
+	<dimen name="private_icon_side">40dp</dimen>
+	
+	<dimen name="txt_private_time">11sp</dimen>
+	<dimen name="txt_private_content">16sp</dimen>
+	
+	<dimen name="square_item_height">90dp</dimen>
+	<dimen name="square_img_side">80dp</dimen>
+	
+	<dimen name="txt_square">16sp</dimen>
+	
+	<dimen name="txt_square_content">15sp</dimen>
 </resources>

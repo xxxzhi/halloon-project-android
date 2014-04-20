@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:halloon="http://schemas.android.com/apk/res/com.halloon.android"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="7dp"
+    android:layout_marginRight="7dp"
+    android:background="@drawable/bg_weibo_item"
+    tools:context=".ui.activity.OneActivity" >
+
+    <com.halloon.android.widget.CircleImageView
+        android:id="@+id/tweet_head"
+        android:layout_width="48.0dip"
+        android:layout_height="48.0dip"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginTop="6.0dip"
+        android:src="@drawable/wb_head_default" />
+
+    <View
+        android:id="@+id/line_head"
+        android:layout_width="match_parent"
+        android:layout_height="1.0px"
+        android:layout_below="@+id/tweet_head"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="3.0dip"
+        android:background="#FFCCCCCC"
+        android:visibility="gone" />
+
+
+    <TextView
+        android:id="@+id/user_nick"
+        android:layout_width="wrap_content"
+        android:layout_height="22.0dip"
+        android:layout_marginBottom="3.0dip"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginTop="6.0dip"
+        android:layout_toRightOf="@+id/tweet_head"
+        android:text="阿蔡"
+        android:textColor="@color/txt_weibo_name"
+        android:textSize="15.0sp" />
+
+    <ImageView
+        android:id="@+id/my_sex"
+        android:layout_width="14.0dip"
+        android:layout_height="14.0dip"
+        android:layout_alignTop="@+id/user_nick"
+        android:layout_marginLeft="2.0dip"
+        android:layout_marginRight="2.0dip"
+        android:layout_marginTop="3.0dip"
+        android:layout_toRightOf="@+id/user_nick"
+        android:src="@drawable/wb_icon_male" />
+
+    <TextView
+        android:id="@+id/user_tweet"
+        android:layout_width="170.0dip"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_nick"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="6.0dip"
+        android:layout_toRightOf="@+id/image_icon"
+        android:gravity="left"
+        android:singleLine="true"
+        android:maxEms="18"
+        android:text="来自哈恩客户端啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+        android:textColor="@color/txt_weibo_from"
+        android:textSize="12.0sp" />
+
+    <ImageView
+        android:id="@+id/image_icon"
+        android:layout_width="17.0dip"
+        android:layout_height="17.0dip"
+        android:layout_below="@+id/user_nick"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginRight="4.0dip"
+        android:layout_marginTop="0.0dip"
+        android:layout_toRightOf="@+id/tweet_head"
+        android:background="@drawable/contain_image_2"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/bt_fans"
+        android:layout_width="50.0dip"
+        android:layout_height="32.0dip"
+        android:layout_above="@+id/user_tweet"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/rect_button_selector"
+        android:text="@string/fan"
+        android:textColor="#EEEEEE"
+        android:visibility="gone"
+        android:textSize="14.0dip" />
+
+</RelativeLayout>

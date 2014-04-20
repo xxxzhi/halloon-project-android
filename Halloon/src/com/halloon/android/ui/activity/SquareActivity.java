@@ -28,7 +28,6 @@ public class SquareActivity extends BaseMultiFragmentActivity implements Publish
 	@Override
 	protected Fragment onCreatePane() {
 		TabSquareFragment mFragment = new TabSquareFragment();
-		mFragment.setTweetState(TabMainPageFragment.MAIN_TIMELINE_TWEET);
 
 		return mFragment;
 	}

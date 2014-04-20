@@ -146,8 +146,18 @@
     <string name="check_update">检查更新</string>
     <string name="function_intro">功能介绍</string>
     <string name="welcome_page">欢迎页</string>
-    
+    <string name="is_fans">粉丝</string>
+    <string name="not_fans"></string>
+    <string name="is_idol">取消关注</string>
+    <string name="not_idol">关注</string>
     
     <string name="input_name_hint">4-30个字符，支持中英文、数字</string>
     <string name="input_sign_hint">请不要超过70个字</string>
+    <string name="start_user_recommend">名人推荐</string>
+    <string name="hot_topic">话题热榜</string>
+    <string name="hottrans"></string>
+    <string name="hot_trans">转播热榜</string>
+    <string name="suffix_fans">的粉丝</string>
+    <string name="suffix_idol">的关注</string>
+    
 </resources>

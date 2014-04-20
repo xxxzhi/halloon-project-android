@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import com.halloon.android.R;
 import com.halloon.android.bean.PrivateDataBean;
 import com.halloon.android.image.ImageLoader;
+import com.halloon.android.ui.fragment.TabProfileFragment;
+import com.halloon.android.ui.fragment.TweetDetailFragment.TweetDetailFragmentCallback;
 import com.halloon.android.util.ContentTransUtil;
 import com.halloon.android.util.TimeUtil;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +20,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class PrivateDetailAdapter extends BaseAdapter {
+public class PrivateDetailAdapter extends BaseAdapter{
 	
 	private Context context;
 	private LayoutInflater layoutInflater;
@@ -67,6 +70,8 @@ public class PrivateDetailAdapter extends BaseAdapter {
 			privateOtherHolder.content.setMovementMethod(LinkMovementMethod.getInstance());
 			ContentTransUtil.getInstance(context).displaySpannableString(privateDataBean.getText(), privateOtherHolder.content, null, false, true);
 			privateOtherHolder.time.setText(TimeUtil.converTime(privateDataBean.getPubTime(), 0x2));
+			
+			clickHeader(privateOtherHolder.headImage, privateDataBean,TabProfileFragment.OTHER);
 		}else{
 			if(convertView == null || !convertView.getTag().equals(privateMeHolder)){
 				convertView = layoutInflater.inflate(R.layout.private_message_me_content, null);
@@ -82,10 +87,16 @@ public class PrivateDetailAdapter extends BaseAdapter {
 			privateMeHolder.content.setMovementMethod(LinkMovementMethod.getInstance());
 			ContentTransUtil.getInstance(context).displaySpannableString(privateDataBean.getText(), privateMeHolder.content, null, false, true);
 			privateMeHolder.time.setText(TimeUtil.converTime(privateDataBean.getPubTime(), 0x2));
+			
+			
+			
+			clickHeader(privateMeHolder.headImage, privateDataBean,TabProfileFragment.ME);
 		}
 	    
 	    return convertView;
 	}
+	
+	
 	
 	private static class PrivateOtherHolder{
 		ImageView headImage;
@@ -97,6 +108,26 @@ public class PrivateDetailAdapter extends BaseAdapter {
 		ImageView headImage;
 		TextView content;
 		TextView time;
+	}
+	
+	private void clickHeader(View head,final PrivateDataBean bean,final int type){
+		
+		head.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				Bundle bundle = new Bundle();
+				
+				bundle.putString("name", bean.getName());
+				bundle.putString("id", bean.getOpenId());
+				bundle.putInt("type", type);
+				((TweetDetailFragmentCallback) context).setupProfileFragment(bundle);
+				
+			}
+		});
+		
+		
 	}
 
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+    <solid android:color="@color/bg_private_msg_item_me" />
+    <corners android:radius="6.0dip" />
+    <padding android:left="7.0dip"
+        android:right="7.0dip"
+        android:top="4.0dip"
+        android:bottom="4.0dip" />
+
+</shape>

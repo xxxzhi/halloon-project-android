@@ -22,26 +22,27 @@
         android:src="@drawable/avatar_mask" />
     
     <TextView
-        android:layout_marginTop="8.0dip"
         android:id="@+id/private_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:textSize="12sp"
+        android:layout_marginBottom="4dp"
+        android:textSize="@dimen/txt_private_time"
+        android:textColor="@color/txt_private_time"
+        android:background="@drawable/bg_private_time"
         android:text="time" />
     <com.halloon.android.widget.ButtonStyleTextView
         android:id="@+id/private_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="40.0dip"
-        android:maxWidth="230.0dip"
         android:layout_toRightOf="@+id/private_head"
-        
+        android:layout_marginRight="53.0dip"
         android:layout_marginLeft="8.0dip"
         android:text="12312123123123123123124241242352314132412341234123412341"
-        android:textColor="#666666"
-        android:textSize="15.0dip"
+        android:textColor="@color/txt_private"
+        android:textSize="@dimen/txt_private_content"
         android:gravity="center|left"
         android:layout_below="@+id/private_time"
         android:background="@drawable/round_corner_dark" />

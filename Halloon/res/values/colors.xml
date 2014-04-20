@@ -28,11 +28,12 @@
 
 	<color name="line_setting">#efcbd4d9</color>
 	
-	<color name="txt_time">#a2adb3</color>
-	<color name="txt_weibo">#878988</color>
-	<color name="txt_weibo_name">#474745</color>
+	<color name="txt_time">#a9a9a9</color>
+	<color name="txt_weibo">#686868</color>
+	<color name="txt_weibo_name">#333333</color>
 	<color name="txt_weibo_from">#a9a9a9</color>
 	<color name="txt_weibo_trans">#626262</color>
+	
 	
 	
 	<color name="bg_weibo">#fbfcff</color>
@@ -48,6 +49,12 @@
 	<color name="txt_about">#252525</color>
 	<color name="bg_about">#e5eaee</color>
 	<color name="bg_about_item">#ffffff</color>
+	
+	<color name="bg_private_msg_item_me">#a5da4e</color>
+	<color name="bg_time">#bbbdba</color>
+	
+	<color name="txt_private">#010000</color>
+	<color name="txt_private_time">#ffffff</color>
 <!--
     右侧顶部蓝色值：
 右侧时间颜色: #a2adb3

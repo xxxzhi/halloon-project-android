@@ -40,6 +40,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title_layout"
-        android:divider="#FFFFFF" />
+        android:layout_above="@+id/include"
+        android:dividerHeight="14dp"
+        android:cacheColorHint="#00000000"
+        android:fadingEdge="none"
+        android:listSelector="@drawable/tweet_content_list_bg_selector"
+        android:fadingEdgeLength="0.0dip"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:divider="#00FFFFFF" />
     
+    
+    <include
+        android:id="@+id/include" 
+        layout="@layout/include_quick_reply"/>
 </RelativeLayout>

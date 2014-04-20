@@ -15,15 +15,14 @@ import com.halloon.android.data.ContentManager;
 import com.halloon.android.data.SettingsManager;
 import com.halloon.android.ui.activity.BaseMultiFragmentActivity;
 
-public class PostActionTask extends BaseCompatiableTask<Void, Void, int[]> {
+public class PostPrivateActionTask extends BaseCompatiableTask<Void, Void, int[]> {
 	private Context context;
 
 	public static final int COMMENT = 0;
 	public static final int RETWEET = 1;
 	public static final int PUBLISH_TWEET = 2;
 	public static final int PUBLISH_IMAGE_TWEET = 3;
-	public static final int REPLY_PRIVATE = 4;
-	
+
 	private int type;
 	private String tweetId;
 	private String content;
@@ -40,25 +39,6 @@ public class PostActionTask extends BaseCompatiableTask<Void, Void, int[]> {
 	private boolean isBack = true;
 
 	private NotificationManager ntfManager;
-
-	
-	private String name = null;
-	private String fopenid = null ;
-	public String getFopenid() {
-		return fopenid;
-	}
-
-	public void setFopenid(String fopenid) {
-		this.fopenid = fopenid;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	/**
 	 * 
@@ -78,7 +58,7 @@ public class PostActionTask extends BaseCompatiableTask<Void, Void, int[]> {
 	 * @param imagePath
 	 *            图片路径 （可选）
 	 */
-	public PostActionTask(Context context, int type, String tweetId, String content, String longitude, String latitude, String syncFlag, String imagePath) {
+	public PostPrivateActionTask(Context context, int type,  String content, String longitude, String latitude, String syncFlag, String imagePath) {
 		this.context = context;
 		this.type = type;
 		this.tweetId = tweetId;
@@ -93,7 +73,7 @@ public class PostActionTask extends BaseCompatiableTask<Void, Void, int[]> {
 		ip = SettingsManager.getInstance(context).getDeviceIp();
 	}
 
-	public PostActionTask(Context context, int type, String content, String syncFlag, String imagePath) {
+	public PostPrivateActionTask(Context context, int type, String content, String syncFlag, String imagePath) {
 		this.context = context;
 		this.type = type;
 		this.content = content;
@@ -105,38 +85,11 @@ public class PostActionTask extends BaseCompatiableTask<Void, Void, int[]> {
 		ip = SettingsManager.getInstance(context).getDeviceIp();
 	}
 
-	public PostActionTask(Context context, int type, String content) {
+	public PostPrivateActionTask(Context context, int type, String content) {
 		this.context = context;
 		this.type = type;
 		this.content = content;
 		ntfManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		tickerState = new String[] {context.getString(R.string.sending), context.getString(R.string.sent) };
-		tickerString = new String[] {context.getString(R.string.comment), context.getString(R.string.retweet), context.getString(R.string.publish), context.getString(R.string.publish)};
-		ip = SettingsManager.getInstance(context).getDeviceIp();
-	}
-
-	public PostActionTask(Context context, int type, String tweetId, String content) {
-		this.context = context;
-		this.type = type;
-		this.tweetId = tweetId;
-		this.content = content;
-		ntfManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		tickerState = new String[] {context.getString(R.string.sending), context.getString(R.string.sent) };
-		tickerString = new String[] {context.getString(R.string.comment), context.getString(R.string.retweet), context.getString(R.string.publish), context.getString(R.string.publish)};
-		ip = SettingsManager.getInstance(context).getDeviceIp();
-	}
-	
-	
-	public PostActionTask(Context context, int type, String content, String longitude, String latitude, String syncFlag, String imagePath) {
-		this.context = context;
-		this.type = type;
-		this.content = content;
-		this.longitude = longitude;
-		this.latitude = latitude;
-		this.syncFlag = syncFlag;
-		this.imagePath = imagePath;
-		ntfManager = (NotificationManager) context
-				.getSystemService(Context.NOTIFICATION_SERVICE);
 		tickerState = new String[] {context.getString(R.string.sending), context.getString(R.string.sent) };
 		tickerString = new String[] {context.getString(R.string.comment), context.getString(R.string.retweet), context.getString(R.string.publish), context.getString(R.string.publish)};
 		ip = SettingsManager.getInstance(context).getDeviceIp();
@@ -182,8 +135,6 @@ public class PostActionTask extends BaseCompatiableTask<Void, Void, int[]> {
 			} else {
 				return ContentManager.getInstance(context).addImageTweet(content, imagePath, ip, longitude, latitude, syncFlag);
 			}
-		case REPLY_PRIVATE:
-			return ContentManager.getInstance(context).addPrivateMsg(content, ip, name, fopenid, 1+"", "");
 		}
 		return null;
 	}
