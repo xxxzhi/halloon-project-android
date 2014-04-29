@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 
 import com.halloon.android.data.SettingsManager;
 import com.halloon.android.ui.fragment.TabProfileFragment;
+import com.halloon.android.ui.fragment.TabProfileFragment1;
 import com.halloon.android.ui.fragment.TweetDetailFragment.TweetDetailFragmentCallback;
 
 public class ProfileActivity extends BaseMultiFragmentActivity {

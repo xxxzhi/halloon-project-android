@@ -26,6 +26,7 @@ import com.halloon.android.ui.fragment.TabMainPageFragment;
 import com.halloon.android.ui.fragment.TabMainPageFragment.MainPageFragmentCallback;
 import com.halloon.android.ui.fragment.TabProfileFragment;
 import com.halloon.android.ui.fragment.TabProfileFragment.ProfileFragmentCallback;
+import com.halloon.android.ui.fragment.TabProfileFragment1;
 import com.halloon.android.ui.fragment.TabSquareFragment.SquareFragmentCallback;
 import com.halloon.android.ui.fragment.TweetDetailFragment;
 import com.halloon.android.ui.fragment.TweetDetailFragment.TweetDetailFragmentCallback;

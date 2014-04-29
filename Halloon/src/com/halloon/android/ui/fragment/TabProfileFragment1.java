@@ -59,7 +59,7 @@ import com.halloon.android.widget.ButtonStyleTextView;
 import com.halloon.android.widget.HalloonTitleBar;
 import com.halloon.android.widget.TagView;
 
-public class TabProfileFragment extends BaseTitleBarFragment implements
+public class TabProfileFragment1 extends BaseTitleBarFragment implements
 		OnClickListener {
 	public static final int REQUEST_IMG = 2;
 
@@ -70,7 +70,6 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 	private TextView mySign;
 	private Button editButton;
 
-	private ImageView backGround;
 	// private TagView tagView;
 
 	private Button tweetButton;
@@ -93,7 +92,6 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 	private String name;
 	private String id;
 
-	private LinearLayout tweetLinear = null;
 
 	public interface ProfileFragmentCallback {
 		public void setupTweetListFragment(Bundle bundle);
@@ -102,7 +100,6 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		
 		public void setupDetailFragment(Bundle bundle);
 		
-//		public void setupContactFragment(Bundle bundle);
 		
 		public void setupIdolListFragment(String name,String fopenid);
 		
@@ -126,7 +123,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 	public void init(HalloonTitleBar titleBar, RelativeLayout content) {
 		LayoutInflater inflater = (LayoutInflater) getActivity()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		content.addView(inflater.inflate(R.layout.tab_profile_v2, null, false));
+		content.addView(inflater.inflate(R.layout.tab_profile_v1, null, false));
 
 		titleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_NORMAL);
 		titleBar.setOnTitleBarClickListener(this);
@@ -145,24 +142,14 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		fanButton = (Button) content.findViewById(R.id.fans);
 		favButton = (Button) content.findViewById(R.id.fav);
 		tagButton = (Button) content.findViewById(R.id.tag);
-		backGround = (ImageView) content.findViewById(R.id.background);
 
 		editButton = titleBar.getRightButton(R.string.edit);
 
-		// tweet list
-		// tweetListView = (ListView)
-		// content.findViewById(R.id.listview_profile_tweet);
-		tweetLinear = (LinearLayout) content.findViewById(R.id.linear_tweet);
-		tweetMore = content.findViewById(R.id.tv_more);
-		linearLayout = (LinearLayout)content.findViewById(R.id.hori_linear);
-		// content.findViewById(R.id.tweet_head).setVisibility(View.GONE);
-		Log.i("test", "init");
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
 			Bundle savedInstanceState) {
-		Log.i("test", "onCreateView");
 		View view = super.onCreateView(inflater, parent, savedInstanceState);
 		updateProfile();
 		return view ;
@@ -178,80 +165,7 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 	@Override
 	public void onHiddenChanged(boolean hidden) {
 		super.onHiddenChanged(hidden);
-//		updateProfile();
-		new BaseCompatiableTask<Void, Object, ProfileBean>() {
-
-			@Override
-			protected ProfileBean doInBackground(Void... arg0) {
-				ProfileBean tmp_profileBean;
-
-				if (type == ME) {
-					if (SettingsManager.getInstance(context).getProfileStatus() == DBManager.PROFILE_STATUS_INIT) {
-						tmp_profileBean = ContentManager.getInstance(context)
-								.getMyProfile();
-					} else {
-						tmp_profileBean = DBManager.getInstance(context)
-								.getProfile();
-						if (tmp_profileBean.getName() == null
-								|| tmp_profileBean.getTweetBean() == null) {
-							tmp_profileBean = ContentManager.getInstance(
-									context).getMyProfile();
-						}
-					}
-					name = tmp_profileBean.getName();
-					id = tmp_profileBean.getOpenId();
-				} else {
-					tmp_profileBean = ContentManager.getInstance(context)
-							.getOtherProfile(name, id);
-					System.out.println(name + ":" + id);
-				}
-				publishProgress(1, tmp_profileBean);
-				if (tweetLinear.getChildCount() != 3) {
-					ArrayList<TweetBean> tmpArrayList = ContentManager
-							.getInstance(context).getOtherTimeLine("", "", 3,
-									"", name, null, "", "");
-					if (tmpArrayList != null) {
-						publishProgress(2, tmpArrayList);
-					}
-				}
-
-				ArrayList<TweetBean> listTemp = ContentManager.getInstance(context).
-						getMicroAlbum(15, name, 
-						id, "0", "0", "0");
-				System.out.println(name + ":" + id+": "+listTemp);
-				publishProgress(3,listTemp);
-				
-				return tmp_profileBean;
-			}
-
-			@Override
-			protected void onProgressUpdate(Object... values) {
-				if (values != null && values.length > 1) {
-					int type = (Integer) values[0];
-					switch (type) {
-					case 1:
-						// update profile
-						break;
-					case 2:
-						// update profile tweet
-						if (values[1] instanceof ArrayList<?>)
-						break;
-					case 3:
-						if(values[1] instanceof ArrayList<?>){
-						}
-						break;
-					default:
-						break;
-					}
-				}
-			}
-			
-			@Override
-			protected void onPostExecute(ProfileBean result) {
-				super.onPostExecute(result);
-			}
-		}.taskExecute();
-		
+		updateProfile();
 		Log.i("test", "onHiddenChanged");
 	}
 
@@ -273,22 +187,8 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 		favButton.setOnClickListener(this);
 		tagButton.setOnClickListener(this);
 
-		tweetMore.setOnClickListener(this);
 		myHeadicon.setOnClickListener(this);
 
-		if (type == ME) {
-
-			backGround.setOnClickListener(this);
-
-			String imgPath = SettingsManager.getInstance(mActivity)
-					.getProfileBackGroundImg();
-			if (imgPath != null && imgPath.length() > 1) {
-				backGround.setImageBitmap(BitmapFactory.decodeFile(imgPath));
-			}
-		} else {
-			backGround.setOnClickListener(null);
-			backGround.setImageResource(R.drawable.hot_balloon);
-		}
 		if (type == ME) {
 			mTitleBar.setTitleStyle(HalloonTitleBar.TITLE_STYLE_HIDE_TITLE);
 			View menuButton = mContent.findViewById(R.id.menu);
@@ -338,21 +238,13 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 					System.out.println(name + ":" + id);
 				}
 				publishProgress(1, tmp_profileBean);
-				if (tweetLinear.getChildCount() != 3) {
-					ArrayList<TweetBean> tmpArrayList = ContentManager
-							.getInstance(context).getOtherTimeLine("", "", 3,
-									"", name, null, "", "");
-					if (tmpArrayList != null) {
-						publishProgress(2, tmpArrayList);
-					}
-				}
 
-				ArrayList<TweetBean> listTemp = ContentManager.getInstance(context).
-						getMicroAlbum(15, name, 
-						id, "0", "0", "0");
-				System.out.println(name + ":" + id+": "+listTemp);
-				publishProgress(3,listTemp);
-				
+//				ArrayList<TweetBean> listTemp = ContentManager.getInstance(context).
+//						getMicroAlbum(15, name, 
+//						id, "0", "0", "0");
+//				System.out.println(name + ":" + id+": "+listTemp);
+//				publishProgress(3,listTemp);
+//				
 				return tmp_profileBean;
 			}
 
@@ -367,13 +259,13 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 						break;
 					case 2:
 						// update profile tweet
-						if (values[1] instanceof ArrayList<?>)
-							showTweetList((ArrayList<TweetBean>) values[1]);
+//						if (values[1] instanceof ArrayList<?>)
+//							showTweetList((ArrayList<TweetBean>) values[1]);
 						break;
 					case 3:
-						if(values[1] instanceof ArrayList<?>){
-							showMicroAlbum((ArrayList<TweetBean>) values[1]);
-						}
+//						if(values[1] instanceof ArrayList<?>){
+//							showMicroAlbum((ArrayList<TweetBean>) values[1]);
+//						}
 						break;
 					default:
 						break;
@@ -432,53 +324,6 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 				}
 				
 //				linearLayout.removeViewAt(linearLayout.getChildCount() - 1);
-			}
-			
-			private void showTweetList(ArrayList<TweetBean> list) {
-
-				final TweetContentAdapter tweetContentAdapter = new TweetContentAdapter(context, list);
-				// tweetListView.setAdapter(tweetContentAdapter);
-
-				// repair tweetlist height ;
-				tweetLinear.removeAllViews();
-				for (int i = 0; i != tweetContentAdapter.getCount(); ++i) {
-					View item = tweetContentAdapter.getView(i, null,
-							tweetLinear);
-
-					tweetLinear.addView(item);
-
-					if (i < tweetContentAdapter.getCount()) {
-						LinearLayout.LayoutParams params = null;
-						params = new LinearLayout.LayoutParams(
-								LinearLayout.LayoutParams.MATCH_PARENT,
-								getResources().getDimensionPixelSize(
-										R.dimen.list_diver_height));
-						View line = new View(mActivity);
-
-						line.setLayoutParams(params);
-						tweetLinear.addView(line);
-					}
-					final int position = i ;
-					item.setOnClickListener(new View.OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							Bundle bundle = new Bundle();
-							bundle.putString("id", String.valueOf(id));
-							bundle.putBundle("tweetBean",
-									tweetContentAdapter.getItem(position).toBundle());
-							((BaseMultiFragmentActivity)pCallback).setupDetailFragment(bundle);
-						}
-					});
-				}
-				if (tweetContentAdapter.getCount() == 3) {
-					tweetMore.setVisibility(View.VISIBLE);
-				}
-				// LayoutParams params = listview.getLayoutParams() ;
-				// params.height = height + listview.getDividerHeight() *
-				// (adapter.getCount()-1) ;
-				// listview.setLayoutParams(params);
-				// setListViewHeight(tweetListView);
 			}
 
 			private void setListViewHeight(ListView listview) {
@@ -789,7 +634,6 @@ public class TabProfileFragment extends BaseTitleBarFragment implements
 			if (imagePath != null && imagePath.length() != 0 ) {
 				SettingsManager.getInstance(mActivity).setProfileBackGroundImg(
 						imagePath);
-				backGround.setImageBitmap(BitmapFactory.decodeFile(imagePath));
 			}
 		}
 	}

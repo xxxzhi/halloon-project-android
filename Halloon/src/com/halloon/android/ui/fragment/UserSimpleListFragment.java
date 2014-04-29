@@ -159,11 +159,6 @@ public class UserSimpleListFragment extends BaseTitleBarFragment implements
 
 	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
-	}
-
 	private void loadData(final int userNumber, final boolean refresh) {
 
 			new BaseCompatiableTask<Void, Void, ArrayList<UserBean>>() {
